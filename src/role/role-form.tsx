@@ -1,7 +1,11 @@
+import { Result } from "onecore"
 import { ChangeEvent, useEffect, useRef, useState } from "react"
-import { createModel, DispatchWithCallback, EditComponentParam, OnClick, setReadOnly, useEdit } from "react-hook-core"
-import { useNavigate } from "react-router-dom"
-import { checkPatternOnBlur, handleError, hasPermission, inputEdit, Status, write } from "uione"
+import { clone, createModel, isEmptyObject, isSuccessful, makeDiff, OnClick, setReadOnly, useUpdate } from "react-hook-core"
+import { useNavigate, useParams } from "react-router-dom"
+import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
+import { hideLoading, showLoading } from "ui-loading"
+import { registerEvents, showFormError, validateForm } from "ui-plus"
+import { checkPatternOnBlur, getLocale, handleError, hasPermission, initForm, Status, useResource, write } from "uione"
 import { getRoleService, Privilege, Role } from "./service"
 import "./style.css"
 
@@ -267,38 +271,60 @@ function buildPermissions(actions: Map<string, number>, privileges?: string[]): 
   })
 }
 
-const initialize = async (roleId: string | null, load: (id: string | null) => void, set: DispatchWithCallback<Partial<InternalState>>) => {
-  const roleService = getRoleService()
-  roleService
-    .getPrivileges()
-    .then((allPrivileges) => {
-      const all: string[] = []
-      const actions = new Map<string, number>()
-      buildAll(all, allPrivileges)
-      buildActionAll(actions, allPrivileges)
-      set({ all, actions, allPrivileges, shownPrivileges: allPrivileges, maxAction: getMax(actions) }, () => load(roleId))
-    })
-    .catch(handleError)
-}
-const param: EditComponentParam<Role, string, InternalState> = {
-  createModel: createRole,
-  initialize,
-}
-
 export function RoleForm() {
+  const isReadOnly = !hasPermission(write, 1)
+  const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef()
-  const { state, setState, back, flag, updateState, save, resource } = useEdit<Role, string, InternalState>(
-    refForm,
-    initialState,
-    getRoleService(),
-    inputEdit(),
-    param,
-  )
-  const isReadOnly = !hasPermission(write, 1)
+  const [initialRole, setInitialRole] = useState<Role>(createRole())
+  const { state, setState, updateState } = useUpdate<InternalState>(initialState)
   const [privileges, setPrivileges] = useState<Permission[]>([])
   let seq = 1
 
+  const { id } = useParams()
+  const newMode = !id
+  useEffect(() => {
+    initForm(refForm?.current, registerEvents)
+    const service = getRoleService()
+    service
+      .getPrivileges()
+      .then((allPrivileges) => {
+        const all: string[] = []
+        const actions = new Map<string, number>()
+        buildAll(all, allPrivileges)
+        buildActionAll(actions, allPrivileges)
+        setState({ all, actions, allPrivileges, shownPrivileges: allPrivileges, maxAction: getMax(actions) }, () => {
+          if (!id) {
+            const role = createRole()
+            setPrivileges(buildPermissions(actions, role.privileges))
+            setInitialRole(clone(role))
+            setState({ role })
+          } else {
+            showLoading()
+            service
+              .load(id)
+              .then((role) => {
+                if (!role) {
+                  alertError(resource.error_404, () => navigate(-1))
+                } else {
+                  if (!role.privileges) {
+                    role.privileges = []
+                  }
+                  setPrivileges(buildPermissions(actions, role.privileges))
+                  setInitialRole(clone(role))
+                  setState({ role })
+                  if (isReadOnly) {
+                    setReadOnly(refForm.current as any)
+                  }
+                }
+              })
+              .catch(handleError)
+              .finally(hideLoading)
+          }
+        })
+      })
+      .catch(handleError)
+  }, [id, newMode, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     const obj = state.role
     if (obj) {
@@ -545,14 +571,68 @@ export function RoleForm() {
       )
     }
   }
+  const validate = (role: Role): boolean => {
+    const valid = validateForm(refForm?.current, getLocale())
+    return valid
+  }
+
   const role = state.role
+  const back = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    event.preventDefault()
+    const diff = makeDiff(initialRole, role)
+    if (isEmptyObject(diff)) {
+      navigate(-1)
+    } else {
+      confirm(resource.msg_confirm_back, () => navigate(-1))
+    }
+  }
+  const save = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    event.preventDefault()
+    const valid = validate(role)
+    if (valid) {
+      const service = getRoleService()
+      confirm(resource.msg_confirm_save, () => {
+        if (newMode) {
+          showLoading()
+          service
+            .create(role)
+            .then((res) => afterSaved(res))
+            .catch(handleError)
+            .finally(hideLoading)
+        } else {
+          const diff = makeDiff(initialRole, role, ["roleId"])
+          if (isEmptyObject(diff)) {
+            alertWarning(resource.msg_no_change)
+          } else {
+            showLoading()
+            service
+              .patch(role)
+              .then((res) => afterSaved(res))
+              .catch(handleError)
+              .finally(hideLoading)
+          }
+        }
+      })
+    }
+  }
+  const afterSaved = (res: Result<Role>) => {
+    if (Array.isArray(res)) {
+      showFormError(refForm?.current, res)
+    } else if (isSuccessful(res)) {
+      alertSuccess(resource.msg_save_success, () => navigate(-1))
+    } else if (res === 0) {
+      alertError(resource.error_not_found)
+    } else {
+      alertError(resource.error_conflict)
+    }
+  }
   return (
     <div className="view-container">
       <form id="roleForm" name="roleForm" model-name="role" ref={refForm as any}>
         <header>
           <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
           <h2>{resource.role}</h2>
-          <button className="btn-group btn-right" hidden={flag.newMode}>
+          <button className="btn-group btn-right" hidden={newMode}>
             <i className="material-icons" onClick={(e) => assign(e, role.roleId)}>
               group
             </i>
@@ -573,7 +653,7 @@ export function RoleForm() {
                 onChange={updateState}
                 maxLength={20}
                 required={true}
-                readOnly={!flag.newMode}
+                readOnly={!newMode}
                 placeholder={resource.role_id}
               />
             </label>
@@ -647,7 +727,7 @@ export function RoleForm() {
           </section>
         </div>
         <footer>
-          {!flag.readOnly && (
+          {!isReadOnly && (
             <button type="submit" id="btnSave" name="btnSave" onClick={save}>
               {resource.save}
             </button>
