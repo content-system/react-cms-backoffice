@@ -1,0 +1,17 @@
+.data-list {
+  width: 100%;
+}
+.data-list.row {
+  margin-left: 0;
+  margin-right: 0;
+}
+.data-list > dt {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 28px;
+}
+.data-list > dd {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 28px;
+}

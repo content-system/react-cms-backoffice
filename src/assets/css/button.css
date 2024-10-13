@@ -1,0 +1,501 @@
+button {
+  cursor: pointer;
+}
+
+.row .btn-group.footer .btn {
+  margin-top: 46px;
+  height: 50px;
+  border-radius: 0px;
+  width: 100%;
+}
+
+button:focus {
+  outline: 1px darkcyan dotted;
+}
+
+section > h4 > .btn-group {
+  display: inline-flex;
+  margin-left: 14px;
+}
+
+section > h4 > .btn-group > button {
+  font-size: 16px;
+  margin-left: 4px;
+  border: 0;
+  background-color: transparent;
+}
+
+ul.list-view > li > section:first-child > button,
+ul.list-view > li > button,
+div.card > button,
+section > h4 > button,
+footer > .btn-accept,
+footer > .btn-next,
+footer > .btn-cancel {
+  border: 0;
+  background-color: transparent;
+}
+.view-container > form > footer > button.btn-secondary,
+.btn-secondary {
+  background-color: transparent;
+  border: 1px solid;
+}
+.btn-detail {
+  min-height: 24px;
+  min-width: 12px;
+  padding-left: 0;
+  padding-right: 0;
+}
+.btn-detail::before {
+  font-size: 34px;
+  font-weight: 100;
+  content: "\203A";
+}
+
+ul.list-view > li > section:first-child > button.btn-remove::before {
+  top: 0;
+}
+
+ul.list-view > li > section:first-child > button.btn-pick,
+ul.list-view > li > button.btn-pick,
+div.card > button.btn-pick,
+.btn-pick {
+  min-height: 12px;
+  min-width: 18px;
+  padding-left: 0;
+  padding-right: 0;
+  background-size: 18px;
+  background-image: url("../images/chevron-down.png");
+  background-position-x: center;
+  background-position-y: center;
+  background-repeat: no-repeat;
+}
+.view-container > header > .btn-group > .btn-new,
+.view-container > header > .btn-group > .btn-table,
+.view-container > header > .btn-group > .btn-list-view,
+.view-container > header > .btn-group > .btn-grid,
+.view-container > header > .btn-group > .btn-map,
+.view-container > header > .btn-new,
+.view-container > form > footer .btn-cancel,
+.view-container > footer .btn-cancel,
+.view-footer .btn-cancel,
+.view-container > form > footer .btn-accept,
+.view-container > footer .btn-accept,
+.view-footer .btn-accept,
+.view-container > form > footer .btn-next,
+.view-container > footer .btn-next,
+.view-footer .btn-next {
+  width: fit-content;
+  padding: 0;
+  border: 0;
+  font-size: 15px;
+  font-weight: 800;
+  background-color: transparent;
+  background-size: 40px 40px;
+}
+.view-container > header > .btn-group > button,
+.view-container > header > .btn-group > .btn-new {
+  height: 100%;
+  margin-left: 8px;
+}
+.view-container > header > .btn-group > .btn-new {
+  position: relative;
+  width: 22px;
+}
+section.footer > button,
+.detail-content > form > footer > button,
+.view-container > form > footer > button,
+.view-container > footer > button,
+.view-footer > button {
+  width: 200px;
+  height: 40px;
+  margin-top: 8px;
+  margin-left: 6px;
+  margin-right: 6px;
+  border-radius: 20px;
+  border: none;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.btn-more:hover,
+footer > button:hover {
+  box-shadow: 0 1px 3px 1px #a9a9a9;
+}
+.btn-more {
+  width: 100%;
+  height: 58px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding-top: 33px;
+  font-size: 15px;
+  font-weight: 800;
+  border: none;
+  background-color: transparent;
+}
+.btn-more::before {
+  top: -6px;
+  position: absolute;
+  align-content: center;
+  font-family: Lucida Sans Unicode;
+  font-size: 35px;
+  content: "\21BB";
+}
+footer > button.btn-accept:hover,
+footer > button.btn-next:hover,
+footer > button.btn-cancel:hover {
+  box-shadow: none;
+}
+
+.view-container > form > footer .btn-accept,
+.view-container > footer .btn-accept,
+.view-footer .btn-accept,
+.view-container > form > footer .btn-next,
+.view-container > footer .btn-next,
+.view-footer .btn-next {
+  right: 14px;
+  padding-right: 45px;
+}
+footer > .btn-next::after {
+  font-family: Material Icons;
+  content: "\e5c8";
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  color: #fff;
+  background-color: #4db6ac;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 5px;
+  line-height: 40px;
+  font-size: 25px;
+}
+
+footer > .btn-accept::after {
+  font-family: Material Icons;
+  content: "\e5ca";
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  color: #fff;
+  background-color: #4db6ac;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 5px;
+  line-height: 40px;
+  font-size: 25px;
+}
+
+footer > .btn-cancel::before {
+  content: "\2715";
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
+  vertical-align: middle;
+  line-height: 40px;
+  color: #fff;
+  background-color: #fc671a;
+  font-size: 25px;
+  font-weight: 100;
+}
+
+footer > .btn-cancel,
+footer > .btn-accept,
+footer > .btn-next {
+  height: 40px;
+  background-size: 40px 40px;
+  padding: 0;
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.btn-back,
+.btn-close {
+  position: absolute;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+}
+.btn-back {
+  top: 0px;
+  left: 2px;
+  width: 15px;
+  height: 100%;
+}
+.btn-back::before {
+  position: absolute;
+  top: -8px;
+  left: 2px;
+  font-size: 36px;
+  font-weight: 300;
+  content: "\2039";
+}
+
+.btn-close {
+  width: 22px;
+  height: 24px;
+  right: 12px;
+}
+
+.btn-close::before {
+  font-size: 15px;
+  content: "\2573";
+}
+
+.view-container > form > header > .btn,
+.btn-group,
+.btn-new,
+.btn-add,
+.btn-view,
+.btn-edit,
+.btn-approve,
+.btn-copy,
+.btn-history,
+.btn-check,
+.btn-remove {
+  margin: 0;
+  padding: 0;
+  border: none;
+  color: inherit;
+  background-color: transparent;
+}
+.btn-group.btn-right {
+  color: inherit;
+}
+.btn-edit {
+  width: 18px;
+  height: 18px;
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+ul.list-view > li .btn-group > button {
+  margin-left: 6px;
+}
+
+ul.list-view > li .btn-group > .btn-edit,
+td > .btn-edit {
+  width: unset;
+  height: unset;
+}
+
+h4 > .btn-edit {
+  margin-left: 10px;
+}
+
+.card > header > .btn-edit {
+  position: absolute;
+  right: 16px;
+  padding-right: 0;
+}
+
+.btn-edit::before {
+  content: " \270E";
+  display: inline-block;
+  font-weight: 100;
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  transform: scale(1.6, 1.6);
+}
+
+.btn-remove,
+.btn-add {
+  width: 18px;
+  height: 18px;
+  position: relative;
+}
+
+.btn-remove::before {
+  content: "\229D";
+  display: inline-block;
+  font-weight: 100;
+  transform: scale(1.5, 1.5);
+}
+
+ul.list-view > li .btn-group > .btn-remove::before,
+td > .btn-remove::before {
+  position: unset;
+  top: unset;
+}
+
+.detail .row .col.btn-group > .btn-remove {
+  margin-top: 18px;
+}
+
+h4 > .btn-add {
+  margin-left: 10px;
+}
+
+.btn-add::before {
+  position: absolute;
+  top: -17px;
+  left: 0;
+  font-size: 32px;
+  font-weight: 800;
+  content: "+";
+}
+
+.row > div.col > button.btn-edit,
+.row > div.col > button.btn-remove {
+  width: 18px;
+  height: 18px;
+  margin-top: 3px;
+  margin-right: 6px;
+}
+
+.row > div.col > button.btn-add::before {
+  top: 2px;
+}
+
+.btn-new::before {
+  font-size: 36px;
+  content: "+";
+  position: absolute;
+  top: -6px;
+  left: 1px;
+}
+.view-container > header > .btn-group > .btn-list-view {
+  padding-top: 0;
+}
+.btn-list-view::before {
+  font-size: 23px;
+  content: "\2630";
+}
+.view-container > header > .btn-group > .btn-grid {
+  position: relative;
+  width: 22px;
+}
+.btn-grid::before {
+  font-size: 22px;
+  content: "\229E";
+  position: absolute;
+  top: 5px;
+  left: 0px;
+}
+.btn-table::before {
+  font-size: 27px;
+  content: "\25A4";
+}
+.btn-map::before {
+  font-size: 25px;
+  content: "\25F3";
+}
+.list-content > header > .btn-new,
+.view-container > header > .btn-new,
+.view-container > form > header > .btn-right,
+.view-container > header > .btn-group {
+  position: absolute;
+  top: 0;
+  right: 13px;
+  padding-top: 0px;
+  height: 100%;
+}
+.modal-portal-content .view-container > header > .btn-group {
+  right: 39px;
+}
+.view-container > header > .btn-group {
+  display: flex;
+  flex-direction: row;
+}
+.btn-approve {
+  border: 1px solid;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+}
+.btn-approve::before {
+  /* font-size: 17px; */
+  font-weight: 100;
+  content: "\2714";
+}
+
+.btn-view {
+  border: 1px solid;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+.btn-view::before {
+  font-size: 15px;
+  font-weight: 100;
+  font-family: Material Icons;
+  content: "\e417";
+}
+
+.btn-email::before {
+  font-size: 22px;
+  font-style: normal;
+  content: "\2709";
+}
+
+.btn-phone::before {
+  font-size: 22px;
+  font-family: Material Icons;
+  font-style: normal;
+  content: "\E0CD";
+}
+
+.btn-camera,
+.btn-divide,
+.btn-transfer,
+.btn-copy,
+.btn-remove,
+.btn-history {
+  border: none;
+  background-color: transparent;
+}
+
+.btn-camera::before {
+  font-size: 22px;
+  font-family: Material Icons;
+  font-style: normal;
+  content: "\e412";
+}
+
+.btn-divide::before {
+  font-size: 17px;
+  font-weight: 100;
+  content: "\2637";
+}
+.btn-history {
+  height: 18px;
+  width: 18px;
+}
+.btn-history::before {
+  content: "\2630";
+  display: inline-block;
+  font-weight: 100;
+  /* font-size: 17px; */
+}
+
+.btn-transfer::before {
+  font-size: 17px;
+  font-weight: 100;
+  content: "\26DF";
+}
+
+.btn-copy {
+  width: 18px;
+  height: 18px;
+}
+
+.btn-copy::before {
+  content: "\25EB";
+  display: inline-block;
+  margin-top: -10px;
+  margin-bottom: -10px;
+  font-weight: 100;
+  transform: scale(1.5, 1.5);
+}

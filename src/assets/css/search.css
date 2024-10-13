@@ -1,0 +1,278 @@
+.search-input > *:first-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.view-container > form > div > label.search-input,
+.view-container > div > label.search-input,
+.view-body > label.search-input,
+.row > .col > label.search-input,
+.row > label.search-input,
+.search-input {
+  display: flex;
+  flex-wrap: inherit;
+  align-items: stretch;
+  height: 30px;
+  margin: 4px 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.view-container > form > div > label.search-input > *,
+.view-container > div > label.search-input > *,
+.view-body > label.search-input > *,
+.row > .col > label.search-input > *,
+.row > label.search-input > *,
+.search-input > * {
+  display: flex;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0;
+  border-top: 1px solid !important;
+  border-bottom: 1px solid !important;
+  border-left: none;
+  border-right: none;
+  background: transparent;
+  border-color: #b3b3b3 !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+}
+.row > label.col.search-input input:not([type="checkbox"]):not([type="radio"]):first-child,
+.view-container > form > div > label.search-input > *:first-child,
+.view-container > div > label.search-input > *:first-child,
+.view-body > label.search-input > *:first-child,
+.row > .col > label.search-input > *:first-child,
+.row > label.search-input > *:first-child,
+.search-input > *:first-child {
+  padding-left: 8px;
+  border-right: 0;
+  border-left: 1px solid;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+
+.view-container > form > div > h4 > label,
+h4 > label {
+  margin-left: 0;
+}
+
+.view-container > form > div > h4 > label:first-child {
+  margin-right: 30px;
+}
+
+h4 > label.search-input > i:first-child.btn-search,
+.row > label.search-input > i:first-child.btn-search {
+  position: relative;
+  width: 32px;
+  padding-top: 1px;
+  font-style: normal;
+  color: inherit;
+}
+
+.row > label.col.search-input input:not([type="checkbox"]):not([type="radio"]):last-child,
+.view-container > form > div > label.search-input > *:last-child,
+.view-container > div > label.search-input > *:last-child,
+.view-body > label.search-input > *:last-child,
+.row > .col > label.search-input > *:last-child,
+.row > label.search-input > *:last-child,
+.search-input > *:last-child {
+  border-right: 1px solid;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.view-container > form > div > label.search-input > select,
+.view-container > div > label.search-input > select,
+.row > .col > label.search-input > select,
+.row > label.search-input > select,
+label.search-input > select {
+  width: 51px;
+}
+
+label.search-input.focused > input,
+label.search-input > input {
+  flex: 1 1 auto;
+  width: 1% !important;
+  outline: none;
+}
+label.search-input > button.btn-search {
+  width: 30px;
+  position: relative;
+}
+
+.btn-lookup {
+  border: none;
+  background: none;
+}
+.chip-container {
+  position: relative;
+}
+.chip-container > div[data-radium="true"] > div[data-radium="true"] {
+  height: 24px;
+  margin-left: 2px;
+  margin-right: 2px;
+  padding-top: 1px !important;
+  padding-left: 5px;
+  border: 1px solid;
+  border-radius: 5px;
+}
+.chip-container > div[data-radium="true"] > div[data-radium="true"] span {
+  padding-left: 4px;
+  font-size: 15px;
+}
+.chip-container .btn-lookup {
+  position: absolute;
+  top: 33px;
+  right: 20px;
+  width: 24px;
+  height: 24px;
+}
+.search-input > .btn-filter::before {
+  font-size: 17px;
+  font-weight: 100;
+  padding-top: 1px;
+  content: "\279E";
+}
+.search-input > .btn-filter.on::before {
+  transform: rotate(90deg);
+}
+.toggle-search::before,
+.btn-lookup::before,
+.search-input > .btn-search::before {
+  position: absolute;
+  top: -2px;
+  left: 2px;
+  width: 12px;
+  height: 28px;
+  font-size: 28px;
+  font-style: normal;
+  content: "\26B2";
+  transform: rotate(-45deg);
+  /*
+  font-size: 22px;
+  font-family: Material Icons;
+  font-style: normal;
+  content: "\e8b6";
+
+  font-size: 18px;
+  font-family: FontAwesome;
+  font-style: normal;
+  content: "\F002";
+  */
+}
+.toggle-search::before {
+  top: 1px;
+}
+.btn-remove-text {
+  width: 17px;
+}
+.search-input > .btn-remove-text::before {
+  margin-top: 2px;
+  margin-left: 2px;
+  font-size: 16px;
+  content: "\2716";
+}
+
+section.row nav.col {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+.view-container > div > form > section.search-group {
+  padding-bottom: 8px;
+}
+section.row.search-group nav.col {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.list-content > div > form:first-child > section.btn-group,
+.view-container > div > form:first-child > section.btn-group {
+  position: relative;
+  height: 66px;
+  padding: 16px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.list-content > div > form:first-child > section.btn-group > label:first-child,
+.view-container > div > form:first-child > section.btn-group > label:first-child {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  width: 106px;
+  height: 34px;
+  border: 1px solid;
+  border-radius: 20px;
+  padding-top: 6px;
+  padding-left: 12px;
+  padding-bottom: 4px;
+}
+
+.list-content > div > form:first-child > section.btn-group > label > select,
+.view-container > div > form:first-child > section.btn-group > label > select {
+  border: none;
+  outline: none;
+  width: 30px;
+  padding-left: 5px;
+  font-size: 14px;
+  font-weight: 400;
+  background-image: none !important;
+}
+
+section.btn-group > .btn-search {
+  width: 106px;
+  height: 34px;
+  padding: 6px 30px;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  border-radius: 20px;
+}
+
+section.btn-group > .btn-search:hover {
+  box-shadow: 0 1px 3px 1px darkgrey;
+}
+
+.btn-advance-search {
+  position: absolute;
+  top: -8px;
+  right: 25px;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+.btn-advance-search::after {
+  position: absolute;
+  top: -4px;
+  margin-left: 4px;
+  font-size: 34px;
+  content: "\02C7";
+}
+
+.btn-advance-search.toggle::after {
+  top: -5px;
+  content: "\02C6";
+}
+
+form.list-result > nav {
+  width: 100%;
+  display: inline-flex;
+  justify-content: flex-end;
+  margin: 0;
+  padding: 0 16px 16px 16px;
+}
+
+i.sort-up:after {
+  margin-left: 4px;
+  content: "\25B2";
+  font-size: 12px;
+  font-style: normal;
+}
+
+i.sort-down:after {
+  margin-left: 4px;
+  content: "\25BC";
+  font-size: 12px;
+  font-style: normal;
+}

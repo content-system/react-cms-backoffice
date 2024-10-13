@@ -1,0 +1,130 @@
+.view-container.full,
+.view-container.solid {
+  height: 100vh;
+  padding-left: 16px;
+  padding-right: 16px;
+  text-align: center;
+}
+
+.view-container.full > form > header,
+.view-container.full > header,
+.view-container.solid > form > header,
+.view-container.solid > header,
+.view-header.solid > .view-header {
+  justify-content: center;
+}
+
+.view-container.full > form > div > h5,
+.view-container.full > form > div > p,
+.view-container.full > form > div > div,
+.view-container.full > form > div > section,
+.view-container.full > div > h5,
+.view-container.full > div > p,
+.view-container.full > div > div,
+.view-container.full > div > section,
+.view-container.full .view-body > h5,
+.view-container.full .view-body > p,
+.view-container.full .view-body > div,
+.view-container.full .view-body > section,
+.view-container.solid > form > div > h5,
+.view-container.solid > form > div > p,
+.view-container.solid > form > div > div,
+.view-container.solid > form > div > section,
+.view-container.solid > div > h5,
+.view-container.solid > div > p,
+.view-container.solid > div > div,
+.view-container.solid > div > section,
+.view-container.solid .view-body > h5,
+.view-container.solid .view-body > p,
+.view-container.solid .view-body > div,
+.view-container.solid .view-body > section {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.view-container.central-full > form {
+  margin: auto;
+  width: 368px;
+}
+
+.view-container.full > form > div,
+.view-container.full .view-body {
+  padding-top: 0 !important;
+}
+
+.central-full .logo {
+  margin-top: 58px;
+  margin-bottom: 36px;
+  width: 60px;
+  height: 60px;
+}
+
+@media screen and (max-width: 600px) {
+  .view-container.full,
+  .view-container.solid {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .view-container.central-full > form > div {
+    padding-top: 0;
+  }
+  .view-container.central-full > form,
+  .view-container.full > form {
+    width: 100%;
+  }
+
+  .central-full .logo {
+    margin-top: 14%;
+  }
+}
+
+.view-container.full > form > div > section,
+.view-container.full .view-body > section,
+.view-container.solid .view-body > section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.view-container.full > form > div > section > button,
+.view-container.full .view-body > section > button,
+.view-container.solid .view-body > section > button {
+  width: 100%;
+  height: 46px;
+  border: none;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+.view-container.full > form > div > section > a,
+.view-container.full .view-body > section > a,
+.view-container.solid .view-body > section > a,
+.view-container.central-full > form > div > a {
+  width: 100%;
+  margin-top: 8px;
+  margin-bottom: 0;
+}
+
+.view-container.central-full > form > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-height: unset;
+}
+
+.view-container.central-full > form > div > button {
+  width: calc(100% - 32px);
+  height: 46px;
+  border: none;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+.view-container.central-full > form > div > .message {
+  width: calc(100% - 32px);
+}

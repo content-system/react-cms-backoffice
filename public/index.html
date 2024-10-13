@@ -26,8 +26,28 @@
     -->
     <title>React App</title>
   </head>
-  <body>
+  <body id="sysBody" class="full-header">
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="sysToast" class="toast-message alert-success"></div>
+    <div id="sysLoading" class="loader-wrapper" style="display: none;">
+      <div class="loader-sign">
+        <div class="loader"></div>
+        <!-- <div class="loader-text">Please wait</div> -->
+      </div>
+    </div>
+    <div id="sysAlert" class="alert-wrapper">
+      <div class="alert">
+        <div>
+          <div id="sysIcon" class="alert-icon"></div>
+          <h4 id="sysMessageHeader"></h4>
+          <p id="sysMessage"></p>
+        </div>
+        <footer>
+          <button type='button' class='btn-cancel' id='sysNo' name='btnCancel' onclick="noOnClick()" />
+          <button type='submit' class='btn-accept' id='sysYes' name='btnAccept' onclick="yesOnClick()" />
+        </footer>
+      </div>
+    </div>
     <div id="root"></div>
     <!--
       This HTML file is a template.
@@ -39,5 +59,53 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script>
+      var sysTitle, sysBody, sysLoading, sysToast, sysAlert, sysMessageHeader, sysMessage, sysErrorDetail, sysErrorDetailText,
+        sysYes, sysNo, sysErrorDetailCaret;
+  
+      function initDoc() {
+        sysTitle = document.getElementById("sysTitle");
+        sysBody = document.getElementById("sysBody");
+        sysLoading = document.getElementById("sysLoading");
+        sysToast = document.getElementById("sysToast");
+        sysAlert = document.getElementById("sysAlert");
+        sysMessageHeader = document.getElementById("sysMessageHeader");
+        sysMessage = document.getElementById("sysMessage");
+        sysErrorDetail = document.getElementById("sysErrorDetail");
+        sysErrorDetailText = document.getElementById("sysErrorDetailText");
+        sysYes = document.getElementById("sysYes");
+        sysNo = document.getElementById("sysNo");
+        sysErrorDetailCaret = document.getElementById("sysErrorDetailCaret");
+      }
+  
+      initDoc();
+      var yesOnClick = function () {
+        sysAlert.style.display = 'none';
+        if (window.fyesOnClick) {
+          window.fyesOnClick();
+        }
+        const input = sysYes['activeElement'];
+        if (input) {
+          try {
+            input.focus();
+          } catch (err) {}
+        }
+        sysYes['activeElement'] = null;
+      };
+      var noOnClick = function () {
+        sysAlert.style.display = 'none';
+        if (window.fnoOnClick) {
+          window.fnoOnClick();
+        }
+        const input = sysYes['activeElement'];
+        if (input) {
+          try {
+            input.focus();
+          } catch (err) {}
+        }
+        sysYes['activeElement'] = null;
+      };
+      var callCount = 0;
+    </script>
   </body>
 </html>

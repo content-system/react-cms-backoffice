@@ -1,0 +1,44 @@
+.list-detail-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.list-content {
+  width: 300px;
+}
+
+.detail-content {
+  position: relative;
+  width: calc(100% - 300px);
+}
+
+.list-content .col.m4,
+.list-content .col.m5,
+.list-content .col.m6,
+.list-content .col.m7,
+.list-content .col.m8,
+.list-content .col.m9,
+.list-content .col.m10,
+.list-content .col.m11,
+.list-content .col.m12,
+.list-content .col.l4,
+.list-content .col.l5,
+.list-content .col.l6,
+.list-content .col.l7,
+.list-content .col.l8,
+.list-content .col.l9,
+.list-content .col.l10,
+.list-content .col.l11,
+.list-content .col.l12,
+.list-content .col.xl4,
+.list-content .col.xl5,
+.list-content .col.xl6,
+.list-content .col.xl7,
+.list-content .col.xl8,
+.list-content .col.xl9,
+.list-content .col.xl10,
+.list-content .col.xl11,
+.list-content .col.xl12 {
+  flex: 0 0 100%;
+  max-width: 100%;
+}

@@ -1,0 +1,202 @@
+article > header > img.card {
+  width: 248px;
+  height: 157px;
+  margin-top: 16px;
+  margin-bottom: 32px;
+}
+
+article > header > h3 {
+  font-size: 18px;
+  font-weight: 800;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+article > header {
+  margin-bottom: 16px;
+}
+
+.view-container > form > div > section > p,
+.section-body > p,
+article > address,
+article > p,
+article > header > p,
+.article-paragraph,
+.article-content {
+  margin: 0;
+  width: 100%;
+  line-height: 1.5;
+  padding-top: 2px;
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.view-container > form > div > section > article,
+.view-body > section > article,
+.section-body {
+  width: 100%;
+  padding: 16px;
+  padding-bottom: 0;
+}
+
+.view-container > form > div > section > article:last-child,
+.view-body > section > article:last-child,
+.section-body:last-child {
+  padding-bottom: 16px;
+}
+
+article > address,
+.view-container > form > div > section > article > p,
+.view-body > section > article > p,
+.section-body > p,
+.section-body > article > p {
+  font-weight: 500;
+}
+
+.view-container > form > div > section.row > div.col > hr:first-child {
+  margin: 16px 0;
+}
+
+.view-container > form > div > section > ol,
+.view-container > form > div > section > p {
+  padding: 16px 16px 0 16px;
+}
+
+.view-container > form > div > section > p:last-child {
+  padding-bottom: 16px;
+}
+
+.view-container > form > div > article .img-content-section {
+  display: flex;
+  padding-bottom: 16px;
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.view-container > form > div > article .img-content-section > picture,
+.img-content-section > .img-section {
+  -ms-flex: 0 0 40px;
+  flex: 0 0 40px;
+}
+
+.view-container > form > div > article section.img-content-section > div > h4,
+.img-content-section .text-section .text-section-title {
+  margin: 0;
+  padding: 0;
+  font-weight: 500;
+}
+
+.view-container > form > div > article section.img-content-section > div > p,
+.img-content-section .text-section .text-section-content {
+  margin: 0;
+}
+
+.view-container > form > div > article,
+.view-container > div > article,
+.view-body > article {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.view-container > form > div > article:first-child,
+.view-container > div > article:first-child,
+.view-body > article:first-child {
+  padding-top: 16px;
+}
+
+.view-container > form > div > article:last-child,
+.view-container > div > article:last-child,
+.view-body > article:last-child {
+  padding-bottom: 16px;
+}
+
+.view-container > div > section > ol,
+article > ol,
+article > ul {
+  padding-left: 0;
+}
+
+article > ol > p,
+article > ol > li,
+section > ol > li,
+article > ul > li,
+.article-list-item {
+  margin: 0;
+  width: 100%;
+  font-size: 15px;
+  font-weight: 400;
+  list-style-position: inside;
+}
+
+article > ul > li > p {
+  margin: 0;
+}
+
+article > ul > li.note {
+  font-weight: 500;
+}
+
+.list-style-inside {
+  padding-left: 0px;
+}
+
+.article-notice {
+  padding-top: 16px;
+  margin-bottom: 0 !important;
+  text-align: left !important;
+  font-weight: 400 !important;
+  font-size: 12px !important;
+}
+/* used for summary screen */
+article > h4,
+.article-section-header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-size: 15px;
+  font-weight: 800;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+/* used for consent screen */
+article > h2,
+.article-title {
+  font-size: 16px;
+  font-weight: 800;
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+article > p > span {
+  font-weight: 600;
+}
+
+section.space-between-content > article > p,
+section.space-between-content > p,
+article.space-between-content > p {
+  display: flex;
+  justify-content: space-between;
+}
+
+article > address > label {
+  font-weight: 400;
+  display: block;
+}
+
+article > p > label {
+  font-weight: 400;
+  margin-right: 6px;
+}
+
+.view-container > form > div > section > p.remark,
+.section-body > article > p.remark,
+article > ol.remark > li,
+.remark {
+  font-size: 12px;
+  font-weight: 400;
+}

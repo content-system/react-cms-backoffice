@@ -1,0 +1,45 @@
+.center {
+  text-align: center;
+}
+
+.flex-gap-2 {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.col-header {
+  padding-left: 1.65rem !important;
+}
+
+.sub-menu-level-2 .inline {
+  padding-left: 1.5rem !important;
+}
+
+.tree-view {
+  margin: 0px !important;
+  padding: 2vh;
+}
+.tree-view p {
+  font-size: 14px;
+  background-color: inherit;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.tree-view > .row {
+  border-bottom: 1px solid #c0bfbf;
+}
+
+.tree-view .row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+  padding-top: 7px;
+  padding-bottom: 5px;
+}
+
+.tree-view .row .col {
+  width: 100%;
+  padding-left: 0px;
+  padding-right: 0px;
+}

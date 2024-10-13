@@ -1,0 +1,736 @@
+.grey ::-webkit-scrollbar-thumb {
+  background: #747978;
+}
+@media screen and (min-width: 769px) {
+  .grey .top-menu .menu.sidebar::-webkit-scrollbar-thumb {
+    background: #747979;
+  }
+}
+.grey .switch-container > input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]):before,
+.grey input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]).switch:before {
+  border-color: #393f48;
+  color: #b3b3b3;
+  background: #fff;
+}
+.grey .switch-container > input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]):after,
+.grey input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]).switch:after {
+  border-color: #7f7f7f;
+  color: #fff;
+  background: #657181;
+}
+.grey input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]):before {
+  border-color: #393f48;
+  background: #fff;
+}
+.grey input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]):after {
+  color: #fff;
+  background: #657181;
+}
+
+.grey input[type="radio"]:before {
+  border-color: #393f48;
+  background-image: radial-gradient(circle, #657181 40%, inherit 50%);
+}
+
+.grey input[type="radio"]:checked:before {
+  background-color: #657181;
+  background-image: radial-gradient(circle, #657181 40%, #657181 50%);
+  border-color: #657181;
+}
+
+.grey .toast-message,
+.grey .sidebar {
+  background-color: #fff;
+  color: #5f6d6f;
+  border-color: #d1d9e3;
+}
+
+.grey .sidebar > nav > ul > li > ul,
+.grey .sidebar > nav > ul > li > ul > li > ul {
+  /* background-color: #00574b; */
+  background-color: #fff;
+}
+.grey .sidebar ul.sub-list > li.active,
+.grey .sub-list .active,
+.grey .open.active {
+  background: #f7f7fa; /* #07843b */
+}
+
+.grey .view-container.solid {
+  background-image: linear-gradient(90deg, #008577, #00574b);
+}
+
+.grey .dropdown-content-profile hr,
+.grey .view-container hr {
+  border-color: #e0e0e0;
+}
+
+.grey .view-container.solid hr {
+  border-color: #7f7f7f;
+}
+
+.grey .view-container.solid > form > footer,
+.grey .view-container.solid > footer,
+.grey .view-container.solid .view-footer {
+  box-shadow: none;
+}
+
+/* bootstrap */
+/*.panel-heading,*/
+.grey .result .active,
+/*
+.grey .pagination > .active,
+.grey .pagination-page.active,*/
+
+.grey form.list-result > div > table tbody tr.active:nth-child(odd) td,
+.grey form.list-result > div > table tbody tr.active:nth-child(odd) th,
+.grey form.list-result > div > table > thead > tr > td.active,
+.grey form.list-result > div > table > tbody > tr > td.active,
+.grey form.list-result > div > table > tfoot > tr > td.active,
+.grey form.list-result > div > table > thead > tr > th.active,
+.grey form.list-result > div > table > tbody > tr > th.active,
+.grey form.list-result > div > table > tfoot > tr > th.active,
+.grey form.list-result > div > table > thead > tr.active > td,
+.grey form.list-result > div > table > tbody > tr.active > td,
+.grey form.list-result > div > table > tfoot > tr.active > td,
+.grey form.list-result > div > table > thead > tr.active > th,
+.grey form.list-result > div > table > tbody > tr.active > th,
+.grey form.list-result > div > table > tfoot > tr.active > th,
+.grey .table-striped tbody tr.active:nth-child(odd) td,
+.grey .table-striped tbody tr.active:nth-child(odd) th,
+.grey .table > thead > tr > td.active,
+.grey .table > tbody > tr > td.active,
+.grey .table > tfoot > tr > td.active,
+.grey .table > thead > tr > th.active,
+.grey .table > tbody > tr > th.active,
+.grey .table > tfoot > tr > th.active,
+.grey .table > thead > tr.active > td,
+.grey .table > tbody > tr.active > td,
+.grey .table > tfoot > tr.active > td,
+.grey .table > thead > tr.active > th,
+.grey .table > tbody > tr.active > th,
+.grey .table > tfoot > tr.active > th,
+
+.grey .pagination > .active > a,
+.grey .pagination > .active > span,
+.grey .pagination > .active > a:hover,
+.grey .pagination > .active > span:hover,
+.grey .pagination > .active > a:focus,
+.grey .pagination > .active > span:focus,
+.grey .pagination > .active > a:hover,
+.grey .pagination > .active > a:focus,
+.grey .pagination > .active > span:focus {
+  background-color: #387ef5;
+}
+
+.grey footer > .btn-cancel::before {
+  color: #fff;
+  background-color: #fc671a;
+}
+
+.grey footer > .btn-accept::after,
+.grey footer > .btn-next::after,
+.grey section.btn-group > .btn-search,
+.grey .view-container.central-full > form > div > button,
+.grey .view-container.full > form > div > section > button,
+.grey .view-container.full .view-body > section > button,
+.grey .view-container.solid .view-body > section > button,
+.grey .detail-content > form > footer > button,
+.grey .view-container > form > footer > button,
+.grey .view-container > footer > button,
+.grey .view-footer > button,
+.grey section.footer > button {
+  color: #fff;
+  background-color: #657181;
+}
+.grey .btn-more:hover,
+.grey footer > button:hover {
+  box-shadow: #565656;
+}
+.grey section.footer > button#btnReject,
+.grey footer > button#btnReject {
+  background-color: #d74738;
+}
+
+.grey form.list-result > div > table tbody tr.active:hover td,
+.grey form.list-result > div > table tbody tr.active:hover th,
+.grey form.list-result > div > table tbody tr.active:nth-child(odd) td,
+.grey form.list-result > div > table tbody tr.active:nth-child(odd) th,
+.grey form.list-result > div > table > thead > tr > td.active,
+.grey form.list-result > div > table > tbody > tr > td.active,
+.grey form.list-result > div > table > tfoot > tr > td.active,
+.grey form.list-result > div > table > thead > tr > th.active,
+.grey form.list-result > div > table > tbody > tr > th.active,
+.grey form.list-result > div > table > tfoot > tr > th.active,
+.grey form.list-result > div > table > thead > tr.active > td,
+.grey form.list-result > div > table > tbody > tr.active > td,
+.grey form.list-result > div > table > tfoot > tr.active > td,
+.grey form.list-result > div > table > thead > tr.active > th,
+.grey form.list-result > div > table > tbody > tr.active > th,
+.grey form.list-result > div > table > tfoot > tr.active > th,
+.grey .table-hover tbody tr.active:hover td,
+.grey .table-hover tbody tr.active:hover th,
+.grey .table-striped tbody tr.active:nth-child(odd) td,
+.grey .table-striped tbody tr.active:nth-child(odd) th,
+.grey .table > thead > tr > td.active,
+.grey .table > tbody > tr > td.active,
+.grey .table > tfoot > tr > td.active,
+.grey .table > thead > tr > th.active,
+.grey .table > tbody > tr > th.active,
+.grey .table > tfoot > tr > th.active,
+.grey .table > thead > tr.active > td,
+.grey .table > tbody > tr.active > td,
+.grey .table > tfoot > tr.active > td,
+.grey .table > thead > tr.active > th,
+.grey .table > tbody > tr.active > th,
+.grey .table > tfoot > tr.active > th {
+  border-color: #428bca;
+  background-color: #4f5352;
+}
+
+.grey .detail .table-responsive > table > tbody > tr:hover,
+.grey .detail .table-responsive > table > tbody > tr:nth-of-type(odd):hover,
+.grey form.list-result > .table-responsive > table > tbody > tr:hover,
+.grey form.list-result > .table-responsive > table > tbody > tr:nth-of-type(odd):hover,
+.grey .table-hover > tbody > tr:hover,
+.grey .table-striped > tbody > tr:nth-of-type(odd):hover {
+  background-color: #eee;
+}
+
+.grey .detail .table-responsive > table > thead > tr > th,
+.grey .detail .table-responsive > table > tbody > tr > td,
+.grey form.list-result > .table-responsive > table > thead > tr > th,
+.grey form.list-result > .table-responsive > table > tbody > tr > td,
+.grey .table > thead > tr > th,
+.grey .table > tbody > tr > td {
+  border-bottom-color: #222;
+}
+
+.grey .detail .table-responsive > table,
+.grey .detail .table-responsive > table > tbody > tr > td,
+.grey .detail .table-responsive > table > tbody > tr > th,
+.grey .detail .table-responsive > table > tfoot > tr > td,
+.grey .detail .table-responsive > table > tfoot > tr > th,
+.grey .detail .table-responsive > table > thead > tr > td,
+.grey .detail .table-responsive > table > thead > tr > th,
+.grey form.list-result > .table-responsive > table,
+.grey form.list-result > .table-responsive > table > tbody > tr > td,
+.grey form.list-result > .table-responsive > table > tbody > tr > th,
+.grey form.list-result > .table-responsive > table > tfoot > tr > td,
+.grey form.list-result > .table-responsive > table > tfoot > tr > th,
+.grey form.list-result > .table-responsive > table > thead > tr > td,
+.grey form.list-result > .table-responsive > table > thead > tr > th,
+.grey .table-bordered,
+.grey .table-bordered > tbody > tr > td,
+.grey .table-bordered > tbody > tr > th,
+.grey .table-bordered > tfoot > tr > td,
+.grey .table-bordered > tfoot > tr > th,
+.grey .table-bordered > thead > tr > td,
+.grey .table-bordered > thead > tr > th {
+  border-color: #d1d9e2;
+}
+
+.grey .detail .table-responsive > table > tbody > tr:nth-of-type(odd),
+.grey form.list-result > .table-responsive > table > tbody > tr:nth-of-type(odd),
+.grey .table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: #fff;
+}
+/* end bootstrap only */
+
+.grey body,
+.grey .page-container,
+.grey .page-body,
+.grey .view-container,
+.grey .full-container,
+.grey .page-header,
+.grey .alert-wrapper .alert,
+.grey .dropdown-menu-profile {
+  background-color: #fff;
+}
+.grey .page-header {
+  border-color: #d1d9e3;
+}
+.grey .alert-wrapper {
+  background-color: rgba(230, 230, 230, 0.1);
+}
+.grey .alert footer {
+  border-color: #242424;
+}
+.grey body,
+.grey .detail .table-responsive > table > tbody > tr > td > a,
+.grey form.list-result > .table-responsive > table > tbody > tr > td > a,
+.grey .table > tbody > tr > td > a,
+.grey .detail .table-responsive > table > tbody > tr > td,
+.grey form.list-result > .table-responsive > table > tbody > tr > td,
+.grey .table > tbody > tr > td,
+.grey .row .form-group label,
+.grey .pagination > li > a,
+.grey .pagination > li > span,
+.grey .card > footer > button.btn-cancel,
+.grey .view-container.central-full > form > div > button.btn-cancel,
+.grey .view-container > form > header > h5,
+.grey .view-container > header > h5,
+.grey .view-header > h5,
+.grey .view-subtitle,
+.grey .subtitle,
+.grey .profile.view-container > form > .row > .col > div.card > section > p,
+.grey ul.list-view > li > section:first-child > div > h3.inactive,
+.grey ul.list-view > li > section:first-child > div > h3.inactive > a {
+  color: #657181;
+}
+
+.grey .view-container > form > div > h3,
+.grey .view-container > div > h3,
+.grey .view-body > h3,
+.grey .subheader {
+  color: #181b1f;
+}
+
+.grey .mobile .view-container > form > div > h3,
+.grey .mobile .view-container > div > h3,
+.grey .mobile .view-body > h3,
+.grey .mobile .subheader {
+  background-color: #e1ebe9;
+}
+
+@media screen and (max-width: 600px) {
+  .grey .view-container > form > div > h3,
+  .grey .view-container > div > h3,
+  .grey .view-body > h3,
+  .grey .subheader {
+    background-color: #e2e2e2;
+  }
+}
+
+.grey ul.list-view > li.highlight,
+.grey .mobile .view-container > form > div > h4,
+.grey .mobile .view-container > div > h4,
+.grey .mobile .view-body > h4,
+.grey .mobile section > h4,
+.grey .mobile .section-header {
+  background-color: #f2f2f2;
+}
+
+@media screen and (max-width: 600px) {
+  .grey .view-container > form > div > h4,
+  .grey .view-container > div > h4,
+  .grey .view-body > h4,
+  .grey section > h4,
+  .grey .section-header {
+    background-color: #f2f2f2;
+  }
+}
+
+.grey .pagination > li > a,
+.grey .pagination > li > span {
+  border-color: #666666;
+  background-color: inherit;
+}
+
+.grey article,
+.grey .view-container > form > div > section > p,
+.grey .section-body > p,
+.grey .brand,
+.grey ul.list-view > li > section:first-child > div > h4,
+.grey ul.list-view > li > section:first-child > div > h4 > a,
+.grey .card > section > p,
+.grey .card > section > p > a,
+.grey .video > section > p,
+.grey .video > section > p > a,
+.grey li.video > h4 > a,
+.grey ul.list-view > li > section:first-child > div > p,
+.grey ul.list-view > li > div > h4,
+.grey ul.list-view > li > div > p,
+.grey ul.list-view > li > h4,
+.grey ul.list-view.horizon > li > a,
+.grey ul.list-view > li > p,
+.grey ul.list-view > li > p > a,
+.grey .table > thead > tr > th,
+.grey .table > thead > tr > th > a,
+.grey form.list-result > .table-responsive > table > thead > tr > th,
+.grey form.list-result > .table-responsive > table > thead > tr > th > button,
+.grey form.list-result > .table-responsive > table > thead > tr > th > a,
+.grey .view-container > form > div > h4,
+.grey .view-container > div > h4,
+.grey .view-body > h4,
+.grey section > h4,
+.grey section > h4 > .btn-group > button,
+.grey section > h4.title > a,
+.grey section > a,
+.grey .section-header,
+.grey .section-subheader,
+.grey .diff .row .col p,
+.grey .btn-next,
+.grey .btn-accept,
+.grey .btn-cancel,
+.grey .btn-group,
+.grey .alert h4,
+.grey .alert p,
+.grey label.switch-container,
+.grey label.checkbox-container,
+.grey label.checkbox-group,
+.grey label.radio-group,
+.grey .checkbox-group > label,
+.grey .radio-group > label,
+.grey .group label div,
+.grey .video-container > h4,
+.grey .video-container > h4 > a,
+.grey .video-container > h4 > i {
+  color: #393f48;
+}
+.grey label.search-input select,
+.grey label.search-input input {
+  color: #393f48 !important;
+}
+/*
+.grey form.list-result > .table-responsive > table > thead > tr,
+.grey div.card {
+  background-color: #e0e0e0;
+}
+*/
+.grey .btn-more,
+.grey .video-container > h3,
+.grey .row .form-group.focused label,
+.grey .row > label.focused,
+.grey .row > .col label.focused,
+.grey .view-container > form > div > label.focused,
+.grey .view-container > div > label.focused,
+.grey .view-body > label.focused,
+.grey .view-container > form > div > h2,
+.grey .card > section > h3,
+.grey ul.list-view > li > section:first-child > div > h3,
+.grey ul.list-view > li > section:first-child > div > h3 > a,
+.grey ul.list-view > li > div > h3,
+.grey ul.list-view > li > h3,
+.grey div.card > div > h3,
+.grey div.card > h3,
+.grey .card > footer > button,
+.grey .btn-select,
+.grey .btn-add,
+.grey .btn-new,
+.grey a.btn-new,
+.grey .btn-table,
+.grey .btn-list-view,
+.grey .btn-search,
+.grey .btn-lookup,
+.grey .chip:focus,
+.grey header > .btn-group,
+.grey header > .btn-group > button,
+.grey .page-header > form > div > section > button,
+.grey .round-border.active {
+  color: #657181;
+  text-decoration: none;
+}
+.grey .player-music {
+  background-color: #121212;
+  color: white;
+}
+.grey .avatar-playing {
+  background-color: #121212;
+  color: white;
+}
+
+.grey .backgound-color-container {
+  background-color: #04463c !important;
+  background: linear-gradient(transparent, rgb(0, 0, 0));
+}
+
+.grey .chips.focus {
+  border-bottom: 1px solid #657181;
+  -webkit-box-shadow: 0 1px 0 0 #657181;
+  box-shadow: 0 1px 0 0 #657181;
+}
+
+@media screen and (max-width: 600px) {
+  .grey .view-container > header > .btn-group > *,
+  .grey .view-container > header > .btn-new {
+    color: #fff;
+  }
+}
+
+.grey .row .form-group.valid label,
+.grey .row > label.valid,
+.grey .row > .col label.valid,
+.grey .view-container > form > div > label.valid,
+.grey .view-container > div > label.valid,
+.grey .view-body > label.valid {
+  color: #657181;
+}
+
+.grey .btn-deselect,
+.grey .row .form-group.invalid label,
+.grey .row > label.invalid,
+.grey .row > .col label.invalid,
+.grey .view-container > form > div > label.invalid,
+.grey .view-container > div > label.invalid,
+.grey .view-body > label.invalid,
+.grey .btn-remove,
+.grey label.required:before,
+.grey .span-error,
+.grey .alert-error,
+.grey .danger-icon .alert-icon,
+.grey .row .form-group.invalid label {
+  color: #d74738;
+}
+
+.grey .span-error {
+  color: #fff;
+  background-color: #d74738;
+}
+
+.grey .warning-icon .alert-icon {
+  color: #657181;
+}
+
+.alert-icon {
+  color: grey;
+}
+
+.grey .form-group .form-control:focus,
+.grey label.inline-input > input:focus,
+.grey .row > .col > label input:not([type="checkbox"]):not([type="radio"]):focus,
+.grey .row > label input:not([type="checkbox"]):not([type="radio"]):focus,
+.grey .view-container > form > div > section > label > input:not([type="checkbox"]):not([type="radio"]):focus,
+.grey .view-container > form > div > section > label > select:not([multiple]):focus,
+.grey .view-container > form > div > label > input:not([type="checkbox"]):not([type="radio"]):focus,
+.grey .view-container > form > div > label > select:not([multiple]):focus,
+.grey .view-container > div > label > input:not([type="checkbox"]):not([type="radio"]):focus,
+.grey .view-container > div > label > select:not([multiple]):focus,
+.grey .view-body > label > input:not([type="checkbox"]):not([type="radio"]):focus,
+.grey .view-body > label > select:not([multiple]):focus,
+.grey .row > .col > label select:not([multiple]):focus,
+.grey .row > label select:not([multiple]):focus {
+  border-color: #657181;
+  box-shadow: 0 1px 0 0 #657181;
+}
+
+.grey .form-group .form-control.valid,
+.grey .row > .col > label input.valid,
+.grey .row > label input.valid,
+.grey .row > .col > label select.valid,
+.grey .row > label select.valid,
+.grey .view-container > form > div > section > label > input.valid,
+.grey .view-container > form > div > section > label > select.valid,
+.grey .view-container > form > div > label > input.valid,
+.grey .view-container > form > div > label > select.valid,
+.grey .view-container > div > label > input.valid,
+.grey .view-container > div > label > select.valid,
+.grey .view-body > label > input.valid,
+.grey .view-body > label > select.valid {
+  border-color: #657181;
+  box-shadow: 0 1px 0 0 #657181;
+}
+
+.grey .form-group .form-control.invalid,
+.grey .form-group .form-control.invalid,
+.grey .row > .col > label input.invalid,
+.grey .row > label input.invalid,
+.grey .row > .col > label select.invalid,
+.grey .row > label select.invalid,
+.grey .view-container > form > div > section > label > input.invalid,
+.grey .view-container > form > div > section > label > select.invalid,
+.grey .view-container > form > div > label > input.invalid,
+.grey .view-container > form > div > label > select.invalid,
+.grey .view-container > div > label > input.invalid,
+.grey .view-container > div > label > select.invalid,
+.grey .view-body > label > input.invalid,
+.grey .view-body > label > select.invalid,
+.grey .row > .col > label input:not([type="checkbox"]):not([type="radio"]).invalid,
+.grey .row > label input:not([type="checkbox"]):not([type="radio"]).invalid,
+.grey .row > .col > label.invalid input:not([type="checkbox"]):not([type="radio"]):focus,
+.grey .row > label.invalid input:not([type="checkbox"]):not([type="radio"]):focus,
+.grey .view-container > form > div > label.invalid > input:not([type="checkbox"]):not([type="radio"]):focus,
+.grey .view-container > form > div > label.invalid > select:focus,
+.grey .view-container > div > label.invalid > input:not([type="checkbox"]):not([type="radio"]):focus,
+.grey .view-container > div > label.invalid > select:focus,
+.grey .view-body > label.invalid > input:not([type="checkbox"]):not([type="radio"]):focus,
+.grey .view-body > label.invalid > select:focus,
+.grey .row > .col > label.invalid select:focus,
+.grey .row > label.invalid select:focus {
+  border-color: #d74738;
+  box-shadow: 0 1px 0 0 #d74738;
+}
+
+.grey .view-container > form > div > section > article > p,
+.grey .view-container > div > section > article > p,
+.grey .view-body > section > article > p,
+.grey .section-body > p {
+  border-color: #7f7f7f;
+}
+
+.grey input:read-only,
+.grey input:disabled,
+.grey select:disabled {
+  color: #b3b3b3 !important;
+}
+
+.grey button:disabled {
+  color: #393f48 !important;
+  background-color: #b3b3b3 !important;
+}
+
+.grey .form-group .form-control,
+.grey .inline-input > input,
+.grey .row > .col > label input,
+.grey .row > label input,
+.grey .view-container > form > div > section > label > input,
+.grey .view-container > form > div > label > input,
+.grey .view-container > div > label > input,
+.grey .view-body > label > input,
+.grey .view-container > form > div > section > label > select,
+.grey .view-container > form > div > label > select,
+.grey .view-container > div > label > select,
+.grey .view-body > label > select,
+.grey .row > .col > label select,
+.grey .row > label select:not([multiple]),
+.grey .row > label select[multiple] {
+  color: #000;
+  border-color: #4e4e4e;
+  -webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075);
+}
+
+.grey .diff .row .col p > span,
+.grey div.card > div > p,
+.grey article > address > label,
+.grey article > p > label,
+.grey section > p > label,
+.grey .view-container > form > div > section > article > p.remark,
+.grey .view-container > form > div > section > p.remark,
+.grey .remark,
+.grey .article-notice,
+.grey .btn-detail,
+.grey .quick-nav,
+.grey .detail-content > form > header > .btn-back,
+.grey .view-container > form > header > .btn-back,
+.grey .view-container > header > .btn-back,
+.grey .view-header > .btn-back,
+.grey .btn-close,
+.grey .btn-filter,
+.grey .btn-remove-text,
+.grey .btn-edit,
+.grey .btn-transfer,
+.grey .btn-divide,
+.grey .view-container > form > footer > button.btn-secondary,
+.grey .btn-secondary {
+  color: #7f7f7f;
+}
+
+@media screen and (max-width: 600px) {
+  .grey .detail-content > form > header > .btn-back,
+  .grey .view-container > form > header > .btn-back,
+  .grey .view-container > header > .btn-back,
+  .grey .view-container > form > header > .btn-close,
+  .grey .view-container > header > .btn-close,
+  .grey .view-header > .btn-back,
+  .grey .view-header > .btn-close {
+    color: #fff;
+  }
+}
+.grey .modal-portal-content header > .btn-group > button,
+.grey .modal-portal-content .view-container > form > header > .btn-close,
+.grey .modal-portal-content .view-container > header > .btn-close,
+.grey .mobile .detail-content > form > header > .btn-back,
+.grey .mobile .view-container > form > header > .btn-back,
+.grey .mobile .view-container > header > .btn-back,
+.grey .mobile .view-container > form > header > .btn-close,
+.grey .mobile .view-container > header > .btn-close,
+.grey .mobile .view-header > .btn-back,
+.grey .mobile .view-header > .btn-close,
+.grey .view-container.solid > form > div > p,
+.grey .view-container.solid > div > p,
+.grey .view-container.solid > .view-body > p,
+.grey .view-container.solid > form > div > h5,
+.grey .view-container.solid > div > h5,
+.grey .view-container.solid > .view-body > h5,
+.grey .view-container > form > div > section.header-container > p {
+  color: #fff;
+}
+
+.grey .modal-portal-content > .view-container > form > header,
+.grey .view-container > form > header,
+.grey .view-container > header,
+.grey .view-header {
+  color: #fff;
+  background-image: linear-gradient(90deg, #657181, #657181);
+}
+
+.grey .page-body > .list-detail-container > .list-content > header,
+.grey .page-body > .list-detail-container > .detail-content > form > header,
+.grey .page-body .view-container > form > header,
+.grey .page-body .view-container > header,
+.grey .page-body > .view-header {
+  color: #657181;
+  background-color: #fff;
+  background-image: none;
+}
+
+@media screen and (max-width: 600px) {
+  .grey .page-body .view-container > form > header,
+  .grey .page-body .view-container > header,
+  .grey .page-body > .view-header {
+    color: #fff;
+    background-image: linear-gradient(90deg, #657181, #657181);
+  }
+}
+
+.grey .light-gray {
+  color: #b3b3b3 !important;
+}
+
+.grey .border-bottom-highlight {
+  border-bottom: 3px solid #324511 !important; /* #9e8f0e */
+}
+
+.grey .highlight {
+  color: #657181 !important;
+}
+
+.grey .view-container > form > div > label.search-input > *,
+.grey .view-container > div > label.search-input > *,
+.grey .view-body > label.search-input > *,
+.grey .row > .col > label.search-input > *,
+.grey .row > label.search-input > *,
+.grey .search-input > * {
+  border-color: #d1d9e1 !important;
+}
+.grey .cover > i:first-child {
+  background: #fff;
+  color: #fff;
+}
+.grey ul.list-view > li,
+.grey ul.list-view.row > li.col > *:last-child,
+.grey ul.list-view > li.section-container > section:first-child,
+.grey div.card,
+.grey .card > section,
+.grey .video > section,
+.grey ul.list-view.horizon > li.video {
+  border-color: #e0e0e0;
+}
+
+.grey .view-container > form > header > h2,
+.grey .view-container > header > h2 {
+  color: #2e3545;
+}
+@media screen and (max-width: 600px) {
+  .grey .view-container > form > header > h2,
+  .grey .view-container > header > h2 {
+    color: #fff;
+  }
+}
+.grey .toast-message {
+  background-color: #777;
+  border-color: #5f6d6f;
+  color: #fff;
+}
+
+.grey .sidebar .menu-item {
+  color: #5f6d6f;
+}
+
+.grey .sidebar {
+  border-right: 1px solid #d1d9e3;
+}
+.grey .alert-wrapper .alert {
+  border: solid 1px #657181;
+}
