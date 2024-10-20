@@ -40,30 +40,28 @@ export const UserForm = () => {
     Promise.all([masterDataService.getTitles(), masterDataService.getPositions()])
       .then((values) => {
         const [titleList, positionList] = values
-        setState({ titleList, positionList }, () => {
-          if (!id) {
-            const user = createUser()
-            setInitialUser(clone(user))
-            setState({ user })
-          } else {
-            showLoading()
-            getUserService()
-              .load(id)
-              .then((user) => {
-                if (!user) {
-                  alertError(resource.error_404, () => navigate(-1))
-                } else {
-                  setInitialUser(clone(user))
-                  setState({ user })
-                  if (isReadOnly) {
-                    setReadOnly(refForm?.current)
-                  }
+        if (!id) {
+          const user = createUser()
+          setInitialUser(clone(user))
+          setState({ titleList, positionList, user })
+        } else {
+          showLoading()
+          getUserService()
+            .load(id)
+            .then((user) => {
+              if (!user) {
+                alertError(resource.error_404, () => navigate(-1))
+              } else {
+                setInitialUser(clone(user))
+                setState({ titleList, positionList, user })
+                if (isReadOnly) {
+                  setReadOnly(refForm?.current)
                 }
-              })
-              .catch(handleError)
-              .finally(hideLoading)
-          }
-        })
+              }
+            })
+            .catch(handleError)
+            .finally(hideLoading)
+        }
       })
       .catch(handleError)
   }, [id, newMode, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps

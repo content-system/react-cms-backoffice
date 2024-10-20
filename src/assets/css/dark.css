@@ -331,6 +331,7 @@
 .dark .view-container > form > div > section > p,
 .dark .section-body > p,
 .dark .brand,
+.dark .img-card > h4,
 .dark ul.list-view > li > section:first-child > div > h4,
 .dark ul.list-view > li > section:first-child > div > h4 > a,
 .dark .card > section > p,
@@ -338,6 +339,7 @@
 .dark .video > section > p,
 .dark .video > section > p > a,
 .dark li.video > h4 > a,
+.dark .img-card > p,
 .dark ul.list-view > li > section:first-child > div > p,
 .dark ul.list-view > li > div > h4,
 .dark ul.list-view > li > div > p,
@@ -681,10 +683,6 @@
   color: #4db6ac !important;
 }
 
-.dark .view-container > form > div > label.search-input > *,
-.dark .view-container > div > label.search-input > *,
-.dark .view-body > label.search-input > *,
-.dark .row > .col > label.search-input > *,
 .dark .row > label.search-input > *,
 .dark .search-input > * {
   border-color: #b2b2b2 !important;

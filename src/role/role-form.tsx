@@ -293,35 +293,33 @@ export function RoleForm() {
         const actions = new Map<string, number>()
         buildAll(all, allPrivileges)
         buildActionAll(actions, allPrivileges)
-        setState({ all, actions, allPrivileges, shownPrivileges: allPrivileges, maxAction: getMax(actions) }, () => {
-          if (!id) {
-            const role = createRole()
-            setPrivileges(buildPermissions(actions, role.privileges))
-            setInitialRole(clone(role))
-            setState({ role })
-          } else {
-            showLoading()
-            service
-              .load(id)
-              .then((role) => {
-                if (!role) {
-                  alertError(resource.error_404, () => navigate(-1))
-                } else {
-                  if (!role.privileges) {
-                    role.privileges = []
-                  }
-                  setPrivileges(buildPermissions(actions, role.privileges))
-                  setInitialRole(clone(role))
-                  setState({ role })
-                  if (isReadOnly) {
-                    setReadOnly(refForm.current as any)
-                  }
+        if (!id) {
+          const role = createRole()
+          setPrivileges(buildPermissions(actions, role.privileges))
+          setInitialRole(clone(role))
+          setState({ all, actions, allPrivileges, shownPrivileges: allPrivileges, maxAction: getMax(actions), role })
+        } else {
+          showLoading()
+          service
+            .load(id)
+            .then((role) => {
+              if (!role) {
+                alertError(resource.error_404, () => navigate(-1))
+              } else {
+                if (!role.privileges) {
+                  role.privileges = []
                 }
-              })
-              .catch(handleError)
-              .finally(hideLoading)
-          }
-        })
+                setPrivileges(buildPermissions(actions, role.privileges))
+                setInitialRole(clone(role))
+                setState({ all, actions, allPrivileges, shownPrivileges: allPrivileges, maxAction: getMax(actions), role })
+                if (isReadOnly) {
+                  setReadOnly(refForm.current as any)
+                }
+              }
+            })
+            .catch(handleError)
+            .finally(hideLoading)
+        }
       })
       .catch(handleError)
   }, [id, newMode, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps

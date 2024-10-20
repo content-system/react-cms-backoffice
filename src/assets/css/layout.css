@@ -1,8 +1,8 @@
 .page-header .logo {
   position: absolute;
-  margin: 0 40px 0 16px;
-  height: 34px;
-  width: 34px;
+  margin: 3px 40px 0 16px;
+  height: 36px;
+  width: 36px;
 }
 
 .page-header > form {
@@ -56,7 +56,7 @@
 }
 .page-header .search-input {
   float: left;
-  margin-top: 2px !important;
+  margin-top: 3px !important;
   margin-left: 11% !important;
   width: 50% !important;
 }
@@ -97,13 +97,15 @@
   .page-container .toggle-search {
     display: inline-block;
     position: relative;
-    width: 26px;
+    width: 32px;
+    height: 32px;
+    margin-top: 4px;
     border: none;
     background-color: transparent;
   }
   .page-header .toggle-menu {
-    width: 28px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     margin-left: 2px;
     padding-top: 0;
   }
@@ -122,7 +124,7 @@
   .search .page-header .close-search {
     display: inline-block;
     border: none;
-    height: 33px;
+    height: 40px;
     padding-top: 0;
   }
   .search .page-header .search-input {
@@ -147,9 +149,9 @@
   color: inherit;
   border: 1px solid;
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  margin-top: -2px;
+  width: 40px;
+  height: 40px;
+  margin-top: 1px;
   margin-left: 4px;
   padding-top: 3px;
   padding-left: 2px;
@@ -159,7 +161,7 @@
 }
 .quick-nav > button > i,
 .quick-nav > a > i {
-  font-size: 31px;
+  font-size: 34px;
 }
 .quick-nav > button.mail > i {
   font-size: 30px;
@@ -189,7 +191,8 @@
   display: inline-flex;
   flex-direction: row;
   width: 100%;
-  padding: 6px 8px;
+  height: 40px;
+  padding: 8px;
   clear: both;
   font-weight: 400;
   text-align: inherit;
@@ -200,18 +203,18 @@
 }
 .dropdown-menu-profile > img,
 .dropdown-menu-profile > i {
-  width: 36px;
-  height: 36px;
-  margin-top: -2px;
-  margin-left: 4px;
-  margin-right: 2px;
+  width: 40px;
+  height: 40px;
+  margin-top: 1px;
+  margin-left: 6px;
+  margin-right: 6px;
   border: 1px solid;
   border-radius: 50%;
 }
 
 .dropdown-menu-profile > i {
-  font-size: 32px;
-  padding-left: 1px;
+  font-size: 34px;
+  padding-left: 2px;
 }
 .dropdown-menu-profile:hover ul {
   display: block;

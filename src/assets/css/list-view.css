@@ -195,6 +195,7 @@ div.card > h3 {
   font-weight: 500;
 }
 
+.img-card > h4,
 ul.list-view > li > section:first-child > div > h4,
 ul.list-view > li > div > h4,
 ul.list-view > li > h4 {
@@ -218,6 +219,7 @@ ul.list-view > li > h4 {
   justify-content: space-between;
 }
 
+.img-card > p,
 .video-container > p,
 .card > section > p,
 .video > section > p,
@@ -414,4 +416,12 @@ ul.list-view > li > section:first-child > .title:hover {
   opacity: 0.78;
   background: #000;
   color: #fff;
+}
+
+.img-card > img {
+  width: 100%;
+}
+.img-card > h4.center,
+.img-card > p.center {
+  justify-content: center;
 }

@@ -28,6 +28,7 @@ export const vi = {
 
   // Audit log
   audit_logs: "Audit logs",
+  audit_log_time: "Time",
   audit_log_time_from: "Date time from",
   audit_log_time_to: "Date time to",
   audit_log_user: "Performed by",

@@ -3,25 +3,17 @@
   border-bottom-right-radius: 0;
 }
 
-.view-container > form > div > label.search-input,
-.view-container > div > label.search-input,
-.view-body > label.search-input,
-.row > .col > label.search-input,
 .row > label.search-input,
 .search-input {
   display: flex;
   flex-wrap: inherit;
   align-items: stretch;
-  height: 30px;
+  height: 36px;
   margin: 4px 0;
   padding-top: 0;
   padding-bottom: 0;
 }
 
-.view-container > form > div > label.search-input > *,
-.view-container > div > label.search-input > *,
-.view-body > label.search-input > *,
-.row > .col > label.search-input > *,
 .row > label.search-input > *,
 .search-input > * {
   display: flex;
@@ -38,18 +30,14 @@
   -moz-box-shadow: none !important;
   box-shadow: none !important;
 }
-.row > label.col.search-input input:not([type="checkbox"]):not([type="radio"]):first-child,
-.view-container > form > div > label.search-input > *:first-child,
-.view-container > div > label.search-input > *:first-child,
-.view-body > label.search-input > *:first-child,
-.row > .col > label.search-input > *:first-child,
+
 .row > label.search-input > *:first-child,
 .search-input > *:first-child {
-  padding-left: 8px;
+  padding-left: 12px;
   border-right: 0;
   border-left: 1px solid;
-  border-top-left-radius: 15px;
-  border-bottom-left-radius: 15px;
+  border-top-left-radius: 18px;
+  border-bottom-left-radius: 18px;
 }
 
 .view-container > form > div > h4 > label,
@@ -71,23 +59,15 @@ h4 > label.search-input > i:first-child.btn-search,
 }
 
 .row > label.col.search-input input:not([type="checkbox"]):not([type="radio"]):last-child,
-.view-container > form > div > label.search-input > *:last-child,
-.view-container > div > label.search-input > *:last-child,
-.view-body > label.search-input > *:last-child,
-.row > .col > label.search-input > *:last-child,
 .row > label.search-input > *:last-child,
 .search-input > *:last-child {
   border-right: 1px solid;
-  border-top-right-radius: 15px;
-  border-bottom-right-radius: 15px;
+  border-top-right-radius: 18px;
+  border-bottom-right-radius: 18px;
 }
 
-.view-container > form > div > label.search-input > select,
-.view-container > div > label.search-input > select,
-.row > .col > label.search-input > select,
-.row > label.search-input > select,
 label.search-input > select {
-  width: 51px;
+  width: 58px;
 }
 
 label.search-input.focused > input,
@@ -97,7 +77,7 @@ label.search-input > input {
   outline: none;
 }
 label.search-input > button.btn-search {
-  width: 30px;
+  width: 36px;
   position: relative;
 }
 
@@ -128,21 +108,27 @@ label.search-input > button.btn-search {
   width: 24px;
   height: 24px;
 }
+.search-input > .btn-filter {
+  width: 24px;
+}
 .search-input > .btn-filter::before {
   font-size: 17px;
   font-weight: 100;
-  padding-top: 1px;
+  padding-top: 5px;
+  padding-left: 4px;
   content: "\279E";
 }
 .search-input > .btn-filter.on::before {
   transform: rotate(90deg);
+  margin-top: 4px;
+  padding-right: 8px;
 }
 .toggle-search::before,
 .btn-lookup::before,
 .search-input > .btn-search::before {
   position: absolute;
-  top: -2px;
-  left: 2px;
+  top: 0px;
+  left: 6px;
   width: 12px;
   height: 28px;
   font-size: 28px;
@@ -165,11 +151,11 @@ label.search-input > button.btn-search {
   top: 1px;
 }
 .btn-remove-text {
-  width: 17px;
+  width: 20px;
 }
 .search-input > .btn-remove-text::before {
-  margin-top: 2px;
-  margin-left: 2px;
+  margin-top: 6px;
+  margin-left: 4px;
   font-size: 16px;
   content: "\2716";
 }

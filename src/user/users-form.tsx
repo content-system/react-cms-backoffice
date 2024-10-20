@@ -205,9 +205,9 @@ export const UsersForm = () => {
                           className="round-border"
                         />
                         <div>
-                          <h3 className={user.status === "I" ? "inactive" : ""}>
+                          <h4 className={user.status === "I" ? "inactive" : ""}>
                             <Link to={`${user.userId}`}>{user.displayName}</Link>
-                          </h3>
+                          </h4>
                           <p>{user.email}</p>
                         </div>
                         <button className="btn-detail" />

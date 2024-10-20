@@ -28,12 +28,13 @@ import UsersRoute from "./user"
 import "./App.css"
 import "./assets/css/reset.css"
 import "./assets/fonts/material-icon/css/material-icons.css"
-// import "./assets/fonts/Roboto/font.css";
+import "./assets/fonts/Roboto/font.css";
 import "./assets/css/checkbox.css"
 import "./assets/css/radio.css"
 import "./assets/css/grid.css"
 import "./assets/css/alert.css"
 import "./assets/css/loader.css"
+import "./assets/css/page.css"
 import "./assets/css/main.css"
 import "./assets/css/modal.css"
 import "./assets/css/multi-select.css"
@@ -51,6 +52,7 @@ import "./assets/css/theme.css"
 import "./assets/css/dark.css"
 import "./assets/css/grey.css"
 import "./assets/css/badge.css"
+import "./assets/css/override.css"
 
 axios.defaults.withCredentials = true
 
