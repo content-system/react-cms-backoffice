@@ -11,6 +11,7 @@ interface RoleSearch extends SearchComponentState<Role, RoleFilter> {
   statusList: Item[]
 }
 const roleFilter: RoleFilter = {
+  limit: 24,
   q: "",
   roleId: "",
   roleName: "",
@@ -18,6 +19,7 @@ const roleFilter: RoleFilter = {
   remark: "",
 }
 const roleSearch: RoleSearch = {
+  pageSize: 24,
   statusList: [],
   list: [],
   filter: roleFilter,

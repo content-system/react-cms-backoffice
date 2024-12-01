@@ -14,6 +14,7 @@ interface AuditLogSearch extends SearchComponentState<AuditLog, AuditLogFilter> 
 const now = new Date()
 
 const auditLogfilter: AuditLogFilter = {
+  limit: 24,
   id: "",
   action: "",
   time: {
@@ -23,6 +24,7 @@ const auditLogfilter: AuditLogFilter = {
 }
 
 const AuditSearch: AuditLogSearch = {
+  pageSize: 24,
   statusList: [],
   list: [],
   filter: auditLogfilter,

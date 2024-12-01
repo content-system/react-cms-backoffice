@@ -13,6 +13,7 @@ interface UserSearch extends SearchComponentState<User, UserFilter> {
   statusList: Item[]
 }
 const userFilter: UserFilter = {
+  limit: 24,
   userId: "",
   username: "",
   displayName: "",
@@ -22,6 +23,7 @@ const userFilter: UserFilter = {
 }
 export const UsersForm = () => {
   const initialState: UserSearch = {
+    pageSize: 24,
     statusList: [],
     list: [],
     filter: userFilter,
