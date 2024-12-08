@@ -37,7 +37,7 @@ const userFilter: UserFilter = {
   status: [],
 }
 const initialState: UserSearch = {
-  pageSize: 24,
+  limit: 24,
   statusList: [],
   list: [],
   filter: userFilter,
@@ -147,7 +147,7 @@ export const UsersLookup = (props: Props) => {
           <form id="usersLookupForm" name="usersLookupForm" className="usersLookupForm" noValidate={true} ref={refForm as any}>
             <section className="row search-group">
               <label className="col s12 m6 search-input">
-                <PageSizeSelect size={component.pageSize} sizes={component.pageSizes} onChange={pageSizeChanged} />
+                <PageSizeSelect size={component.limit} sizes={component.pageSizes} onChange={pageSizeChanged} />
                 <input type="text" id="q" name="q" onChange={onChangeText} value={filter.q} maxLength={40} placeholder={resource.user_lookup} />
                 <button type="button" hidden={!filter.userId} className="btn-remove-text" onClick={clearUserId} />
                 <button type="submit" className="btn-search" onClick={onSearch} />
@@ -155,9 +155,9 @@ export const UsersLookup = (props: Props) => {
               <Pagination
                 className="col s6 m3"
                 total={component.total}
-                size={component.pageSize}
+                size={component.limit}
                 max={component.pageMaxSize}
-                page={component.pageIndex}
+                page={component.page}
                 onChange={pageChanged}
               />
             </section>

@@ -23,7 +23,7 @@ const userFilter: UserFilter = {
 }
 export const UsersForm = () => {
   const initialState: UserSearch = {
-    pageSize: 24,
+    limit: 24,
     statusList: [],
     list: [],
     filter: userFilter,
@@ -49,7 +49,7 @@ export const UsersForm = () => {
   }
   const checkboxOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     updateState(event, (newState) => {
-      component.pageIndex = 1
+      component.page = 1
       doSearch({ ...component, ...newState.filter })
     })
   }
@@ -72,7 +72,7 @@ export const UsersForm = () => {
           <section className="row search-group">
             <Search
               className="col s12 m6 search-input"
-              size={component.pageSize}
+              size={component.limit}
               sizes={component.pageSizes}
               pageSizeChanged={pageSizeChanged}
               onChange={updateState}
@@ -85,9 +85,9 @@ export const UsersForm = () => {
             <Pagination
               className="col s12 m6"
               total={component.total}
-              size={component.pageSize}
+              size={component.limit}
               max={component.pageMaxSize}
-              page={component.pageIndex}
+              page={component.page}
               onChange={pageChanged}
             />
           </section>

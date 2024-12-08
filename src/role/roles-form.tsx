@@ -19,7 +19,7 @@ const roleFilter: RoleFilter = {
   remark: "",
 }
 const roleSearch: RoleSearch = {
-  pageSize: 24,
+  limit: 24,
   statusList: [],
   list: [],
   filter: roleFilter,
@@ -39,7 +39,7 @@ export const RolesForm = () => {
   }
   const checkboxOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     updateState(event, (newState) => {
-      component.pageIndex = 1
+      component.page = 1
       doSearch({ ...component, ...newState.filter })
     })
   }
@@ -60,7 +60,7 @@ export const RolesForm = () => {
         <form id="rolesForm" name="rolesForm" noValidate={true} ref={refForm as any}>
           <section className="row search-group">
             <label className="col s12 m6 search-input">
-              <PageSizeSelect size={component.pageSize} sizes={component.pageSizes} onChange={pageSizeChanged} />
+              <PageSizeSelect size={component.limit} sizes={component.pageSizes} onChange={pageSizeChanged} />
               <input type="text" id="q" name="q" value={filter.q || ""} onChange={updateState} maxLength={255} placeholder={resource.keyword} />
               <button type="button" hidden={!filter.q} className="btn-remove-text" onClick={clearQ} />
               <button type="button" className="btn-filter" onClick={toggleFilter} />
@@ -69,9 +69,9 @@ export const RolesForm = () => {
             <Pagination
               className="col s12 m6"
               total={component.total}
-              size={component.pageSize}
+              size={component.limit}
               max={component.pageMaxSize}
-              page={component.pageIndex}
+              page={component.page}
               onChange={pageChanged}
             />
           </section>

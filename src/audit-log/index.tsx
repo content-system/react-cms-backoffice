@@ -24,7 +24,7 @@ const auditLogfilter: AuditLogFilter = {
 }
 
 const AuditSearch: AuditLogSearch = {
-  pageSize: 24,
+  limit: 24,
   statusList: [],
   list: [],
   filter: auditLogfilter,
@@ -91,7 +91,7 @@ export const AuditLogsForm = () => {
           <section className="btn-group">
             <label>
               {resource.page_size}
-              <PageSizeSelect size={component.pageSize} sizes={component.pageSizes} onChange={pageSizeChanged} />
+              <PageSizeSelect size={component.limit} sizes={component.pageSizes} onChange={pageSizeChanged} />
             </label>
             <button type="submit" className="btn-search" onClick={hooks.search}>
               {resource.search}
@@ -189,9 +189,9 @@ export const AuditLogsForm = () => {
           <Pagination
             className="col s12 m6"
             total={component.total}
-            size={component.pageSize}
+            size={component.limit}
             max={component.pageMaxSize}
-            page={component.pageIndex}
+            page={component.page}
             onChange={pageChanged}
           />
         </form>
