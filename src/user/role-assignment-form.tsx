@@ -102,49 +102,47 @@ export const RoleAssignmentForm = () => {
     navigate(-1)
   }
   return (
-    <div className="view-container">
-      <form id="roleAssignmentForm" name="roleAssignmentForm" model-name="role">
-        <header>
-          <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
-          <h2>{resource.role_assignment_subject}</h2>
-        </header>
-        <div>
-          <section className="row">
-            <label className="col s12 m6">
-              {resource.email}
-              <input type="text" id="email" name="email" value={user.email || ""} maxLength={255} placeholder={resource.email} disabled={true} />
-            </label>
-          </section>
-          <section className="list-container">
-            <ul className="row list-view">
-              <li className="col check-item header">
-                <input type="checkbox" id="checkAll" name="checkAll" disabled={disabled} checked={checkedAll} onChange={(e) => onCheckAll(e)} />
-                <p>{resource.check_all}</p>
-              </li>
-              {roles &&
-                roles?.map((item, i) => {
-                  return (
-                    <li key={i} className="col check-item">
-                      <input
-                        type="checkbox"
-                        name="selected"
-                        disabled={disabled}
-                        checked={selectedRoles.includes(item)}
-                        onChange={(e) => onCheck(e, item.roleId)}
-                      />
-                      <p>{item.roleName}</p>
-                    </li>
-                  )
-                })}
-            </ul>
-          </section>
-        </div>
-        <footer>
-          <button type="submit" id="btnSave" name="btnSave" onClick={save} disabled={disabled}>
-            {resource.save}
-          </button>
-        </footer>
-      </form>
-    </div>
+    <form id="roleAssignmentForm" name="roleAssignmentForm" className="form" model-name="role">
+      <header>
+        <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
+        <h2>{resource.role_assignment_subject}</h2>
+      </header>
+      <div>
+        <section className="row">
+          <label className="col s12 m6">
+            {resource.email}
+            <input type="text" id="email" name="email" value={user.email || ""} maxLength={255} placeholder={resource.email} disabled={true} />
+          </label>
+        </section>
+        <section className="list-container">
+          <ul className="row list">
+            <li className="col check-item header">
+              <input type="checkbox" id="checkAll" name="checkAll" disabled={disabled} checked={checkedAll} onChange={(e) => onCheckAll(e)} />
+              <p>{resource.check_all}</p>
+            </li>
+            {roles &&
+              roles?.map((item, i) => {
+                return (
+                  <li key={i} className="col check-item">
+                    <input
+                      type="checkbox"
+                      name="selected"
+                      disabled={disabled}
+                      checked={selectedRoles.includes(item)}
+                      onChange={(e) => onCheck(e, item.roleId)}
+                    />
+                    <p>{item.roleName}</p>
+                  </li>
+                )
+              })}
+          </ul>
+        </section>
+      </div>
+      <footer>
+        <button type="submit" id="btnSave" name="btnSave" onClick={save} disabled={disabled}>
+          {resource.save}
+        </button>
+      </footer>
+    </form>
   )
 }

@@ -53,16 +53,16 @@ export const ForgotPasswordForm = () => {
   }
 
   return (
-    <div className="view-container central-full">
-      <form id="forgotPasswordForm" name="forgotPasswordForm" noValidate={true} autoComplete="off" ref={form as any}>
-        <div>
+    <div className="central-full">
+      <form id="forgotPasswordForm" name="forgotPasswordForm" className="form" noValidate={true} autoComplete="off" ref={form as any}>
+        <div className="view-body row">
           <img className="logo" src={logo} alt="logo" />
           <h2>{resource.forgot_password}</h2>
           <div className={"message " + msg.alertClass}>
             {msg.message}
             <span onClick={hideMessage} hidden={!msg.message || msg.message === ""} />
           </div>
-          <label>
+          <label className="col s12">
             {resource.email}
             <input
               type="text"

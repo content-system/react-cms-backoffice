@@ -91,16 +91,16 @@ export const SignupForm = () => {
   }
 
   return (
-    <div className="view-container central-full">
-      <form id="userForm" name="userForm" noValidate={true} autoComplete="off" ref={form as any}>
-        <div>
+    <div className="central-full">
+      <form id="userForm" name="userForm" className="form" noValidate={true} autoComplete="off" ref={form as any}>
+        <div className="view-body row">
           <img className="logo" src={logo} alt="logo" />
           <h2>{resource.signup}</h2>
           <div className={"message " + msg.alertClass}>
             {msg.message}
             <span onClick={hideMessage} hidden={!msg.message || msg.message === ""} />
           </div>
-          <label>
+          <label className="col s12">
             {resource.username}
             <input
               type="text"
@@ -113,7 +113,7 @@ export const SignupForm = () => {
               required={true}
             />
           </label>
-          <label>
+          <label className="col s12">
             {resource.email}
             <input
               type="text"
@@ -126,7 +126,7 @@ export const SignupForm = () => {
               required={true}
             />
           </label>
-          <label hidden={!state.passwordRequired}>
+          <label className="col s12" hidden={!state.passwordRequired}>
             {resource.password}
             <input
               type="password"
@@ -138,7 +138,7 @@ export const SignupForm = () => {
               maxLength={255}
             />
           </label>
-          <label hidden={!state.passwordRequired}>
+          <label className="col s12" hidden={!state.passwordRequired}>
             {resource.confirm_password}
             <input
               type="password"

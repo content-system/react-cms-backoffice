@@ -1,54 +1,54 @@
-.view-container.full,
-.view-container.solid {
+.full,
+.solid {
   height: 100vh;
   padding-left: 16px;
   padding-right: 16px;
   text-align: center;
 }
 
-.view-container.full > form > header,
-.view-container.full > header,
-.view-container.solid > form > header,
-.view-container.solid > header,
+.full > form > header,
+.full > header,
+.solid > form > header,
+.solid > header,
 .view-header.solid > .view-header {
   justify-content: center;
 }
 
-.view-container.full > form > div > h5,
-.view-container.full > form > div > p,
-.view-container.full > form > div > div,
-.view-container.full > form > div > section,
-.view-container.full > div > h5,
-.view-container.full > div > p,
-.view-container.full > div > div,
-.view-container.full > div > section,
-.view-container.full .view-body > h5,
-.view-container.full .view-body > p,
-.view-container.full .view-body > div,
-.view-container.full .view-body > section,
-.view-container.solid > form > div > h5,
-.view-container.solid > form > div > p,
-.view-container.solid > form > div > div,
-.view-container.solid > form > div > section,
-.view-container.solid > div > h5,
-.view-container.solid > div > p,
-.view-container.solid > div > div,
-.view-container.solid > div > section,
-.view-container.solid .view-body > h5,
-.view-container.solid .view-body > p,
-.view-container.solid .view-body > div,
-.view-container.solid .view-body > section {
+.full > form > div > h5,
+.full > form > div > p,
+.full > form > div > div,
+.full > form > div > section,
+.full > div > h5,
+.full > div > p,
+.full > div > div,
+.full > div > section,
+.full .view-body > h5,
+.full .view-body > p,
+.full .view-body > div,
+.full .view-body > section,
+.solid > form > div > h5,
+.solid > form > div > p,
+.solid > form > div > div,
+.solid > form > div > section,
+.solid > div > h5,
+.solid > div > p,
+.solid > div > div,
+.solid > div > section,
+.solid .view-body > h5,
+.solid .view-body > p,
+.solid .view-body > div,
+.solid .view-body > section {
   padding-left: 16px;
   padding-right: 16px;
 }
 
-.view-container.central-full > form {
+.central-full > form {
   margin: auto;
   width: 368px;
 }
 
-.view-container.full > form > div,
-.view-container.full .view-body {
+.full > form > div,
+.full .view-body {
   padding-top: 0 !important;
 }
 
@@ -60,16 +60,16 @@
 }
 
 @media screen and (max-width: 600px) {
-  .view-container.full,
-  .view-container.solid {
+  .full,
+  .solid {
     padding-left: 0;
     padding-right: 0;
   }
-  .view-container.central-full > form > div {
+  .central-full > .form > div {
     padding-top: 0;
   }
-  .view-container.central-full > form,
-  .view-container.full > form {
+  .central-full > .form,
+  .full > .form {
     width: 100%;
   }
 
@@ -78,17 +78,17 @@
   }
 }
 
-.view-container.full > form > div > section,
-.view-container.full .view-body > section,
-.view-container.solid .view-body > section {
+.full > .form > div > section,
+.full .view-body > section,
+.solid .view-body > section {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.view-container.full > form > div > section > button,
-.view-container.full .view-body > section > button,
-.view-container.solid .view-body > section > button {
+.full > form > div > section > button,
+.full .view-body > section > button,
+.solid .view-body > section > button {
   width: 100%;
   height: 46px;
   border: none;
@@ -98,16 +98,13 @@
   margin-bottom: 10px;
 }
 
-.view-container.full > form > div > section > a,
-.view-container.full .view-body > section > a,
-.view-container.solid .view-body > section > a,
-.view-container.central-full > form > div > a {
+.central-full > form > div > a {
   width: 100%;
   margin-top: 8px;
   margin-bottom: 0;
 }
 
-.view-container.central-full > form > div {
+.central-full > form > div {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -115,16 +112,16 @@
   max-height: unset;
 }
 
-.view-container.central-full > form > div > button {
+.central-full > .form > div > button {
   width: calc(100% - 32px);
-  height: 46px;
+  height: 48px;
   border: none;
   font-size: 15px;
   font-weight: bold;
-  margin-top: 30px;
-  margin-bottom: 10px;
+  margin-top: 24px;
+  margin-bottom: 8px;
 }
 
-.view-container.central-full > form > div > .message {
+.central-full > form > div > .message {
   width: calc(100% - 32px);
 }

@@ -1,59 +1,43 @@
-.detail .table-responsive > table,
-form.list-result > .table-responsive > table {
+.table {
   width: 100%;
   margin-bottom: 1rem;
   background-color: transparent;
 }
-.detail .table-responsive > table th,
-.detail .table-responsive > table td,
-form.list-result > .table-responsive > table th,
-form.list-result > .table-responsive > table td {
+.table th,
+.table td {
   position: relative;
   padding: 6px 10px; /* 0.75rem */
   vertical-align: middle;
   border-top: 1px solid #dee2e6;
 }
 
-.detail .table-responsive > table thead th,
-form.list-result > .table-responsive > table thead th {
+.table thead th {
   vertical-align: middle;
   border-bottom: 2px solid #dee2e6;
 }
 
-.detail .table-responsive > table tbody + tbody,
-form.list-result > .table-responsive > table tbody + tbody {
+.table tbody + tbody {
   border-top: 2px solid #dee2e6;
 }
 
-.table .table {
-  background-color: #fff;
-}
-
-.detail .table-responsive > table,
-form.list-result > .table-responsive > table {
+.table {
   border: 1px solid #dee2e6;
 }
 
-.detail .table-responsive > table th,
-.detail .table-responsive > table td,
-form.list-result > .table-responsive > table th,
-form.list-result > .table-responsive > table td {
+.table th,
+.table td {
   border: 1px solid #dee2e6;
 }
 
-.detail .table-responsive > table thead th,
-.detail .table-responsive > table thead th,
-form.list-result > .table-responsive > table thead th,
-form.list-result > .table-responsive > table thead td {
+.table thead th,
+.table thead td {
   border-bottom-width: 2px;
 }
 
-.detail .table-responsive > table tbody tr:nth-of-type(odd),
-form.list-result > .table-responsive > table tbody tr:nth-of-type(odd) {
+.table tbody tr:nth-of-type(odd) {
   background-color: rgba(0, 0, 0, 0.05);
 }
-.detail .table-responsive > table tbody tr:hover,
-form.list-result > .table-responsive > table tbody tr:hover {
+.table tbody tr:hover {
   background-color: rgba(0, 0, 0, 0.075);
 }
 
@@ -109,7 +93,7 @@ form.list-result > .table-responsive > table tbody tr:hover {
   }
 }
 
-form.list-result > div.table-responsive > table {
+.table-responsive > table {
   /*display: block;*/
   width: 100%;
   overflow-x: auto;
@@ -117,7 +101,7 @@ form.list-result > div.table-responsive > table {
   -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
-form.list-result > div.table-responsive > table {
+.table-responsive > table {
   border: 0;
 }
 
@@ -127,22 +111,16 @@ table a {
   text-decoration: none;
 }
 
-.detail .table-responsive > table > tbody > tr > td,
-.detail .table-responsive > table > tbody > tr > th,
-.detail .table-responsive > table > tfoot > tr > td,
-.detail .table-responsive > table > tfoot > tr > th,
-.detail .table-responsive > table > thead > tr > td,
-.detail .table-responsive > table > thead > tr > th,
-form.list-result > .table-responsive > table > tbody > tr > td,
-form.list-result > .table-responsive > table > tbody > tr > th,
-form.list-result > .table-responsive > table > tfoot > tr > td,
-form.list-result > .table-responsive > table > tfoot > tr > th,
-form.list-result > .table-responsive > table > thead > tr > td,
-form.list-result > .table-responsive > table > thead > tr > th {
+.table > tbody > tr > td,
+.table > tbody > tr > th,
+.table > tfoot > tr > td,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > thead > tr > th {
   border: 1px solid;
 }
 
-form.list-result > .table-responsive > table > thead > tr > th > button {
+.table > thead > tr > th > button {
   border: none;
   background-color: inherit;
   color: inherit;
@@ -151,31 +129,34 @@ form.list-result > .table-responsive > table > thead > tr > th > button {
 }
 
 /* move from main.css */
+th.datetime {
+  width: 124px;
+}
 th.action {
   width: 96px;
 }
 
-form.list-result > .table-responsive > table > tbody > tr > td > button {
+.table > tbody > tr > td > button {
   margin-right: 12px;
 }
 
-form > div.table-responsive {
+.table-responsive {
   margin-left: 16px;
   margin-right: 16px;
 }
 /*
-form > div.table-responsive > table {
+.table-responsive > table {
   table-layout: fixed;
   width: 100%;
   white-space: nowrap;
 }
-form > div.table-responsive > table  td {
+.table-responsive > table  td {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-form > div.table-responsive > table  th {
+.table-responsive > table  th {
   white-space: initial;
 }
 */

@@ -15,7 +15,9 @@
   background-color: #f8d7da !important;
   border-color: #f5c6cb;
 }
-
+.hidden-message {
+  display: none;
+}
 .message {
   width: 100%;
   line-height: unset;
@@ -151,14 +153,11 @@
 .alert p {
   padding-left: 16px;
   padding-right: 16px;
-  width: 300px;
   margin-top: 6px;
   padding: 0;
   display: inline-block;
-  color: #4d4d4d;
-  font-size: 16px;
+  background-color: inherit;
   text-align: left;
-  font-weight: 400;
   position: relative;
   text-align: inherit;
   float: none;

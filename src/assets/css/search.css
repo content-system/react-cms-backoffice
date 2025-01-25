@@ -31,6 +31,9 @@
   box-shadow: none !important;
 }
 
+.row > label.col.search-input input:not([type="checkbox"]):not([type="radio"]):first-child,
+.view-body > label.search-input > *:first-child,
+.row > .col > label.search-input > *:first-child,
 .row > label.search-input > *:first-child,
 .search-input > *:first-child {
   padding-left: 12px;
@@ -40,15 +43,14 @@
   border-bottom-left-radius: 18px;
 }
 
-.view-container > form > div > h4 > label,
 h4 > label {
   margin-left: 0;
 }
-
+/*
 .view-container > form > div > h4 > label:first-child {
   margin-right: 30px;
 }
-
+*/
 h4 > label.search-input > i:first-child.btn-search,
 .row > label.search-input > i:first-child.btn-search {
   position: relative;
@@ -66,7 +68,7 @@ h4 > label.search-input > i:first-child.btn-search,
   border-bottom-right-radius: 18px;
 }
 
-label.search-input > select {
+.row > label.search-input > select {
   width: 58px;
 }
 
@@ -164,28 +166,25 @@ section.row nav.col {
   margin-top: 4px;
   margin-bottom: 4px;
 }
-.view-container > div > form > section.search-group {
+.search-group {
   padding-bottom: 8px;
 }
 section.row.search-group nav.col {
   margin-top: 0;
   margin-bottom: 0;
 }
-.list-content > div > form:first-child > section.btn-group,
-.view-container > div > form:first-child > section.btn-group {
+.search.btn-group {
   position: relative;
   height: 66px;
   padding: 16px;
   display: flex;
   justify-content: flex-end;
 }
-
-.list-content > div > form:first-child > section.btn-group > label:first-child,
-.view-container > div > form:first-child > section.btn-group > label:first-child {
+.search.btn-group > label {
   position: absolute;
   top: 16px;
   left: 16px;
-  width: 106px;
+  width: 114px;
   height: 34px;
   border: 1px solid;
   border-radius: 20px;
@@ -193,9 +192,7 @@ section.row.search-group nav.col {
   padding-left: 12px;
   padding-bottom: 4px;
 }
-
-.list-content > div > form:first-child > section.btn-group > label > select,
-.view-container > div > form:first-child > section.btn-group > label > select {
+.search.btn-group > label > select {
   border: none;
   outline: none;
   width: 30px;

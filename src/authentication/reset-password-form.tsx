@@ -61,16 +61,16 @@ export const ResetPasswordForm = () => {
   }
 
   return (
-    <div className="view-container central-full">
-      <form id="userForm" name="userForm" noValidate={true} autoComplete="off" ref={form as any} model-name="user">
-        <div>
+    <div className="central-full">
+      <form id="userForm" name="userForm" className="form" noValidate={true} autoComplete="off" ref={form as any} model-name="user">
+        <div className="view-body row">
           <img className="logo" src={logo} alt="logo" />
           <h2>{resource.reset_password}</h2>
           <div className={"message " + msg.alertClass}>
             {msg.message}
             <span onClick={hideMessage} hidden={!msg.message || msg.message === ""} />
           </div>
-          <label>
+          <label className="col s12">
             {resource.username}
             <input
               type="text"
@@ -83,7 +83,7 @@ export const ResetPasswordForm = () => {
               required={true}
             />
           </label>
-          <label>
+          <label className="col s12">
             {resource.passcode}
             <input
               type="text"
@@ -96,7 +96,7 @@ export const ResetPasswordForm = () => {
               required={true}
             />
           </label>
-          <label>
+          <label className="col s12">
             {resource.new_password}
             <input
               type="password"
@@ -109,7 +109,7 @@ export const ResetPasswordForm = () => {
               required={true}
             />
           </label>
-          <label>
+          <label className="col s12">
             {resource.confirm_password}
             <input
               type="password"

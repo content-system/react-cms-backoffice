@@ -125,16 +125,16 @@ export const SigninForm = () => {
   }
 
   return (
-    <div className="view-container central-full sign-in-view-container">
-      <form id="signinForm" name="signinForm" noValidate={true} autoComplete="off" ref={form as any}>
-        <div>
+    <div className="central-full">
+      <form id="signinForm" name="signinForm" className="form" noValidate={true} autoComplete="off" ref={form as any}>
+        <div className="view-body row">
           <img className="logo" src={logo} alt="logo" />
           <h2>{resource.signin}</h2>
           <div className={"message " + msg.alertClass}>
             {msg.message}
             <span onClick={hideMessage} hidden={!msg.message || msg.message === ""} />
           </div>
-          <label hidden={isTwoFactor}>
+          <label hidden={isTwoFactor} className="col s12">
             {resource.username}
             <input
               type="text"
@@ -146,7 +146,7 @@ export const SigninForm = () => {
               placeholder={resource.placeholder_username}
             />
           </label>
-          <label hidden={isTwoFactor}>
+          <label hidden={isTwoFactor} className="col s12">
             {resource.password}
             <input
               type="password"
@@ -158,7 +158,7 @@ export const SigninForm = () => {
               placeholder={resource.placeholder_password}
             />
           </label>
-          <label hidden={!isTwoFactor}>
+          <label hidden={!isTwoFactor} className="col s12">
             {resource.passcode}
             <input
               type="password"

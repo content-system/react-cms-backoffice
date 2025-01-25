@@ -178,7 +178,9 @@
   font-size: 18px;
   color: black;
 }
-
+.modal-portal-content > div {
+  position: relative;
+}
 @media screen and (max-width: 600px) {
   .modal-portal-dialog {
     max-width: 500px;

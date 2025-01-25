@@ -77,16 +77,16 @@ export const ChangePasswordForm = () => {
   }, [state.user])
 
   return (
-    <div className="view-container central-full">
-      <form id="userForm" name="userForm" noValidate={true} autoComplete="off" ref={form as any}>
-        <div>
+    <div className="central-full">
+      <form id="userForm" name="userForm" className="form" noValidate={true} autoComplete="off" ref={form as any}>
+        <div className="view-body row">
           <img className="logo" src={logo} alt="logo" />
           <h2>{resource.change_password}</h2>
           <div className={"message " + msg.alertClass}>
             {msg.message}
             <span onClick={hideMessage} hidden={!msg.message || msg.message === ""} />
           </div>
-          <label hidden={!hiddenPasscode}>
+          <label className="col s12" hidden={!hiddenPasscode}>
             {resource.username}
             <input
               type="text"
@@ -98,7 +98,7 @@ export const ChangePasswordForm = () => {
               placeholder={resource.placeholder_username}
             />
           </label>
-          <label hidden={!hiddenPasscode}>
+          <label className="col s12" hidden={!hiddenPasscode}>
             {resource.current_password}
             <input
               type="password"
@@ -111,7 +111,7 @@ export const ChangePasswordForm = () => {
               placeholder={resource.placeholder_current_password}
             />
           </label>
-          <label hidden={!hiddenPasscode}>
+          <label className="col s12" hidden={!hiddenPasscode}>
             {resource.new_password}
             <input
               type="password"
@@ -124,7 +124,7 @@ export const ChangePasswordForm = () => {
               placeholder={resource.placeholder_new_password}
             />
           </label>
-          <label hidden={!hiddenPasscode}>
+          <label className="col s12" hidden={!hiddenPasscode}>
             {resource.confirm_password}
             <input
               type="password"
@@ -137,7 +137,7 @@ export const ChangePasswordForm = () => {
               placeholder={resource.placeholder_confirm_password}
             />
           </label>
-          <label hidden={hiddenPasscode}>
+          <label className="col s12" hidden={hiddenPasscode}>
             {resource.passcode}
             <input
               type="password"

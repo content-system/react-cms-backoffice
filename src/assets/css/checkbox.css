@@ -37,10 +37,6 @@ h4 > input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):n
   top: 4px;
 }
 
-.card-img-container > label.checkbox-container > input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]) {
-  top: 30px;
-}
-
 input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]):before {
   content: "";
   width: 16px;

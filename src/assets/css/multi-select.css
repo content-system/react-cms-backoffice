@@ -6,6 +6,14 @@
   min-height: 200px;
 }
 
+.item-select > input,
+.item-select > select {
+  padding-left: 10px !important;
+}
+.item-select > button {
+  font-family: inherit;
+}
+
 .item-select > select {
   min-height: 200px;
   width: 100%;

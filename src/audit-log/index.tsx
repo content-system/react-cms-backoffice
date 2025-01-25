@@ -46,18 +46,18 @@ export const AuditLogsForm = () => {
   }, [])
   const filter = value(state.filter)
   return (
-    <div className="view-container">
+    <div>
       <header>
         <h2>{resource.audit_logs}</h2>
         <div className="btn-group float-left">
           {component.view !== "table" && <button type="button" id="btnTable" name="btnTable" className="btn-table" data-view="table" onClick={changeView} />}
           {component.view === "table" && (
-            <button type="button" id="btnListView" name="btnListView" className="btn-list-view" data-view="listview" onClick={changeView} />
+            <button type="button" id="btnListView" name="btnListView" className="btn-list" data-view="listview" onClick={changeView} />
           )}
         </div>
       </header>
       <div>
-        <form id="rolesForm" name="rolesForm" noValidate={true} ref={refForm as any}>
+        <form id="rolesForm" name="rolesForm" className="form" noValidate={true} ref={refForm as any}>
           <section className="row search-group">
             <label className="col s12 m2 l4">
               {resource.action}
@@ -88,7 +88,7 @@ export const AuditLogsForm = () => {
               />
             </label>
           </section>
-          <section className="btn-group">
+          <section className="search btn-group">
             <label>
               {resource.page_size}
               <PageSizeSelect size={component.limit} sizes={component.pageSizes} onChange={pageSizeChanged} />
@@ -101,7 +101,7 @@ export const AuditLogsForm = () => {
         <form className="list-result">
           {component.view === "table" && (
             <div className="table-responsive">
-              <table>
+              <table className="table">
                 <thead>
                   <tr>
                     <th>{resource.sequence}</th>
@@ -162,25 +162,21 @@ export const AuditLogsForm = () => {
             </div>
           )}
           {component.view !== "table" && (
-            <ul className="row list-view">
+            <ul className="row list">
               {state.list &&
                 state.list.length > 0 &&
                 state.list.map((item, i) => {
                   return (
-                    <li key={i} className="col s12 m6 l4 xl3">
-                      <section>
-                        <div>
-                          <h3>{item.email}</h3>
-                          <h4 className="space-between">
-                            {item.resource} <span>{item.action}</span>
-                          </h4>
-                          <p>{item.remark}</p>
-                          <p>
-                            {formatFullDateTime(item.time, dateFormat, locale.decimalSeparator)}{" "}
-                            <span className={"badge badge-sm " + mapStyleStatus.get(item.status)}>{item.status || ""}</span>
-                          </p>
-                        </div>
-                      </section>
+                    <li key={i} className="col s12 m6 l4 xl3 list-item">
+                      <h4>{item.email}</h4>
+                      <p className="space-between">
+                        {item.resource} <span>{item.action}</span>
+                      </p>
+                      <p>{item.remark}</p>
+                      <p>
+                        {formatFullDateTime(item.time, dateFormat, locale.decimalSeparator)}{" "}
+                        <span className={"badge badge-sm " + mapStyleStatus.get(item.status)}>{item.status || ""}</span>
+                      </p>
                     </li>
                   )
                 })}

@@ -56,20 +56,20 @@ export const UsersForm = () => {
   const { list } = state
   const filter = value(state.filter)
   return (
-    <div className="view-container">
+    <div>
       <header>
         <h2>{resource.users}</h2>
         <div className="btn-group">
           {component.view !== "table" && <button type="button" id="btnTable" name="btnTable" className="btn-table" data-view="table" onClick={changeView} />}
           {component.view === "table" && (
-            <button type="button" id="btnListView" name="btnListView" className="btn-list-view" data-view="listview" onClick={changeView} />
+            <button type="button" id="btnListView" name="btnListView" className="btn-list" data-view="listview" onClick={changeView} />
           )}
           {canWrite && <Link id="btnNew" className="btn-new" to="new" />}
         </div>
       </header>
       <div>
-        <form id="usersForm" name="usersForm" noValidate={true} ref={refForm as any}>
-          <section className="row search-group">
+        <form id="usersForm" name="usersForm" className="form" noValidate={true} ref={refForm as any}>
+          <section className="row search-group section">
             <Search
               className="col s12 m6 search-input"
               size={component.limit}
@@ -134,7 +134,7 @@ export const UsersForm = () => {
         <form className="list-result">
           {component.view === "table" && (
             <div className="table-responsive">
-              <table>
+              <table className="table">
                 <thead>
                   <tr>
                     <th>{resource.sequence}</th>
@@ -194,26 +194,20 @@ export const UsersForm = () => {
             </div>
           )}
           {component.view !== "table" && (
-            <ul className="row list-view">
+            <ul className="row list">
               {list &&
                 list.length > 0 &&
                 list.map((user, i) => {
                   return (
-                    <li key={i} className="col s12 m6 l4 xl3" onClick={(e) => edit(e, user.userId)}>
-                      <section>
-                        <img
-                          src={user.imageURL && user.imageURL.length > 0 ? user.imageURL : user.gender === "F" ? femaleIcon : maleIcon}
-                          alt="user"
-                          className="round-border"
-                        />
-                        <div>
-                          <h4 className={user.status === "I" ? "inactive" : ""}>
-                            <Link to={`${user.userId}`}>{user.displayName}</Link>
-                          </h4>
-                          <p>{user.email}</p>
-                        </div>
-                        <button className="btn-detail" />
-                      </section>
+                    <li key={i} className="col s12 m6 l4 xl3 img-item" onClick={(e) => edit(e, user.userId)}>
+                      <img
+                        src={user.imageURL && user.imageURL.length > 0 ? user.imageURL : user.gender === "F" ? femaleIcon : maleIcon}
+                        alt="user"
+                        className="round-border"
+                      />
+                      <Link to={`${user.userId}`}>{user.displayName}</Link>
+                      <button className="btn-detail" />
+                      <p>{user.email}</p>
                     </li>
                   )
                 })}

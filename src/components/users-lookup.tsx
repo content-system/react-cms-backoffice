@@ -132,8 +132,8 @@ export const UsersLookup = (props: Props) => {
       bodyOpenClassName="modal-portal-open"
       overlayClassName="modal-portal-backdrop"
     >
-      <div className="view-container">
-        <header>
+      <div>
+        <header className="view-header">
           <h2>{resource.users_lookup}</h2>
           <div className="btn-group">
             {component.view !== "table" && <button type="button" id="btnTable" name="btnTable" className="btn-table" data-view="table" onClick={changeView} />}
@@ -165,7 +165,7 @@ export const UsersLookup = (props: Props) => {
           <form className="list-result">
             {component.view === "table" && (
               <div className="table-responsive">
-                <table>
+                <table className="table">
                   <thead>
                     <tr>
                       <th>{resource.sequence}</th>
@@ -225,7 +225,7 @@ export const UsersLookup = (props: Props) => {
               </div>
             )}
             {component.view !== "table" && (
-              <ul className="row list-view">
+              <ul className="row list">
                 {state &&
                   list &&
                   list.map((user: any, i: number) => {
@@ -233,15 +233,11 @@ export const UsersLookup = (props: Props) => {
                     if (!result) {
                       index++
                       return (
-                        <li key={i} className="col s12 m6 l4 xl3">
-                          <section>
-                            <input type="checkbox" name="selected" value={user.userId} onClick={onCheckUser} />
-                            <img src={user.imageURL && user.imageURL.length > 0 ? user.imageURL : ""} alt="user" className="round-border" />
-                            <div>
-                              <h3 className={user.status === "I" ? "inactive" : ""}>{user.displayName}</h3>
-                              <p>{user.email}</p>
-                            </div>
-                          </section>
+                        <li key={i} className="col s12 m6 l4 xl3 img-item">
+                          <img src={user.imageURL && user.imageURL.length > 0 ? user.imageURL : ""} alt="user" className="round-border" />
+                          <input type="checkbox" name="selected" value={user.userId} onClick={onCheckUser} />
+                          <h4 className={user.status === "I" ? "inactive" : ""}>{user.displayName}</h4>
+                          <p>{user.email}</p>
                         </li>
                       )
                     }
@@ -251,7 +247,7 @@ export const UsersLookup = (props: Props) => {
             )}
           </form>
         </div>
-        <footer>
+        <footer className="view-footer">
           <button type="button" onClick={onModelSave}>
             {resource.select}
           </button>

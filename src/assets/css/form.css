@@ -10,7 +10,7 @@ input:-moz-autofill:active {
   transition-property: background-color, color;
 }
 
-.view-container form label > select::-ms-expand {
+form label > select::-ms-expand {
   background: url("../images/chevron-down.png") right no-repeat;
   background-size: 16px;
   content: "";
@@ -59,19 +59,19 @@ input:-moz-autofill:active {
 
 /**************************Input flying************************/
 
-form .row > label.suffix-container input[value=""]::placeholder,
-form .row > label.suffix-container input:not([value])::placeholder {
+.form .row > label.suffix-container input[value=""]::placeholder,
+.form .row > label.suffix-container input:not([value])::placeholder {
   visibility: visible;
   font-weight: 400;
 }
 
-form .row > label input[value=""]::placeholder,
-form .row > label input:not([value])::placeholder {
+.form .row > label input[value=""]::placeholder,
+.form .row > label input:not([value])::placeholder {
   visibility: visible;
 }
 
-form .row > label.flying input[value=""],
-form .row > label.flying input:not([value]) {
+.form label.flying input[value=""],
+.form label.flying input:not([value]) {
   -webkit-animation: unFlyingFrames 0.3s, 0.3s;
   animation: unFlyingFrames 0.3s;
   height: 0;
@@ -79,20 +79,20 @@ form .row > label.flying input:not([value]) {
   padding-top: 0;
   padding-bottom: 0;
 }
-
-form .row > label.flying > input:focus:not([data-value]) {
+/*
+.form .row > label.flying > input:focus:not([data-value]) {
   height: 24px;
   margin-top: 10px;
   -webkit-animation: flyingFrames 0.3s, 0.3s;
   animation: flyingFrames 0.3s;
 }
-
+*/
 /**************************Select flying************************/
-form .row > label select:not([data-value])::placeholder {
+.form .row > label select:not([data-value])::placeholder {
   visibility: hidden;
 }
 
-form .row > label.flying select[data-value=""] {
+.form .row > label.flying select[data-value=""] {
   -webkit-animation: unFlyingFrames 0.3s, 0.3s;
   animation: unFlyingFrames 0.3s;
   height: 0;
@@ -100,7 +100,7 @@ form .row > label.flying select[data-value=""] {
   padding-top: 0;
   padding-bottom: 0;
 }
-form .row > label.flying select:focus([data-value=""]) {
+.form .row > label.flying select:focus([data-value=""]) {
   height: 24px;
   margin-top: 10px;
   -webkit-animation: flyingFrames 0.3s, 0.3s;
@@ -109,7 +109,6 @@ form .row > label.flying select:focus([data-value=""]) {
 /*
 form .row > label.focused > input,
 form .row > label.focused > select {
-  font-size: 15px;
   height: 24px; 
   margin-top: 10px;
   -webkit-animation: flyingFrames 0s, 0s;
@@ -148,32 +147,31 @@ label.focused > span.span-error,
   display: flex;
 }
 
-.view-container > form > div > .form-group,
+.form > div > .form-group,
+.form .row > label,
+.form > label,
 .checkbox-section,
 .radio-section,
-.row > .col > label,
-.row > label,
-.view-container > form > div > section > label,
-.view-container > form > div > label,
-.view-container > div > label,
-.view-body > label,
+.section .row > label,
+.section > label,
 .input-container {
   position: relative;
   display: block;
   width: 100%;
+  height: 64px;
   padding-top: 8px;
-  font-size: 14px;
   margin-bottom: 1px;
   padding-left: 16px;
   padding-right: 16px;
   text-align: left;
   background-color: inherit;
   background-image: inherit;
+  font-weight: 500;
 }
 
 .row .form-group {
   width: 100%;
-  font-size: 15px;
+  font-size: 14px;
   margin-bottom: 1px;
 }
 
@@ -188,17 +186,13 @@ label.focused > span.span-error,
 }
 
 .form-group .form-control,
-.view-container > form > div > section > label > input:not([type="checkbox"]):not([type="radio"]),
-.view-container > form > div > label > input:not([type="checkbox"]):not([type="radio"]),
-.view-container > div > label > input:not([type="checkbox"]):not([type="radio"]),
-.view-body > label > input:not([type="checkbox"]):not([type="radio"]),
-.row > .col > label input:not([type="checkbox"]):not([type="radio"]),
-.row > label input:not([type="checkbox"]):not([type="radio"]),
-.view-container > form > div > section > label > select,
-.view-container > form > div > label > select,
-.view-container > div > label > select,
-.row > .col > label > select,
-.row > label > select {
+.form .row > label > input:not([type="checkbox"]):not([type="radio"]),
+.form > label > input:not([type="checkbox"]):not([type="radio"]),
+.section > label > input:not([type="checkbox"]):not([type="radio"]),
+.form .row > label > select,
+.form > label > select,
+.section .row > label > select,
+.section > label > select {
   /* Remove ios style for input */
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -212,8 +206,6 @@ label.focused > span.span-error,
   height: 24px;
   line-height: inherit;
   margin-top: 10px;
-  font-size: 15px;
-  font-weight: 500;
   word-spacing: normal;
   text-transform: none;
   text-indent: 0;
@@ -223,56 +215,45 @@ label.focused > span.span-error,
   border-radius: 0;
   background-color: inherit;
 }
-
-.view-container > form > div > label.focused > input:not([type="checkbox"]):not([type="radio"]),
-.view-container > div > label.focused > input:not([type="checkbox"]):not([type="radio"]),
-.view-body > label.focused > input:not([type="checkbox"]):not([type="radio"]),
-.row > .col > label.focused input:not([type="checkbox"]):not([type="radio"]),
-.row > label.focused input:not([type="checkbox"]):not([type="radio"]),
-.view-container > form > div > label.focused > select,
-.view-container > div > label.focused > select,
-.row > .col > label.focused > select,
-.row > label.focused > select {
-  font-size: 15px;
+.form .row > label.focused > input:not([type="checkbox"]):not([type="radio"]),
+.form > label.focused > input:not([type="checkbox"]):not([type="radio"]),
+.section > label.focused > input:not([type="checkbox"]):not([type="radio"]),
+.form .row > label.focused > select,
+.section > label.focused > select {
   height: 24px;
   margin-top: 10px;
   -webkit-animation: flyingFrames 0s, 0s;
-  animation: flyingFrames 0s;
+  animation: flyingFrames 0s, 0s;
 }
-
+.form .row.inline > label.focused > input:not([type="checkbox"]):not([type="radio"]) {
+  margin-top: -3px;
+  margin-left: 16px;
+}
 .form-group.suffix-container .form-control,
-.view-container > form > div > label.suffix-container > input:not([type="checkbox"]):not([type="radio"]),
-.view-container > div > label.suffix-container > input:not([type="checkbox"]):not([type="radio"]),
-.view-body > label.suffix-container > input:not([type="checkbox"]):not([type="radio"]),
-.row > .col > label.suffix-container input:not([type="checkbox"]):not([type="radio"]),
-.row > label.suffix-container input:not([type="checkbox"]):not([type="radio"]),
-.view-container > form > div > label.suffix-container > select,
-.view-container > div > label.suffix-container > select,
-.view-body > label.suffix-container > select,
-.row > .col > label.suffix-container select,
-.row > label.suffix-container select {
+.form .row > label.suffix-container > input:not([type="checkbox"]):not([type="radio"]),
+.form .row > label.suffix-container > select,
+.form > label.suffix-container > input:not([type="checkbox"]):not([type="radio"]),
+.form > label.suffix-container > select,
+.section > label.suffix-container > input:not([type="checkbox"]):not([type="radio"]),
+.section > label.suffix-container > select {
   display: inline-block;
 }
 
 .form-control,
-.view-container > form > div > section > label > input,
-.view-container > form > div > label > input,
-.view-container > div > label > input,
-.view-body > label > input,
-.row > .col > label input,
-.row > label input,
-.view-container > form > div > section > label > select,
-.view-container > form > div > label > select,
-.view-container > div > label > select,
-.view-body > label > select,
-.row > .col > label select,
-.row > label select {
+.form .row > label > input,
+.form .row > label > select,
+.form > label > input,
+.form > label > select,
+.section > label > input,
+.section > label > select {
   border: 0;
   border-radius: 0;
   border-bottom: 1px solid;
 }
 
-.row > label select[multiple] {
+.form .row > label select[multiple],
+.form > label select[multiple],
+.section > label select[multiple] {
   border: 1px solid;
   border-radius: 0;
 }
@@ -284,51 +265,49 @@ select:not([multiple]) {
   background-repeat: no-repeat !important;
 }
 
-.view-container > form > label select:not([data-value])::placeholder,
-.view-container > form > div > label select:not([data-value])::placeholder {
+.form label select:not([data-value])::placeholder {
   visibility: hidden;
 }
 
-.view-container > form > label.flying select:not([data-value]),
-.view-container > form > div > label.flying select:not([data-value]) {
+.form label.flying select:not([data-value]) {
   -webkit-animation: unFlyingFrames 0.3s, 0.3s;
-  animation: unFlyingFrames 0.3s;
+  animation: unFlyingFrames 0.3s, 0.3s;
   height: 0;
   margin-top: 0;
   padding-top: 0;
   padding-bottom: 0;
 }
 
-.view-container > form > label.flying > select:focus:not([data-value]),
-.view-container > form > div > label.flying > select:focus:not([data-value]) {
+.form .row > label.flying > select:not([multiple]):focus:not([data-value]),
+.form > label.flying > select:focus:not([data-value]) {
   height: 24px;
   margin-top: 10px;
   -webkit-animation: flyingFrames 0.3s, 0.3s;
-  animation: flyingFrames 0.3s;
+  animation: flyingFrames 0.3s, 0.3s;
 }
-.view-container > form > label > input:focus,
-.view-container > form > label > select:focus,
-.view-container > form > div > label > input:focus,
-.view-container > form > div > label > select:focus {
-  font-size: 15px;
+.form .row > label > input:focus,
+.form .row > label > select:focus,
+.form > label > input:focus,
+.form > label > select:focus {
   height: 24px;
   margin-top: 10px;
   -webkit-animation: flyingFrames 0s, 0s;
   animation: flyingFrames 0s;
 }
 
-.view-container > form > label.flying > input[value=""],
-.view-container > form > label.flying > select:not([data-value]),
-.view-container > form > div > label.flying > input[value=""],
-.view-container > form > div > label.flying > select:not([data-value]) {
+.form .row > label.flying > input[value=""],
+.form .row > label.flying > select:not([data-value]),
+.form > label.flying > input[value=""],
+.form > label.flying > select:not([data-value]) {
   height: 0;
   margin-top: 0;
   padding-top: 0;
 }
-.view-container > form > label.flying > input:focus[value=""],
-.view-container > form > label.flying.focused > select:not([data-value]),
-.view-container > form > div > label.flying > input:focus[value=""],
-.view-container > form > div > label.flying.focused > select:not([data-value]) {
+
+.form .row > label.flying > input:focus[value=""],
+.form .row > label.flying.focused > select:not([data-value]),
+.form > label.flying > input:focus[value=""],
+.form > label.flying.focused > select:not([data-value]) {
   height: 24px;
   margin-top: 10px;
   padding-top: 2px;
@@ -355,13 +334,7 @@ select::-webkit-input-placeholder {
   margin-top: 6px;
 }
 
-.view-container > form > div > section > label.switch-container,
-.view-container > form > div > label.switch-container,
 label.switch-container,
-.view-container > form > div > section > label.checkbox-container,
-.view-container > form > div > label.checkbox-container,
-.view-container > form > div > label.checkbox-group,
-.view-container > form > div > label.radio-group,
 label.checkbox-container,
 label.checkbox-group,
 label.radio-group,
@@ -376,22 +349,25 @@ label.radio-group,
   display: flex;
   align-items: flex-start;
   padding-left: 40px;
-  padding-top: 16px;
-  font-size: 15px;
-  font-weight: 400;
+  padding-top: 15px;
+  font-size: 16px;
+  font-weight: 500;
 }
 
-.view-container > form > div > section > label.switch-container,
-.view-container > form > div > label.switch-container,
-label.switch-container {
+.form .row > label.switch-container,
+.switch-container {
+  font-size: 16px;
+  font-weight: 500;
+  padding-top: 13px;
   padding-left: 56px;
+  height: unset;
 }
 
 h4.checkbox-container {
   height: 32px;
   padding: 6px 16px;
   margin-bottom: 0;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 500;
 }
 
@@ -400,16 +376,10 @@ section > h4.checkbox-container > input[type="checkbox"]:not(.modal-trigger):not
   margin-right: 10px;
 }
 
-.view-container > form > div > section > label.switch-container,
-.view-container > form > div > label.switch-container,
-label.switch-container,
-.view-container > form > div > section > label.checkbox-container,
-.view-container > form > div > label.checkbox-container,
-.view-container > form > div > label.checkbox-group,
-.view-container > form > div > label.radio-group,
-label.checkbox-container,
-label.checkbox-group,
-label.radio-group,
+.switch-container,
+.checkbox-container,
+.checkbox-group,
+.radio-group,
 .row.checkbox-group > label.col,
 .row.radio-group > label.col,
 .row.checkbox-group > label,
@@ -478,31 +448,17 @@ section.row {
   margin-right: 0;
   height: 100%;
 }
-
+/*
 section > p > label {
   font-weight: 400;
   margin-right: 6px;
 }
-form label.flying,
-form > div > label.flying {
-  font-size: 14px;
-  height: 63px;
+*/
+.form label.flying {
+  height: 64px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-}
-
-@media screen and (max-width: 600px) {
-  .view-container > form > div.row {
-    margin-left: 0;
-    margin-right: 0;
-  }
-  form .view-container > div > label,
-  form .view-body > label,
-  form .row > label.col {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
 }
 
 label.required:before {
@@ -514,7 +470,7 @@ label.required:before {
 .form-group > label.required:before {
   left: -9px;
 }
-.view-container > div > form > section.inline {
+.form > section.inline {
   padding-bottom: 8px;
 }
 .row.inline > label:last-child,
@@ -524,6 +480,7 @@ label.required:before {
   padding-top: 14px;
   padding-bottom: 4px;
   margin-bottom: 1px;
+  height: unset;
 }
 
 .row.inline > label > section.checkbox-group,
@@ -544,7 +501,6 @@ label.required:before {
   left: 34%;
 }
 
-.view-container > form > div > section > label.inline-input,
 .row > label.col.inline-input,
 .inline-input {
   display: inline-flex;
@@ -553,7 +509,7 @@ label.required:before {
   padding-right: 0;
 }
 
-.view-container > form > div > section > label.inline-input {
+.form > div > section > label.inline-input {
   padding-left: 16px;
   padding-right: 16px;
 }
