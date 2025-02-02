@@ -76,6 +76,7 @@
   }
 }
 
+.dark body,
 .dark article,
 .dark .data-list dd,
 .dark .form > div > section > p,
@@ -86,8 +87,9 @@
 .dark .video > p,
 .dark .img-card > p,
 .dark .horizon > li > a,
-.dark .list-item > a,
+.dark .img-item > h3,
 .dark .img-item > a,
+.dark .list-item > a,
 .dark .table > thead > tr > th,
 .dark .table > thead > tr > th > a,
 .dark .table > thead > tr > th > button,
@@ -112,6 +114,17 @@
   color: #b2b2b2;
 }
 
+.dark .table > tbody > tr > td > a,
+.dark .table > tbody > tr > td,
+.dark .row .form-group label,
+.dark .card > footer > button.btn-cancel,
+.dark .central-full > form > div > button.btn-cancel,
+.dark header > h5,
+.dark .view-subtitle,
+.dark .subtitle {
+  color: #999999;
+}
+
 .dark .view-body > section > article > p,
 .dark .section-body > p {
   border-color: #7f7f7f;
@@ -133,6 +146,7 @@
 }
 */
 .dark .btn-more,
+.dark h1,
 .dark h2,
 .dark .img-card h3,
 .dark .row .form-group.focused label,
@@ -141,8 +155,6 @@
 .dark .view-container > form > div > label.focused,
 .dark .view-container > div > label.focused,
 .dark .view-body > label.focused,
-.dark .form > div > h1,
-.dark .form > div > h2,
 .dark .view-container > form > div > h2,
 .dark .card > footer > button,
 .dark .btn-select,
@@ -175,8 +187,6 @@
 
 .dark .diff .row .col p > span,
 .dark .data-list dt,
-.dark article > p > label,
-.dark section > p > label,
 .dark .remark,
 .dark .article-notice,
 .dark .btn-detail,
@@ -411,26 +421,6 @@
   border-color: #242424;
 }
 
-.dark body,
-.dark .table > tbody > tr > td > a,
-.dark .table > tbody > tr > td,
-.dark .row .form-group label,
-.dark .pagination > li > a,
-.dark .pagination > li > span,
-.dark .card > footer > button.btn-cancel,
-.dark .central-full > form > div > button.btn-cancel,
-.dark header > h5,
-.dark .view-subtitle,
-.dark .subtitle {
-  color: #999999;
-}
-
-.dark .pagination > li > a,
-.dark .pagination > li > span {
-  border-color: #666666;
-  background-color: inherit;
-}
-
 .dark ul.list > li.highlight {
   background-color: #242424;
 }
@@ -518,6 +508,11 @@
   color: #f0f0f0;
 }
 
+.dark .pagination > li > a,
+.dark .pagination > li > span {
+  border-color: #666666;
+  background-color: inherit;
+}
 /* bootstrap */
 /*.panel-heading,*/
 .dark .result .active,

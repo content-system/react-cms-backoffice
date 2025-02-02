@@ -73,6 +73,7 @@
   }
 }
 
+.grey body,
 .grey article,
 .grey .data-list dd,
 .grey .form > div > section > p,
@@ -83,8 +84,9 @@
 .grey .video > p,
 .grey .img-card > p,
 .grey .horizon > li > a,
-.grey .list-item > a,
+.grey .img-item > h3,
 .grey .img-item > a,
+.grey .list-item > a,
 .grey .table > thead > tr > th,
 .grey .table > thead > tr > th > a,
 .grey .table > thead > tr > th > button,
@@ -109,6 +111,17 @@
   color: #393f48;
 }
 
+.grey .table > tbody > tr > td > a,
+.grey .table > tbody > tr > td,
+.grey .row .form-group label,
+.grey .card > footer > button.btn-cancel,
+.grey .view-container.central-full > form > div > button.btn-cancel,
+.grey header > h5,
+.grey .view-subtitle,
+.grey .subtitle {
+  color: #657181;
+}
+
 .grey .view-body > section > article > p,
 .grey .section-body > p {
   border-color: #7f7f7f;
@@ -127,6 +140,7 @@
 }
 */
 .grey .btn-more,
+.grey h1,
 .grey h2,
 .grey .img-card h3,
 .grey .row .form-group.focused label,
@@ -135,8 +149,6 @@
 .grey .view-container > form > div > label.focused,
 .grey .view-container > div > label.focused,
 .grey .view-body > label.focused,
-.grey .form > div > h1,
-.grey .form > div > h2,
 .grey .card > footer > button,
 .grey .btn-select,
 .grey .btn-add,
@@ -168,8 +180,6 @@
 
 .grey .diff .row .col p > span,
 .grey .data-list dt,
-.grey article > p > label,
-.grey section > p > label,
 .grey .remark,
 .grey .article-notice,
 .grey .btn-detail,
@@ -407,26 +417,6 @@
   border-color: #242424;
 }
 
-.grey body,
-.grey .table > tbody > tr > td > a,
-.grey .table > tbody > tr > td,
-.grey .row .form-group label,
-.grey .pagination > li > a,
-.grey .pagination > li > span,
-.grey .card > footer > button.btn-cancel,
-.grey .view-container.central-full > form > div > button.btn-cancel,
-.grey header > h5,
-.grey .view-subtitle,
-.grey .subtitle {
-  color: #657181;
-}
-
-.grey .pagination > li > a,
-.grey .pagination > li > span {
-  border-color: #666666;
-  background-color: inherit;
-}
-
 .grey ul.list > li.highlight {
   background-color: #f2f2f2;
 }
@@ -478,6 +468,11 @@
   box-shadow: 0 1px 0 0 #657181;
 }
 
+.grey .pagination > li > a,
+.grey .pagination > li > span {
+  border-color: #666666;
+  background-color: inherit;
+}
 /* bootstrap */
 /*.panel-heading,*/
 .grey .result .active,

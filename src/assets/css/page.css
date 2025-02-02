@@ -65,6 +65,7 @@
 
 @media screen and (max-width: 600px) {
   .page-header {
+    border-top: 1px solid;
     border-bottom: 0;
   }
 }
@@ -96,6 +97,23 @@
   max-height: calc(100vh - 64px - 52px);
 }
 
+.list-detail-container > .list-content > header,
+.list-detail-container > .detail-content > form > header,
+.page-body > article > header,
+.page-body > div > header,
+.page-body > .form > header,
+.view-header {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  z-index: 3;
+  height: 44px;
+  background-color: inherit;
+  background-image: inherit;
+}
+
 .modal-portal-content > div > div,
 .detail-content > form > div,
 .page-body > .form > div,
@@ -104,7 +122,7 @@
 .form-body,
 .view-body {
   padding: 0;
-  padding-top: 52px;
+  padding-top: 44px;
   padding-bottom: 20px;
   right: 0;
   top: 0px;

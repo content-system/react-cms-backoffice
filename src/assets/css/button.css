@@ -218,7 +218,7 @@ footer > .btn-next {
 }
 .btn-back::before {
   position: absolute;
-  top: -3px;
+  top: -8px;
   left: 3px;
   font-size: 36px;
   font-weight: 300;
@@ -357,7 +357,7 @@ h4 > .btn-add {
   font-size: 36px;
   content: "+";
   position: absolute;
-  top: -3px;
+  top: -7px;
   left: 1px;
 }
 header > .btn-group > .btn-list {

@@ -120,22 +120,6 @@ td > button {
   margin-right: 0;
 }
 
-.list-detail-container > .list-content > header,
-.list-detail-container > .detail-content > form > header,
-.page-body > article > header,
-.page-body > div > header,
-.page-body > .form > header,
-.view-header {
-  position: relative;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  position: absolute;
-  z-index: 3;
-  height: 52px;
-  background-color: inherit;
-  background-image: inherit;
-}
 .modal-portal-content > div > header {
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
@@ -287,18 +271,28 @@ h2 {
   padding-right: 16px;
 }
 h1 {
+  font-weight: 500;
   font-size: 24px;
 }
 
+h1,
 h2,
-h3 {
+h3,
+h4,
+section > a {
   width: 100%;
-  height: 48px;
+  min-height: 40px;
   display: flex;
   align-items: center;
   margin: 0;
   padding: 0 16px;
   background-color: inherit;
+}
+section > a,
+h4 {
+  position: relative;
+  font-size: 16px;
+  font-weight: 500;
 }
 header > h1,
 header > h2 {
@@ -306,12 +300,27 @@ header > h2 {
   color: inherit;
   background-color: transparent;
 }
+
+/*
+h4:not(:first-child):not(:nth-child(2)) {
+  margin-top: 10px;
+}
+*/
 @media screen and (max-width: 600px) {
   header > h1,
   header > h2 {
     justify-content: center;
   }
+  h4 {
+    justify-content: space-between;
+  }
 }
+
+.central-full .view-body > h1,
+.central-full .view-body > h2 {
+  justify-content: center;
+}
+
 h3 {
   font-size: 18px;
   font-weight: 500;
@@ -320,24 +329,11 @@ h3 {
   margin-bottom: 24px;
 }
 
-h3 > * {
+h3 > *,
+h4 > * {
   margin-left: 10px;
 }
 
-section > a,
-h4 {
-  position: relative;
-  width: 100%;
-  line-height: 1.5;
-  display: flex;
-  align-items: center;
-  margin: 0;
-  padding: 6px 16px;
-  padding-top: 7px;
-  font-size: 16px;
-  font-weight: 500;
-  background-color: inherit;
-}
 h5 {
   font-size: 14px;
 }
@@ -349,24 +345,6 @@ h4 > a,
 h4 > i,
 p > a {
   color: inherit;
-}
-.section-subheader {
-  font-size: 16px;
-  font-weight: 500;
-}
-/*
-h4:not(:first-child):not(:nth-child(2)) {
-  margin-top: 10px;
-}
-*/
-@media screen and (max-width: 600px) {
-  h4 {
-    justify-content: space-between;
-  }
-}
-
-h4 > * {
-  margin-left: 10px;
 }
 
 hr {

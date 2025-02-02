@@ -61,6 +61,7 @@ h3 {
   }
 }
 
+body,
 article,
 .data-list dd,
 .form > div > section > p,
@@ -71,6 +72,7 @@ article,
 .video > p,
 .img-card > p,
 .horizon > li > a,
+.img-item > h3,
 .img-item > a,
 .list-item > a,
 .table > thead > tr > th,
@@ -99,6 +101,17 @@ label.radio-group,
   color: #4d4d4d;
 }
 
+.table > tbody > tr > td > a,
+.table > tbody > tr > td,
+.row .form-group label,
+.card > footer > button.btn-cancel,
+.central-full > form > div > button.btn-cancel,
+header > h5,
+.view-subtitle,
+.subtitle {
+  color: #999999;
+}
+
 .view-body > section > article > p,
 .section-body > p {
   border-color: #808080;
@@ -114,6 +127,7 @@ label.radio-group,
 .table > thead > tr,
 */
 .btn-more,
+h1,
 h2,
 .img-card h3,
 .row .form-group.focused label,
@@ -121,8 +135,6 @@ h2,
 .row > .col label.focused,
 label.focused,
 .view-body > label.focused,
-.form > div > h1,
-.form > div > h2,
 .card > footer > button,
 .btn-select,
 .btn-add,
@@ -155,8 +167,6 @@ header > .btn-group > button,
 
 .diff .row .col p > span,
 .data-list dt,
-article > p > label,
-section > p > label,
 .remark,
 .article-notice,
 .btn-detail,
@@ -391,26 +401,6 @@ label.required:before,
   border-color: #dbdbdb;
 }
 
-body,
-.table > tbody > tr > td > a,
-.table > tbody > tr > td,
-.row .form-group label,
-.pagination > li > a,
-.pagination > li > span,
-.card > footer > button.btn-cancel,
-.central-full > form > div > button.btn-cancel,
-header > h5,
-.view-subtitle,
-.subtitle {
-  color: #999999;
-}
-
-.pagination > li > a,
-.pagination > li > span {
-  border-color: #999999;
-  background-color: inherit;
-}
-
 ul.list > li.highlight {
   background-color: #f2f2f2;
 }
@@ -472,6 +462,11 @@ ul.list > li.highlight {
   color: #f0f0f0;
 }
 
+.pagination > li > a,
+.pagination > li > span {
+  border-color: #999999;
+  background-color: inherit;
+}
 /* bootstrap */
 /*.panel-heading,*/
 .result .active,

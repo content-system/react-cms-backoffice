@@ -63,10 +63,19 @@ ul.list.row > li.col {
   position: absolute;
   right: 16px;
 }
-
+.list-item > .btn-detail,
+.small.img-item > .btn-detail {
+  top: 3px;
+}
 .card-grid {
   padding-left: 12px;
   padding-right: 12px;
+}
+@media screen and (max-width: 600px) {
+  .card-grid {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
 }
 .card,
 .video {
@@ -137,11 +146,7 @@ ul.list.row > li.col > *:first-child {
   line-height: 1.5;
   display: flex;
   justify-content: space-between;
-  margin: 0;
-  margin-top: 9px;
-  margin-bottom: 3px;
-  padding-left: 0;
-  padding-right: 0;
+  padding: 12px 0 0 0;
   font-size: 18px;
   font-weight: 500;
   background-color: inherit;
@@ -152,6 +157,12 @@ ul.list.row > li.col > *:first-child {
   font-weight: 500;
   min-height: 31px;
   padding-top: 4px;
+}
+.img-item > h3 {
+  height: unset;
+}
+.img-item > h3 {
+  background-color: inherit;
 }
 .small.img-item > a,
 .img-item > h4,
@@ -169,8 +180,16 @@ ul.list.row > li.col > *:first-child {
   font-size: 16px;
   font-weight: 500;
 }
+.img-item > h4,
 .small.img-item > a {
   padding-top: 2px;
+}
+.img-card > h4 {
+  padding-top: 4px;
+  padding-bottom: 2px;
+}
+.img-item > h4 {
+  padding-bottom: 0;
 }
 .list-item > a {
   min-height: 26px;
@@ -217,14 +236,12 @@ li.video > section > a {
   display: flex;
   justify-content: space-between;
   margin: 0;
-  padding-top: 2px;
+  padding-top: 4px;
 }
 
 .list-item,
 .img-item,
-.img-card,
-.card,
-.video {
+.img-card {
   padding-top: 8px;
 }
 @media screen and (max-width: 600px) {

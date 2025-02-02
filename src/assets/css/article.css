@@ -2,24 +2,79 @@
   padding-left: 16px;
   padding-right: 16px;
 }
+.article-description,
+.article-meta,
+.article-thumbnail,
+.article-content {
+  max-width: 780px;
+  padding: 0;
+  margin-block-end: 8px;
+}
+.article-meta {
+  min-height: unset;
+}
+.article-content {
+  margin-block-start: 16px;
+}
 .article-body > h3,
 .article-body > h4 {
   padding-left: 0;
   padding-right: 0;
   background-color: inherit;
 }
-.article-content {
+.article-content > h1,
+.article-content > h2,
+.article-content > h3,
+.article-content > h4,
+.article-content > h5,
+.article-content > h6 {
+  padding: 0;
+  margin-block-end: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: inherit;
+  background-color: inherit;
+  height: unset;
+}
+.article-content > h6 {
   font-size: 14px;
 }
+.article-content > h4 {
+  font-size: 18px;
+}
+.article-content > h3 {
+  font-size: 20px;
+}
+.article-content > h2 {
+  font-size: 22px;
+}
+.article-content > h1 {
+  font-size: 24px;
+}
+.article-description {
+  font-size: 18px;
+  font-weight: 500;
+}
+.article-content > figure,
+.article-content > p {
+  margin-block-end: 16px;
+}
+.article-content figcaption {
+  text-align: center;
+  font-style: italic;
+  margin-block-start: 8px;
+}
+.article-content,
+.article-content > p {
+  font-size: 16px;
+}
 .article-thumbnail {
-  max-width: 100%;
   margin-bottom: 14px;
 }
-.article-content img {
+.article-content > figure > img {
   max-width: 100%;
-  margin-bottom: 14px;
+  margin-bottom: 0px;
 }
-
 .job-description h3,
 .job-description h4,
 .job-description h5,
@@ -27,6 +82,8 @@
 .job-description p {
   padding-left: 0;
   padding-right: 0;
+  color: inherit;
+  background-color: inherit;
 }
 .job-description ul {
   padding-left: 16px;
