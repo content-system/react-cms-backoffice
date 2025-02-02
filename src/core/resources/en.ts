@@ -244,6 +244,7 @@ export const en = {
   articles: "Articles",
   article: "Article",
   jobs: "Jobs",
+  job: "Job",
   id: "Id",
   title: "Title",
   content: "Content",
