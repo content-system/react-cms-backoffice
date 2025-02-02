@@ -10,6 +10,7 @@ import { toast } from "ui-toast"
 import { storage, StringMap } from "uione"
 import { resources as vresources } from "validation-core"
 import { DefaultCsvService, resources } from "web-clients"
+import ArticlesRoute from "./article"
 import { AuditLogsForm } from "./audit-log"
 import { ChangePasswordForm } from "./authentication/change-password-form"
 import { ForgotPasswordForm } from "./authentication/forgot-password-form"
@@ -26,32 +27,32 @@ import UsersRoute from "./user"
 
 // tslint:disable:ordered-imports
 import "./App.css"
-import "./assets/css/reset.css"
-import "./assets/fonts/material-icon/css/material-icons.css"
-import "./assets/fonts/Roboto/font.css";
-import "./assets/css/checkbox.css"
-import "./assets/css/radio.css"
-import "./assets/css/grid.css"
 import "./assets/css/alert.css"
+import "./assets/css/article.css"
+import "./assets/css/badge.css"
+import "./assets/css/button.css"
+import "./assets/css/checkbox.css"
+import "./assets/css/dark.css"
+import "./assets/css/data-list.css"
+import "./assets/css/form.css"
+import "./assets/css/grey.css"
+import "./assets/css/grid.css"
+import "./assets/css/layout.css"
+import "./assets/css/list-detail.css"
+import "./assets/css/list-view.css"
 import "./assets/css/loader.css"
-import "./assets/css/page.css"
 import "./assets/css/main.css"
 import "./assets/css/modal.css"
 import "./assets/css/multi-select.css"
-import "./assets/css/form.css"
-import "./assets/css/article.css"
-import "./assets/css/list-view.css"
-import "./assets/css/table.css"
-import "./assets/css/list-detail.css"
-import "./assets/css/data-list.css"
-import "./assets/css/solid-container.css"
-import "./assets/css/button.css"
+import "./assets/css/page.css"
+import "./assets/css/radio.css"
+import "./assets/css/reset.css"
 import "./assets/css/search.css"
-import "./assets/css/layout.css"
+import "./assets/css/solid-container.css"
+import "./assets/css/table.css"
 import "./assets/css/theme.css"
-import "./assets/css/dark.css"
-import "./assets/css/grey.css"
-import "./assets/css/badge.css"
+import "./assets/fonts/material-icon/css/material-icons.css"
+import "./assets/fonts/Roboto/font.css"
 
 axios.defaults.withCredentials = true
 
@@ -120,6 +121,7 @@ function App() {
           <Route path="/settings" element={<SettingsForm />} />
           <Route path="users/*" element={<UsersRoute />} />
           <Route path="roles/*" element={<RolesRoute />} />
+          <Route path="articles/*" element={<ArticlesRoute />} />
           <Route path="audit-logs" element={<AuditLogsForm />} />
         </Route>
       </Routes>
