@@ -275,6 +275,7 @@ export const JobsForm = () => {
                       {resource.description}
                     </button>
                   </th>
+                  <th className="action">{resource.action}</th>
                 </tr>
               </thead>
               <tbody>
@@ -290,6 +291,12 @@ export const JobsForm = () => {
                         </td>
                         <td>{formatDateTime(item.publishedAt, dateFormat)}</td>
                         <td>{item.description}</td>
+                        <td>
+                          <div className="btn-group">
+                            <button type="button" className="btn-edit" onClick={(e) => edit(e, item.id)}></button>
+                            <button type="button" className="btn-history" onClick={(e) => edit(e, item.id)}></button>
+                          </div>
+                        </td>
                       </tr>
                     )
                   })}
