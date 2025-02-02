@@ -242,6 +242,7 @@ export const en = {
   ip: "IP",
 
   articles: "Articles",
+  article: "Article",
   jobs: "Jobs",
   id: "Id",
   title: "Title",

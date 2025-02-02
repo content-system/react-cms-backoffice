@@ -21,6 +21,7 @@ import { config } from "./config"
 import HomePage from "./core/home"
 import LayoutPage from "./core/layout"
 import { resources as locales } from "./core/resources"
+import JobsRoute from "./job"
 import RolesRoute from "./role"
 import { SettingsForm } from "./settings"
 import UsersRoute from "./user"
@@ -122,6 +123,7 @@ function App() {
           <Route path="users/*" element={<UsersRoute />} />
           <Route path="roles/*" element={<RolesRoute />} />
           <Route path="articles/*" element={<ArticlesRoute />} />
+          <Route path="jobs/*" element={<JobsRoute />} />
           <Route path="audit-logs" element={<AuditLogsForm />} />
         </Route>
       </Routes>

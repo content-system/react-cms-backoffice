@@ -9,7 +9,6 @@ export * from "./article"
 const httpRequest = new HttpRequest(axios, options)
 export interface Config {
   article_url: string
-  role_url: string
 }
 let articleService: ArticleService | undefined
 
