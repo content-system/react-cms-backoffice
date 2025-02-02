@@ -61,6 +61,55 @@ h3 {
   }
 }
 
+article,
+.data-list dd,
+.form > div > section > p,
+.section-body > p,
+.brand,
+.card > section > p,
+.video > section > p,
+.video > p,
+.img-card > p,
+.horizon > li > a,
+.img-item > a,
+.list-item > a,
+.table > thead > tr > th,
+.table > thead > tr > th > a,
+.table > thead > tr > th > button,
+h4,
+h5,
+h6,
+section > h4 > .btn-group > button,
+section > a,
+.section-header,
+.section-subheader,
+.diff .row .col p,
+.btn-next,
+.btn-accept,
+.btn-cancel,
+.btn-group,
+.alert p,
+label.switch-container,
+label.checkbox-container,
+label.checkbox-group,
+label.radio-group,
+.checkbox-group > label,
+.radio-group > label,
+.group label div {
+  color: #4d4d4d;
+}
+
+.view-body > section > article > p,
+.section-body > p {
+  border-color: #808080;
+}
+
+.card > section,
+.video > section,
+.horizon > .video {
+  border-color: #ebebeb;
+}
+
 /*
 .table > thead > tr,
 */
@@ -366,55 +415,6 @@ ul.list > li.highlight {
   background-color: #f2f2f2;
 }
 
-article,
-.data-list dd,
-.form > div > section > p,
-.section-body > p,
-.brand,
-.card > section > p,
-.card > section > p > a,
-.video > section > p,
-.video > section > p > a,
-.video > p,
-.video > h4 > a,
-.img-card > p,
-.horizon > li > a,
-.img-item > a,
-.list-item > a,
-.table > thead > tr > th,
-.table > thead > tr > th > a,
-.table > thead > tr > th > button,
-h4,
-h5,
-h6,
-section > h4 > .btn-group > button,
-section > h4.title > a,
-section > a,
-.section-header,
-.section-subheader,
-.diff .row .col p,
-.btn-next,
-.btn-accept,
-.btn-cancel,
-.btn-group,
-.alert p,
-label.switch-container,
-label.checkbox-container,
-label.checkbox-group,
-label.radio-group,
-.checkbox-group > label,
-.radio-group > label,
-.group label div,
-.video-container > h4 > a,
-.video-container > h4 > i {
-  color: #4d4d4d;
-}
-
-.view-body > section > article > p,
-.section-body > p {
-  border-color: #808080;
-}
-
 .light-gray {
   color: #b3b3b3 !important;
 }
@@ -430,12 +430,6 @@ label.radio-group,
 .cover > i:first-child {
   background: #000;
   color: #fff;
-}
-
-.card > section,
-.video > section,
-.horizon > .video {
-  border-color: #ebebeb;
 }
 
 .chips.focus {

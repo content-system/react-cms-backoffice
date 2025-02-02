@@ -344,7 +344,12 @@ h5 {
 h6 {
   font-size: 12px;
 }
-
+h3 > a,
+h4 > a,
+h4 > i,
+p > a {
+  color: inherit;
+}
 .section-subheader {
   font-size: 16px;
   font-weight: 500;

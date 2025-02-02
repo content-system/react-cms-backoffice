@@ -51,13 +51,7 @@ ul.list.row > li.col {
   padding-right: 0;
   border: none;
 }
-
-.list-item,
-.img-item {
-  padding-top: 8px;
-}
 .list-item {
-  margin-top: 8px;
   display: flex;
   flex-direction: column;
   padding: 0;
@@ -97,16 +91,15 @@ ul.list.row > li.col > *:first-child {
 .img-item > *:last-child {
   border-bottom: 1px solid #ebebeb;
 }
-.img-card > *:last-child {
-  margin-bottom: 16px;
-}
+
 .card > *:first-child,
 .video > *:first-child {
   padding-top: 0;
 }
-
-.card > *:last-child {
-  padding-bottom: 0;
+.img-card > *:last-child,
+.card > *:last-child,
+.video > *:last-child {
+  padding-bottom: 8px;
 }
 
 .video > section:first-child,
@@ -124,6 +117,10 @@ ul.list.row > li.col > *:first-child {
 .img-item > img {
   position: absolute;
   left: 16px;
+  width: 56px;
+  height: 56px;
+}
+.small.img-item > img {
   width: 48px;
   height: 48px;
 }
@@ -149,8 +146,14 @@ ul.list.row > li.col > *:first-child {
   font-weight: 500;
   background-color: inherit;
 }
-
-.img-item > a,
+.img-item > h3,
+.img-item > a {
+  font-size: 18px;
+  font-weight: 500;
+  min-height: 31px;
+  padding-top: 4px;
+}
+.small.img-item > a,
 .img-item > h4,
 .list-item > a,
 .list-item > h4,
@@ -161,20 +164,31 @@ ul.list.row > li.col > *:first-child {
   justify-content: space-between;
   align-items: center;
   margin: 0;
-  padding-top: 2px;
   padding-left: 0;
   padding-right: 0;
   font-size: 16px;
   font-weight: 500;
-  margin-bottom: 1px;
 }
-.img-item > a,
-.img-item > h4 {
+.small.img-item > a {
+  padding-top: 2px;
+}
+.list-item > a {
+  min-height: 26px;
+}
+.small.img-item > a,
+.small.img-item > h4 {
   min-height: 26px;
 }
 .img-item > a,
+.img-item > h3,
 .img-item > h4,
 .img-item > p {
+  padding-left: 68px;
+}
+.small.img-item > a,
+.small.img-item > h3,
+.small.img-item > h4,
+.small.img-item > p {
   padding-left: 56px;
 }
 .detail-content > form > div.video-container {
@@ -205,6 +219,14 @@ li.video > section > a {
   margin: 0;
   padding-top: 2px;
 }
+
+.list-item,
+.img-item,
+.img-card,
+.card,
+.video {
+  padding-top: 8px;
+}
 @media screen and (max-width: 600px) {
   .img-card h4,
   .video-container h4,
@@ -215,14 +237,18 @@ li.video > section > a {
     background-color: inherit;
   }
 }
-.img-item > p:last-child {
-  min-height: 29px;
-  margin-block-end: 6px;
+.img-item > p {
+  font-size: 16px;
 }
-.list-item > p:last-child {
-  min-height: 25px;
-  margin-block-end: 4px;
+.small.img-item > p {
+  font-size: 14px;
 }
+.list-item > p,
+.img-item > p {
+  margin-block-end: 0;
+  padding-block-end: 8px;
+}
+
 .card > section > p > a,
 .video > section > p > a {
   font-size: inherit;
@@ -352,13 +378,13 @@ i.date {
 .card > section > p,
 .video > section > p {
   width: calc(100% - 24px);
-  padding-top: 10px;
+  padding-top: 8px;
   font-weight: 400;
 }
 .card > section > a {
   font-size: 16px;
   font-weight: 600;
-  padding: 8px 0;
+  padding: 8px 0 0 0;
 }
 .card .cover,
 .video .cover {

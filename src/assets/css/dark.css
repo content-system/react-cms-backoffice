@@ -76,6 +76,57 @@
   }
 }
 
+.dark article,
+.dark .data-list dd,
+.dark .form > div > section > p,
+.dark .section-body > p,
+.dark .brand,
+.dark .card > section > p,
+.dark .video > section > p,
+.dark .video > p,
+.dark .img-card > p,
+.dark .horizon > li > a,
+.dark .list-item > a,
+.dark .img-item > a,
+.dark .table > thead > tr > th,
+.dark .table > thead > tr > th > a,
+.dark .table > thead > tr > th > button,
+.dark h4,
+.dark section > h4 > .btn-group > button,
+.dark section > a,
+.dark .section-header,
+.dark .section-subheader,
+.dark .diff .row .col p,
+.dark .btn-next,
+.dark .btn-accept,
+.dark .btn-cancel,
+.dark .btn-group,
+.dark .alert p,
+.dark label.switch-container,
+.dark label.checkbox-container,
+.dark label.checkbox-group,
+.dark label.radio-group,
+.dark .checkbox-group > label,
+.dark .radio-group > label,
+.dark .group label div {
+  color: #b2b2b2;
+}
+
+.dark .view-body > section > article > p,
+.dark .section-body > p {
+  border-color: #7f7f7f;
+}
+
+.dark .card > section,
+.dark .video > section,
+.dark .horizon > .video {
+  border-color: #141414;
+}
+
+.dark .card {
+  background-color: #1a1a1a !important;
+}
+
 /*
 .dark form.list-result > .table-responsive > table > thead > tr,
   background-color: #141414;
@@ -332,11 +383,6 @@
   color: #4db6ac;
 }
 
-.dark .view-body > section > article > p,
-.dark .section-body > p {
-  border-color: #7f7f7f;
-}
-
 .dark .toast-message,
 .dark .sidebar {
   background-color: #121212;
@@ -389,48 +435,6 @@
   background-color: #242424;
 }
 
-.dark article,
-.dark .data-list dd,
-.dark .form > div > section > p,
-.dark .section-body > p,
-.dark .brand,
-.dark .card > section > p,
-.dark .card > section > p > a,
-.dark .video > section > p,
-.dark .video > section > p > a,
-.dark .video > p,
-.dark .video > h4 > a,
-.dark .img-card > p,
-.dark .horizon > li > a,
-.dark .list-item > a,
-.dark .img-item > a,
-.dark .table > thead > tr > th,
-.dark .table > thead > tr > th > a,
-.dark .table > thead > tr > th > button,
-.dark h4,
-.dark section > h4 > .btn-group > button,
-.dark section > h4.title > a,
-.dark section > a,
-.dark .section-header,
-.dark .section-subheader,
-.dark .diff .row .col p,
-.dark .btn-next,
-.dark .btn-accept,
-.dark .btn-cancel,
-.dark .btn-group,
-.dark .alert p,
-.dark label.switch-container,
-.dark label.checkbox-container,
-.dark label.checkbox-group,
-.dark label.radio-group,
-.dark .checkbox-group > label,
-.dark .radio-group > label,
-.dark .group label div,
-.dark .video-container > h4 > a,
-.dark .video-container > h4 > i {
-  color: #b2b2b2;
-}
-
 .dark .player-music {
   background-color: #121212;
   color: white;
@@ -460,16 +464,6 @@
 .dark .cover > i:first-child {
   background: #fff;
   color: #000;
-}
-
-.dark .card > section,
-.dark .video > section,
-.dark .horizon > .video {
-  border-color: #141414;
-}
-
-.dark .card {
-  background-color: #1a1a1a !important;
 }
 
 .dark .chips.focus {

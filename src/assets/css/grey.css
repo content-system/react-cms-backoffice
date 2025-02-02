@@ -45,7 +45,18 @@
     background-image: linear-gradient(90deg, #657181, #657181);
   }
 }
-
+/*
+.grey .view-container > form > header > h2,
+.grey .view-container > header > h2 {
+  color: #2e3545;
+}
+@media screen and (max-width: 600px) {
+  .grey .view-container > form > header > h2,
+  .grey .view-container > header > h2 {
+    color: #fff;
+  }
+}
+*/
 .grey h3 {
   color: #181b1f;
 }
@@ -60,6 +71,53 @@
   .grey h4 {
     background-color: #f2f2f2;
   }
+}
+
+.grey article,
+.grey .data-list dd,
+.grey .form > div > section > p,
+.grey .section-body > p,
+.grey .brand,
+.grey .card > section > p,
+.grey .video > section > p,
+.grey .video > p,
+.grey .img-card > p,
+.grey .horizon > li > a,
+.grey .list-item > a,
+.grey .img-item > a,
+.grey .table > thead > tr > th,
+.grey .table > thead > tr > th > a,
+.grey .table > thead > tr > th > button,
+.grey h4,
+.grey section > h4 > .btn-group > button,
+.grey section > a,
+.grey .section-header,
+.grey .section-subheader,
+.grey .diff .row .col p,
+.grey .btn-next,
+.grey .btn-accept,
+.grey .btn-cancel,
+.grey .btn-group,
+.grey .alert p,
+.grey label.switch-container,
+.grey label.checkbox-container,
+.grey label.checkbox-group,
+.grey label.radio-group,
+.grey .checkbox-group > label,
+.grey .radio-group > label,
+.grey .group label div {
+  color: #393f48;
+}
+
+.grey .view-body > section > article > p,
+.grey .section-body > p {
+  border-color: #7f7f7f;
+}
+
+.grey .card > section,
+.grey .video > section,
+.grey .horizon > .video {
+  border-color: #e0e0e0;
 }
 
 /*
@@ -373,48 +431,6 @@
   background-color: #f2f2f2;
 }
 
-.grey article,
-.grey .data-list dd,
-.grey .form > div > section > p,
-.grey .section-body > p,
-.grey .brand,
-.grey .card > section > p,
-.grey .card > section > p > a,
-.grey .video > section > p,
-.grey .video > section > p > a,
-.grey .video > p,
-.grey .video > h4 > a,
-.grey .img-card > p,
-.grey .horizon > li > a,
-.grey .list-item > a,
-.grey .img-item > a,
-.grey .table > thead > tr > th,
-.grey .table > thead > tr > th > a,
-.grey .table > thead > tr > th > button,
-.grey h4,
-.grey section > h4 > .btn-group > button,
-.grey section > h4.title > a,
-.grey section > a,
-.grey .section-header,
-.grey .section-subheader,
-.grey .diff .row .col p,
-.grey .btn-next,
-.grey .btn-accept,
-.grey .btn-cancel,
-.grey .btn-group,
-.grey .alert p,
-.grey label.switch-container,
-.grey label.checkbox-container,
-.grey label.checkbox-group,
-.grey label.radio-group,
-.grey .checkbox-group > label,
-.grey .radio-group > label,
-.grey .group label div,
-.grey .video-container > h4 > a,
-.grey .video-container > h4 > i {
-  color: #393f48;
-}
-
 .grey .player-music {
   background-color: #121212;
   color: white;
@@ -427,11 +443,6 @@
 .grey .backgound-color-container {
   background-color: #04463c !important;
   background: linear-gradient(transparent, rgb(0, 0, 0));
-}
-
-.grey .view-body > section > article > p,
-.grey .section-body > p {
-  border-color: #7f7f7f;
 }
 
 .grey .light-gray {
@@ -451,22 +462,6 @@
   color: #fff;
 }
 
-.grey .card > section,
-.grey .video > section,
-.grey .horizon > .video {
-  border-color: #e0e0e0;
-}
-
-.grey .view-container > form > header > h2,
-.grey .view-container > header > h2 {
-  color: #2e3545;
-}
-@media screen and (max-width: 600px) {
-  .grey .view-container > form > header > h2,
-  .grey .view-container > header > h2 {
-    color: #fff;
-  }
-}
 .grey .toast-message {
   background-color: #777;
   border-color: #5f6d6f;
