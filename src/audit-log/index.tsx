@@ -58,7 +58,7 @@ export const AuditLogsForm = () => {
       </header>
       <div>
         <form id="rolesForm" name="rolesForm" className="form" noValidate={true} ref={refForm as any}>
-          <section className="row search-group">
+          <section className="row section">
             <label className="col s12 m2 l4">
               {resource.action}
               <input type="text" id="action" name="action" value={filter.action} onChange={updateState} maxLength={240} />
@@ -88,7 +88,7 @@ export const AuditLogsForm = () => {
               />
             </label>
           </section>
-          <section className="search btn-group">
+          <section className="section search">
             <label>
               {resource.page_size}
               <PageSizeSelect size={component.limit} sizes={component.pageSizes} onChange={pageSizeChanged} />

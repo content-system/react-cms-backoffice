@@ -108,7 +108,7 @@ export const RoleAssignmentForm = () => {
         <h2>{resource.role_assignment_subject}</h2>
       </header>
       <div>
-        <section className="row">
+        <section className="row section">
           <label className="col s12 m6">
             {resource.email}
             <input type="text" id="email" name="email" value={user.email || ""} maxLength={255} placeholder={resource.email} disabled={true} />

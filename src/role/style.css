@@ -14,10 +14,9 @@
 .sub-menu-level-2 .inline {
   padding-left: 1.5rem !important;
 }
-
-.tree-view {
-  margin: 0px !important;
-  padding: 2vh;
+.tree-view.section {
+  padding-left: 16px;
+  padding-right: 16px;
 }
 .tree-view p {
   font-size: 14px;
