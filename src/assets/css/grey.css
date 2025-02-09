@@ -60,16 +60,12 @@
 .grey h3 {
   color: #181b1f;
 }
-
 @media screen and (max-width: 600px) {
-  .grey h3 {
-    background-color: #e2e2e2;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .grey h4 {
+  .grey .header {
     background-color: #f2f2f2;
+  }
+  .grey h3.header {
+    background-color: #e2e2e2;
   }
 }
 
@@ -226,7 +222,7 @@
 
 .grey footer > .btn-accept::after,
 .grey footer > .btn-next::after,
-.grey section.btn-group > .btn-search,
+.grey .section.search > .btn-search,
 .grey .central-full > form > div > button,
 .grey .page-body > .form > footer > button,
 .grey .page-body > .form > footer > section.footer > button,

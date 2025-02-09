@@ -50,14 +50,11 @@ h3 {
 }
 
 @media screen and (max-width: 600px) {
-  h3 {
-    background-color: #e1ebe9;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  h4 {
+  .header {
     background-color: #f2f2f2;
+  }
+  h3.header {
+    background-color: #e1ebe9;
   }
 }
 
@@ -213,7 +210,7 @@ footer > .btn-cancel::before {
 
 footer > .btn-accept::after,
 footer > .btn-next::after,
-section.btn-group > .btn-search,
+.section.search > .btn-search,
 .central-full > form > div > button,
 .page-body > .form > footer > button,
 .page-body > .form > footer > section.footer > button,

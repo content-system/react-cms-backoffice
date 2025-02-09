@@ -65,14 +65,11 @@
 }
 
 @media screen and (max-width: 600px) {
-  .dark h3 {
-    background-color: #242424;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .dark h4 {
+  .dark .header {
     background-color: #0d0d0d;
+  }
+  .dark h3.header {
+    background-color: #242424;
   }
 }
 
@@ -233,7 +230,7 @@
 
 .dark footer > .btn-accept::after,
 .dark footer > .btn-next::after,
-.dark section.btn-group > .btn-search,
+.dark .section.search > .btn-search,
 .dark .central-full > form > div > button,
 .dark .page-body > .form > footer > button,
 .dark .page-body > .form > footer > section.footer > button,

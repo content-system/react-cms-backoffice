@@ -19,6 +19,14 @@ label.checkbox-group > input[type="checkbox"]:not(.modal-trigger):not(.toggle):n
   top: 18px;
 }
 
+.central-full .row label.col.checkbox-container {
+  padding-left: 32px;
+}
+.central-full label.checkbox-container > input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]) {
+  left: 8px;
+  padding-left: 32px;
+}
+
 label.switch-container > input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]) {
   position: absolute;
   top: 16px;

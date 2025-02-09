@@ -39,11 +39,14 @@ form label > select::-ms-expand {
     margin-top: 0px;
   }
 }
-
+.grid {
+  padding-left: 8px;
+  padding-right: 8px;
+}
 .row .col {
   width: 100%;
-  padding-left: 16px;
-  padding-right: 16px;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 .detail .row.no-margin,
@@ -161,8 +164,8 @@ label.focused > span.span-error,
   height: 64px;
   padding-top: 8px;
   margin-bottom: 1px;
-  padding-left: 16px;
-  padding-right: 16px;
+  padding-left: 8px;
+  padding-right: 8px;
   text-align: left;
   background-color: inherit;
   background-image: inherit;
@@ -442,12 +445,13 @@ section > .row.radio-group {
   flex-wrap: wrap;
   width: 100%;
 }
-
+/* 
 section.row {
   margin-left: 0;
   margin-right: 0;
-  /* height: 100%; */
+  height: 100%;
 }
+*/
 /*
 section > p > label {
   font-weight: 400;
@@ -463,17 +467,13 @@ section > p > label {
 
 label.required:before {
   position: absolute;
-  left: 7px;
+  left: -2px;
   content: "*";
 }
 
 .form-group > label.required:before {
   left: -9px;
 }
-.form > section.inline {
-  padding-bottom: 8px;
-}
-.row.inline > label:last-child,
 .row.inline > label {
   display: inline-flex;
   justify-content: space-between;
@@ -492,8 +492,10 @@ label.required:before {
   width: 1%;
 }
 
-.row.inline > label > section.checkbox-group {
+.row.inline > label > section.checkbox-group,
+.row.inline > label > section.radio-group {
   margin-left: 0;
+  min-height: unset;
 }
 
 .row.inline > label > span.span-error {

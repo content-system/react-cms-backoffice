@@ -118,6 +118,8 @@ td > button {
 .view-body.row {
   margin-left: 0;
   margin-right: 0;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 .modal-portal-content > div > header {
@@ -181,13 +183,12 @@ td > button {
   background-color: inherit;
   background-image: inherit;
 }
-
-.page-body > .form > div > section,
-.form-body > section,
-.view-body > section {
+.section {
   background-color: inherit;
   background-image: inherit;
-  padding-bottom: 16px;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin: 16px 0;
 }
 
 .page-body > .form > div.background-content > section:nth-child(2),
@@ -278,34 +279,33 @@ h1 {
 h1,
 h2,
 h3,
-h4,
-section > a {
+h4 {
   width: 100%;
-  min-height: 40px;
   display: flex;
   align-items: center;
   margin: 0;
   padding: 0 16px;
   background-color: inherit;
 }
-section > a,
+.section > * {
+  padding-left: 8px;
+  padding-right: 8px;
+}
 h4 {
   position: relative;
   font-size: 16px;
   font-weight: 500;
 }
-header > h1,
-header > h2 {
-  height: unset;
-  color: inherit;
-  background-color: transparent;
-}
-
 /*
 h4:not(:first-child):not(:nth-child(2)) {
   margin-top: 10px;
 }
 */
+header > h1,
+header > h2 {
+  color: inherit;
+  background-color: transparent;
+}
 @media screen and (max-width: 600px) {
   header > h1,
   header > h2 {
@@ -313,6 +313,18 @@ h4:not(:first-child):not(:nth-child(2)) {
   }
   h4 {
     justify-content: space-between;
+  }
+  .header {
+    min-height: 40px;
+    width: calc(100% + 16px);
+    margin-left: -8px;
+    margin-right: -8px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .section:first-child > h3:first-child,
+  .section:first-child > h4:first-child {
+    margin-top: -16px;
   }
 }
 

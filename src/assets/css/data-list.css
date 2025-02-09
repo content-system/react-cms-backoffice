@@ -1,9 +1,10 @@
 .data-list {
   width: 100%;
+  margin: 16px 0;
 }
 .data-list.row {
-  margin-left: 0;
-  margin-right: 0;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 .data-list > dt {
   font-size: 14px;

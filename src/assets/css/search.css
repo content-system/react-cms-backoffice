@@ -171,24 +171,27 @@ section.row nav.col {
   margin-bottom: 4px;
 }
 .search-group {
-  padding-bottom: 8px;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 section.row.search-group nav.col {
   margin-top: 0;
   margin-bottom: 0;
 }
-.search.btn-group {
+.section.search {
   position: relative;
-  height: 68px;
-  padding: 16px;
+  padding: 0 16px;
   display: flex;
   justify-content: flex-end;
 }
-.search.btn-group > label {
+.section.search > label {
   position: absolute;
-  top: 16px;
+  display: inline-flex;
+  top: 0;
   left: 16px;
-  width: 114px;
+  width: 118px;
   height: 36px;
   border: 1px solid;
   border-radius: 18px;
@@ -196,18 +199,20 @@ section.row.search-group nav.col {
   padding-left: 12px;
   padding-bottom: 4px;
 }
-.search.btn-group > label > select {
+.section.search > label > select {
+  margin-top: -2px;
+  padding-top: 0;
+  padding-left: 10px;
   border: none;
   outline: none;
   width: 30px;
-  padding-left: 5px;
   font-size: 14px;
   font-weight: 400;
   background-image: none !important;
 }
 
-section.btn-group > .btn-search {
-  width: 114px;
+.section.search > .btn-search {
+  width: 118px;
   height: 36px;
   padding: 6px 30px;
   font-size: 15px;
@@ -216,7 +221,7 @@ section.btn-group > .btn-search {
   border-radius: 18px;
 }
 
-section.btn-group > .btn-search:hover {
+.section.search > .btn-search:hover {
   box-shadow: 0 1px 3px 1px darkgrey;
 }
 
