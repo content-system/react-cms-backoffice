@@ -74,6 +74,11 @@ body {
   scrollbar-width: thin;
 }
 
+.round-border {
+  border-radius: 50%;
+  border: 1px solid;
+}
+
 div,
 section,
 p,
@@ -188,9 +193,16 @@ td > button {
   background-image: inherit;
   padding-left: 8px;
   padding-right: 8px;
-  margin: 16px 0;
+  margin: 0 0 16px 0;
 }
-
+.section:first-child {
+  margin-top: 8px;
+}
+/*
+.section:last-child {
+  margin-bottom: 0;
+}
+*/
 .page-body > .form > div.background-content > section:nth-child(2),
 .view-body > section:nth-child(2) {
   background-image: none;
@@ -234,7 +246,7 @@ td > button {
   width: 60px;
   height: 60px;
 }
-
+/*
 .page-body > .form > div > p,
 .view-body > p,
 .body-content {
@@ -262,12 +274,11 @@ header > h5,
   padding-left: 16px;
   padding-right: 16px;
 }
-
+*/
 h1,
 h2 {
   font-size: 20px;
   font-weight: 600;
-  margin-bottom: 0;
   padding-left: 16px;
   padding-right: 16px;
 }
@@ -281,10 +292,6 @@ h2,
 h3,
 h4 {
   width: 100%;
-  display: flex;
-  align-items: center;
-  margin: 0;
-  padding: 0 16px;
   background-color: inherit;
 }
 .section > * {
@@ -301,30 +308,55 @@ h4:not(:first-child):not(:nth-child(2)) {
   margin-top: 10px;
 }
 */
+.page-body > div > div > h2:first-child,
+.page-body > div > div > h3:first-child,
+.page-body > div > div > h4:first-child,
+.page-body > div > div > p:first-child {
+  margin-top: 8px;
+}
 header > h1,
 header > h2 {
   color: inherit;
   background-color: transparent;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.header {
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-bottom: 8px;
+}
+.header:first-child {
+  margin-top: 8px;
 }
 @media screen and (max-width: 600px) {
   header > h1,
   header > h2 {
+    display: flex;
     justify-content: center;
   }
   h4 {
+    display: flex;
     justify-content: space-between;
   }
   .header {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
     min-height: 40px;
     width: calc(100% + 16px);
     margin-left: -8px;
     margin-right: -8px;
     padding-left: 16px;
     padding-right: 16px;
+    margin-bottom: 0;
+  }
+  .header:first-child {
+    margin-top: 0;
   }
   .section:first-child > h3:first-child,
   .section:first-child > h4:first-child {
-    margin-top: -16px;
+    margin-top: -8px;
   }
 }
 
@@ -358,7 +390,16 @@ h4 > i,
 p > a {
   color: inherit;
 }
-
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+.p {
+  padding-left: 16px;
+  padding-right: 16px;
+}
 hr {
   border: none;
   border-bottom: 1px solid;
@@ -387,4 +428,24 @@ section > h4.title > a {
 
 .sysMessage {
   white-space: pre;
+}
+
+.form > div > section > p,
+.section-body > p,
+.brand,
+.table > thead > tr > th,
+.table > thead > tr > th > a,
+.table > thead > tr > th > button,
+.table > tbody > tr > td > a,
+.table > tbody > tr > td,
+h4,
+h5,
+h6,
+section > h4 > .btn-group > button,
+section > a,
+.section-header,
+.section-subheader,
+.diff .row .col p,
+.alert p {
+  color: inherit;
 }

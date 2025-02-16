@@ -20,14 +20,6 @@
 
 .dark body,
 .dark .page-container,
-.dark .page-body,
-.dark .view-container,
-.dark .full-container,
-.dark .page-header,
-.dark .modal-portal-content,
-.dark select,
-.dark input,
-.dark .alert-wrapper .alert,
 .dark .dropdown-menu-profile {
   background-color: #000;
 }
@@ -35,8 +27,7 @@
   border-color: #111;
 }
 
-.dark .modal-portal-content > div > header,
-.dark .view-header {
+.dark .modal-portal-content > div > header {
   color: #000;
   background-image: linear-gradient(90deg, #008577, #00574b);
 }
@@ -76,31 +67,11 @@
 .dark body,
 .dark article,
 .dark .data-list dd,
-.dark .form > div > section > p,
-.dark .section-body > p,
-.dark .brand,
-.dark .card > section > p,
-.dark .video > section > p,
-.dark .video > p,
-.dark .img-card > p,
-.dark .horizon > li > a,
-.dark .img-item > h3,
-.dark .img-item > a,
-.dark .list-item > a,
-.dark .table > thead > tr > th,
-.dark .table > thead > tr > th > a,
-.dark .table > thead > tr > th > button,
-.dark h4,
-.dark section > h4 > .btn-group > button,
-.dark section > a,
-.dark .section-header,
-.dark .section-subheader,
-.dark .diff .row .col p,
+.dark .table > thead > tr,
+.dark .btn-group,
 .dark .btn-next,
 .dark .btn-accept,
 .dark .btn-cancel,
-.dark .btn-group,
-.dark .alert p,
 .dark label.switch-container,
 .dark label.checkbox-container,
 .dark label.checkbox-group,
@@ -111,9 +82,6 @@
   color: #b2b2b2;
 }
 
-.dark .table > tbody > tr > td > a,
-.dark .table > tbody > tr > td,
-.dark .row .form-group label,
 .dark .card > footer > button.btn-cancel,
 .dark .central-full > form > div > button.btn-cancel,
 .dark header > h5,
@@ -145,7 +113,6 @@
 .dark .btn-more,
 .dark h1,
 .dark h2,
-.dark .img-card h3,
 .dark .row .form-group.focused label,
 .dark .row > label.focused,
 .dark .row > .col label.focused,
@@ -182,6 +149,8 @@
   }
 }
 
+.dark label,
+.dark .table > tbody,
 .dark .diff .row .col p > span,
 .dark .data-list dt,
 .dark .remark,
@@ -192,13 +161,7 @@
 .dark .btn-close,
 .dark .btn-filter,
 .dark .btn-remove-text,
-.dark .btn-edit,
-.dark .btn-approve,
-.dark .btn-copy,
-.dark .btn-history,
-.dark .btn-transfer,
-.dark .btn-divide,
-.dark .form > footer > button.btn-secondary,
+.dark .btn-group,
 .dark .btn-secondary {
   color: #7f7f7f;
 }
@@ -213,13 +176,8 @@
 }
 .dark .modal-portal-content header > .btn-group > button,
 .dark .modal-portal-content > div > header > .btn-close,
-.dark .solid > form > div > p,
-.dark .solid > div > p,
-.dark .solid > .view-body > p,
-.dark .solid > form > div > h5,
-.dark .solid > div > h5,
-.dark .solid > .view-body > h5,
-.dark .form > div > section.header-container > p {
+.dark .form > div > section.header-container > p,
+.dark .solid {
   color: #000;
 }
 
@@ -516,6 +474,15 @@
 /*
 .dark .pagination > .active, 
 .dark .pagination-page.active,*/
+.dark .pagination > .active > a,
+.dark .pagination > .active > span,
+.dark .pagination > .active > a:hover,
+.dark .pagination > .active > span:hover,
+.dark .pagination > .active > a:focus,
+.dark .pagination > .active > span:focus,
+.dark .pagination > .active > a:hover,
+.dark .pagination > .active > a:focus,
+.dark .pagination > .active > span:focus,
 
 .dark .table-striped tbody tr.active:nth-child(odd) td,
 .dark .table-striped tbody tr.active:nth-child(odd) th,
@@ -530,17 +497,7 @@
 .dark .table > tfoot > tr.active > td,
 .dark .table > thead > tr.active > th,
 .dark .table > tbody > tr.active > th,
-.dark .table > tfoot > tr.active > th,
-
-.dark .pagination > .active > a,
-.dark .pagination > .active > span,
-.dark .pagination > .active > a:hover,
-.dark .pagination > .active > span:hover,
-.dark .pagination > .active > a:focus,
-.dark .pagination > .active > span:focus,
-.dark .pagination > .active > a:hover,
-.dark .pagination > .active > a:focus,
-.dark .pagination > .active > span:focus {
+.dark .table > tfoot > tr.active > th {
   background-color: #387ef5;
 }
 

@@ -6,7 +6,7 @@ export interface Article {
   description?: string
   content: string
   thumbnail?: string
-  publishedAt: Date
+  publishedAt?: Date
   tags?: string[]
   type?: string
   authorId?: string
@@ -37,7 +37,7 @@ export const articleModel: Attributes = {
     q: true,
   },
   description: {
-    length: 1000,
+    length: 1200,
     required: true,
     q: true,
   },
@@ -46,7 +46,7 @@ export const articleModel: Attributes = {
     type: "datetime",
   },
   content: {
-    length: 5000,
+    length: 9000,
     required: true,
   },
   thumbnail: {},

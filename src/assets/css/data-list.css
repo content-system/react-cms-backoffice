@@ -3,8 +3,8 @@
   margin: 16px 0;
 }
 .data-list.row {
-  padding-left: 16px;
-  padding-right: 16px;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 .data-list > dt {
   font-size: 14px;

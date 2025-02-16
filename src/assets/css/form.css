@@ -49,7 +49,6 @@ form label > select::-ms-expand {
   padding-right: 8px;
 }
 
-.detail .row.no-margin,
 .row.no-margin {
   margin-left: 0;
   margin-right: 0;
@@ -149,7 +148,9 @@ label.focused > span.span-error,
 .form-group.focused > span.span-error {
   display: flex;
 }
-
+.form .row > label.textarea-container {
+  height: unset;
+}
 .form > div > .form-group,
 .form .row > label,
 .form > label,
@@ -171,7 +172,9 @@ label.focused > span.span-error,
   background-image: inherit;
   font-weight: 500;
 }
-
+.page-body > .form > .row > .col:last-child {
+  margin-bottom: 16px;
+}
 .row .form-group {
   width: 100%;
   font-size: 14px;
@@ -545,22 +548,6 @@ label.required:before {
   font-size: 23px;
   font-weight: 100;
   content: "\2B";
-}
-
-.detail > .row > span.col,
-.detail > .row > .col.row > span.col {
-  height: 28px;
-  padding-top: 6px;
-}
-
-.detail .row {
-  margin-right: -5px;
-  margin-left: -5px;
-}
-
-.detail .row .col {
-  padding-left: 5px;
-  padding-right: 5px;
 }
 
 .text-right {

@@ -8,7 +8,7 @@
 .article-content {
   max-width: 780px;
   padding: 0;
-  margin-block-end: 8px;
+  margin-bottom: 8px;
 }
 .article-meta {
   min-height: unset;

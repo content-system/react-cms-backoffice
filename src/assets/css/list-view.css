@@ -3,9 +3,13 @@
 }
 
 .list {
-  margin: 16px 0;
+  margin: 4px 0 16px 0;
 }
-
+/*
+.list:last-child {
+  margin-bottom: 0;
+}
+*/
 .list.horizon {
   display: flex;
   flex-direction: row;
@@ -38,7 +42,11 @@
 .list.row {
   padding: 0 8px;
 }
-
+.card-grid,
+.list.row.card-grid {
+  margin-top: 12px;
+  margin-bottom: 0;
+}
 ul.list > li {
   display: flex;
   flex-direction: column;
@@ -50,23 +58,11 @@ ul.list.row > li.col {
   padding-right: 0;
   border: none;
 }
-.list-item {
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  border: 0;
-  border-bottom: 1px solid #ebebeb;
+/*
+ul.list.row > li.col:last-child {
+  margin-bottom: 16px;
 }
-.list-item > .btn-detail,
-.img-item > .btn-detail {
-  position: absolute;
-  right: 16px;
-}
-.list-item > .btn-detail,
-.small.img-item > .btn-detail {
-  top: 3px;
-}
-
+*/
 ul.list.row > li.col > h3,
 ul.list.row > li.col > h4,
 ul.list.row > li.col > a,
@@ -78,14 +74,38 @@ ul.list.row > li.col > *:first-child {
   padding-top: 8px;
 }
 */
+
+.list-item {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid #ebebeb;
+}
+.list-item > .btn-detail,
+.img-item > .btn-detail {
+  position: absolute;
+  right: 8px;
+  top: 12px;
+}
+.list-item > .btn-detail,
+.small.img-item > .btn-detail {
+  top: 8px;
+}
+
 .list-item > *:last-child,
 .img-item > *:last-child {
   border-bottom: 1px solid #ebebeb;
 }
 
-.round-border {
-  border-radius: 50%;
-  border: 1px solid;
+.img-item > *:last-child {
+  min-height: 33px;
+}
+.small.img-item > *:last-child {
+  min-height: 30px;
+}
+.list-item > *:last-child {
+  min-height: 30px;
 }
 
 .img-item > img {
@@ -100,28 +120,16 @@ ul.list.row > li.col > *:first-child {
 }
 .img-item > input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]) {
   position: absolute;
-  left: 16px;
+  left: 8px;
 }
 
-.video-container > h3,
-.img-card > h3,
-.card > section > h3 {
-  width: 100%;
-  height: unset;
-  line-height: 1.5;
-  display: flex;
-  justify-content: space-between;
-  padding: 12px 0 0 0;
-  font-size: 18px;
-  font-weight: 500;
-  background-color: inherit;
-}
 .img-item > h3,
 .img-item > a {
   font-size: 18px;
   font-weight: 500;
   min-height: 31px;
-  padding-top: 4px;
+  padding-top: 6px;
+  margin-bottom: 0;
 }
 .img-item > h3 {
   height: unset;
@@ -135,7 +143,6 @@ ul.list.row > li.col > *:first-child {
 .list-item > h4,
 .img-card > h4 {
   width: 100%;
-  line-height: 1.5;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -152,6 +159,7 @@ ul.list.row > li.col > *:first-child {
 .img-item > h4 {
   padding-bottom: 0;
 }
+.list-item > h4,
 .list-item > a {
   min-height: 26px;
 }
@@ -171,26 +179,31 @@ ul.list.row > li.col > *:first-child {
 .small.img-item > p {
   padding-left: 56px;
 }
+
+.img-card > h3,
+.video-container > h3,
+.card > section > h3 {
+  width: 100%;
+  font-size: 18px;
+  font-weight: 500;
+  background-color: inherit;
+}
+
 .detail-content > form > div.video-container {
   padding: 12px;
 }
-
 .video-container > h4 {
   display: flex;
   flex-flow: row;
   justify-content: space-between;
 }
+
 li.video > section > h4,
 li.video > section > a {
   padding-left: 8px;
   padding-right: 8px;
 }
-.img-card > p,
-.video-container > p,
-.card > section > p,
-.video > section > p,
-.video > p,
-.card > p,
+
 .list-item,
 .img-item {
   width: 100%;
@@ -213,7 +226,8 @@ li.video > section > a {
 .list-item > p,
 .img-item > p {
   margin-block-end: 0;
-  padding-block-end: 8px;
+  padding-top: 2px;
+  padding-bottom: 8px;
 }
 
 ul.list > li > section:first-child > div > p {
@@ -292,9 +306,21 @@ ul.list > li > section:first-child > div > p {
   margin: 0 16px;
   padding-bottom: 8px;
 }
+/*
 .card > *:first-child,
 .video > *:first-child {
   padding-top: 0;
+}
+*/
+.video-container > p,
+.card > section > p,
+.video > section > p,
+.video > p,
+.card > p {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
 }
 
 .card > section > h3,
@@ -302,13 +328,22 @@ ul.list > li > section:first-child > div > p {
 .card > section > p,
 .video > section > p {
   width: calc(100% - 24px);
-  padding-top: 8px;
+  margin-bottom: 8px;
   font-weight: 400;
 }
+.card > section > h3 {
+  margin-top: 8px;
+}
 .card > section > a {
+  margin-top: 8px;
   font-size: 16px;
   font-weight: 600;
 }
+.card > section > *:last-child,
+.video > section > *:last-child {
+  margin-bottom: 0;
+}
+
 .card > section > p > a,
 .video > section > p > a {
   font-size: inherit;
@@ -413,11 +448,62 @@ i.date {
   max-width: calc(100% - 16px);
   height: auto;
 }
+.img-card > h3 {
+  margin-top: 16px;
+  margin-bottom: 12px;
+}
 .img-card > h4 {
-  padding-top: 4px;
-  padding-bottom: 2px;
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+.img-card > p {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+.img-card > p:last-child {
+  margin-bottom: 0;
 }
 .img-card > h4.center,
 .img-card > p.center {
   justify-content: center;
+}
+
+.card > section > p,
+.video > section > p,
+.video > p,
+.img-card > p,
+.horizon > li > a,
+.img-item > h3,
+.img-item > h4,
+.img-item > a,
+.img-item > p,
+.list-item > h3,
+.list-item > h4,
+.list-item > a,
+.list-item > p {
+  color: inherit;
+}
+
+.list-container .list.row {
+  padding: 0 4px;
+}
+ul.list .check-item {
+  display: flex;
+  flex-direction: row;
+  font-size: 16px;
+  font-weight: 500;
+}
+ul.list > .check-item > p {
+  font-size: inherit;
+  margin-left: 24px;
+  padding-top: 10px;
+  margin-bottom: 7px;
+}
+ul.list > .check-item.header {
+  margin-bottom: 4px;
+}
+ul.list > .check-item.header > p {
+  font-size: inherit;
+  margin-left: 22px;
+  font-weight: 600;
 }

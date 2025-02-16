@@ -9,11 +9,6 @@
 
 .grey body,
 .grey .page-container,
-.grey .page-body,
-.grey .view-container,
-.grey .full-container,
-.grey .page-header,
-.grey .alert-wrapper .alert,
 .grey .dropdown-menu-profile {
   background-color: #fff;
 }
@@ -21,8 +16,7 @@
   border-color: #d1d9e3;
 }
 
-.grey .modal-portal-content > div > header,
-.grey .view-header {
+.grey .modal-portal-content > div > header {
   color: #fff;
   background-image: linear-gradient(90deg, #657181, #657181);
 }
@@ -72,31 +66,11 @@
 .grey body,
 .grey article,
 .grey .data-list dd,
-.grey .form > div > section > p,
-.grey .section-body > p,
-.grey .brand,
-.grey .card > section > p,
-.grey .video > section > p,
-.grey .video > p,
-.grey .img-card > p,
-.grey .horizon > li > a,
-.grey .img-item > h3,
-.grey .img-item > a,
-.grey .list-item > a,
-.grey .table > thead > tr > th,
-.grey .table > thead > tr > th > a,
-.grey .table > thead > tr > th > button,
-.grey h4,
-.grey section > h4 > .btn-group > button,
-.grey section > a,
-.grey .section-header,
-.grey .section-subheader,
-.grey .diff .row .col p,
+.grey .table > thead > tr,
+.grey .btn-group,
 .grey .btn-next,
 .grey .btn-accept,
 .grey .btn-cancel,
-.grey .btn-group,
-.grey .alert p,
 .grey label.switch-container,
 .grey label.checkbox-container,
 .grey label.checkbox-group,
@@ -107,9 +81,6 @@
   color: #393f48;
 }
 
-.grey .table > tbody > tr > td > a,
-.grey .table > tbody > tr > td,
-.grey .row .form-group label,
 .grey .card > footer > button.btn-cancel,
 .grey .view-container.central-full > form > div > button.btn-cancel,
 .grey header > h5,
@@ -138,7 +109,6 @@
 .grey .btn-more,
 .grey h1,
 .grey h2,
-.grey .img-card h3,
 .grey .row .form-group.focused label,
 .grey .row > label.focused,
 .grey .row > .col label.focused,
@@ -174,23 +144,17 @@
   }
 }
 
+.grey label,
+.grey .table > tbody,
 .grey .diff .row .col p > span,
 .grey .data-list dt,
-.grey .remark,
-.grey .article-notice,
 .grey .btn-detail,
 .grey .quick-nav,
 .grey header > .btn-back,
 .grey .btn-close,
 .grey .btn-filter,
 .grey .btn-remove-text,
-.grey .btn-edit,
-.grey .btn-approve,
-.grey .btn-copy,
-.grey .btn-history,
-.grey .btn-transfer,
-.grey .btn-divide,
-.grey .form > footer > button.btn-secondary,
+.grey .btn-group,
 .grey .btn-secondary {
   color: #7f7f7f;
 }
@@ -205,13 +169,8 @@
 }
 .grey .modal-portal-content header > .btn-group > button,
 .grey .modal-portal-content > div > header > .btn-close,
-.grey .solid > form > div > p,
-.grey .solid > div > p,
-.grey .solid > .view-body > p,
-.grey .solid > form > div > h5,
-.grey .solid > div > h5,
-.grey .solid > .view-body > h5,
-.grey .form > div > section.header-container > p {
+.grey .form > div > section.header-container > p,
+.grey .solid {
   color: #fff;
 }
 
@@ -475,7 +434,15 @@
 /*
 .grey .pagination > .active,
 .grey .pagination-page.active,*/
-
+.grey .pagination > .active > a,
+.grey .pagination > .active > span,
+.grey .pagination > .active > a:hover,
+.grey .pagination > .active > span:hover,
+.grey .pagination > .active > a:focus,
+.grey .pagination > .active > span:focus,
+.grey .pagination > .active > a:hover,
+.grey .pagination > .active > a:focus,
+.grey .pagination > .active > span:focus,
 .grey .table-striped tbody tr.active:nth-child(odd) td,
 .grey .table-striped tbody tr.active:nth-child(odd) th,
 .grey .table > thead > tr > td.active,
@@ -489,17 +456,7 @@
 .grey .table > tfoot > tr.active > td,
 .grey .table > thead > tr.active > th,
 .grey .table > tbody > tr.active > th,
-.grey .table > tfoot > tr.active > th,
-
-.grey .pagination > .active > a,
-.grey .pagination > .active > span,
-.grey .pagination > .active > a:hover,
-.grey .pagination > .active > span:hover,
-.grey .pagination > .active > a:focus,
-.grey .pagination > .active > span:focus,
-.grey .pagination > .active > a:hover,
-.grey .pagination > .active > a:focus,
-.grey .pagination > .active > span:focus {
+.grey .table > tfoot > tr.active > th {
   background-color: #387ef5;
 }
 

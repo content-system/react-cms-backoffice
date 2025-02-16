@@ -171,18 +171,17 @@ footer > .btn-accept::after {
   background-color: #4db6ac;
   display: inline-block;
   vertical-align: middle;
-  margin-left: 5px;
+  margin-left: 6px;
   line-height: 40px;
   font-size: 25px;
 }
-
 footer > .btn-cancel::before {
   content: "\2715";
   height: 40px;
   width: 40px;
   border-radius: 50%;
   display: inline-block;
-  margin-right: 5px;
+  margin-right: 6px;
   vertical-align: middle;
   line-height: 40px;
   color: #fff;
@@ -211,7 +210,7 @@ footer > .btn-next {
   background-color: transparent;
 }
 .btn-back {
-  top: 0px;
+  top: 6px;
   left: 0px;
   width: 16px;
   height: 100%;
@@ -324,10 +323,6 @@ td > .btn-remove::before {
   top: unset;
 }
 
-.detail .row .col.btn-group > .btn-remove {
-  margin-top: 18px;
-}
-
 h4 > .btn-add {
   margin-left: 10px;
 }
@@ -357,10 +352,11 @@ h4 > .btn-add {
   font-size: 36px;
   content: "+";
   position: absolute;
-  top: -7px;
+  top: -2px;
   left: 1px;
 }
 header > .btn-group > .btn-list {
+  margin-top: -2px;
   padding-top: 0;
 }
 .btn-list::before {
@@ -492,4 +488,13 @@ header > .btn-group {
   margin-bottom: -10px;
   font-weight: 100;
   transform: scale(1.5, 1.5);
+}
+
+.btn-group .btn-edit,
+.btn-group .btn-approve,
+.btn-group .btn-copy,
+.btn-group .btn-history,
+.btn-group .btn-transfer,
+.btn-group .btn-divide {
+  color: inherit;
 }

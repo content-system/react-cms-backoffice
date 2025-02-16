@@ -9,11 +9,6 @@
 
 .grey.dark body,
 .grey.dark .page-container,
-.grey.dark .page-body,
-.grey.dark .view-container,
-.grey.dark .full-container,
-.grey.dark .page-header,
-.grey.dark .alert-wrapper .alert,
 .grey.dark .dropdown-menu-profile {
   background-color: #000;
 }
@@ -21,8 +16,7 @@
   border-color: #212325;
 }
 
-.grey.dark .modal-portal-content > div > header,
-.grey.dark .view-header {
+.grey.dark .modal-portal-content > div > header {
   color: #000;
   background-image: linear-gradient(90deg, #657181, #657181);
 }
@@ -73,31 +67,11 @@
 .grey.dark body,
 .grey.dark article,
 .grey.dark .data-list dd,
-.grey.dark .form > div > section > p,
-.grey.dark .section-body > p,
-.grey.dark .brand,
-.grey.dark .card > section > p,
-.grey.dark .video > section > p,
-.grey.dark .video > p,
-.grey.dark .img-card > p,
-.grey.dark .horizon > li > a,
-.grey.dark .img-item > h3,
-.grey.dark .img-item > a,
-.grey.dark .list-item > a,
-.grey.dark .table > thead > tr > th,
-.grey.dark .table > thead > tr > th > a,
-.grey.dark .table > thead > tr > th > button,
-.grey.dark h4,
-.grey.dark section > h4 > .btn-group > button,
-.grey.dark section > a,
-.grey.dark .section-header,
-.grey.dark .section-subheader,
-.grey.dark .diff .row .col p,
+.grey.dark .table > thead > tr,
+.grey.dark .btn-group,
 .grey.dark .btn-next,
 .grey.dark .btn-accept,
 .grey.dark .btn-cancel,
-.grey.dark .btn-group,
-.grey.dark .alert p,
 .grey.dark label.switch-container,
 .grey.dark label.checkbox-container,
 .grey.dark label.checkbox-group,
@@ -139,7 +113,6 @@
 .grey.dark .btn-more,
 .grey.dark h1,
 .grey.dark h2,
-.grey.dark .img-card h3,
 .grey.dark .row .form-group.focused label,
 .grey.dark .row > label.focused,
 .grey.dark .row > .col label.focused,
@@ -175,23 +148,17 @@
   }
 }
 
+.grey.dark label,
+.grey.dark .table > tbody,
 .grey.dark .diff .row .col p > span,
 .grey.dark .data-list dt,
-.grey.dark .remark,
-.grey.dark .article-notice,
 .grey.dark .btn-detail,
 .grey.dark .quick-nav,
 .grey.dark header > .btn-back,
 .grey.dark .btn-close,
 .grey.dark .btn-filter,
 .grey.dark .btn-remove-text,
-.grey.dark .btn-edit,
-.grey.dark .btn-approve,
-.grey.dark .btn-copy,
-.grey.dark .btn-history,
-.grey.dark .btn-transfer,
-.grey.dark .btn-divide,
-.grey.dark .form > footer > button.btn-secondary,
+.grey.dark .btn-group,
 .grey.dark .btn-secondary {
   color: #808080;
 }
@@ -206,13 +173,8 @@
 }
 .grey.dark .modal-portal-content header > .btn-group > button,
 .grey.dark .modal-portal-content > div > header > .btn-close,
-.grey.dark .solid > form > div > p,
-.grey.dark .solid > div > p,
-.grey.dark .solid > .view-body > p,
-.grey.dark .solid > form > div > h5,
-.grey.dark .solid > div > h5,
-.grey.dark .solid > .view-body > h5,
-.grey.dark .form > div > section.header-container > p {
+.grey.dark .form > div > section.header-container > p,
+.grey.dark .solid {
   color: #000;
 }
 
@@ -476,6 +438,15 @@
 /*
 .grey.dark .pagination > .active,
 .grey.dark .pagination-page.active,*/
+.grey.dark .pagination > .active > a,
+.grey.dark .pagination > .active > span,
+.grey.dark .pagination > .active > a:hover,
+.grey.dark .pagination > .active > span:hover,
+.grey.dark .pagination > .active > a:focus,
+.grey.dark .pagination > .active > span:focus,
+.grey.dark .pagination > .active > a:hover,
+.grey.dark .pagination > .active > a:focus,
+.grey.dark .pagination > .active > span:focus,
 
 .grey.dark .table-striped tbody tr.active:nth-child(odd) td,
 .grey.dark .table-striped tbody tr.active:nth-child(odd) th,
@@ -490,17 +461,7 @@
 .grey.dark .table > tfoot > tr.active > td,
 .grey.dark .table > thead > tr.active > th,
 .grey.dark .table > tbody > tr.active > th,
-.grey.dark .table > tfoot > tr.active > th,
-
-.grey.dark .pagination > .active > a,
-.grey.dark .pagination > .active > span,
-.grey.dark .pagination > .active > a:hover,
-.grey.dark .pagination > .active > span:hover,
-.grey.dark .pagination > .active > a:focus,
-.grey.dark .pagination > .active > span:focus,
-.grey.dark .pagination > .active > a:hover,
-.grey.dark .pagination > .active > a:focus,
-.grey.dark .pagination > .active > span:focus {
+.grey.dark .table > tfoot > tr.active > th {
   background-color: #c9d9f5;
 }
 

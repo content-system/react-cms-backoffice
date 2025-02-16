@@ -11,7 +11,6 @@
 }
 
 html {
-  line-height: 1.15;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
   -ms-overflow-style: scrollbar;
@@ -39,9 +38,8 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
     "Segoe UI Symbol", "Noto Color Emoji";
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
-  line-height: 1.5;
   letter-spacing: 0.005em;
   cursor: default;
   text-align: left;
@@ -64,10 +62,12 @@ h4,
 h5,
 h6 {
   margin-top: 0;
+  margin-bottom: 1rem;
 }
 
 p {
   margin-top: 0;
+  margin-bottom: 1rem;
 }
 
 abbr[title],
@@ -352,10 +352,8 @@ h6,
 .h4,
 .h5,
 .h6 {
-  margin-bottom: 0.5rem;
   font-family: inherit;
   font-weight: 500;
-  line-height: 1.2;
   color: inherit;
 }
 
@@ -442,4 +440,18 @@ button.focus {
 
 hr {
   width: 100%;
+}
+
+form,
+section,
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  color: inherit;
+  background-color: inherit;
 }

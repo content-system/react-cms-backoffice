@@ -3,6 +3,10 @@
   margin-bottom: 1rem;
   background-color: transparent;
 }
+form > .table-responsive:last-child > .table {
+  margin-bottom: 0;
+}
+
 .table th,
 .table td {
   position: relative;
@@ -141,8 +145,7 @@ th.action {
 }
 
 .table-responsive {
-  margin-left: 16px;
-  margin-right: 16px;
+  margin: 12px 16px 16px 16px;
 }
 /*
 .table-responsive > table {

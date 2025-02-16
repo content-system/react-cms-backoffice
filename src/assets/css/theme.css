@@ -6,13 +6,6 @@
 
 body,
 .page-container,
-.page-body,
-.full-container,
-.page-header,
-.modal-portal-content,
-select,
-input,
-.alert-wrapper .alert,
 .dropdown-menu-profile {
   background-color: #fff;
 }
@@ -20,8 +13,7 @@ input,
   border-color: #eee;
 }
 
-.modal-portal-content > div > header,
-.view-header {
+.modal-portal-content > div > header {
   color: #fff;
   background-image: linear-gradient(90deg, #008577, #00574b);
 }
@@ -61,33 +53,11 @@ h3 {
 body,
 article,
 .data-list dd,
-.form > div > section > p,
-.section-body > p,
-.brand,
-.card > section > p,
-.video > section > p,
-.video > p,
-.img-card > p,
-.horizon > li > a,
-.img-item > h3,
-.img-item > a,
-.list-item > a,
-.table > thead > tr > th,
-.table > thead > tr > th > a,
-.table > thead > tr > th > button,
-h4,
-h5,
-h6,
-section > h4 > .btn-group > button,
-section > a,
-.section-header,
-.section-subheader,
-.diff .row .col p,
+.table > thead > tr,
+.btn-group,
 .btn-next,
 .btn-accept,
 .btn-cancel,
-.btn-group,
-.alert p,
 label.switch-container,
 label.checkbox-container,
 label.checkbox-group,
@@ -98,9 +68,6 @@ label.radio-group,
   color: #4d4d4d;
 }
 
-.table > tbody > tr > td > a,
-.table > tbody > tr > td,
-.row .form-group label,
 .card > footer > button.btn-cancel,
 .central-full > form > div > button.btn-cancel,
 header > h5,
@@ -126,7 +93,6 @@ header > h5,
 .btn-more,
 h1,
 h2,
-.img-card h3,
 .row .form-group.focused label,
 .row > label.focused,
 .row > .col label.focused,
@@ -162,23 +128,17 @@ header > .btn-group > button,
   }
 }
 
+label,
+.table > tbody,
 .diff .row .col p > span,
 .data-list dt,
-.remark,
-.article-notice,
 .btn-detail,
 .quick-nav,
 header > .btn-back,
 .btn-close,
 .btn-filter,
 .btn-remove-text,
-.btn-edit,
-.btn-approve,
-.btn-copy,
-.btn-history,
-.btn-transfer,
-.btn-divide,
-.form > footer > button.btn-secondary,
+.btn-group,
 .btn-secondary {
   color: #808080;
 }
@@ -193,13 +153,8 @@ header > .btn-back,
 }
 .modal-portal-content header > .btn-group > button,
 .modal-portal-content > div > header > .btn-close,
-.solid > form > div > p,
-.solid > div > p,
-.solid > .view-body > p,
-.solid > form > div > h5,
-.solid > div > h5,
-.solid > .view-body > h5,
-.form > div > section.header-container > p {
+.form > div > section.header-container > p,
+.solid {
   color: #fff;
 }
 
@@ -470,6 +425,15 @@ ul.list > li.highlight {
 /*
 .pagination > .active, 
 .pagination-page.active,*/
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus,
+.pagination > .active > a:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus,
 
 .table-striped tbody tr.active:nth-child(odd) td,
 .table-striped tbody tr.active:nth-child(odd) th,
@@ -484,17 +448,7 @@ ul.list > li.highlight {
 .table > tfoot > tr.active > td,
 .table > thead > tr.active > th,
 .table > tbody > tr.active > th,
-.table > tfoot > tr.active > th,
-
-.pagination > .active > a,
-.pagination > .active > span,
-.pagination > .active > a:hover,
-.pagination > .active > span:hover,
-.pagination > .active > a:focus,
-.pagination > .active > span:focus,
-.pagination > .active > a:hover,
-.pagination > .active > a:focus,
-.pagination > .active > span:focus {
+.table > tfoot > tr.active > th {
   background-color: #387ef5;
 }
 

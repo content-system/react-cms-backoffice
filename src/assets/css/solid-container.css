@@ -123,5 +123,5 @@
 }
 
 .central-full > form > div > .message {
-  width: calc(100% - 32px);
+  width: calc(100% - 16px);
 }

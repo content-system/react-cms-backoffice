@@ -1,6 +1,6 @@
 import { Result } from "onecore"
 import React, { useEffect, useRef, useState } from "react"
-import { clone, hasDiff, isEmptyObject, isSuccessful, makeDiff, setReadOnly } from "react-hook-core"
+import { clone, datetimeToString, hasDiff, isEmptyObject, isSuccessful, makeDiff, setReadOnly } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -137,66 +137,25 @@ export const ArticleForm = () => {
               article.id = e.target.value
               setState({ ...state, article })
             }}
-            maxLength={20}
+            maxLength={80}
             required={true}
             placeholder={resource.id}
           />
         </label>
         <label className="col s12 m6">
-          {resource.title}
+          {resource.published_at}
           <input
-            type="text"
-            id="title"
-            name="title"
-            className="form-control"
-            value={article.title || ""}
+            type="datetime-local"
+            step=".010"
+            id="publishedAt"
+            name="publishedAt"
+            value={datetimeToString(article.publishedAt)}
             onChange={(e) => {
-              article.title = e.target.value
+              article.publishedAt = e.target.value.length > 0 ? new Date(e.target.value) : undefined
               setState({ ...state, article })
             }}
-            onBlur={requiredOnBlur}
-            maxLength={100}
-            required={true}
-            placeholder={resource.title}
           />
         </label>
-        <label className="col s12 m6">
-          {resource.description}
-          <input
-            type="text"
-            id="description"
-            name="description"
-            className="form-control"
-            value={article.description || ""}
-            onChange={(e) => {
-              article.description = e.target.value
-              setState({ ...state, article })
-            }}
-            onBlur={requiredOnBlur}
-            maxLength={300}
-            required={true}
-            placeholder={resource.description}
-          />
-        </label>
-        {/*
-        <label className="col s12 m6 flying">
-          {resource.content}
-          <input
-            type="text"
-            id="content"
-            name="content"
-            data-type="content"
-            value={article.content || ""}
-            onChange={(e) => {
-              article.content = e.target.value
-              setState({ ...state, article })
-            }}
-            onBlur={requiredOnBlur}
-            maxLength={100}
-            placeholder={resource.content}
-          />
-        </label>
-        */}
         <div className="col s12 m6 radio-section">
           {resource.status}
           <div className="radio-group">
@@ -210,6 +169,56 @@ export const ArticleForm = () => {
             </label>
           </div>
         </div>
+        <label className="col s12 flying">
+          {resource.title}
+          <input
+            type="text"
+            id="title"
+            name="title"
+            value={article.title || ""}
+            onChange={(e) => {
+              article.title = e.target.value
+              setState({ ...state, article })
+            }}
+            onBlur={requiredOnBlur}
+            maxLength={255}
+            required={true}
+            placeholder={resource.title}
+          />
+        </label>
+        <label className="col s12 textarea-container required">
+          {resource.description}
+          <textarea
+            id="description"
+            name="description"
+            rows={4}
+            value={article.description || ""}
+            onChange={(e) => {
+              article.description = e.target.value
+              setState({ ...state, article })
+            }}
+            onBlur={requiredOnBlur}
+            required={true}
+            maxLength={1200}
+            placeholder={resource.content}
+          />
+        </label>
+        <label className="col s12 textarea-container required">
+          {resource.content}
+          <textarea
+            id="content"
+            name="content"
+            rows={80}
+            value={article.content || ""}
+            onChange={(e) => {
+              article.content = e.target.value
+              setState({ ...state, article })
+            }}
+            onBlur={requiredOnBlur}
+            maxLength={9000}
+            placeholder={resource.content}
+          />
+        </label>
       </div>
       <footer>
         {!isReadOnly && (

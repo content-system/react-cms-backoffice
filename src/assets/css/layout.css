@@ -103,11 +103,9 @@
     border: none;
     background-color: transparent;
   }
-  .page-header .toggle-menu {
-    width: 32px;
-    height: 32px;
-    margin-left: 2px;
-    padding-top: 0;
+  .page-header .toggle-menu::before {
+    top: 1px;
+    left: 9px;
   }
   .page-header .search-input {
     display: none !important;

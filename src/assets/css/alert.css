@@ -22,7 +22,7 @@
   width: 100%;
   line-height: unset;
   padding: 0 6px;
-  min-height: 30px;
+  min-height: 40px;
   margin-bottom: 0 !important;
   text-align: left;
   border-radius: 5px;
@@ -104,7 +104,9 @@
   display: inline-block;
   height: 32px;
   width: 32px;
-  margin-bottom: 10px;
+  padding-top: 3px;
+  padding-left: 1px;
+  margin-bottom: 12px;
   border: 1px solid;
   border-radius: 50%;
 }
@@ -114,14 +116,21 @@
   font-weight: 100;
   content: "\21";
 }
+.danger-icon .alert-icon {
+  padding-top: 3px;
+  padding-left: 2px;
+}
 .danger-icon .alert-icon::before {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 100;
   content: "\2715";
 }
-
+.success-icon .alert-icon {
+  padding-top: 3px;
+  padding-left: 1px;
+}
 .success-icon .alert-icon::before {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 100;
   content: "\2713";
   color: #4db6ac;
@@ -151,9 +160,9 @@
 
 .alert h4,
 .alert p {
-  padding-left: 16px;
-  padding-right: 16px;
-  margin-top: 6px;
+  font-size: 16px;
+  margin-top: 0;
+  margin-bottom: 12px;
   padding: 0;
   display: inline-block;
   background-color: inherit;
@@ -167,8 +176,7 @@
 }
 
 .alert h4 {
-  margin-top: 0;
-  margin-bottom: 0;
+  font-size: 18px;
   font-weight: 800;
 }
 
