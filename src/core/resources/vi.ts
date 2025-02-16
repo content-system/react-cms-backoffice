@@ -202,6 +202,7 @@ export const vi = {
   female: "Female",
   name: "Name",
 
+  fullname: "Full Name",
   email: "Email",
   phone: "Telephone",
   notification: "Notification",

@@ -202,6 +202,7 @@ export const en = {
   female: "Female",
   name: "Name",
 
+  fullname: "Full Name",
   email: "Email",
   phone: "Telephone",
   notification: "Notification",

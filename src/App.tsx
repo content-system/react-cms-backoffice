@@ -25,6 +25,7 @@ import JobsRoute from "./job"
 import RolesRoute from "./role"
 import { SettingsForm } from "./settings"
 import UsersRoute from "./user"
+import ContactsRoute from "./contact"
 
 // tslint:disable:ordered-imports
 import "./App.css"
@@ -122,9 +123,10 @@ function App() {
           <Route path="/settings" element={<SettingsForm />} />
           <Route path="users/*" element={<UsersRoute />} />
           <Route path="roles/*" element={<RolesRoute />} />
+          <Route path="audit-logs" element={<AuditLogsForm />} />
           <Route path="articles/*" element={<ArticlesRoute />} />
           <Route path="jobs/*" element={<JobsRoute />} />
-          <Route path="audit-logs" element={<AuditLogsForm />} />
+          <Route path="contacts/*" element={<ContactsRoute />} />
         </Route>
       </Routes>
     </BrowserRouter>
