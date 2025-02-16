@@ -142,6 +142,23 @@ export const ArticleForm = () => {
             placeholder={resource.id}
           />
         </label>
+        <label className="col s12 m6 flying">
+          {resource.thumbnail}
+          <input
+            type="url"
+            id="thumbnail"
+            name="thumbnail"
+            value={article.thumbnail || ""}
+            onChange={(e) => {
+              article.thumbnail = e.target.value
+              setState({ ...state, article })
+            }}
+            onBlur={requiredOnBlur}
+            maxLength={255}
+            required={true}
+            placeholder={resource.thumbnail}
+          />
+        </label>
         <label className="col s12 m6">
           {resource.published_at}
           <input

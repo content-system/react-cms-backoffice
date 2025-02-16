@@ -241,6 +241,7 @@ export const en = {
   timestamp: "Timestamp",
   ip: "IP",
 
+  contact: "Contact",
   articles: "Articles",
   article: "Article",
   jobs: "Jobs",
@@ -248,6 +249,7 @@ export const en = {
   id: "Id",
   title: "Title",
   content: "Content",
+  thumbnail: "Thumbnail",
   published_at: "Published At",
   published_at_from: "Published At From",
   published_at_to: "Published At To",

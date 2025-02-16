@@ -11,7 +11,6 @@ export const vi = {
   email: "Email",
   password: "Password",
   passcode: "Verification Code",
-  contact: "Email",
 
   signin: "Sign in",
 
