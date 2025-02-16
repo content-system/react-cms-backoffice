@@ -8,9 +8,10 @@ export interface Job {
   benefit?: string
   publishedAt?: Date
   expiredAt?: Date
-  skill?: string[]
-  location?: string
+  skills?: string[]
+  position?: string
   quantity?: number
+  location?: string
   applicantCount?: number
   companyId?: string
   status: string
@@ -23,9 +24,10 @@ export interface JobFilter extends Filter {
   benefit?: string
   publishedAt?: TimeRange
   expiredAt?: TimeRange
-  skill?: string[]
-  location?: string
+  skills?: string[]
+  position?: string
   quantity?: number
+  location?: string
   applicantCount?: number
   companyId?: string
   status: string[]

@@ -155,6 +155,57 @@ export const JobForm = () => {
             }}
           />
         </label>
+        <label className="col s12 m6">
+          {resource.position}
+          <input
+            type="text"
+            id="position"
+            name="position"
+            value={job.position || ""}
+            onChange={(e) => {
+              job.position = e.target.value
+              setState({ ...state, job })
+            }}
+            onBlur={requiredOnBlur}
+            maxLength={255}
+            required={true}
+            placeholder={resource.location}
+          />
+        </label>
+        <label className="col s12 m6">
+          {resource.position}
+          <input
+            type="text"
+            id="quantity"
+            name="quantity"
+            value={job.quantity || ""}
+            onChange={(e) => {
+              job.quantity = parseInt(e.target.value)
+              setState({ ...state, job })
+            }}
+            onBlur={requiredOnBlur}
+            maxLength={255}
+            required={true}
+            placeholder={resource.location}
+          />
+        </label>
+        <label className="col s12 m6">
+          {resource.location}
+          <input
+            type="text"
+            id="location"
+            name="location"
+            value={job.location || ""}
+            onChange={(e) => {
+              job.location = e.target.value
+              setState({ ...state, job })
+            }}
+            onBlur={requiredOnBlur}
+            maxLength={255}
+            required={true}
+            placeholder={resource.location}
+          />
+        </label>
         <div className="col s12 m6 radio-section">
           {resource.status}
           <div className="radio-group">

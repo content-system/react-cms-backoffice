@@ -142,7 +142,7 @@ export const ArticleForm = () => {
             placeholder={resource.id}
           />
         </label>
-        <label className="col s12 m6 flying">
+        <label className="col s12 m6">
           {resource.thumbnail}
           <input
             type="url"
@@ -186,7 +186,7 @@ export const ArticleForm = () => {
             </label>
           </div>
         </div>
-        <label className="col s12 flying">
+        <label className="col s12">
           {resource.title}
           <input
             type="text"

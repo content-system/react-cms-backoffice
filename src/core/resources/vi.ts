@@ -257,6 +257,8 @@ export const vi = {
   company: "Company",
   job_title: "Job Title",
   requirements: "Requirements",
+  location: "Location",
+  position: "Position",
   quantity: "Quantity",
 
   contacts: "Contacts",
