@@ -584,6 +584,26 @@ export function RoleForm() {
       confirm(resource.msg_confirm_back, () => navigate(-1))
     }
   }
+  const deleteOnClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    event.preventDefault()
+    confirm(resource.msg_confirm_delete, () => {
+      const service = getRoleService()
+      showLoading()
+      service
+        .delete(role.roleId)
+        .then((res) => {
+          if (res > 0) {
+            alertSuccess(resource.msg_delete_success, () => navigate(-1))
+          } else if (res === 0) {
+            alertWarning(resource.msg_delete_fail)
+          } else {
+            alertWarning(resource.msg_role_delete_fail)
+          }
+        })
+        .catch(handleError)
+        .finally(hideLoading)
+    })
+  }
   const save = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     event.preventDefault()
     const valid = validate(role)
@@ -725,9 +745,14 @@ export function RoleForm() {
       </div>
       <footer>
         {!isReadOnly && (
-          <button type="submit" id="btnSave" name="btnSave" onClick={save}>
-            {resource.save}
-          </button>
+          <>
+            <button type="button" id="btnDelete" name="btnDelete" className="btn-delete" onClick={deleteOnClick}>
+              {resource.delete}
+            </button>
+            <button type="submit" id="btnSave" name="btnSave" onClick={save}>
+              {resource.save}
+            </button>
+          </>
         )}
       </footer>
     </form>

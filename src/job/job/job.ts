@@ -2,17 +2,17 @@ import { Attributes, Filter, Repository, Service, TimeRange } from "onecore"
 
 export interface Job {
   id: string
-  title?: string
-  description?: string
-  requirements?: string
-  benefit?: string
+  title: string
+  description: string
   publishedAt?: Date
   expiredAt?: Date
-  skills?: string[]
   position?: string
   quantity?: number
   location?: string
   applicantCount?: number
+  skills?: string[]
+  minSalary?: number
+  maxSalary?: number
   companyId?: string
   status: string
 }
@@ -20,15 +20,13 @@ export interface JobFilter extends Filter {
   id?: string
   title?: string
   description?: string
-  requirements?: string
-  benefit?: string
   publishedAt?: TimeRange
   expiredAt?: TimeRange
-  skills?: string[]
   position?: string
   quantity?: number
   location?: string
   applicantCount?: number
+  skills?: string[]
   companyId?: string
   status: string[]
 }
@@ -43,17 +41,11 @@ export const jobModel: Attributes = {
     key: true,
   },
   title: {
-    length: 120,
+    length: 300,
     q: true,
   },
   description: {
-    length: 1000,
-  },
-  requirements: {
-    length: 1000,
-  },
-  benefit: {
-    length: 1000,
+    length: 9800,
   },
   publishedAt: {
     column: "published_at",
@@ -63,17 +55,27 @@ export const jobModel: Attributes = {
     column: "expired_at",
     type: "datetime",
   },
-  skills: {
-    type: "strings",
+  position: {
+    length: 100,
+  },
+  quantity: {
+    type: "integer",
+    min: 1,
   },
   location: {
     length: 120,
   },
-  quantity: {
-    type: "integer",
-  },
   applicantCount: {
     column: "applicant_count",
+    type: "integer",
+  },
+  skills: {
+    type: "strings",
+  },
+  minSalary: {
+    type: "integer",
+  },
+  maxSalary: {
     type: "integer",
   },
 }

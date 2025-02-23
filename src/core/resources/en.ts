@@ -260,6 +260,8 @@ export const en = {
   location: "Location",
   position: "Position",
   quantity: "Quantity",
+  min_salary: "Min Salary",
+  max_salary: "Max Salary",
 
   contacts: "Contacts",
   submitted_at: "Submitted At",

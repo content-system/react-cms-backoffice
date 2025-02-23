@@ -169,11 +169,11 @@ export const JobForm = () => {
             onBlur={requiredOnBlur}
             maxLength={255}
             required={true}
-            placeholder={resource.location}
+            placeholder={resource.position}
           />
         </label>
         <label className="col s12 m6">
-          {resource.position}
+          {resource.quantity}
           <input
             type="text"
             id="quantity"
@@ -186,7 +186,7 @@ export const JobForm = () => {
             onBlur={requiredOnBlur}
             maxLength={255}
             required={true}
-            placeholder={resource.location}
+            placeholder={resource.quantity}
           />
         </label>
         <label className="col s12 m6">
@@ -204,6 +204,40 @@ export const JobForm = () => {
             maxLength={255}
             required={true}
             placeholder={resource.location}
+          />
+        </label>
+        <label className="col s12 m6">
+          {resource.min_salary}
+          <input
+            type="tel"
+            id="minSalary"
+            name="minSalary"
+            value={job.minSalary || ""}
+            onChange={(e) => {
+              job.minSalary = parseInt(e.target.value)
+              setState({ ...state, job })
+            }}
+            onBlur={requiredOnBlur}
+            maxLength={255}
+            required={true}
+            placeholder={resource.min_salary}
+          />
+        </label>
+        <label className="col s12 m6">
+          {resource.max_salary}
+          <input
+            type="tel"
+            id="maxSalary"
+            name="maxSalary"
+            value={job.minSalary || ""}
+            onChange={(e) => {
+              job.minSalary = parseInt(e.target.value)
+              setState({ ...state, job })
+            }}
+            onBlur={requiredOnBlur}
+            maxLength={255}
+            required={true}
+            placeholder={resource.max_salary}
           />
         </label>
         <div className="col s12 m6 radio-section">

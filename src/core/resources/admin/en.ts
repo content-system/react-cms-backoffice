@@ -4,6 +4,8 @@ export const en = {
   user_list: "Search users",
   users_lookup: "Look Users",
   user_lookup: "Search User",
+  user_info: "User Information",
+  contact_info: "Contact Information",
   position: "Position",
   position_employee: "Employee",
   position_manager: "Manager",
