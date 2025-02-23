@@ -217,11 +217,6 @@ export const ContactsForm = () => {
                 <thead>
                   <tr>
                     <th>{resource.sequence}</th>
-                    <th data-field="id">
-                      <button type="button" id="sortContactId" onClick={sort}>
-                        {resource.contact_id}
-                      </button>
-                    </th>
                     <th data-field="name">
                       <button type="button" id="sortContactName" onClick={sort}>
                         {resource.name}
@@ -247,7 +242,6 @@ export const ContactsForm = () => {
                       return (
                         <tr key={i} onClick={(e) => edit(e, contact.id)}>
                           <td className="text-right">{offset + i + 1}</td>
-                          <td>{contact.id}</td>
                           <td>
                             <Link to={`${contact.id}`}>{contact.name}</Link>
                           </td>

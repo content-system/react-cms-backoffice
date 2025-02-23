@@ -68,6 +68,11 @@ label.radio-group,
   color: #4d4d4d;
 }
 
+.list-item > *:last-child,
+.img-item > *:last-child {
+  border-bottom-color: #ebebeb;
+}
+
 .card > footer > button.btn-cancel,
 .central-full > form > div > button.btn-cancel,
 header > h5,
@@ -138,8 +143,7 @@ header > .btn-back,
 .btn-close,
 .btn-filter,
 .btn-remove-text,
-.btn-group,
-.btn-secondary {
+.btn-group {
   color: #808080;
 }
 
@@ -167,12 +171,16 @@ footer > .btn-accept::after,
 footer > .btn-next::after,
 .section.search > .btn-search,
 .central-full > form > div > button,
-.page-body > .form > footer > button,
-.page-body > .form > footer > section.footer > button,
 .view-footer > button,
-section.footer > button {
+footer > button {
   color: #fff;
   background-color: #4db6ac;
+}
+.btn-secondary {
+  color: #4db6ac;
+}
+.btn-delete {
+  color: #fc671a;
 }
 .btn-more:hover,
 footer > button:hover {

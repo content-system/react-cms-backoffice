@@ -97,15 +97,15 @@ form > .table-responsive:last-child > .table {
   }
 }
 
-.table-responsive > table {
-  /*display: block;*/
+.table-responsive > .table {
+  display: block;
   width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
-.table-responsive > table {
+.table-responsive > .table {
   border: 0;
 }
 

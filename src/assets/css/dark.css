@@ -82,6 +82,11 @@
   color: #b2b2b2;
 }
 
+.dark .list-item > *:last-child,
+.dark .img-item > *:last-child {
+  border-bottom-color: #141414;
+}
+
 .dark .card > footer > button.btn-cancel,
 .dark .central-full > form > div > button.btn-cancel,
 .dark header > h5,
@@ -99,10 +104,6 @@
 .dark .video > section,
 .dark .horizon > .video {
   border-color: #141414;
-}
-
-.dark .card {
-  background-color: #1a1a1a !important;
 }
 
 /*
@@ -161,8 +162,7 @@
 .dark .btn-close,
 .dark .btn-filter,
 .dark .btn-remove-text,
-.dark .btn-group,
-.dark .btn-secondary {
+.dark .btn-group {
   color: #7f7f7f;
 }
 
@@ -190,12 +190,16 @@
 .dark footer > .btn-next::after,
 .dark .section.search > .btn-search,
 .dark .central-full > form > div > button,
-.dark .page-body > .form > footer > button,
-.dark .page-body > .form > footer > section.footer > button,
 .dark .view-footer > button,
-.dark section.footer > button {
+.dark footer > button {
   color: #000;
   background-color: #4db6ac;
+}
+.dark .btn-secondary {
+  color: #4db6ac;
+}
+.dark .btn-delete {
+  color: #fc671a;
 }
 .dark .btn-more:hover,
 .dark footer > button:hover {
@@ -547,7 +551,7 @@
 .dark .table-bordered > tfoot > tr > th,
 .dark .table-bordered > thead > tr > td,
 .dark .table-bordered > thead > tr > th {
-  border-color: #ddd;
+  border-color: #222222;
 }
 
 .dark .table > tbody > tr:nth-of-type(odd),

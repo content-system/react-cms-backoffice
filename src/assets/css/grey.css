@@ -81,6 +81,11 @@
   color: #393f48;
 }
 
+.grey .list-item > *:last-child,
+.grey .img-item > *:last-child {
+  border-bottom-color: #e0e0e0;
+}
+
 .grey .card > footer > button.btn-cancel,
 .grey .view-container.central-full > form > div > button.btn-cancel,
 .grey header > h5,
@@ -154,8 +159,7 @@
 .grey .btn-close,
 .grey .btn-filter,
 .grey .btn-remove-text,
-.grey .btn-group,
-.grey .btn-secondary {
+.grey .btn-group {
   color: #7f7f7f;
 }
 
@@ -183,12 +187,16 @@
 .grey footer > .btn-next::after,
 .grey .section.search > .btn-search,
 .grey .central-full > form > div > button,
-.grey .page-body > .form > footer > button,
-.grey .page-body > .form > footer > section.footer > button,
 .grey .view-footer > button,
-.grey section.footer > button {
+.grey footer > button {
   color: #fff;
   background-color: #657181;
+}
+.grey .btn-secondary {
+  color: #657181;
+}
+.grey .btn-delete {
+  color: #fc671a;
 }
 .grey .btn-more:hover,
 .grey footer > button:hover {

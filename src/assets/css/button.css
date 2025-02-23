@@ -35,8 +35,8 @@ footer > .btn-cancel {
   background-color: transparent;
 }
 .form > footer > button.btn-secondary,
-.btn-secondary {
-  background-color: transparent;
+.form > footer > button.btn-delete {
+  background-color: inherit;
   border: 1px solid;
 }
 .btn-detail {

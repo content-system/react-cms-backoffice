@@ -82,6 +82,11 @@
   color: #778497;
 }
 
+.grey.dark .list-item > *:last-child,
+.grey.dark .img-item > *:last-child {
+  border-bottom-color: #1f1f1f;
+}
+
 .grey.dark .table > tbody > tr > td > a,
 .grey.dark .table > tbody > tr > td,
 .grey.dark .row .form-group label,
@@ -158,8 +163,7 @@
 .grey.dark .btn-close,
 .grey.dark .btn-filter,
 .grey.dark .btn-remove-text,
-.grey.dark .btn-group,
-.grey.dark .btn-secondary {
+.grey.dark .btn-group {
   color: #808080;
 }
 
@@ -187,12 +191,18 @@
 .grey.dark footer > .btn-next::after,
 .grey.dark .section.search > .btn-search,
 .grey.dark .central-full > form > div > button,
-.grey.dark .page-body > .form > footer > button,
-.grey.dark .page-body > .form > footer > section.footer > button,
 .grey.dark .view-footer > button,
-.grey.dark section.footer > button {
+.grey.dark footer > button {
   color: #000;
   background-color: #657181;
+}
+.grey.dark .btn-secondary {
+  background-color: inherit;
+  color: #657181;
+}
+.grey.dark .btn-delete {
+  background-color: inherit;
+  color: #fc671a;
 }
 .grey.dark .btn-more:hover,
 .grey.dark footer > button:hover {

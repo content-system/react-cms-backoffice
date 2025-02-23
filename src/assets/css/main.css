@@ -93,6 +93,7 @@ select {
 }
 textarea {
   width: 100%;
+  background-color: inherit;
 }
 th,
 th > a,
