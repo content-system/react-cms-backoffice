@@ -131,89 +131,87 @@ export const UsersForm = () => {
             </label>
           </section>
         </form>
-        <form className="list-result">
-          {component.view === "table" && (
-            <div className="table-responsive">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>{resource.sequence}</th>
-                    <th data-field="userId">
-                      <button type="button" id="sortUserId" onClick={sort}>
-                        {resource.user_id}
-                      </button>
-                    </th>
-                    <th data-field="username">
-                      <button type="button" id="sortUserName" onClick={sort}>
-                        {resource.username}
-                      </button>
-                    </th>
-                    <th data-field="email">
-                      <button type="button" id="sortEmail" onClick={sort}>
-                        {resource.email}
-                      </button>
-                    </th>
-                    <th data-field="displayname">
-                      <button type="button" id="sortDisplayName" onClick={sort}>
-                        {resource.display_name}
-                      </button>
-                    </th>
-                    <th data-field="status">
-                      <button type="button" id="sortStatus" onClick={sort}>
-                        {resource.status}
-                      </button>
-                    </th>
-                    <th className="action">{resource.action}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {list &&
-                    list.length > 0 &&
-                    list.map((user, i) => {
-                      return (
-                        <tr key={i} onClick={(e) => edit(e, user.userId)}>
-                          <td className="text-right">{(user as any).sequenceNo}</td>
-                          <td>{user.userId}</td>
-                          <td>
-                            <Link to={`${user.userId}`}>{user.username}</Link>
-                          </td>
-                          <td>{user.email}</td>
-                          <td>{user.displayName}</td>
-                          <td>{getStatusName(user.status, resource)}</td>
-                          <td>
-                            <div className="btn-group">
-                              <button type="button" className="btn-edit" onClick={(e) => edit(e, user.userId)}></button>
-                              <button type="button" className="btn-history" onClick={(e) => view(e, user.userId)}></button>
-                            </div>
-                          </td>
-                        </tr>
-                      )
-                    })}
-                </tbody>
-              </table>
-            </div>
-          )}
-          {component.view !== "table" && (
-            <ul className="row list">
-              {list &&
-                list.length > 0 &&
-                list.map((user, i) => {
-                  return (
-                    <li key={i} className="col s12 m6 l4 xl3 img-item" onClick={(e) => edit(e, user.userId)}>
-                      <img
-                        src={user.imageURL && user.imageURL.length > 0 ? user.imageURL : user.gender === "F" ? femaleIcon : maleIcon}
-                        alt="user"
-                        className="round-border"
-                      />
-                      <Link to={`${user.userId}`}>{user.displayName}</Link>
-                      <button className="btn-detail" />
-                      <p>{user.email}</p>
-                    </li>
-                  )
-                })}
-            </ul>
-          )}
-        </form>
+        {component.view === "table" && (
+          <div className="table-responsive">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>{resource.sequence}</th>
+                  <th data-field="userId">
+                    <button type="button" id="sortUserId" onClick={sort}>
+                      {resource.user_id}
+                    </button>
+                  </th>
+                  <th data-field="username">
+                    <button type="button" id="sortUserName" onClick={sort}>
+                      {resource.username}
+                    </button>
+                  </th>
+                  <th data-field="email">
+                    <button type="button" id="sortEmail" onClick={sort}>
+                      {resource.email}
+                    </button>
+                  </th>
+                  <th data-field="displayname">
+                    <button type="button" id="sortDisplayName" onClick={sort}>
+                      {resource.display_name}
+                    </button>
+                  </th>
+                  <th data-field="status">
+                    <button type="button" id="sortStatus" onClick={sort}>
+                      {resource.status}
+                    </button>
+                  </th>
+                  <th className="action">{resource.action}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {list &&
+                  list.length > 0 &&
+                  list.map((user, i) => {
+                    return (
+                      <tr key={i} onClick={(e) => edit(e, user.userId)}>
+                        <td className="text-right">{(user as any).sequenceNo}</td>
+                        <td>{user.userId}</td>
+                        <td>
+                          <Link to={`${user.userId}`}>{user.username}</Link>
+                        </td>
+                        <td>{user.email}</td>
+                        <td>{user.displayName}</td>
+                        <td>{getStatusName(user.status, resource)}</td>
+                        <td>
+                          <div className="btn-group">
+                            <button type="button" className="btn-edit" onClick={(e) => edit(e, user.userId)}></button>
+                            <button type="button" className="btn-history" onClick={(e) => view(e, user.userId)}></button>
+                          </div>
+                        </td>
+                      </tr>
+                    )
+                  })}
+              </tbody>
+            </table>
+          </div>
+        )}
+        {component.view !== "table" && (
+          <ul className="row list">
+            {list &&
+              list.length > 0 &&
+              list.map((user, i) => {
+                return (
+                  <li key={i} className="col s12 m6 l4 xl3 img-item" onClick={(e) => edit(e, user.userId)}>
+                    <img
+                      src={user.imageURL && user.imageURL.length > 0 ? user.imageURL : user.gender === "F" ? femaleIcon : maleIcon}
+                      alt="user"
+                      className="round-border"
+                    />
+                    <Link to={`${user.userId}`}>{user.displayName}</Link>
+                    <button className="btn-detail" />
+                    <p>{user.email}</p>
+                  </li>
+                )
+              })}
+          </ul>
+        )}
       </div>
     </div>
   )

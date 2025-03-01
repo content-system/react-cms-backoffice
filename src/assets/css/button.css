@@ -210,14 +210,14 @@ footer > .btn-next {
   background-color: transparent;
 }
 .btn-back {
-  top: 6px;
+  top: 0px;
   left: 0px;
   width: 16px;
   height: 100%;
 }
 .btn-back::before {
   position: absolute;
-  top: -8px;
+  top: -2px;
   left: 3px;
   font-size: 36px;
   font-weight: 300;

@@ -50,6 +50,7 @@ export const ContactsForm = () => {
     statusList: [],
     list: [],
     filter: contactFilter,
+    hideFilter: true,
   }
   const navigate = useNavigate()
   const refForm = useRef()
@@ -194,7 +195,7 @@ export const ContactsForm = () => {
               />
             </label>
             <label className="col s12 m4 l4">
-              {resource.display_name}
+              {resource.email}
               <input
                 type="text"
                 id="email"
@@ -205,77 +206,75 @@ export const ContactsForm = () => {
                   setState({ ...state, filter })
                 }}
                 maxLength={255}
-                placeholder={resource.display_name}
+                placeholder={resource.email}
               />
             </label>
           </section>
         </form>
-        <form>
-          {state.view === "table" && (
-            <div className="table-responsive">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>{resource.sequence}</th>
-                    <th data-field="name">
-                      <button type="button" id="sortContactName" onClick={sort}>
-                        {resource.name}
-                      </button>
-                    </th>
-                    <th data-field="email">
-                      <button type="button" id="sortEmail" onClick={sort}>
-                        {resource.email}
-                      </button>
-                    </th>
-                    <th data-field="phone">
-                      <button type="button" id="sortPhone" onClick={sort}>
-                        {resource.phone}
-                      </button>
-                    </th>
-                    <th className="action">{resource.action}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {list &&
-                    list.length > 0 &&
-                    list.map((contact, i) => {
-                      return (
-                        <tr key={i} onClick={(e) => edit(e, contact.id)}>
-                          <td className="text-right">{offset + i + 1}</td>
-                          <td>
-                            <Link to={`${contact.id}`}>{contact.name}</Link>
-                          </td>
-                          <td>{contact.email}</td>
-                          <td>{contact.phone}</td>
-                          <td>
-                            <div className="btn-group">
-                              <button type="button" className="btn-edit" onClick={(e) => edit(e, contact.id)}></button>
-                              <button type="button" className="btn-history" onClick={(e) => view(e, contact.id)}></button>
-                            </div>
-                          </td>
-                        </tr>
-                      )
-                    })}
-                </tbody>
-              </table>
-            </div>
-          )}
-          {state.view !== "table" && (
-            <ul className="row list">
-              {list &&
-                list.length > 0 &&
-                list.map((contact, i) => {
-                  return (
-                    <li key={i} className="col s12 m6 l4 xl3 list-item" onClick={(e) => edit(e, contact.id)}>
-                      <Link to={`${contact.id}`}>{contact.name}</Link>
-                      <button className="btn-detail" />
-                      <p>{contact.email} {contact.phone}</p>
-                    </li>
-                  )
-                })}
-            </ul>
-          )}
-        </form>
+        {state.view === "table" && (
+          <div className="table-responsive">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>{resource.sequence}</th>
+                  <th data-field="name">
+                    <button type="button" id="sortContactName" onClick={sort}>
+                      {resource.name}
+                    </button>
+                  </th>
+                  <th data-field="email">
+                    <button type="button" id="sortEmail" onClick={sort}>
+                      {resource.email}
+                    </button>
+                  </th>
+                  <th data-field="phone">
+                    <button type="button" id="sortPhone" onClick={sort}>
+                      {resource.phone}
+                    </button>
+                  </th>
+                  <th className="action">{resource.action}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {list &&
+                  list.length > 0 &&
+                  list.map((contact, i) => {
+                    return (
+                      <tr key={i} onClick={(e) => edit(e, contact.id)}>
+                        <td className="text-right">{offset + i + 1}</td>
+                        <td>
+                          <Link to={`${contact.id}`}>{contact.name}</Link>
+                        </td>
+                        <td>{contact.email}</td>
+                        <td>{contact.phone}</td>
+                        <td>
+                          <div className="btn-group">
+                            <button type="button" className="btn-edit" onClick={(e) => edit(e, contact.id)}></button>
+                            <button type="button" className="btn-history" onClick={(e) => view(e, contact.id)}></button>
+                          </div>
+                        </td>
+                      </tr>
+                    )
+                  })}
+              </tbody>
+            </table>
+          </div>
+        )}
+        {state.view !== "table" && (
+          <ul className="row list">
+            {list &&
+              list.length > 0 &&
+              list.map((contact, i) => {
+                return (
+                  <li key={i} className="col s12 m6 l4 xl3 list-item" onClick={(e) => edit(e, contact.id)}>
+                    <Link to={`${contact.id}`}>{contact.name}</Link>
+                    <button className="btn-detail" />
+                    <p>{contact.email} {contact.phone}</p>
+                  </li>
+                )
+              })}
+          </ul>
+        )}
       </div>
     </div>
   )

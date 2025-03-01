@@ -36,6 +36,7 @@ interface ArticleSearch extends Sortable {
   filter: ArticleFilter
   list: Article[]
   total?: number
+  view?: string
   hideFilter?: boolean
   fields?: string[]
 }
@@ -52,6 +53,7 @@ export const ArticlesForm = () => {
     statusList: [],
     list: [],
     filter: articleFilter,
+    hideFilter: true,
   }
   const navigate = useNavigate()
   const refForm = useRef()
@@ -132,6 +134,12 @@ export const ArticlesForm = () => {
       <header>
         <h2>{resource.articles}</h2>
         <div className="btn-group">
+          {state.view !== "table" && (
+            <button type="button" id="btnTable" name="btnTable" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />
+          )}
+          {state.view === "table" && (
+            <button type="button" id="btnListView" name="btnListView" className="btn-list" onClick={(e) => setState({ ...state, view: "" })} />
+          )}
           {canWrite && <Link id="btnNew" className="btn-new" to="new" />}
         </div>
       </header>
@@ -231,7 +239,7 @@ export const ArticlesForm = () => {
                   setState({ ...state, filter })
                 }}
                 maxLength={255}
-                placeholder={resource.display_name}
+                placeholder={resource.description}
               />
             </label>
             <label className="col s12 m4 l4 checkbox-section">
@@ -249,7 +257,7 @@ export const ArticlesForm = () => {
             </label>
           </section>
         </form>
-        <form className="list-result">
+        {state.view === "table" && (
           <div className="table-responsive">
             <table className="table">
               <thead>
@@ -303,7 +311,25 @@ export const ArticlesForm = () => {
               </tbody>
             </table>
           </div>
-        </form>
+        )}
+        {state.view !== "table" && (
+          <ul className="row list">
+            {state.list &&
+              state.list.length > 0 &&
+              state.list.map((item, i) => {
+                return (
+                  <li key={i} className="col s12 m6 l4 xl3 card" onClick={(e) => edit(e, item.id)}>
+                    <section>
+                      <div className="cover" style={{ backgroundImage: `url('${item.thumbnail}')` }}></div>
+                      <Link to={`${item.id}`}>{item.title}</Link>
+                      <p>{formatDateTime(item.publishedAt, dateFormat)}</p>
+                      <p>{item.description}</p>
+                    </section>
+                  </li>
+                )
+              })}
+          </ul>
+        )}
       </div>
     </div>
   )

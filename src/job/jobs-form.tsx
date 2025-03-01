@@ -52,6 +52,7 @@ export const JobsForm = () => {
     statusList: [],
     list: [],
     filter: jobFilter,
+    hideFilter: true,
   }
   const navigate = useNavigate()
   const refForm = useRef()
@@ -220,18 +221,18 @@ export const JobsForm = () => {
               />
             </label>
             <label className="col s12 m4 l4">
-              {resource.description}
+              {resource.position}
               <input
                 type="text"
-                id="description"
-                name="description"
-                value={filter.description || ""}
+                id="position"
+                name="position"
+                value={filter.position || ""}
                 onChange={(e) => {
-                  filter.description = e.target.value
+                  filter.position = e.target.value
                   setState({ ...state, filter })
                 }}
                 maxLength={255}
-                placeholder={resource.display_name}
+                placeholder={resource.position}
               />
             </label>
             <label className="col s12 m4 l4 checkbox-section">
@@ -270,9 +271,19 @@ export const JobsForm = () => {
                       {resource.published_at}
                     </button>
                   </th>
-                  <th data-field="description">
-                    <button type="button" id="sortDescription" onClick={sort}>
-                      {resource.description}
+                  <th data-field="position">
+                    <button type="button" id="sortPosition" onClick={sort}>
+                      {resource.position}
+                    </button>
+                  </th>
+                  <th data-field="quantity">
+                    <button type="button" id="sortQuantity" onClick={sort}>
+                      {resource.quantity}
+                    </button>
+                  </th>
+                  <th data-field="location">
+                    <button type="button" id="sortLocation" onClick={sort}>
+                      {resource.location}
                     </button>
                   </th>
                   <th className="action">{resource.action}</th>
@@ -290,7 +301,9 @@ export const JobsForm = () => {
                           <Link to={`${item.id}`}>{item.title}</Link>
                         </td>
                         <td>{formatDateTime(item.publishedAt, dateFormat)}</td>
-                        <td>{item.description}</td>
+                        <td>{item.position}</td>
+                        <td>{item.quantity}</td>
+                        <td>{item.location}</td>
                         <td>
                           <div className="btn-group">
                             <button type="button" className="btn-edit" onClick={(e) => edit(e, item.id)}></button>

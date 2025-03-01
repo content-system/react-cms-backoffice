@@ -91,71 +91,69 @@ export const RolesForm = () => {
             </label>
           </section>
         </form>
-        <form className="list-result">
-          {component.view === "table" && (
-            <div className="table-responsive">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>{resource.sequence}</th>
-                    <th data-field="roleId">
-                      <button type="button" id="sortRoleId" onClick={sort}>
-                        {resource.role_id}
-                      </button>
-                    </th>
-                    <th data-field="roleName">
-                      <button type="button" id="sortRoleName" onClick={sort}>
-                        {resource.role_name}
-                      </button>
-                    </th>
-                    <th data-field="remark">
-                      <button type="button" id="sortRemark" onClick={sort}>
-                        {resource.remark}
-                      </button>
-                    </th>
-                    <th data-field="status">
-                      <button type="button" id="sortStatus" onClick={sort}>
-                        {resource.status}
-                      </button>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {state.list &&
-                    state.list.length > 0 &&
-                    state.list.map((item, i) => {
-                      return (
-                        <tr key={i} onClick={(e) => edit(e, item.roleId)}>
-                          <td className="text-right">{(item as any).sequenceNo}</td>
-                          <td>{item.roleId}</td>
-                          <td>
-                            <Link to={`${item.roleId}`}>{item.roleName}</Link>
-                          </td>
-                          <td>{item.remark}</td>
-                          <td>{getStatusName(item.status, resource)}</td>
-                        </tr>
-                      )
-                    })}
-                </tbody>
-              </table>
-            </div>
-          )}
-          {component.view !== "table" && (
-            <ul className="row list">
-              {state.list &&
-                state.list.length > 0 &&
-                state.list.map((item, i) => {
-                  return (
-                    <li key={i} className="col s12 m6 l4 xl3 list-item">
-                      <Link to={`${item.roleId}`}>{item.roleName}</Link>
-                      <button className="btn-detail"></button>
-                      <p>{item.remark}</p>
-                    </li>
-                  )
-                })}
-            </ul>
-          )}
-        </form>
+        {component.view === "table" && (
+          <div className="table-responsive">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>{resource.sequence}</th>
+                  <th data-field="roleId">
+                    <button type="button" id="sortRoleId" onClick={sort}>
+                      {resource.role_id}
+                    </button>
+                  </th>
+                  <th data-field="roleName">
+                    <button type="button" id="sortRoleName" onClick={sort}>
+                      {resource.role_name}
+                    </button>
+                  </th>
+                  <th data-field="remark">
+                    <button type="button" id="sortRemark" onClick={sort}>
+                      {resource.remark}
+                    </button>
+                  </th>
+                  <th data-field="status">
+                    <button type="button" id="sortStatus" onClick={sort}>
+                      {resource.status}
+                    </button>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {state.list &&
+                  state.list.length > 0 &&
+                  state.list.map((item, i) => {
+                    return (
+                      <tr key={i} onClick={(e) => edit(e, item.roleId)}>
+                        <td className="text-right">{(item as any).sequenceNo}</td>
+                        <td>{item.roleId}</td>
+                        <td>
+                          <Link to={`${item.roleId}`}>{item.roleName}</Link>
+                        </td>
+                        <td>{item.remark}</td>
+                        <td>{getStatusName(item.status, resource)}</td>
+                      </tr>
+                    )
+                  })}
+              </tbody>
+            </table>
+          </div>
+        )}
+        {component.view !== "table" && (
+          <ul className="row list">
+            {state.list &&
+              state.list.length > 0 &&
+              state.list.map((item, i) => {
+                return (
+                  <li key={i} className="col s12 m6 l4 xl3 list-item">
+                    <Link to={`${item.roleId}`}>{item.roleName}</Link>
+                    <button className="btn-detail"></button>
+                    <p>{item.remark}</p>
+                  </li>
+                )
+              })}
+          </ul>
+        )}
       </div>
     </div>
   )
