@@ -36,6 +36,7 @@ interface JobSearch extends Sortable {
   filter: JobFilter
   list: Job[]
   total?: number
+  view?: string
   hideFilter?: boolean
   fields?: string[]
 }
@@ -250,7 +251,7 @@ export const JobsForm = () => {
             </label>
           </section>
         </form>
-        <form className="list-result">
+        {state.view === "table" && (
           <div className="table-responsive">
             <table className="table">
               <thead>
@@ -316,7 +317,24 @@ export const JobsForm = () => {
               </tbody>
             </table>
           </div>
-        </form>
+        )}
+        {state.view !== "table" && (
+          <ul className="row list">
+            {state.list &&
+              state.list.length > 0 &&
+              state.list.map((item, i) => {
+                return (
+                  <li key={i} className="col s12 m6 l4 xl3 list-item" onClick={(e) => edit(e, item.id)}>
+                    <Link to={`${item.id}`}>{item.title}</Link>
+                    <p>
+                      {item.location} {item.quantity}
+                      <span>{formatDateTime(item.publishedAt, dateFormat)}</span>
+                    </p>
+                  </li>
+                )
+              })}
+          </ul>
+        )}
       </div>
     </div>
   )
