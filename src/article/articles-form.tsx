@@ -63,7 +63,7 @@ export const ArticlesForm = () => {
 
   const canWrite = hasPermission(Permission.write)
   useEffect(() => {
-    const filter = mergeFilter(buildFromUrl<ArticleFilter>(), state.filter, sizes, ["status", "articleType"])
+    const filter = mergeFilter(buildFromUrl<ArticleFilter>(), state.filter, sizes, ["status"])
     setSort(state, filter.sort)
     search() // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
