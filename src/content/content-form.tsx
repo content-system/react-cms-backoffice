@@ -143,23 +143,6 @@ export const ContentForm = () => {
           />
         </label>
         <label className="col s12 m6">
-          {resource.thumbnail}
-          <input
-            type="url"
-            id="thumbnail"
-            name="thumbnail"
-            value={content.thumbnail || ""}
-            onChange={(e) => {
-              content.thumbnail = e.target.value
-              setState({ ...state, content })
-            }}
-            onBlur={requiredOnBlur}
-            maxLength={255}
-            required={true}
-            placeholder={resource.thumbnail}
-          />
-        </label>
-        <label className="col s12 m6">
           {resource.published_at}
           <input
             type="datetime-local"
@@ -204,36 +187,19 @@ export const ContentForm = () => {
           />
         </label>
         <label className="col s12 textarea-container required">
-          {resource.description}
+          {resource.body}
           <textarea
-            id="description"
-            name="description"
-            rows={4}
-            value={content.description || ""}
-            onChange={(e) => {
-              content.description = e.target.value
-              setState({ ...state, content })
-            }}
-            onBlur={requiredOnBlur}
-            required={true}
-            maxLength={1200}
-            placeholder={resource.content}
-          />
-        </label>
-        <label className="col s12 textarea-container required">
-          {resource.content}
-          <textarea
-            id="content"
-            name="content"
+            id="body"
+            name="body"
             rows={80}
-            value={content.content || ""}
+            value={content.body || ""}
             onChange={(e) => {
-              content.content = e.target.value
+              content.body = e.target.value
               setState({ ...state, content })
             }}
             onBlur={requiredOnBlur}
             maxLength={9000}
-            placeholder={resource.content}
+            placeholder={resource.body}
           />
         </label>
       </div>

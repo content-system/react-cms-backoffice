@@ -18,6 +18,8 @@ import { ResetPasswordForm } from "./authentication/reset-password-form"
 import { SigninForm } from "./authentication/signin-form"
 import { SignupForm } from "./authentication/signup-form"
 import { config } from "./config"
+import ContactsRoute from "./contact"
+import ContentsRoute from "./content"
 import HomePage from "./core/home"
 import LayoutPage from "./core/layout"
 import { resources as locales } from "./core/resources"
@@ -25,7 +27,6 @@ import JobsRoute from "./job"
 import RolesRoute from "./role"
 import { SettingsForm } from "./settings"
 import UsersRoute from "./user"
-import ContactsRoute from "./contact"
 
 // tslint:disable:ordered-imports
 import "./App.css"
@@ -125,6 +126,7 @@ function App() {
           <Route path="roles/*" element={<RolesRoute />} />
           <Route path="audit-logs" element={<AuditLogsForm />} />
           <Route path="articles/*" element={<ArticlesRoute />} />
+          <Route path="contents/*" element={<ContentsRoute />} />
           <Route path="jobs/*" element={<JobsRoute />} />
           <Route path="contacts/*" element={<ContactsRoute />} />
         </Route>

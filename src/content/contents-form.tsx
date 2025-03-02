@@ -233,9 +233,9 @@ export const ContentsForm = () => {
                 type="text"
                 id="description"
                 name="description"
-                value={filter.description || ""}
+                value={filter.body || ""}
                 onChange={(e) => {
-                  filter.description = e.target.value
+                  filter.body = e.target.value
                   setState({ ...state, filter })
                 }}
                 maxLength={255}
@@ -295,10 +295,9 @@ export const ContentsForm = () => {
                         <td className="text-right">{offset + i + 1}</td>
                         <td>{item.id}</td>
                         <td>
-                          <Link to={`${item.id}`}>{item.title}</Link>
+                          <Link to={`${item.id}`}>{item.id}</Link>
                         </td>
                         <td>{formatDateTime(item.publishedAt, dateFormat)}</td>
-                        <td>{item.description}</td>
                         <td>
                           <div className="btn-group">
                             <button type="button" className="btn-edit" onClick={(e) => edit(e, item.id)}></button>
@@ -318,13 +317,9 @@ export const ContentsForm = () => {
               state.list.length > 0 &&
               state.list.map((item, i) => {
                 return (
-                  <li key={i} className="col s12 m6 l4 xl3 card" onClick={(e) => edit(e, item.id)}>
-                    <section>
-                      <div className="cover" style={{ backgroundImage: `url('${item.thumbnail}')` }}></div>
-                      <Link to={`${item.id}`}>{item.title}</Link>
-                      <p>{formatDateTime(item.publishedAt, dateFormat)}</p>
-                      <p>{item.description}</p>
-                    </section>
+                  <li key={i} className="col s12 m6 l4 xl3 list-item" onClick={(e) => edit(e, item.id)}>
+                    <Link to={`${item.id}`}>{item.id}</Link>
+                    <p>{formatDateTime(item.publishedAt, dateFormat)}</p>
                   </li>
                 )
               })}

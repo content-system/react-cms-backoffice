@@ -250,6 +250,7 @@ export const en = {
   id: "Id",
   title: "Title",
   content: "Content",
+  body: "Body",
   thumbnail: "Thumbnail",
   published_at: "Published At",
   published_at_from: "Published At From",

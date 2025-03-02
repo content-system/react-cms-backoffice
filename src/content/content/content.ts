@@ -3,20 +3,16 @@ import { Attributes, Filter, Repository, Service, TimeRange } from "onecore"
 export interface Content {
   id: string
   title: string
-  description?: string
-  content: string
-  thumbnail?: string
+  body: string
   publishedAt?: Date
   tags?: string[]
-  type?: string
-  authorId?: string
   status?: string
 }
 
 export interface ContentFilter extends Filter {
   id?: string
   title?: string
-  description?: string
+  body?: string
   publishedAt?: TimeRange
   tags?: string[]
   status: string[]
