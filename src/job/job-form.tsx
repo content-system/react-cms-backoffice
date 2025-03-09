@@ -249,7 +249,7 @@ export const JobForm = () => {
             </label>
             <label>
               <input type="radio" id="inactive" name="status" onChange={statusOnChange} value={Status.Inactive} checked={job.status === Status.Inactive} />
-              {resource.no}
+              {resource.number}
             </label>
           </div>
         </div>

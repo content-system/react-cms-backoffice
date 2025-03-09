@@ -221,9 +221,7 @@ export const CategoryForm = () => {
               category.type = e.target.value
               setState({ ...state, category })
             }}
-            onBlur={requiredOnBlur}
-            maxLength={255}
-            required={true}
+            maxLength={10}
             placeholder={resource.type}
           />
         </label>
@@ -239,8 +237,7 @@ export const CategoryForm = () => {
               setState({ ...state, category })
             }}
             onBlur={requiredOnBlur}
-            maxLength={255}
-            required={true}
+            maxLength={40}
             placeholder={resource.parent}
           />
         </label>
@@ -250,6 +247,7 @@ export const CategoryForm = () => {
             type="tel"
             id="sequence"
             name="sequence"
+            className="right-align"
             value={category.sequence || ""}
             onChange={(e) => {
               category.sequence = parseInt(e.target.value)
@@ -270,7 +268,7 @@ export const CategoryForm = () => {
             </label>
             <label>
               <input type="radio" id="inactive" name="status" onChange={statusOnChange} value={Status.Inactive} checked={category.status === Status.Inactive} />
-              {resource.no}
+              {resource.number}
             </label>
           </div>
         </div>

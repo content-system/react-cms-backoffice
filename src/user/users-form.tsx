@@ -136,7 +136,7 @@ export const UsersForm = () => {
             <table className="table">
               <thead>
                 <tr>
-                  <th>{resource.sequence}</th>
+                  <th>{resource.number}</th>
                   <th data-field="userId">
                     <button type="button" id="sortUserId" onClick={sort}>
                       {resource.user_id}

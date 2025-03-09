@@ -207,7 +207,7 @@ export const CategoriesForm = () => {
             <table className="table">
               <thead>
                 <tr>
-                  <th>{resource.sequence}</th>
+                  <th>{resource.number}</th>
                   <th data-field="id">
                     <button type="button" id="sortId" onClick={sort}>
                       {resource.id}
@@ -267,7 +267,7 @@ export const CategoriesForm = () => {
                         <td>{item.icon}</td>
                         <td>{item.type}</td>
                         <td>{item.parent}</td>
-                        <td>{item.sequence}</td>
+                        <td className="right-align">{item.sequence}</td>
                         <td>
                           <div className="btn-group">
                             <button type="button" className="btn-edit" onClick={(e) => edit(e, item.id)}></button>

@@ -96,7 +96,7 @@ export const RolesForm = () => {
             <table className="table">
               <thead>
                 <tr>
-                  <th>{resource.sequence}</th>
+                  <th>{resource.number}</th>
                   <th data-field="roleId">
                     <button type="button" id="sortRoleId" onClick={sort}>
                       {resource.role_id}

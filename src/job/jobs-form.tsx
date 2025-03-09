@@ -48,7 +48,7 @@ const jobFilter: JobFilter = {
 
 const sizes = pageSizes
 export const JobsForm = () => {
-  const dateFormat = getDateFormat()
+  const dateFormat = getDateFormat().toUpperCase()
   const initialState: JobSearch = {
     statusList: [],
     list: [],
@@ -133,9 +133,7 @@ export const JobsForm = () => {
     <div>
       <header>
         <h2>{resource.jobs}</h2>
-        <div className="btn-group">
-          {canWrite && <Link id="btnNew" className="btn-new" to="new" />}
-        </div>
+        <div className="btn-group">{canWrite && <Link id="btnNew" className="btn-new" to="new" />}</div>
       </header>
       <div>
         <form id="jobsForm" name="jobsForm" className="form" noValidate={true} ref={refForm as any}>
@@ -256,7 +254,7 @@ export const JobsForm = () => {
             <table className="table">
               <thead>
                 <tr>
-                  <th>{resource.sequence}</th>
+                  <th>{resource.number}</th>
                   <th data-field="id">
                     <button type="button" id="sortId" onClick={sort}>
                       {resource.id}

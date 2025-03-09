@@ -48,7 +48,7 @@ const articleFilter: ArticleFilter = {
 
 const sizes = pageSizes
 export const ArticlesForm = () => {
-  const dateFormat = getDateFormat()
+  const dateFormat = getDateFormat().toUpperCase()
   const initialState: ArticleSearch = {
     statusList: [],
     list: [],
@@ -262,7 +262,7 @@ export const ArticlesForm = () => {
             <table className="table">
               <thead>
                 <tr>
-                  <th>{resource.sequence}</th>
+                  <th>{resource.number}</th>
                   <th data-field="id">
                     <button type="button" id="sortId" onClick={sort}>
                       {resource.id}

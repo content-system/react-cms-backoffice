@@ -18,7 +18,7 @@ import {
   removeSortStatus,
   setSort,
   Sortable,
-  value
+  value,
 } from "react-hook-core"
 import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
@@ -216,7 +216,7 @@ export const ContactsForm = () => {
             <table className="table">
               <thead>
                 <tr>
-                  <th>{resource.sequence}</th>
+                  <th>{resource.number}</th>
                   <th data-field="name">
                     <button type="button" id="sortContactName" onClick={sort}>
                       {resource.name}
@@ -269,7 +269,9 @@ export const ContactsForm = () => {
                   <li key={i} className="col s12 m6 l4 xl3 list-item" onClick={(e) => edit(e, contact.id)}>
                     <Link to={`${contact.id}`}>{contact.name}</Link>
                     <button className="btn-detail" />
-                    <p>{contact.email} {contact.phone}</p>
+                    <p>
+                      {contact.email} {contact.phone}
+                    </p>
                   </li>
                 )
               })}

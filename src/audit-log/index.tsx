@@ -104,7 +104,7 @@ export const AuditLogsForm = () => {
               <table className="table">
                 <thead>
                   <tr>
-                    <th>{resource.sequence}</th>
+                    <th>{resource.number}</th>
                     <th data-field="time">
                       <button type="button" id="sortTime" onClick={sort}>
                         {resource.audit_log_time}

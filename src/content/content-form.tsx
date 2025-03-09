@@ -22,24 +22,24 @@ const initialState: InternalState = {
 }
 
 export const ContentForm = () => {
-  const isReadOnly = !hasPermission(Permission.write, 1)
+  const isReadOnly = !hasPermission(Permission.write, 2)
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef()
   const [initialContent, setInitialContent] = useState<Content>(createContent())
   const [state, setState] = useState<InternalState>(initialState)
-  const { id } = useParams()
+  const { id, lang } = useParams()
   const newMode = !id
   useEffect(() => {
     initForm(refForm?.current, registerEvents)
-    if (!id) {
+    if (!id || !lang) {
       const content = createContent()
       setInitialContent(clone(content))
       setState({ content })
     } else {
       showLoading()
       getContentService()
-        .load(id)
+        .load(id, lang)
         .then((content) => {
           if (!content) {
             alertError(resource.error_404, () => navigate(-1))
@@ -83,7 +83,7 @@ export const ContentForm = () => {
             .catch(handleError)
             .finally(hideLoading)
         } else {
-          const diff = makeDiff(initialContent, content, ["id"])
+          const diff = makeDiff(initialContent, content, ["id", "lang"])
           if (isEmptyObject(diff)) {
             alertWarning(resource.msg_no_change)
           } else {
@@ -130,7 +130,6 @@ export const ContentForm = () => {
             type="text"
             id="id"
             name="id"
-            className="form-control"
             value={content.id || ""}
             readOnly={!newMode}
             onChange={(e) => {
@@ -140,6 +139,23 @@ export const ContentForm = () => {
             maxLength={80}
             required={true}
             placeholder={resource.id}
+          />
+        </label>
+        <label className="col s12 m6">
+          {resource.lang}
+          <input
+            type="text"
+            id="lang"
+            name="lang"
+            value={content.lang || ""}
+            readOnly={!newMode}
+            onChange={(e) => {
+              content.lang = e.target.value
+              setState({ ...state, content })
+            }}
+            maxLength={80}
+            required={true}
+            placeholder={resource.lang}
           />
         </label>
         <label className="col s12 m6">
@@ -165,7 +181,7 @@ export const ContentForm = () => {
             </label>
             <label>
               <input type="radio" id="inactive" name="status" onChange={statusOnChange} value={Status.Inactive} checked={content.status === Status.Inactive} />
-              {resource.no}
+              {resource.number}
             </label>
           </div>
         </div>

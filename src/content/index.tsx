@@ -7,7 +7,7 @@ export default function ContentsRoute() {
     <Routes>
       <Route path="" element={<ContentsForm />} />
       <Route path="/new" element={<ContentForm />} />
-      <Route path="/:id" element={<ContentForm />} />
+      <Route path="/:id/:lang" element={<ContentForm />} />
     </Routes>
   )
 }

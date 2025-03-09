@@ -237,7 +237,7 @@ export const UserForm = () => {
               </label>
               <label>
                 <input type="radio" id="inactive" name="status" onChange={updateState} value={Status.Inactive} checked={user.status === Status.Inactive} />
-                {resource.no}
+                {resource.number}
               </label>
             </div>
           </div>
@@ -246,14 +246,7 @@ export const UserForm = () => {
           <h4 className="header">{resource.contact_info}</h4>
           <label className="col s12 m6 flying">
             {resource.position}
-            <select
-              style={{ width: "99%" }}
-              id="position"
-              name="position"
-              value={user.position || ""}
-              data-value
-              onChange={updateState}
-            >
+            <select style={{ width: "99%" }} id="position" name="position" value={user.position || ""} data-value onChange={updateState}>
               <option value="">{resource.please_select}</option>
               {state.positionList.map((item, index) => (
                 <option key={index} value={item.value}>

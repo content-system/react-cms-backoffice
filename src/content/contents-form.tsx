@@ -110,9 +110,9 @@ export const ContentsForm = () => {
       .catch(handleError)
       .finally(hideLoading)
   }
-  const edit = (e: OnClick, id: string) => {
+  const edit = (e: OnClick, id: string, lang: string) => {
     e.preventDefault()
-    navigate(`${id}`)
+    navigate(`${id}/${lang}`)
   }
   const checkboxOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { filter } = state
@@ -262,10 +262,15 @@ export const ContentsForm = () => {
             <table className="table">
               <thead>
                 <tr>
-                  <th>{resource.sequence}</th>
+                  <th>{resource.number}</th>
                   <th data-field="id">
                     <button type="button" id="sortId" onClick={sort}>
                       {resource.id}
+                    </button>
+                  </th>
+                  <th data-field="lang">
+                    <button type="button" id="sortLang" onClick={sort}>
+                      {resource.lang}
                     </button>
                   </th>
                   <th data-field="title">
@@ -278,9 +283,9 @@ export const ContentsForm = () => {
                       {resource.published_at}
                     </button>
                   </th>
-                  <th data-field="description">
-                    <button type="button" id="sortDescription" onClick={sort}>
-                      {resource.description}
+                  <th data-field="status">
+                    <button type="button" id="sortStatus" onClick={sort}>
+                      {resource.status}
                     </button>
                   </th>
                   <th className="action">{resource.action}</th>
@@ -291,17 +296,19 @@ export const ContentsForm = () => {
                   list.length > 0 &&
                   list.map((item, i) => {
                     return (
-                      <tr key={i} onClick={(e) => edit(e, item.id)}>
+                      <tr key={i} onClick={(e) => edit(e, item.id, item.lang)}>
                         <td className="text-right">{offset + i + 1}</td>
                         <td>{item.id}</td>
+                        <td>{item.lang}</td>
                         <td>
                           <Link to={`${item.id}`}>{item.id}</Link>
                         </td>
                         <td>{formatDateTime(item.publishedAt, dateFormat)}</td>
+                        <td>{item.status}</td>
                         <td>
                           <div className="btn-group">
-                            <button type="button" className="btn-edit" onClick={(e) => edit(e, item.id)}></button>
-                            <button type="button" className="btn-history" onClick={(e) => edit(e, item.id)}></button>
+                            <button type="button" className="btn-edit" onClick={(e) => edit(e, item.id, item.lang)}></button>
+                            <button type="button" className="btn-history" onClick={(e) => edit(e, item.id, item.lang)}></button>
                           </div>
                         </td>
                       </tr>
@@ -317,8 +324,10 @@ export const ContentsForm = () => {
               state.list.length > 0 &&
               state.list.map((item, i) => {
                 return (
-                  <li key={i} className="col s12 m6 l4 xl3 list-item" onClick={(e) => edit(e, item.id)}>
-                    <Link to={`${item.id}`}>{item.id}</Link>
+                  <li key={i} className="col s12 m6 l4 xl3 list-item" onClick={(e) => edit(e, item.id, item.lang)}>
+                    <Link to={`${item.id}/${item.lang}`}>
+                      {item.id} {item.lang}
+                    </Link>
                     <p>{formatDateTime(item.publishedAt, dateFormat)}</p>
                   </li>
                 )

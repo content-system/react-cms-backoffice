@@ -17,6 +17,7 @@ export const vi = {
   grey_mode: "Grey mode",
   classic_menu: "Classic menu",
   modern_menu: "Modern menu",
+  lang: "Language",
 
   read: "Read",
   write: "Write",
@@ -228,7 +229,7 @@ export const vi = {
   rejected: "Rejected",
   detail: "Detail",
   description: "Description",
-  sequence: "No.",
+  number: "No.",
   total: "Total",
 
   start_date: "Start Date",
@@ -248,6 +249,7 @@ export const vi = {
   icon: "Icon",
   type: "Type",
   parent: "Parent",
+  sequence: "Sequence",
 
   contact: "Contact",
   articles: "Articles",
