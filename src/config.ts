@@ -11,6 +11,8 @@ export const config = {
   audit_log_url: "http://localhost:8083/audit-logs",
   settings_url: "http://localhost:8083/settings",
 
+  category_url: "http://localhost:8083/categories",
+  content_url: "http://localhost:8083/contents",
   article_url: "http://localhost:8083/articles",
   job_url: "http://localhost:8083/jobs",
   contact_url: "http://localhost:8083/contacts",

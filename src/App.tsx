@@ -17,6 +17,7 @@ import { ForgotPasswordForm } from "./authentication/forgot-password-form"
 import { ResetPasswordForm } from "./authentication/reset-password-form"
 import { SigninForm } from "./authentication/signin-form"
 import { SignupForm } from "./authentication/signup-form"
+import CategoriesRoute from "./category"
 import { config } from "./config"
 import ContactsRoute from "./contact"
 import ContentsRoute from "./content"
@@ -125,8 +126,9 @@ function App() {
           <Route path="users/*" element={<UsersRoute />} />
           <Route path="roles/*" element={<RolesRoute />} />
           <Route path="audit-logs" element={<AuditLogsForm />} />
-          <Route path="articles/*" element={<ArticlesRoute />} />
+          <Route path="categories/*" element={<CategoriesRoute />} />
           <Route path="contents/*" element={<ContentsRoute />} />
+          <Route path="articles/*" element={<ArticlesRoute />} />
           <Route path="jobs/*" element={<JobsRoute />} />
           <Route path="contacts/*" element={<ContactsRoute />} />
         </Route>

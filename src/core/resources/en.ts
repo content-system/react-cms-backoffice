@@ -242,6 +242,13 @@ export const en = {
   timestamp: "Timestamp",
   ip: "IP",
 
+  categories: "Categories",
+  category: "Category",
+  path: "Path",
+  icon: "Icon",
+  type: "Type",
+  parent: "Parent",
+
   contact: "Contact",
   articles: "Articles",
   article: "Article",
