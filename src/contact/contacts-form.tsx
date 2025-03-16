@@ -111,10 +111,6 @@ export const ContactsForm = () => {
     e.preventDefault()
     navigate(`${id}`)
   }
-  const view = (e: OnClick, id: string) => {
-    e.preventDefault()
-    navigate(`${id}/view`)
-  }
   const { list } = state
   const filter = value(state.filter)
   const offset = getOffset(limit, page)
@@ -123,11 +119,11 @@ export const ContactsForm = () => {
       <header>
         <h2>{resource.contacts}</h2>
         <div className="btn-group">
-          {state.view !== "table" && (
-            <button type="button" id="btnTable" name="btnTable" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />
+          {state.view === "list" && (
+            <button type="button" id="btnTable" name="btnTable" className="btn-table" onClick={(e) => setState({ ...state, view: "" })} />
           )}
-          {state.view === "table" && (
-            <button type="button" id="btnListView" name="btnListView" className="btn-list" onClick={(e) => setState({ ...state, view: "" })} />
+          {state.view !== "list" && (
+            <button type="button" id="btnListView" name="btnListView" className="btn-list" onClick={(e) => setState({ ...state, view: "list" })} />
           )}
           {canWrite && <Link id="btnNew" className="btn-new" to="new" />}
         </div>
@@ -211,7 +207,7 @@ export const ContactsForm = () => {
             </label>
           </section>
         </form>
-        {state.view === "table" && (
+        {state.view !== "list" && (
           <div className="table-responsive">
             <table className="table">
               <thead>
@@ -232,7 +228,16 @@ export const ContactsForm = () => {
                       {resource.phone}
                     </button>
                   </th>
-                  <th className="action">{resource.action}</th>
+                  <th data-field="company">
+                    <button type="button" id="sortCompany" onClick={sort}>
+                      {resource.company}
+                    </button>
+                  </th>
+                  <th data-field="country">
+                    <button type="button" id="sortCountry" onClick={sort}>
+                      {resource.country}
+                    </button>
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -247,12 +252,8 @@ export const ContactsForm = () => {
                         </td>
                         <td>{contact.email}</td>
                         <td>{contact.phone}</td>
-                        <td>
-                          <div className="btn-group">
-                            <button type="button" className="btn-edit" onClick={(e) => edit(e, contact.id)}></button>
-                            <button type="button" className="btn-history" onClick={(e) => view(e, contact.id)}></button>
-                          </div>
-                        </td>
+                        <td>{contact.company}</td>
+                        <td>{contact.country}</td>
                       </tr>
                     )
                   })}
@@ -260,7 +261,7 @@ export const ContactsForm = () => {
             </table>
           </div>
         )}
-        {state.view !== "table" && (
+        {state.view === "list" && (
           <ul className="row list">
             {list &&
               list.length > 0 &&

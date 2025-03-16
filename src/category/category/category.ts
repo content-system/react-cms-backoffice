@@ -1,4 +1,4 @@
-import { Attributes, Filter, Repository, Service } from "onecore"
+import { Attributes, Filter, Result, SearchResult, Service } from "onecore"
 
 export interface Category {
   id: string
@@ -10,6 +10,7 @@ export interface Category {
   parent: string
   type: string
   status: string
+  version?: number
 }
 
 export interface CategoryFilter extends Filter {
@@ -23,8 +24,13 @@ export interface CategoryFilter extends Filter {
   status: string[]
 }
 
-export interface CategoryRepository extends Repository<Category, string> {}
-export interface CategoryService extends Service<Category, string, CategoryFilter> {}
+export interface CategoryService extends Service<Category, string, CategoryFilter> {
+  search(filter: CategoryFilter, limit: number, page?: number, fields?: string[]): Promise<SearchResult<Category>>
+  load(id: string): Promise<Category | null>
+  create(category: Category): Promise<Result<Category>>
+  update(category: Category): Promise<Result<Category>>
+  patch(category: Partial<Category>): Promise<Result<Category>>
+}
 
 export const categoryModel: Attributes = {
   id: {
@@ -32,36 +38,34 @@ export const categoryModel: Attributes = {
     length: 40,
     required: true,
   },
-  title: {
-    length: 255,
+  name: {
+    length: 120,
     required: true,
     q: true,
   },
-  description: {
+  status: {},
+  path: {
     length: 1200,
     required: true,
     q: true,
   },
-  publishedAt: {
-    column: "published_at",
-    type: "datetime",
+  resource: {
+    column: "resource_key",
+    length: 255,
   },
-  content: {
-    length: 9000,
+  icon: {
+    length: 255,
     required: true,
   },
-  thumbnail: {},
-  highThumbnail: {
-    column: "high_thumbnail",
+  sequence: {
+    type: "integer",
   },
-  tags: {
-    type: "strings",
-  },
-  /*
-  author: {
+  type: {},
+  parent: {
     length: 40,
   },
-  */
-  type: {},
-  status: {},
+  version: {
+    type: "integer",
+    version: true,
+  },
 }

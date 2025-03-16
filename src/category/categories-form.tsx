@@ -131,11 +131,11 @@ export const CategoriesForm = () => {
       <header>
         <h2>{resource.categories}</h2>
         <div className="btn-group">
-          {state.view !== "table" && (
-            <button type="button" id="btnTable" name="btnTable" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />
+          {state.view === "list" && (
+            <button type="button" id="btnTable" name="btnTable" className="btn-table" onClick={(e) => setState({ ...state, view: "" })} />
           )}
-          {state.view === "table" && (
-            <button type="button" id="btnListView" name="btnListView" className="btn-list" onClick={(e) => setState({ ...state, view: "" })} />
+          {state.view !== "list" && (
+            <button type="button" id="btnListView" name="btnListView" className="btn-list" onClick={(e) => setState({ ...state, view: "list" })} />
           )}
           {canWrite && <Link id="btnNew" className="btn-new" to="new" />}
         </div>
@@ -202,7 +202,7 @@ export const CategoriesForm = () => {
             </label>
           </section>
         </form>
-        {state.view === "table" && (
+        {state.view !== "list" && (
           <div className="table-responsive">
             <table className="table">
               <thead>
@@ -248,6 +248,11 @@ export const CategoriesForm = () => {
                       {resource.sequence}
                     </button>
                   </th>
+                  <th data-field="status">
+                    <button type="button" id="sortStatus" onClick={sort}>
+                      {resource.status}
+                    </button>
+                  </th>
                   <th className="action">{resource.action}</th>
                 </tr>
               </thead>
@@ -268,6 +273,7 @@ export const CategoriesForm = () => {
                         <td>{item.type}</td>
                         <td>{item.parent}</td>
                         <td className="right-align">{item.sequence}</td>
+                        <td>{item.status}</td>
                         <td>
                           <div className="btn-group">
                             <button type="button" className="btn-edit" onClick={(e) => edit(e, item.id)}></button>
@@ -281,7 +287,7 @@ export const CategoriesForm = () => {
             </table>
           </div>
         )}
-        {state.view !== "table" && (
+        {state.view === "list" && (
           <ul className="row list">
             {state.list &&
               state.list.length > 0 &&

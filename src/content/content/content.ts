@@ -8,6 +8,7 @@ export interface Content {
   publishedAt?: Date
   tags?: string[]
   status?: string
+  version?: number
 }
 
 export interface ContentFilter extends Filter {
@@ -58,4 +59,8 @@ export const contentModel: Attributes = {
   },
   type: {},
   status: {},
+  version: {
+    type: "integer",
+    version: true,
+  },
 }

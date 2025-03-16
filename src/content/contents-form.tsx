@@ -48,7 +48,7 @@ const contentFilter: ContentFilter = {
 
 const sizes = pageSizes
 export const ContentsForm = () => {
-  const dateFormat = getDateFormat()
+  const dateFormat = getDateFormat().toUpperCase()
   const initialState: ContentSearch = {
     statusList: [],
     list: [],
@@ -134,11 +134,11 @@ export const ContentsForm = () => {
       <header>
         <h2>{resource.contents}</h2>
         <div className="btn-group">
-          {state.view !== "table" && (
-            <button type="button" id="btnTable" name="btnTable" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />
+          {state.view === "list" && (
+            <button type="button" id="btnTable" name="btnTable" className="btn-table" onClick={(e) => setState({ ...state, view: "" })} />
           )}
-          {state.view === "table" && (
-            <button type="button" id="btnListView" name="btnListView" className="btn-list" onClick={(e) => setState({ ...state, view: "" })} />
+          {state.view !== "list" && (
+            <button type="button" id="btnListView" name="btnListView" className="btn-list" onClick={(e) => setState({ ...state, view: "list" })} />
           )}
           {canWrite && <Link id="btnNew" className="btn-new" to="new" />}
         </div>
@@ -257,7 +257,7 @@ export const ContentsForm = () => {
             </label>
           </section>
         </form>
-        {state.view === "table" && (
+        {state.view !== "list" && (
           <div className="table-responsive">
             <table className="table">
               <thead>
@@ -318,7 +318,7 @@ export const ContentsForm = () => {
             </table>
           </div>
         )}
-        {state.view !== "table" && (
+        {state.view === "list" && (
           <ul className="row list">
             {state.list &&
               state.list.length > 0 &&

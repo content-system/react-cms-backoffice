@@ -1,4 +1,4 @@
-import { Attributes, Filter, Service, Tracking } from "onecore"
+import { Attributes, Filter, Result, SearchResult, Service, Tracking } from "onecore"
 
 export interface RoleFilter extends Filter {
   roleId: string
@@ -23,6 +23,11 @@ export interface Privilege {
 
 export interface RoleService extends Service<Role, string, RoleFilter> {
   getPrivileges(): Promise<Privilege[]>
+  search(filter: RoleFilter, limit: number, page?: number, fields?: string[]): Promise<SearchResult<Role>>
+  load(id: string): Promise<Role | null>
+  create(role: Role): Promise<Result<Role>>
+  update(role: Role): Promise<Result<Role>>
+  patch(role: Partial<Role>): Promise<Result<Role>>
   assign(roleId: string, users: string[]): Promise<number>
 }
 
@@ -33,6 +38,7 @@ export const roleModel: Attributes = {
     q: true,
   },
   roleName: {
+    column: "role_name",
     type: "string",
     length: 120,
     q: true,
@@ -45,15 +51,23 @@ export const roleModel: Attributes = {
     length: 1,
   },
   createdBy: {
+    column: "created_by",
     length: 40,
   },
   createdAt: {
+    column: "created_at",
     type: "datetime",
   },
   updatedBy: {
+    column: "updated_by",
     length: 40,
   },
   updatedAt: {
+    column: "updated_at",
     type: "datetime",
+  },
+  privileges: {
+    type: "strings",
+    ignored: true,
   },
 }

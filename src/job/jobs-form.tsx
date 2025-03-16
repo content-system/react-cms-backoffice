@@ -133,7 +133,15 @@ export const JobsForm = () => {
     <div>
       <header>
         <h2>{resource.jobs}</h2>
-        <div className="btn-group">{canWrite && <Link id="btnNew" className="btn-new" to="new" />}</div>
+        <div className="btn-group">
+          {state.view === "list" && (
+            <button type="button" id="btnTable" name="btnTable" className="btn-table" onClick={(e) => setState({ ...state, view: "" })} />
+          )}
+          {state.view !== "list" && (
+            <button type="button" id="btnListView" name="btnListView" className="btn-list" onClick={(e) => setState({ ...state, view: "list" })} />
+          )}
+          {canWrite && <Link id="btnNew" className="btn-new" to="new" />}
+        </div>
       </header>
       <div>
         <form id="jobsForm" name="jobsForm" className="form" noValidate={true} ref={refForm as any}>
@@ -249,7 +257,7 @@ export const JobsForm = () => {
             </label>
           </section>
         </form>
-        {state.view === "table" && (
+        {state.view !== "list" && (
           <div className="table-responsive">
             <table className="table">
               <thead>
@@ -316,7 +324,7 @@ export const JobsForm = () => {
             </table>
           </div>
         )}
-        {state.view !== "table" && (
+        {state.view === "list" && (
           <ul className="row list">
             {state.list &&
               state.list.length > 0 &&
