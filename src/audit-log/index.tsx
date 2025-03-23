@@ -1,18 +1,44 @@
 import { Item } from "onecore"
-import { useEffect, useRef } from "react"
-import { datetimeToString, PageSizeSelect, SearchComponentState, useSearch, value } from "react-hook-core"
+import { ChangeEvent, useEffect, useRef, useState } from "react"
+import {
+  addParametersIntoUrl,
+  buildFromUrl,
+  buildMessage,
+  buildSortFilter,
+  datetimeToString,
+  getFields,
+  getNumber,
+  getOffset,
+  getSortElement,
+  handleSort,
+  mergeFilter,
+  PageChange,
+  pageSizes,
+  PageSizeSelect,
+  removeSortStatus,
+  setSort,
+  Sortable,
+  value,
+} from "react-hook-core"
 import Pagination from "reactx-pagination"
-import { addDays, addSeconds, formatFullDateTime } from "ui-plus"
-import { getDateFormat, inputSearch, useLocale } from "uione"
-import { AuditLog, AuditLogFilter, useAuditLog } from "./service"
+import { hideLoading, showLoading } from "ui-loading"
+import { addDays, addSeconds, createDate, formatFullDateTime } from "ui-plus"
+import { toast } from "ui-toast"
+import { getDateFormat, handleError, useLocale, useResource } from "uione"
+import { AuditLog, AuditLogFilter, getAuditService } from "./service"
 import "./style.css"
 
-interface AuditLogSearch extends SearchComponentState<AuditLog, AuditLogFilter> {
+interface AuditLogSearch extends Sortable {
   statusList: Item[]
+  filter: AuditLogFilter
+  list: AuditLog[]
+  total?: number
+  view?: string
+  hideFilter?: boolean
+  fields?: string[]
 }
 
 const now = new Date()
-
 const auditLogfilter: AuditLogFilter = {
   limit: 24,
   id: "",
@@ -23,36 +49,86 @@ const auditLogfilter: AuditLogFilter = {
   },
 }
 
-const AuditSearch: AuditLogSearch = {
-  limit: 24,
-  statusList: [],
-  list: [],
-  filter: auditLogfilter,
-}
-
 const mapStyleStatus: Map<string, string> = new Map([
   ["success", "badge-outline-success"],
   ["fail", "badge-outline-danger "],
 ])
 
+const sizes = pageSizes
 export const AuditLogsForm = () => {
   const dateFormat = getDateFormat().toUpperCase()
+  const initialState: AuditLogSearch = {
+    statusList: [],
+    list: [],
+    filter: auditLogfilter,
+  }
   const locale = useLocale()
+  const resource = useResource()
   const refForm = useRef()
-  const hooks = useSearch<AuditLog, AuditLogFilter, AuditLogSearch>(refForm, AuditSearch, useAuditLog(), inputSearch())
-  const { state, resource, component, updateState, pageSizeChanged, pageChanged, changeView, search, sort } = hooks
+  const [state, setState] = useState<AuditLogSearch>(initialState)
+
   useEffect(() => {
+    const filter = mergeFilter(buildFromUrl<AuditLogFilter>(), state.filter, sizes, ["status", "auditLogType"])
+    setSort(state, filter.sort)
     search() // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+  const sort = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const target = getSortElement(event.target as HTMLElement)
+    const sort = handleSort(target, state.sortTarget, state.sortField, state.sortType)
+    state.sortField = sort.field
+    state.sortType = sort.type
+    state.sortTarget = target
+    search()
+  }
+  const pageSizeChanged = (event: ChangeEvent<HTMLSelectElement>) => {
+    state.filter.page = 1
+    state.filter.limit = getNumber(event)
+    search()
+  }
+  const pageChanged = (data: PageChange) => {
+    const { page, size } = data
+    state.filter.page = page
+    state.filter.limit = size
+    search()
+  }
+  const searchOnClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+    event.preventDefault()
+    removeSortStatus(state.sortTarget)
+    state.filter.page = 1
+    state.sortTarget = undefined
+    state.sortField = undefined
+    search()
+  }
+  const limit = state.filter.limit
+  const page = state.filter.page
+  const search = (isFirstLoad?: boolean) => {
+    showLoading()
+    const filter = buildSortFilter(state.filter, state)
+    addParametersIntoUrl(filter, isFirstLoad)
+    const fields = getFields(refForm.current, state.fields)
+    getAuditService()
+      .search(filter, limit, page, fields)
+      .then((res) => {
+        setState({ ...state, filter: state.filter, list: res.list, total: res.total, fields })
+        toast(buildMessage(resource, res.list, limit, page, res.total))
+      })
+      .catch(handleError)
+      .finally(hideLoading)
+  }
+
+  const { list } = state
   const filter = value(state.filter)
+  const offset = getOffset(limit, page)
   return (
     <div>
       <header>
         <h2>{resource.audit_logs}</h2>
         <div className="btn-group float-left">
-          {component.view !== "table" && <button type="button" id="btnTable" name="btnTable" className="btn-table" data-view="table" onClick={changeView} />}
-          {component.view === "table" && (
-            <button type="button" id="btnListView" name="btnListView" className="btn-list" data-view="listview" onClick={changeView} />
+          {state.view === "list" && (
+            <button type="button" id="btnTable" name="btnTable" className="btn-table" onClick={(e) => setState({ ...state, view: "" })} />
+          )}
+          {state.view !== "list" && (
+            <button type="button" id="btnListView" name="btnListView" className="btn-list" onClick={(e) => setState({ ...state, view: "list" })} />
           )}
         </div>
       </header>
@@ -61,7 +137,17 @@ export const AuditLogsForm = () => {
           <section className="row section">
             <label className="col s12 m2 l4">
               {resource.action}
-              <input type="text" id="action" name="action" value={filter.action} onChange={updateState} maxLength={240} />
+              <input
+                type="text"
+                id="action"
+                name="action"
+                value={filter.action}
+                maxLength={240}
+                onChange={(e) => {
+                  filter.action = e.target.value
+                  setState({ ...state, filter })
+                }}
+              />
             </label>
             <label className="col s12 m5 l4">
               {resource.audit_log_time_from}
@@ -72,7 +158,10 @@ export const AuditLogsForm = () => {
                 name="time_min"
                 data-field="time.min"
                 value={datetimeToString(filter.time?.min)}
-                onChange={updateState}
+                onChange={(e) => {
+                  filter.time.min = createDate(e.target.value)
+                  setState({ ...state, filter })
+                }}
               />
             </label>
             <label className="col s12 m5 l4">
@@ -84,22 +173,25 @@ export const AuditLogsForm = () => {
                 name="time_max"
                 data-field="time.max"
                 value={datetimeToString(filter.time?.max)}
-                onChange={updateState}
+                onChange={(e) => {
+                  filter.time.max = createDate(e.target.value)
+                  setState({ ...state, filter })
+                }}
               />
             </label>
           </section>
           <section className="section search">
             <label>
               {resource.page_size}
-              <PageSizeSelect size={component.limit} sizes={component.pageSizes} onChange={pageSizeChanged} />
+              <PageSizeSelect size={limit} sizes={pageSizes} onChange={pageSizeChanged} />
             </label>
-            <button type="submit" className="btn-search" onClick={hooks.search}>
+            <button type="submit" className="btn-search" onClick={searchOnClick}>
               {resource.search}
             </button>
           </section>
         </form>
         <form className="list-result">
-          {component.view === "table" && (
+          {state.view !== "list" && (
             <div className="table-responsive">
               <table className="table">
                 <thead>
@@ -139,12 +231,12 @@ export const AuditLogsForm = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {state.list &&
-                    state.list.length > 0 &&
-                    state.list.map((item: any, i: number) => {
+                  {list &&
+                    list.length > 0 &&
+                    list.map((item: any, i: number) => {
                       return (
                         <tr key={i}>
-                          <td className="text-right">{(item as any).sequenceNo}</td>
+                          <td className="text-right">{offset + i + 1}</td>
                           <td>{formatFullDateTime(item.time, dateFormat, locale.decimalSeparator)}</td>
                           <td>{item.resource}</td>
                           <td>{item.action}</td>
@@ -161,11 +253,11 @@ export const AuditLogsForm = () => {
               </table>
             </div>
           )}
-          {component.view !== "table" && (
+          {state.view === "list" && (
             <ul className="row list">
-              {state.list &&
-                state.list.length > 0 &&
-                state.list.map((item, i) => {
+              {list &&
+                list.length > 0 &&
+                list.map((item, i) => {
                   return (
                     <li key={i} className="col s12 m6 l4 xl3 list-item">
                       <h4>{item.email}</h4>
@@ -182,14 +274,7 @@ export const AuditLogsForm = () => {
                 })}
             </ul>
           )}
-          <Pagination
-            className="col s12 m6"
-            total={component.total}
-            size={component.limit}
-            max={component.pageMaxSize}
-            page={component.page}
-            onChange={pageChanged}
-          />
+          <Pagination className="col s12 m6" total={state.total} size={state.filter.limit} max={7} page={state.filter.page} onChange={pageChanged} />
         </form>
       </div>
     </div>

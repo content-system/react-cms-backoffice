@@ -6,7 +6,6 @@ import {
   buildMessage,
   buildSortFilter,
   checked,
-  datetimeToString,
   getFields,
   getNumber,
   getOffset,
@@ -28,7 +27,7 @@ import { Pagination } from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
 import { formatDateTime } from "ui-plus"
 import { toast } from "ui-toast"
-import { getDateFormat, handleError, hasPermission, inputSearch, Permission } from "uione"
+import { getDateFormat, handleError, hasPermission, Permission, useResource } from "uione"
 import { Content, ContentFilter, getContentService } from "./service"
 
 interface ContentSearch extends Sortable {
@@ -55,10 +54,9 @@ export const ContentsForm = () => {
     filter: contentFilter,
     hideFilter: true,
   }
+  const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef()
-  const sp = inputSearch()
-  const resource = sp.resource.resource()
   const [state, setState] = useState<ContentSearch>(initialState)
 
   const canWrite = hasPermission(Permission.write)
@@ -190,28 +188,6 @@ export const ContentsForm = () => {
             <Pagination className="col s12 m6" total={state.total} size={state.filter.limit} max={7} page={state.filter.page} onChange={pageChanged} />
           </section>
           <section className="row search-group inline" hidden={state.hideFilter}>
-            <label className="col s12 m6">
-              {resource.published_at_from}
-              <input
-                type="datetime-local"
-                step=".010"
-                id="publishedAt_min"
-                name="publishedAt_min"
-                data-field="publishedAt.min"
-                value={datetimeToString(filter.publishedAt?.min)}
-              />
-            </label>
-            <label className="col s12 m6">
-              {resource.published_at_to}
-              <input
-                type="datetime-local"
-                step=".010"
-                id="publishedAt_max"
-                name="publishedAt_max"
-                data-field="publishedAt.max"
-                value={datetimeToString(filter.publishedAt?.max)}
-              />
-            </label>
             <label className="col s12 m4 l4">
               {resource.title}
               <input

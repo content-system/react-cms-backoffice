@@ -25,7 +25,7 @@ import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
 import { toast } from "ui-toast"
-import { handleError, hasPermission, inputSearch, Permission } from "uione"
+import { handleError, hasPermission, Permission, useResource } from "uione"
 import { Contact, ContactFilter, getContactService } from "./service"
 
 interface ContactSearch extends Sortable {
@@ -52,10 +52,9 @@ export const ContactsForm = () => {
     filter: contactFilter,
     hideFilter: true,
   }
+  const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef()
-  const sp = inputSearch()
-  const resource = sp.resource.resource()
   const [state, setState] = useState<ContactSearch>(initialState)
 
   const canWrite = hasPermission(Permission.write)

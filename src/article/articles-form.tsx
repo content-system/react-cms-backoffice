@@ -26,9 +26,9 @@ import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
-import { formatDateTime } from "ui-plus"
+import { addSeconds, createDate, formatDateTime } from "ui-plus"
 import { toast } from "ui-toast"
-import { getDateFormat, handleError, hasPermission, inputSearch, Permission } from "uione"
+import { getDateFormat, handleError, hasPermission, Permission, useResource } from "uione"
 import { Article, ArticleFilter, getArticleService } from "./service"
 
 interface ArticleSearch extends Sortable {
@@ -40,10 +40,15 @@ interface ArticleSearch extends Sortable {
   hideFilter?: boolean
   fields?: string[]
 }
+
+const now = new Date()
 const articleFilter: ArticleFilter = {
   limit: 24,
   status: ["A"],
   q: "",
+  publishedAt: {
+    max: addSeconds(now, 300),
+  },
 }
 
 const sizes = pageSizes
@@ -55,10 +60,9 @@ export const ArticlesForm = () => {
     filter: articleFilter,
     hideFilter: true,
   }
+  const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef()
-  const sp = inputSearch()
-  const resource = sp.resource.resource()
   const [state, setState] = useState<ArticleSearch>(initialState)
 
   const canWrite = hasPermission(Permission.write)
@@ -199,6 +203,10 @@ export const ArticlesForm = () => {
                 name="publishedAt_min"
                 data-field="publishedAt.min"
                 value={datetimeToString(filter.publishedAt?.min)}
+                onChange={(e) => {
+                  filter.publishedAt.min = createDate(e.target.value)
+                  setState({ ...state, filter })
+                }}
               />
             </label>
             <label className="col s12 m6">
@@ -210,6 +218,10 @@ export const ArticlesForm = () => {
                 name="publishedAt_max"
                 data-field="publishedAt.max"
                 value={datetimeToString(filter.publishedAt?.max)}
+                onChange={(e) => {
+                  filter.publishedAt.max = createDate(e.target.value)
+                  setState({ ...state, filter })
+                }}
               />
             </label>
             <label className="col s12 m4 l4">

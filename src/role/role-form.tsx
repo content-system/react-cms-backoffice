@@ -746,9 +746,11 @@ export function RoleForm() {
       <footer>
         {!isReadOnly && (
           <>
-            <button type="button" id="btnDelete" name="btnDelete" className="btn-delete" onClick={deleteOnClick}>
-              {resource.delete}
-            </button>
+            {!newMode && (
+              <button type="button" id="btnDelete" name="btnDelete" className="btn-delete" onClick={deleteOnClick}>
+                {resource.delete}
+              </button>
+            )}
             <button type="submit" id="btnSave" name="btnSave" onClick={save}>
               {resource.save}
             </button>

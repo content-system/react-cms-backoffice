@@ -17,7 +17,7 @@ export interface ArticleFilter extends Filter {
   id?: string
   title?: string
   description?: string
-  publishedAt?: TimeRange
+  publishedAt: TimeRange
   tags?: string[]
   status: string[]
 }

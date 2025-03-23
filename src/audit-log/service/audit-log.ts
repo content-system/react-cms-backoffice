@@ -17,7 +17,7 @@ export interface AuditLogFilter extends Filter {
   userId?: string
   ip?: string
   action?: string
-  time?: TimeRange
+  time: TimeRange
   status?: string
 }
 
@@ -32,7 +32,6 @@ export const auditLogModel: Attributes = {
     length: 40,
   },
   resource: {
-    column: "resourceType",
     match: "equal",
   },
   userId: {

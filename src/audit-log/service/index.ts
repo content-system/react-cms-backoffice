@@ -39,4 +39,4 @@ class ApplicationContext {
 }
 
 export const context = new ApplicationContext()
-export const useAuditLog = context.getAuditService
+export const getAuditService = context.getAuditService

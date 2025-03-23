@@ -20,7 +20,7 @@ export interface JobFilter extends Filter {
   id?: string
   title?: string
   description?: string
-  publishedAt?: TimeRange
+  publishedAt: TimeRange
   expiredAt?: TimeRange
   position?: string
   quantity?: number
