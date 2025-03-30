@@ -18,7 +18,7 @@
     "react-dom": "^18.3.1",
     "react-google-recaptcha": "^3.1.0",
     "react-groups": "^0.1.0",
-    "react-hook-core": "^0.4.1",
+    "react-hook-core": "^0.4.3",
     "react-modal": "^3.16.1",
     "react-router-dom": "^6.26.2",
     "react-scripts": "5.0.1",
