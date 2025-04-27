@@ -258,6 +258,7 @@ export const en = {
   job: "Job",
   id: "Id",
   title: "Title",
+  contents: "Contents",
   content: "Content",
   body: "Body",
   thumbnail: "Thumbnail",
