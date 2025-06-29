@@ -1,47 +1,47 @@
-.table {
+table {
   width: 100%;
   margin-bottom: 1rem;
   background-color: transparent;
 }
-form > .table-responsive:last-child > .table {
+form > .table-responsive:last-child > table {
   margin-bottom: 0;
 }
 
-.table th,
-.table td {
+table th,
+table td {
   position: relative;
   padding: 6px 10px; /* 0.75rem */
   vertical-align: middle;
   border-top: 1px solid #dee2e6;
 }
 
-.table thead th {
+table thead th {
   vertical-align: middle;
   border-bottom: 2px solid #dee2e6;
 }
 
-.table tbody + tbody {
+table tbody + tbody {
   border-top: 2px solid #dee2e6;
 }
 
-.table {
+table {
   border: 1px solid #dee2e6;
 }
 
-.table th,
-.table td {
+table th,
+table td {
   border: 1px solid #dee2e6;
 }
 
-.table thead th,
-.table thead td {
+table thead th,
+table thead td {
   border-bottom-width: 2px;
 }
 
-.table tbody tr:nth-of-type(odd) {
+table tbody tr:nth-of-type(odd) {
   background-color: rgba(0, 0, 0, 0.05);
 }
-.table tbody tr:hover {
+table tbody tr:hover {
   background-color: rgba(0, 0, 0, 0.075);
 }
 
@@ -97,7 +97,7 @@ form > .table-responsive:last-child > .table {
   }
 }
 
-.table-responsive > .table {
+.table-responsive > table {
   display: block;
   width: 100%;
   overflow-x: auto;
@@ -105,7 +105,7 @@ form > .table-responsive:last-child > .table {
   -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
-.table-responsive > .table {
+.table-responsive > table {
   border: 0;
 }
 
@@ -115,16 +115,16 @@ table a {
   text-decoration: none;
 }
 
-.table > tbody > tr > td,
-.table > tbody > tr > th,
-.table > tfoot > tr > td,
-.table > tfoot > tr > th,
-.table > thead > tr > td,
-.table > thead > tr > th {
+table > tbody > tr > td,
+table > tbody > tr > th,
+table > tfoot > tr > td,
+table > tfoot > tr > th,
+table > thead > tr > td,
+table > thead > tr > th {
   border: 1px solid;
 }
 
-.table > thead > tr > th > button {
+table > thead > tr > th > button {
   border: none;
   background-color: inherit;
   color: inherit;
@@ -140,7 +140,7 @@ th.action {
   width: 96px;
 }
 
-.table > tbody > tr > td > button {
+table > tbody > tr > td > button {
   margin-right: 12px;
 }
 

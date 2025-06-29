@@ -53,7 +53,7 @@ h3 {
 body,
 article,
 .data-list dd,
-.table > thead > tr,
+table > thead > tr,
 .btn-group,
 .btn-next,
 .btn-accept,
@@ -134,7 +134,7 @@ header > .btn-group > button,
 }
 
 label,
-.table > tbody,
+table > tbody,
 .diff .row .col p > span,
 .data-list dt,
 .btn-detail,
@@ -480,25 +480,25 @@ ul.list > li.highlight {
   background-color: #4f5352;
 }
 
-.table > tbody > tr:hover,
-.table > tbody > tr:nth-of-type(odd):hover,
+table > tbody > tr:hover,
+table > tbody > tr:nth-of-type(odd):hover,
 .table-hover > tbody > tr:hover,
 .table-striped > tbody > tr:nth-of-type(odd):hover {
   background-color: #eee;
 }
 
-.table > thead > tr > th,
-.table > tbody > tr > td {
+table > thead > tr > th,
+table > tbody > tr > td {
   border-bottom-color: #ddd;
 }
 
-.table,
-.table > tbody > tr > td,
-.table > tbody > tr > th,
-.table > tfoot > tr > td,
-.table > tfoot > tr > th,
-.table > thead > tr > td,
-.table > thead > tr > th,
+table,
+table > tbody > tr > td,
+table > tbody > tr > th,
+table > tfoot > tr > td,
+table > tfoot > tr > th,
+table > thead > tr > td,
+table > thead > tr > th,
 .table-bordered,
 .table-bordered > tbody > tr > td,
 .table-bordered > tbody > tr > th,
@@ -509,7 +509,7 @@ ul.list > li.highlight {
   border-color: #ddd;
 }
 
-.table > tbody > tr:nth-of-type(odd),
+table > tbody > tr:nth-of-type(odd),
 .table-striped > tbody > tr:nth-of-type(odd) {
   background-color: #fff;
 }

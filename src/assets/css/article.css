@@ -89,3 +89,35 @@
   padding-left: 16px;
   padding-right: 0;
 }
+
+.page-body > article > h1 {
+  margin-top: 16px;
+}
+.page-body > article > h2,
+.page-body > article > h3,
+.page-body > article > h4,
+.page-body > article > h5,
+.page-body > article > p {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+.page-body > article > table,
+.page-body > article > pre {
+  margin-left: 16px;
+  margin-right: 16px;
+  margin-bottom: 16px;
+}
+.page-body > article > table {
+  max-width: calc(100% - 32px);
+}
+.page-body > article > ul {
+  padding-left: 34px;
+  padding-right: 16px;
+}
+.page-body > article > ul p {
+  margin-bottom: 8px;
+}
+.page-body > article > ul ul {
+  margin-bottom: 8px;
+  padding-left: 34px;
+}

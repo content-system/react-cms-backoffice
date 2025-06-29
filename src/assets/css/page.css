@@ -83,10 +83,14 @@
 */
 .page-body > .form,
 .page-body > .view-container > .form,
+.page-body > article,
 .page-body > article > div,
 .page-body > div > div {
   max-height: calc(100vh - 52px); /* - page-header */
   height: calc(100vh - 52px);
+}
+.page-body > article {
+  overflow-y: auto;
 }
 .page-body > .form > div,
 .form-body {
@@ -202,6 +206,7 @@
   }
   .top-menu .page-container > .page-body > .view-container > .form,
   .top-menu .page-container > .page-body > .form,
+  .top-menu .page-body > article,
   .top-menu .page-container > .page-body > article > div,
   .top-menu .page-container > .page-body > div > div {
     max-height: calc(100vh - 46px - 52px);
