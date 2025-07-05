@@ -271,7 +271,7 @@ export const JobsForm = () => {
         </form>
         {state.view !== "list" && (
           <div className="table-responsive">
-            <table className="table">
+            <table>
               <thead>
                 <tr>
                   <th>{resource.number}</th>

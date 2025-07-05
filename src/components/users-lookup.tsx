@@ -165,7 +165,7 @@ export const UsersLookup = (props: Props) => {
           <form className="list-result">
             {component.view === "table" && (
               <div className="table-responsive">
-                <table className="table">
+                <table>
                   <thead>
                     <tr>
                       <th>{resource.number}</th>
