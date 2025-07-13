@@ -2,7 +2,8 @@ import { email, validateAndForgotPassword, validateContact } from "password-clie
 import { useEffect, useRef } from "react"
 import { OnClick, useMessage, useUpdate } from "react-hook-core"
 import { Link } from "react-router-dom"
-import { handleError, initForm, message, registerEvents, storage, useResource } from "uione"
+import { initForm, registerEvents } from "ui-plus"
+import { handleError, message, storage, useResource } from "uione"
 import logo from "../assets/images/logo.png"
 import { getPasswordService } from "./service"
 

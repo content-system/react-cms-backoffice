@@ -4,8 +4,20 @@ import { goBack, hasDiff, isEmptyObject, isSuccessful, makeDiff } from "react-ho
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
-import { createDate, datetimeToString, emailOnBlur, formatPhone, phoneOnBlur, registerEvents, removePhoneFormat, requiredOnBlur, showFormError, validateForm } from "ui-plus"
-import { getLocale, handleError, hasPermission, initForm, Permission, useResource } from "uione"
+import {
+  createDate,
+  datetimeToString,
+  emailOnBlur,
+  formatPhone,
+  initForm,
+  phoneOnBlur,
+  registerEvents,
+  removePhoneFormat,
+  requiredOnBlur,
+  showFormError,
+  validateForm,
+} from "ui-plus"
+import { getLocale, handleError, hasPermission, Permission, useResource } from "uione"
 import { Contact, getContactService } from "./service"
 
 const createContact = (): Contact => {
@@ -63,11 +75,11 @@ export const ContactForm = () => {
       } else {
         confirm(resource.msg_confirm_save, () => {
           showLoading()
-            service
-              .patch(contact)
-              .then((res) => afterSaved(res))
-              .catch(handleError)
-              .finally(hideLoading)
+          service
+            .patch(contact)
+            .then((res) => afterSaved(res))
+            .catch(handleError)
+            .finally(hideLoading)
         })
       }
     }

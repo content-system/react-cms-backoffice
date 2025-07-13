@@ -2,7 +2,8 @@ import { strongPassword, validateAndChangePassword, validateChange } from "passw
 import { useEffect, useRef, useState } from "react"
 import { OnClick, useMessage, useUpdate } from "react-hook-core"
 import { Link } from "react-router-dom"
-import { handleError, initForm, loading, message, registerEvents, useResource } from "uione"
+import { initForm, registerEvents } from "ui-plus"
+import { handleError, loading, message, useResource } from "uione"
 import logo from "../assets/images/logo.png"
 import { getPasswordService } from "./service"
 
