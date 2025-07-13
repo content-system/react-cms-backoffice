@@ -152,7 +152,7 @@ export const UsersForm = () => {
                       {resource.email}
                     </button>
                   </th>
-                  <th data-field="displayname">
+                  <th data-field="displayName">
                     <button type="button" id="sortDisplayName" onClick={sort}>
                       {resource.display_name}
                     </button>

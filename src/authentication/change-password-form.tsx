@@ -2,7 +2,7 @@ import { strongPassword, validateAndChangePassword, validateChange } from "passw
 import { useEffect, useRef, useState } from "react"
 import { OnClick, useMessage, useUpdate } from "react-hook-core"
 import { Link } from "react-router-dom"
-import { handleError, initForm, loading, message, registerEvents, storage, useResource } from "uione"
+import { handleError, initForm, loading, message, registerEvents, useResource } from "uione"
 import logo from "../assets/images/logo.png"
 import { getPasswordService } from "./service"
 
@@ -58,7 +58,7 @@ export const ChangePasswordForm = () => {
       passwordService.changePassword,
       user,
       state.user.confirmPassword,
-      storage.resource(),
+      resource,
       message,
       showError,
       hideMessage,

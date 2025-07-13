@@ -73,7 +73,7 @@ export const SignupForm = () => {
       user,
       passwordRequired,
       user.confirmPassword,
-      storage.resource(),
+      resource,
       message,
       showError,
       hideMessage,

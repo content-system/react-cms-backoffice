@@ -45,8 +45,7 @@ export const ResetPasswordForm = () => {
     event.preventDefault()
     const { user } = state
     const customPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/
-    const r = storage.resource()
-    const results = validateReset(user, user.confirmPassword, r, customPassword)
+    const results = validateReset(user, user.confirmPassword, resource, customPassword)
     if (Array.isArray(results) && results.length > 0) {
       showError(results)
       return

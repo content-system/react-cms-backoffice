@@ -41,7 +41,7 @@ export const ForgotPasswordForm = () => {
       passwordServicer.forgotPassword,
       state.contact.contact,
       "email",
-      storage.resource(),
+      resource,
       message,
       showError,
       hideMessage,
