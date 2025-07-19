@@ -121,3 +121,17 @@
   margin-bottom: 8px;
   padding-left: 34px;
 }
+
+article ol,
+article ul {
+  margin-bottom: 16px;
+}
+article li {
+  padding-left: 4px;
+  position: relative;
+  margin-top: 4px;
+}
+article li input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]) {
+  position: absolute;
+  left: -16px;
+}
