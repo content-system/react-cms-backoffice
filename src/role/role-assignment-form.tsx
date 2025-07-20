@@ -145,10 +145,6 @@ export const RoleAssignmentForm = () => {
     e.preventDefault()
     navigate(-1)
   }
-  const clearQ = (e: OnClick) => {
-    e.preventDefault()
-    setState({ ...state, q: "" })
-  }
   return (
     <div className="view-container">
       <form id="roleAssignmentForm" name="roleAssignmentForm" className="form" model-name="role">
@@ -157,7 +153,7 @@ export const RoleAssignmentForm = () => {
           <h2>{role.roleName && role.roleName.length > 0 ? role.roleName : resource.role_assignment_subject}</h2>
         </header>
         <div className="form-body">
-          <section className="row">
+          <section className="row section">
             <label className="col s12 m6">
               {resource.role_id}
               <input type="text" id="roleId" name="roleId" value={role.roleId || ""} maxLength={255} placeholder={resource.roleId} disabled={true} />
@@ -167,8 +163,8 @@ export const RoleAssignmentForm = () => {
               <input type="text" id="roleName" name="roleName" value={role.roleName || ""} maxLength={255} placeholder={resource.role_name} disabled={true} />
             </label>
           </section>
-          <section className="row detail">
-            <h4>
+          <section className="row section">
+            <h4 className="header">
               {resource.user}
               {!isReadOnly && (
                 <div className="btn-group">
@@ -208,27 +204,27 @@ export const RoleAssignmentForm = () => {
                 placeholder={resource.role_assignment_search_user}
                 autoComplete="off"
               />
-              <button type="button" hidden={!q} className="btn-remove-text" onClick={clearQ} />
+              {/*<button type="button" hidden={!q} className="btn-remove-text" onClick={clearQ} />*/}
             </label>
-            <ul className="row list">
-              {shownUsers &&
-                shownUsers?.map((user, i) => {
-                  const result = selectedUsers.find((v) => v.userId === user.userId)
-                  return (
-                    <li key={i} className="col s12 m6 l4 xl3 img-item" onClick={isCheckboxShown === true ? () => onCheck(user.userId) : () => {}}>
-                      <img
-                        alt=""
-                        src={user.imageURL && user.imageURL.length > 0 ? user.imageURL : user.gender === "F" ? femaleIcon : maleIcon}
-                        className="round-border"
-                      />
-                      {isCheckboxShown === true ? <input type="checkbox" name="selected" checked={result ? true : false} /> : ""}
-                      <h4>{user.displayName}</h4>
-                      <p>{user.email}</p>
-                    </li>
-                  )
-                })}
-            </ul>
           </section>
+          <ul className="row list">
+            {shownUsers &&
+              shownUsers?.map((user, i) => {
+                const result = selectedUsers.find((v) => v.userId === user.userId)
+                return (
+                  <li key={i} className="col s12 m6 l4 xl3 small img-item" onClick={isCheckboxShown === true ? () => onCheck(user.userId) : () => {}}>
+                    <img
+                      alt=""
+                      src={user.imageURL && user.imageURL.length > 0 ? user.imageURL : user.gender === "F" ? femaleIcon : maleIcon}
+                      className="round-border"
+                    />
+                    {isCheckboxShown === true ? <input type="checkbox" name="selected" checked={result ? true : false} /> : ""}
+                    <h4>{user.displayName}</h4>
+                    <p>{user.email}</p>
+                  </li>
+                )
+              })}
+          </ul>
         </div>
         <footer className="view-footer">
           <button type="submit" id="btnSave" name="btnSave" onClick={save} disabled={isReadOnly}>

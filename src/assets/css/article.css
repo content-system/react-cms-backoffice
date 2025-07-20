@@ -1,3 +1,9 @@
+pre[class*="language-"] {
+  margin: 0;
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid;
+}
 .page-body > article > div.article-body {
   padding-left: 16px;
   padding-right: 16px;

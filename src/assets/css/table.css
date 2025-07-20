@@ -10,7 +10,7 @@ form > .table-responsive:last-child > table {
 table th,
 table td {
   position: relative;
-  padding: 6px 10px; /* 0.75rem */
+  padding: 8px; /* 0.75rem */
   vertical-align: middle;
   border-top: 1px solid #dee2e6;
 }

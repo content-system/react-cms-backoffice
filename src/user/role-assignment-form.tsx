@@ -4,7 +4,7 @@ import { confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
 import { handleError, hasPermission, Permission, showMessage, useResource } from "uione"
 import { getRoleService, getUserService, User } from "./service"
-import "./style.css"
+
 import { Role } from "./user"
 
 interface InternalState {
@@ -15,7 +15,7 @@ interface InternalState {
 }
 
 const initialState: InternalState = {
-  user: {} as any,
+  user: {} as User,
   roles: [],
   selectedRoles: [],
   checkedAll: false,

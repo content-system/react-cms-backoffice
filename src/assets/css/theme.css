@@ -330,6 +330,12 @@ label.required:before,
   background-color: #d74738;
 }
 
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+  border-color: #ddd;
+  background: #f2f2f2;
+}
+
 .success-icon .alert-icon {
   color: #4db6ac;
 }
