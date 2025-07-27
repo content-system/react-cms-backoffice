@@ -6,7 +6,8 @@ import { formatText, OnClick, useMessage, useUpdate } from "react-hook-core"
 import { Link, useNavigate } from "react-router-dom"
 import { alertInfo } from "ui-alert"
 import { initForm, registerEvents } from "ui-plus"
-import { handleError, loading, message, setPrivileges, setUser, storage, useResource } from "uione"
+import { toast } from "ui-toast"
+import { handleError, loading, setPrivileges, setUser, storage, useResource } from "uione"
 import logo from "../assets/images/logo.png"
 import { getAuthen } from "./service"
 
@@ -104,7 +105,7 @@ export const SigninForm = () => {
           const expiredDays = dayDiff(result.user.passwordExpiredTime, new Date())
           if (expiredDays && expiredDays > 0) {
             const ms = formatText(resource.msg_password_expired_soon, expiredDays)
-            message(ms)
+            toast(ms)
           }
         }
         if (s === status.success) {

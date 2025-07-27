@@ -4,7 +4,7 @@ import { checked, OnClick, PageSizeSelect, SearchComponentState, useSearch, valu
 import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
-import { getStatusName, hasPermission, inputSearch, write } from "uione"
+import { getStatusName, hasPermission, inputSearch, useResource, write } from "uione"
 import { getRoleService, Role, RoleFilter } from "./service"
 
 interface RoleSearch extends SearchComponentState<Role, RoleFilter> {
@@ -25,13 +25,14 @@ const roleSearch: RoleSearch = {
   filter: roleFilter,
 }
 export const RolesForm = () => {
+  const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef()
-  const { state, resource, component, updateState, doSearch, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<
+  const { state, component, updateState, doSearch, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<
     Role,
     RoleFilter,
     RoleSearch
-  >(refForm, roleSearch, getRoleService(), inputSearch())
+  >(refForm, roleSearch, getRoleService(), resource, inputSearch())
   const canWrite = hasPermission(write)
   const edit = (e: OnClick, id: string) => {
     e.preventDefault()

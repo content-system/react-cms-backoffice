@@ -121,7 +121,7 @@ export const RoleAssignmentForm = () => {
               <p>{resource.check_all}</p>
             </li>
             {roles &&
-              roles?.map((item, i) => {
+              roles?.map((item: Role, i) => {
                 return (
                   <li key={i} className="col check-item">
                     <input

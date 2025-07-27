@@ -4,7 +4,7 @@ import { checked, OnClick, Search, SearchComponentState, useSearch, value } from
 import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
-import { getStatusName, hasPermission, inputSearch, Permission } from "uione"
+import { getStatusName, hasPermission, inputSearch, Permission, useResource } from "uione"
 import femaleIcon from "../assets/images/female.png"
 import maleIcon from "../assets/images/male.png"
 import { getUserService, User, UserFilter } from "./service"
@@ -28,13 +28,14 @@ export const UsersForm = () => {
     list: [],
     filter: userFilter,
   }
+  const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef()
-  const { state, resource, component, updateState, doSearch, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<
+  const { state, component, updateState, doSearch, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<
     User,
     UserFilter,
     UserSearch
-  >(refForm, initialState, getUserService(), inputSearch())
+  >(refForm, initialState, getUserService(), resource, inputSearch())
   const canWrite = hasPermission(Permission.write)
   useEffect(() => {
     search() // eslint-disable-next-line react-hooks/exhaustive-deps

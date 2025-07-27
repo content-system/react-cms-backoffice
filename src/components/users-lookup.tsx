@@ -3,7 +3,7 @@ import { ChangeEvent, KeyboardEvent, MouseEvent, useRef } from "react"
 import { OnClick, PageSizeSelect, SearchComponentState, useSearch, value } from "react-hook-core"
 import ReactModal from "react-modal"
 import Pagination from "reactx-pagination"
-import { inputSearch } from "uione"
+import { inputSearch, useResource } from "uione"
 import { getUserService, User, UserFilter } from "../service"
 
 ReactModal.setAppElement("#root")
@@ -53,11 +53,13 @@ const initialState: UserSearch = {
 }
 // props onModelSave onModelClose isOpenModel users?=[]
 export const UsersLookup = (props: Props) => {
+  const resource = useResource()
   const refForm = useRef()
-  const { state, setState, resource, component, search, sort, pageChanged, pageSizeChanged, changeView } = useSearch<User, UserFilter, UserSearch>(
+  const { state, setState, component, search, sort, pageChanged, pageSizeChanged, changeView } = useSearch<User, UserFilter, UserSearch>(
     refForm,
     initialState,
     getUserService(),
+    resource,
     inputSearch(),
   )
   const isOpenModel = props.isOpenModel

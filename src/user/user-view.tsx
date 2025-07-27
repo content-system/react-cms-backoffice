@@ -6,8 +6,8 @@ import { handleError, useResource } from "uione"
 import { getUserService, User } from "./service"
 
 export const UserView = () => {
-  const navigate = useNavigate()
   const resource = useResource()
+  const navigate = useNavigate()
   const refForm = useRef()
   const [user, setUser] = useState<User>()
   const { id } = useParams()
@@ -30,7 +30,7 @@ export const UserView = () => {
     navigate(-1)
   }
   return (
-    <form id="userForm" name="userForm" className="form"ref={refForm as any}>
+    <form id="userForm" name="userForm" className="form" ref={refForm as any}>
       <header className="view-header">
         <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
         <h2 className="view-title">{resource.user}</h2>
