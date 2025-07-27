@@ -46,6 +46,7 @@ const contactFilter: ContactFilter = {
 
 const sizes = pageSizes
 export const ContactsForm = () => {
+  const canWrite = hasPermission(Permission.write)
   const initialState: ContactSearch = {
     statusList: [],
     list: [],
@@ -57,7 +58,6 @@ export const ContactsForm = () => {
   const refForm = useRef<HTMLFormElement>(null)
   const [state, setState] = useState<ContactSearch>(initialState)
 
-  const canWrite = hasPermission(Permission.write)
   useEffect(() => {
     const filter = mergeFilter(buildFromUrl<ContactFilter>(), state.filter, sizes, ["status", "contactType"])
     setSort(state, filter.sort)

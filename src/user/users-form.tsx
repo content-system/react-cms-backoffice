@@ -22,6 +22,7 @@ const userFilter: UserFilter = {
   q: "",
 }
 export const UsersForm = () => {
+  const canWrite = hasPermission(Permission.write)
   const initialState: UserSearch = {
     limit: 24,
     statusList: [],
@@ -36,7 +37,7 @@ export const UsersForm = () => {
     UserFilter,
     UserSearch
   >(refForm, initialState, getUserService(), resource, inputSearch())
-  const canWrite = hasPermission(Permission.write)
+
   useEffect(() => {
     search() // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

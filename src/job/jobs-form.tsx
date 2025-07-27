@@ -53,6 +53,7 @@ const jobFilter: JobFilter = {
 
 const sizes = pageSizes
 export const JobsForm = () => {
+  const canWrite = hasPermission(Permission.write)
   const dateFormat = getDateFormat().toUpperCase()
   const initialState: JobSearch = {
     statusList: [],
@@ -65,7 +66,6 @@ export const JobsForm = () => {
   const refForm = useRef<HTMLFormElement>(null)
   const [state, setState] = useState<JobSearch>(initialState)
 
-  const canWrite = hasPermission(Permission.write)
   useEffect(() => {
     const filter = mergeFilter(buildFromUrl<JobFilter>(), state.filter, sizes, ["status", "jobType"])
     setSort(state, filter.sort)

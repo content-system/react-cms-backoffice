@@ -59,17 +59,17 @@ function init(getCookie: (name: string) => string): SigninState {
 export const SigninForm = () => {
   const resource = useResource()
   const navigate = useNavigate()
+  const form = useRef<HTMLFormElement>(null)
   const { msg, showError, hideMessage } = useMessage(msgData)
   const { state, setState, updateState } = useUpdate<SigninState>(signinData, "user")
-  const form = useRef<HTMLFormElement>(null)
+
   useEffect(() => {
-    if (form) {
-      initForm(form.current, registerEvents)
-    }
+    initForm(form.current, registerEvents)
     const usr = init(cookie.get)
     setState(usr)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
   const updateRemember = (e: any) => {
     e.preventDefault()
     state.remember = !state.remember

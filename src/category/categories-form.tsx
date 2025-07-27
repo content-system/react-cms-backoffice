@@ -46,6 +46,7 @@ const categoryFilter: CategoryFilter = {
 
 const sizes = pageSizes
 export const CategoriesForm = () => {
+  const canWrite = hasPermission(Permission.write)
   const initialState: CategorySearch = {
     statusList: [],
     list: [],
@@ -57,7 +58,6 @@ export const CategoriesForm = () => {
   const refForm = useRef<HTMLFormElement>(null)
   const [state, setState] = useState<CategorySearch>(initialState)
 
-  const canWrite = hasPermission(Permission.write)
   useEffect(() => {
     const filter = mergeFilter(buildFromUrl<CategoryFilter>(), state.filter, sizes, ["status"])
     setSort(state, filter.sort)

@@ -47,6 +47,7 @@ const contentFilter: ContentFilter = {
 
 const sizes = pageSizes
 export const ContentsForm = () => {
+  const canWrite = hasPermission(Permission.write)
   const dateFormat = getDateFormat().toUpperCase()
   const initialState: ContentSearch = {
     statusList: [],
@@ -59,7 +60,6 @@ export const ContentsForm = () => {
   const refForm = useRef<HTMLFormElement>(null)
   const [state, setState] = useState<ContentSearch>(initialState)
 
-  const canWrite = hasPermission(Permission.write)
   useEffect(() => {
     const filter = mergeFilter(buildFromUrl<ContentFilter>(), state.filter, sizes, ["status"])
     setSort(state, filter.sort)

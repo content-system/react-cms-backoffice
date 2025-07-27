@@ -46,9 +46,7 @@ export const ChangePasswordForm = () => {
   const { msg, showError, hideMessage } = useMessage(msgData)
   const { state, setState, updateState } = useUpdate<ChangePasswordState>(ChangePasswordData, "user")
   useEffect(() => {
-    if (form && form.current) {
-      initForm(form.current, registerEvents)
-    }
+    initForm(form.current, registerEvents)
   }, [])
 
   const changePassword = (event: OnClick) => {

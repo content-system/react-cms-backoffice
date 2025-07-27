@@ -53,6 +53,7 @@ const articleFilter: ArticleFilter = {
 
 const sizes = pageSizes
 export const ArticlesForm = () => {
+  const canWrite = hasPermission(Permission.write)
   const dateFormat = getDateFormat().toUpperCase()
   const initialState: ArticleSearch = {
     statusList: [],
@@ -65,7 +66,6 @@ export const ArticlesForm = () => {
   const refForm = useRef<HTMLFormElement>(null)
   const [state, setState] = useState<ArticleSearch>(initialState)
 
-  const canWrite = hasPermission(Permission.write)
   useEffect(() => {
     const filter = mergeFilter(buildFromUrl<ArticleFilter>(), state.filter, sizes, ["status"])
     setSort(state, filter.sort)

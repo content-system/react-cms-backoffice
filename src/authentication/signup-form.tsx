@@ -53,10 +53,9 @@ export const SignupForm = () => {
   const form = useRef<HTMLFormElement>(null)
   const { msg, showError, hideMessage } = useMessage(msgData)
   const { state, setState, updateState } = useUpdate<SignupState>(userData, "user")
+
   useEffect(() => {
-    if (form && form.current) {
-      initForm(form.current, registerEvents)
-    }
+    initForm(form.current, registerEvents)
   }, [])
 
   const signup = (event: OnClick) => {

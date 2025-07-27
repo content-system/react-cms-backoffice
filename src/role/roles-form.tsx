@@ -25,6 +25,7 @@ const roleSearch: RoleSearch = {
   filter: roleFilter,
 }
 export const RolesForm = () => {
+  const canWrite = hasPermission(write)
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
@@ -33,7 +34,7 @@ export const RolesForm = () => {
     RoleFilter,
     RoleSearch
   >(refForm, roleSearch, getRoleService(), resource, inputSearch())
-  const canWrite = hasPermission(write)
+
   const edit = (e: OnClick, id: string) => {
     e.preventDefault()
     navigate(`${id}`)
