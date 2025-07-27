@@ -36,7 +36,7 @@ export const ContactForm = () => {
   const isReadOnly = !hasPermission(Permission.write, 1)
   const resource = useResource()
   const navigate = useNavigate()
-  const refForm = useRef()
+  const refForm = useRef<HTMLFormElement>(null)
   // eslint-disable-next-line
   const [initialContact, setInitialContact] = useState<Contact>(createContact())
   const [state, setState] = useState<InternalState>(initialState)

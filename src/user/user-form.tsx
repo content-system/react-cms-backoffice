@@ -46,7 +46,7 @@ const param: EditComponentParam<User, string, InternalState> = {
 export const UserForm = () => {
   const resource = useResource()
   const navigate = useNavigate()
-  const refForm = useRef()
+  const refForm = useRef<HTMLFormElement>(null)
   const { state, setState, updateState, flag, save, updatePhoneState, back } = useEdit<User, string, InternalState>(
     refForm,
     initialState,

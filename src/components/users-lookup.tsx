@@ -54,7 +54,7 @@ const initialState: UserSearch = {
 // props onModelSave onModelClose isOpenModel users?=[]
 export const UsersLookup = (props: Props) => {
   const resource = useResource()
-  const refForm = useRef()
+  const refForm = useRef<HTMLFormElement>(null)
   const { state, setState, component, search, sort, pageChanged, pageSizeChanged, changeView } = useSearch<User, UserFilter, UserSearch>(
     refForm,
     initialState,

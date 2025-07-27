@@ -25,7 +25,7 @@ export const ContentForm = () => {
   const isReadOnly = !hasPermission(Permission.write, 2)
   const resource = useResource()
   const navigate = useNavigate()
-  const refForm = useRef()
+  const refForm = useRef<HTMLFormElement>(null)
   const [initialContent, setInitialContent] = useState<Content>(createContent())
   const [state, setState] = useState<InternalState>(initialState)
   const { id, lang } = useParams()

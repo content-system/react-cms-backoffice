@@ -25,7 +25,7 @@ export const ArticleForm = () => {
   const isReadOnly = !hasPermission(Permission.write, 1)
   const resource = useResource()
   const navigate = useNavigate()
-  const refForm = useRef()
+  const refForm = useRef<HTMLFormElement>(null)
   const [initialArticle, setInitialArticle] = useState<Article>(createArticle())
   const [state, setState] = useState<InternalState>(initialState)
   const { id } = useParams()

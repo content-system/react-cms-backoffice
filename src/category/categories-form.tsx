@@ -54,7 +54,7 @@ export const CategoriesForm = () => {
   }
   const resource = useResource()
   const navigate = useNavigate()
-  const refForm = useRef()
+  const refForm = useRef<HTMLFormElement>(null)
   const [state, setState] = useState<CategorySearch>(initialState)
 
   const canWrite = hasPermission(Permission.write)

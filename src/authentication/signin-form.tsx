@@ -61,7 +61,7 @@ export const SigninForm = () => {
   const navigate = useNavigate()
   const { msg, showError, hideMessage } = useMessage(msgData)
   const { state, setState, updateState } = useUpdate<SigninState>(signinData, "user")
-  const form = useRef()
+  const form = useRef<HTMLFormElement>(null)
   useEffect(() => {
     if (form) {
       initForm(form.current, registerEvents)

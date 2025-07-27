@@ -27,7 +27,7 @@ const roleSearch: RoleSearch = {
 export const RolesForm = () => {
   const resource = useResource()
   const navigate = useNavigate()
-  const refForm = useRef()
+  const refForm = useRef<HTMLFormElement>(null)
   const { state, component, updateState, doSearch, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<
     Role,
     RoleFilter,

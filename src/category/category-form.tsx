@@ -25,7 +25,7 @@ export const CategoryForm = () => {
   const isReadOnly = !hasPermission(Permission.write, 1)
   const resource = useResource()
   const navigate = useNavigate()
-  const refForm = useRef()
+  const refForm = useRef<HTMLFormElement>(null)
   const [initialCategory, setInitialCategory] = useState<Category>(createCategory())
   const [state, setState] = useState<InternalState>(initialState)
   const { id } = useParams()

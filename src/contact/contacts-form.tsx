@@ -54,7 +54,7 @@ export const ContactsForm = () => {
   }
   const resource = useResource()
   const navigate = useNavigate()
-  const refForm = useRef()
+  const refForm = useRef<HTMLFormElement>(null)
   const [state, setState] = useState<ContactSearch>(initialState)
 
   const canWrite = hasPermission(Permission.write)

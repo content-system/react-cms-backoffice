@@ -28,7 +28,7 @@ export const ForgotPasswordForm = () => {
   const resource = useResource()
   const { msg, showError, hideMessage } = useMessage(msgData)
   const { state, updateState } = useUpdate<ContactInternalState>(forgotPasswordData, "contact")
-  const form = useRef()
+  const form = useRef<HTMLFormElement>(null)
   useEffect(() => {
     if (form && form.current) {
       initForm(form.current, registerEvents)

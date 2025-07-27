@@ -25,7 +25,7 @@ export const JobForm = () => {
   const isReadOnly = !hasPermission(Permission.write, 1)
   const resource = useResource()
   const navigate = useNavigate()
-  const refForm = useRef()
+  const refForm = useRef<HTMLFormElement>(null)
   const [initialJob, setInitialJob] = useState<Job>(createJob())
   const [state, setState] = useState<InternalState>(initialState)
   const { id } = useParams()

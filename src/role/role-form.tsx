@@ -275,7 +275,7 @@ export function RoleForm() {
   const isReadOnly = !hasPermission(write, 1)
   const resource = useResource()
   const navigate = useNavigate()
-  const refForm = useRef()
+  const refForm = useRef<HTMLFormElement>(null)
   const [initialRole, setInitialRole] = useState<Role>(createRole())
   const { state, setState, updateState } = useUpdate<InternalState>(initialState)
   const [privileges, setPrivileges] = useState<Permission[]>([])
@@ -569,10 +569,6 @@ export function RoleForm() {
       )
     }
   }
-  const validate = (role: Role): boolean => {
-    const valid = validateForm(refForm?.current, getLocale())
-    return valid
-  }
 
   const role = state.role
   const back = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
@@ -606,7 +602,7 @@ export function RoleForm() {
   }
   const save = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     event.preventDefault()
-    const valid = validate(role)
+    const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
       const service = getRoleService()
       confirm(resource.msg_confirm_save, () => {

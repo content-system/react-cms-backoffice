@@ -8,7 +8,7 @@ import { getUserService, User } from "./service"
 export const UserView = () => {
   const resource = useResource()
   const navigate = useNavigate()
-  const refForm = useRef()
+  const refForm = useRef<HTMLFormElement>(null)
   const [user, setUser] = useState<User>()
   const { id } = useParams()
   useLayoutEffect(() => {

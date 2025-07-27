@@ -64,7 +64,7 @@ export const AuditLogsForm = () => {
   }
   const locale = useLocale()
   const resource = useResource()
-  const refForm = useRef()
+  const refForm = useRef<HTMLFormElement>(null)
   const [state, setState] = useState<AuditLogSearch>(initialState)
 
   useEffect(() => {

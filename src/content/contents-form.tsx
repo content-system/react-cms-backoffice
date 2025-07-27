@@ -56,7 +56,7 @@ export const ContentsForm = () => {
   }
   const resource = useResource()
   const navigate = useNavigate()
-  const refForm = useRef()
+  const refForm = useRef<HTMLFormElement>(null)
   const [state, setState] = useState<ContentSearch>(initialState)
 
   const canWrite = hasPermission(Permission.write)

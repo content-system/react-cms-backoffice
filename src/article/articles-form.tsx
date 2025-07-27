@@ -62,7 +62,7 @@ export const ArticlesForm = () => {
   }
   const resource = useResource()
   const navigate = useNavigate()
-  const refForm = useRef()
+  const refForm = useRef<HTMLFormElement>(null)
   const [state, setState] = useState<ArticleSearch>(initialState)
 
   const canWrite = hasPermission(Permission.write)

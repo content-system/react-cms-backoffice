@@ -32,7 +32,7 @@ const msgData = {
 
 export const ResetPasswordForm = () => {
   const resource = useResource()
-  const form = useRef()
+  const form = useRef<HTMLFormElement>(null)
   const { msg, showError, hideMessage } = useMessage(msgData)
   const { state, updateState } = useUpdate<ResetState>(signinData, "user")
   useEffect(() => {

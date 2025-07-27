@@ -19,7 +19,7 @@ const initialState: InternalState = {
 
 export const SettingsForm = () => {
   const resource = useResource()
-  const refForm = useRef()
+  const refForm = useRef<HTMLFormElement>(null)
   const [state, setState] = useState<InternalState>(initialState)
   const { settings } = state
 
