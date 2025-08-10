@@ -321,7 +321,7 @@ export const JobsForm = () => {
                         </td>
                         <td>{formatDateTime(item.publishedAt, dateFormat)}</td>
                         <td>{item.position}</td>
-                        <td>{item.quantity}</td>
+                        <td className="text-right">{item.quantity}</td>
                         <td>{item.location}</td>
                         <td>
                           <div className="btn-group">
