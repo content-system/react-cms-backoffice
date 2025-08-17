@@ -176,6 +176,7 @@ export const JobForm = () => {
           {resource.quantity}
           <input
             type="text"
+            className="text-right"
             id="quantity"
             name="quantity"
             value={job.quantity || ""}
@@ -210,6 +211,7 @@ export const JobForm = () => {
           {resource.min_salary}
           <input
             type="tel"
+            className="text-right"
             id="minSalary"
             name="minSalary"
             value={job.minSalary || ""}
@@ -218,8 +220,7 @@ export const JobForm = () => {
               setState({ ...state, job })
             }}
             onBlur={requiredOnBlur}
-            maxLength={255}
-            required={true}
+            maxLength={16}
             placeholder={resource.min_salary}
           />
         </label>
@@ -227,6 +228,7 @@ export const JobForm = () => {
           {resource.max_salary}
           <input
             type="tel"
+            className="text-right"
             id="maxSalary"
             name="maxSalary"
             value={job.minSalary || ""}
@@ -235,8 +237,7 @@ export const JobForm = () => {
               setState({ ...state, job })
             }}
             onBlur={requiredOnBlur}
-            maxLength={255}
-            required={true}
+            maxLength={16}
             placeholder={resource.max_salary}
           />
         </label>
