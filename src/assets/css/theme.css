@@ -257,6 +257,7 @@ label.valid.focused {
   color: #4db6ac;
 }
 
+label .chip-input-container > input:focus,
 .form-group .form-control:focus,
 label.inline-input > input:focus,
 label > input:not([type="checkbox"]):not([type="radio"]):focus,
@@ -274,6 +275,7 @@ select.valid {
   box-shadow: 0 1px 0 0 #4db6ac;
 }
 
+.chip-input-container > input,
 .form-group .form-control,
 .form-textarea,
 textarea,

@@ -276,6 +276,7 @@
   color: #4db6ac;
 }
 
+.dark label .chip-input-container > input:focus,
 .dark .form-group .form-control:focus,
 .dark label.inline-input > input:focus,
 .dark label > input:not([type="checkbox"]):not([type="radio"]):focus,
@@ -293,6 +294,7 @@
   box-shadow: 0 1px 0 0 #4db6ac;
 }
 
+.dark .chip-input-container > input,
 .dark .form-group .form-control,
 .dark .form-textarea,
 .dark textarea,

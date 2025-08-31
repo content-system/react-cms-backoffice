@@ -194,6 +194,7 @@ label.focused > span.span-error,
   caret-color: transparent;
 }
 
+.chip-input-container > input,
 .form-group .form-control,
 .form .row > label > input:not([type="checkbox"]):not([type="radio"]),
 .form > label > input:not([type="checkbox"]):not([type="radio"]),

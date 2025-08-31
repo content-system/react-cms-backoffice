@@ -1,0 +1,41 @@
+.chip-input-container {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  background-color: #e0e0e0;
+  border-radius: 20px;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.chip .close {
+  margin-left: 0.5rem;
+  cursor: pointer;
+  font-weight: bold;
+  color: #888;
+}
+
+.chip .close:hover {
+  color: #f44336;
+}
+
+.chip-input-container .btn-add {
+  width: 34px;
+  height: 34px;
+}
+
+.chip-input-container .btn-add::before {
+  top: 5px;
+  left: 6px;
+}
