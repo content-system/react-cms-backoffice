@@ -48,7 +48,10 @@ export const RoleAssignmentForm = () => {
       showLoading()
       Promise.all([userService.getUsersByRole(id), roleService.load(id)])
         .then((values) => {
-          const [users, role] = values
+          let [users, role] = values
+          if (!users) {
+            users = []
+          }
           if (role) {
             setState({ ...state, users, shownUsers: users, role })
           }
