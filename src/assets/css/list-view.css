@@ -82,6 +82,9 @@ ul.list.row > li.col > *:first-child {
   border: 0;
   border-bottom: 1px solid #ebebeb;
 }
+.list-item p {
+  font-size: 14px;
+}
 .list-item > .btn-detail,
 .img-item > .btn-detail {
   position: absolute;
@@ -322,7 +325,10 @@ ul.list > li > section:first-child > div > p {
   justify-content: space-between;
   margin: 0;
 }
-
+.video p,
+.card p {
+  font-size: 14px;
+}
 .card > section > h3,
 .card > section > a,
 .card > section > p,
@@ -457,6 +463,7 @@ i.date {
   margin-bottom: 12px;
 }
 .img-card > p {
+  font-size: 14px;
   margin-top: 0;
   margin-bottom: 8px;
 }

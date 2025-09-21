@@ -81,6 +81,9 @@ pre[class*="language-"] {
   max-width: 100%;
   margin-bottom: 0px;
 }
+.job-description {
+  font-size: 16px;
+}
 .job-description h3,
 .job-description h4,
 .job-description h5,
@@ -133,6 +136,7 @@ article ul {
   margin-bottom: 16px;
 }
 article li {
+  font-size: inherit;
   padding-left: 4px;
   position: relative;
   margin-top: 4px;

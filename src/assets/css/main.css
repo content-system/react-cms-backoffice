@@ -72,16 +72,19 @@ body {
 * {
   font-family: "Roboto";
   scrollbar-width: thin;
+  font-size: inherit;
+  font-weight: inherit;
 }
 
 .round-border {
   border-radius: 50%;
   border: 1px solid;
 }
-
+/*
 div,
 section,
 p,
+*/
 label {
   font-size: 14px;
   font-weight: 400;
@@ -95,16 +98,17 @@ textarea {
   width: 100%;
   background-color: inherit;
 }
+table {
+  font-size: 14px;
+}
 th,
 th > a,
 th > button {
-  font-size: 14px;
   font-weight: 500;
 }
 td,
 td > a,
 td > button {
-  font-size: 14px;
   font-weight: 400;
 }
 .center-container {
@@ -384,6 +388,9 @@ h5 {
 }
 h6 {
   font-size: 12px;
+}
+p {
+  font-size: 16px;
 }
 h3 > a,
 h4 > a,
