@@ -255,7 +255,9 @@ form.list-result > nav {
   margin: 0;
   padding: 0 16px 16px 16px;
 }
-
+.list-result .pagination {
+  margin-top: 0;
+}
 i.sort-up:after {
   margin-left: 4px;
   content: "\25B2";
