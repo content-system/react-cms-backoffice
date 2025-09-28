@@ -3,6 +3,7 @@ pre[class*="language-"] {
   padding: 16px;
   border-radius: 10px;
   border: 1px solid;
+  font-size: 14px;
 }
 .page-body > article > div.article-body {
   padding-left: 16px;
@@ -131,6 +132,9 @@ pre[class*="language-"] {
   padding-left: 34px;
 }
 
+article table {
+  font-size: 16px;
+}
 article ol,
 article ul {
   margin-bottom: 16px;
@@ -139,9 +143,14 @@ article li {
   font-size: inherit;
   padding-left: 4px;
   position: relative;
-  margin-top: 4px;
+  margin-bottom: 4px;
 }
 article li input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]) {
   position: absolute;
-  left: -16px;
+  left: -17px;
+}
+
+article li li input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]) {
+  position: absolute;
+  left: -17px;
 }
