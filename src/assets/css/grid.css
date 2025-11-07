@@ -1013,20 +1013,6 @@ input[type="range"] + .thumb {
   }
 }
 
-.chip {
-  display: inline-block;
-  outline: none;
-  height: 32px;
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 32px;
-  padding: 0 10px;
-  border-radius: 16px;
-  margin-bottom: 5px;
-  margin-right: 5px;
-  border: 1px solid;
-}
-
 .chip > img {
   float: left;
   margin: 0 8px 0 -12px;
