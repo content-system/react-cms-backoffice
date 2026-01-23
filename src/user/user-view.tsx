@@ -35,7 +35,7 @@ export const UserView = () => {
         <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
         <h2 className="view-title">{resource.user}</h2>
       </header>
-      <div className="row">
+      <div>
         <dl className="data-list row">
           <dt className="col s6 l3">{resource.user_id}</dt>
           <dd className="col s6 l9">{user?.userId}</dd>

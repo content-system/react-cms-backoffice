@@ -140,12 +140,12 @@ export const UsersLookup = (props: Props) => {
           <div className="btn-group">
             {component.view !== "table" && <button type="button" id="btnTable" name="btnTable" className="btn-table" data-view="table" onClick={changeView} />}
             {component.view === "table" && (
-              <button type="button" id="btnListView" name="btnListView" className="btn-list-view" data-view="listview" onClick={changeView} />
+              <button type="button" id="btnListView" name="btnListView" className="btn-list" data-view="listview" onClick={changeView} />
             )}
           </div>
           <button type="button" id="btnClose" name="btnClose" className="btn-close" onClick={onModelClose} />
         </header>
-        <div>
+        <div className="search-body">
           <form id="usersLookupForm" name="usersLookupForm" className="usersLookupForm" noValidate={true} ref={refForm as any}>
             <section className="row search-group">
               <label className="col s12 m6 search-input">
