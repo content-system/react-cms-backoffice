@@ -42,6 +42,7 @@
   padding-right: 16px;
 }
 
+.form.central-full,
 .central-full > form {
   margin: auto;
   width: 368px;
@@ -59,6 +60,10 @@
   height: 60px;
 }
 
+.form.central-full .logo {
+  margin-top: 38px;
+  margin-bottom: 26px;
+}
 @media screen and (max-width: 600px) {
   .full,
   .solid {
@@ -98,6 +103,7 @@
   margin-bottom: 10px;
 }
 
+.form.central-full > div > a,
 .central-full > form > div > a {
   width: 100%;
   margin-top: 8px;
@@ -105,6 +111,7 @@
   font-size: 14px;
 }
 
+.form.central-full > div,
 .central-full > form > div {
   display: flex;
   flex-direction: column;
@@ -113,6 +120,7 @@
   max-height: unset;
 }
 
+.form.central-full > div > button,
 .central-full > .form > div > button {
   width: calc(100% - 16px);
   height: 48px;
@@ -123,6 +131,7 @@
   margin-bottom: 8px;
 }
 
+.form.central-full > div > .message,
 .central-full > form > div > .message {
   width: calc(100% - 16px);
 }

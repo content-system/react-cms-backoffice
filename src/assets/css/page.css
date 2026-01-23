@@ -6,7 +6,8 @@
 .page-body {
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;
-  /* width: 100%; */
+  height: calc(100vh - 52px);
+  min-height: calc(100vh - 52px);
 }
 
 .list-content,
@@ -81,17 +82,18 @@
   max-height: calc(100vh - 64px - 52px - 13px);
 }
 */
+.form.view-container,
 .page-body > .form,
-.page-body > .view-container > .form,
 .page-body > article,
 .page-body > article > div,
-.page-body > div > div {
+.search-body {
   max-height: calc(100vh - 52px); /* - page-header */
   height: calc(100vh - 52px);
 }
 .page-body > article {
   overflow-y: auto;
 }
+.form.view-container > div,
 .page-body > .form > div,
 .form-body {
   max-height: calc(100vh - 64px - 52px); /* - view-footer - page-header */
@@ -106,6 +108,7 @@
 .page-body > article > header,
 .page-body > div > header,
 .page-body > .form > header,
+.view-container > header,
 .view-header {
   position: relative;
   width: 100%;
@@ -120,9 +123,11 @@
 
 .modal-portal-content > div > div,
 .detail-content > form > div,
+.form.view-container > div,
+article.view-container > div,
 .page-body > .form > div,
 .page-body > article > div,
-.page-body > div > div,
+.search-body,
 .form-body,
 .view-body {
   padding: 0;
@@ -188,6 +193,10 @@
   overflow-x: auto;
 }
 @media screen and (min-width: 769px) {
+  .top-menu .page-body {
+    height: calc(100vh - 52px - 56px);
+    min-height: calc(100vh - 52px - 56px);
+  }
   .top-menu .page-body > .full {
     max-height: calc(100vh - 52px - 46px);
     height: calc(100vh - 52px - 46px);
@@ -208,7 +217,7 @@
   .top-menu .page-container > .page-body > .form,
   .top-menu .page-body > article,
   .top-menu .page-container > .page-body > article > div,
-  .top-menu .page-container > .page-body > div > div {
+  .top-menu .page-container > .search-body {
     max-height: calc(100vh - 46px - 52px);
   }
   /* Set height for table container, prevent the parent scroll of whole page  */

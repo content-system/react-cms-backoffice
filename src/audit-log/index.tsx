@@ -132,7 +132,7 @@ export const AuditLogsForm = () => {
           )}
         </div>
       </header>
-      <div>
+      <div className="search-body">
         <form id="rolesForm" name="rolesForm" className="form" noValidate={true} ref={refForm as any}>
           <section className="row section">
             <label className="col s12 m2 l4">

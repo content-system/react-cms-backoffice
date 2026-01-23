@@ -10,6 +10,7 @@
 .detail-content {
   position: relative;
   width: calc(100% - 300px);
+  margin-right: 16px;
 }
 
 .list-content .col.m4,

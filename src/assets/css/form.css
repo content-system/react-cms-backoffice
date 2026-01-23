@@ -148,7 +148,8 @@ label.focused > span.span-error,
 .form-group.focused > span.span-error {
   display: flex;
 }
-.form .row > label.textarea-container {
+.form .row > label.auto-height,
+.auto-height {
   height: unset;
 }
 .form > div > .form-group,
@@ -546,8 +547,8 @@ label.required:before {
 }
 
 .inline-input > .btn-add::before {
-  top: -7px;
-  left: 3px;
+  top: -4px;
+  left: 4px;
   font-size: 23px;
   font-weight: 100;
   content: "\2B";

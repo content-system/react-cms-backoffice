@@ -125,7 +125,6 @@
 .dark .view-container > form > div > h2,
 .dark .card > footer > button,
 .dark .btn-select,
-.dark .btn-add,
 .dark .btn-new,
 .dark a.btn-new,
 .dark .btn-table,
@@ -152,6 +151,7 @@
   }
 }
 
+.dark .card > section > p.description,
 .dark label,
 .dark .table > tbody,
 .dark .diff .row .col p > span,
@@ -191,7 +191,7 @@
 .dark footer > .btn-accept::after,
 .dark footer > .btn-next::after,
 .dark .section.search > .btn-search,
-.dark .central-full > form > div > button,
+.dark .central-full button,
 .dark .view-footer > button,
 .dark footer > button {
   color: #000;

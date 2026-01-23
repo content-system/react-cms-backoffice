@@ -124,7 +124,6 @@
 .grey .view-body > label.focused,
 .grey .card > footer > button,
 .grey .btn-select,
-.grey .btn-add,
 .grey .btn-new,
 .grey a.btn-new,
 .grey .btn-table,
@@ -151,6 +150,7 @@
   }
 }
 
+.grey .card > section > p.description,
 .grey label,
 .grey .table > tbody,
 .grey .diff .row .col p > span,
@@ -188,7 +188,7 @@
 .grey footer > .btn-accept::after,
 .grey footer > .btn-next::after,
 .grey .section.search > .btn-search,
-.grey .central-full > form > div > button,
+.grey .central-full button,
 .grey .view-footer > button,
 .grey footer > button {
   color: #fff;

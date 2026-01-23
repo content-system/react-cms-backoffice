@@ -139,9 +139,9 @@ export const CategoriesForm = () => {
           {canWrite && <Link id="btnNew" className="btn-new" to="new" />}
         </div>
       </header>
-      <div>
+      <div className="search-body">
         <form id="categoriesForm" name="categoriesForm" className="form" noValidate={true} ref={refForm as any}>
-          <section className="row search-group section">
+          <section className="row search-group">
             <label className="col s12 m6 search-input">
               <select id="limit" name="limit" onChange={pageSizeChanged} defaultValue={filter.limit}>
                 {sizes.map((item, i) => {
@@ -295,7 +295,9 @@ export const CategoriesForm = () => {
                   <li key={i} className="col s12 m6 l4 xl3 list-item">
                     <Link to={`${item.id}`}>{item.name}</Link>
                     <button className="btn-detail"></button>
-                    <p>{item.parent}</p>
+                    <p>
+                      {item.path} {item.parent}
+                    </p>
                   </li>
                 )
               })}

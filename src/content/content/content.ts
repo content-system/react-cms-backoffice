@@ -5,6 +5,7 @@ export interface Content {
   lang: string
   title: string
   body: string
+  path: string
   publishedAt?: Date
   tags?: string[]
   status?: string

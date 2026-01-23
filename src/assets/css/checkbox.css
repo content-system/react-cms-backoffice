@@ -10,6 +10,9 @@ input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([i
   align-items: center;
   position: relative;
 }
+input[type="checkbox"]:focus-visible {
+  box-shadow: 0 0 0 4px rgba(0, 120, 255, 0.4);
+}
 
 label.checkbox-container > input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]),
 label.checkbox-group > input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]),
