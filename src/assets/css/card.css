@@ -390,7 +390,7 @@ p.icon-text:last-child {
 .card > section > a:first-child {
   margin-top: 16px;
 }
-.card > section >p:last-child,
+.card > section > p:last-child,
 .card > p:last-child,
 .video > p:last-child {
   margin-bottom: 16px;

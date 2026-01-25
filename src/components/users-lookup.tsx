@@ -237,8 +237,8 @@ export const UsersLookup = (props: Props) => {
                       return (
                         <li key={i} className="col s12 m6 l4 xl3 img-item">
                           <img src={user.imageURL && user.imageURL.length > 0 ? user.imageURL : ""} alt="user" className="round-border" />
-                          <input type="checkbox" name="selected" value={user.userId} onClick={onCheckUser} />
                           <h4 className={user.status === "I" ? "inactive" : ""}>{user.displayName}</h4>
+                          <input type="checkbox" name="selected" value={user.userId} onClick={onCheckUser} />
                           <p>{user.email}</p>
                         </li>
                       )
