@@ -3,13 +3,6 @@
   width: calc(100% - 32px);
 }
 
-.page-body {
-  -ms-flex: 1 1 auto;
-  flex: 1 1 auto;
-  height: calc(100vh - 52px);
-  min-height: calc(100vh - 52px);
-}
-
 .list-content,
 .page-body > div,
 .form {
@@ -59,11 +52,11 @@
   border: 0;
   border-bottom: 1px solid;
 }
-
+/*
 .mobile .page-header {
   border-bottom: 0;
 }
-
+*/
 @media screen and (max-width: 600px) {
   .page-header {
     border-top: 1px solid;
@@ -82,28 +75,6 @@
   max-height: calc(100vh - 64px - 52px - 13px);
 }
 */
-.form.view-container,
-.page-body > .view-container > .form,
-.page-body > .form,
-.page-body > article,
-.page-body > article > div,
-.search-body,
-.main-body {
-  max-height: calc(100vh - 52px); /* - page-header */
-  height: calc(100vh - 52px);
-}
-.page-body > article {
-  overflow-y: auto;
-}
-.form.view-container > div,
-.page-body > .form > div,
-.form-body {
-  max-height: calc(100vh - 64px - 52px); /* - view-footer - page-header */
-}
-
-.page-header > .view-body {
-  max-height: calc(100vh - 64px - 52px);
-}
 
 .list-detail-container > .list-content > header,
 .list-detail-container > .detail-content > form > header,
@@ -144,10 +115,6 @@ article.view-container > div,
   background-image: inherit;
 }
 
-.view-body {
-  max-height: calc(100vh - 64px);
-}
-
 /*
 .page-body .view-container > div.list-detail-container {
   overflow-y: unset;
@@ -186,6 +153,41 @@ article.view-container > div,
   margin-bottom: 52px;
 }
 */
+
+
+.page-body {
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  height: calc(100vh - 52px);
+  min-height: calc(100vh - 52px);
+}
+
+.form.view-container,
+.page-body > .view-container > .form,
+.page-body > .form,
+.page-body > article,
+.page-body > article > div,
+.search-body,
+.main-body {
+  max-height: calc(100vh - 52px); /* - page-header */
+  height: calc(100vh - 52px);
+}
+.page-body > article {
+  overflow-y: auto;
+}
+.form.view-container > div,
+.page-body > .form > div,
+.form-body {
+  max-height: calc(100vh - 64px - 52px); /* - view-footer - page-header */
+}
+
+.page-header > .view-body {
+  max-height: calc(100vh - 64px - 52px);
+}
+.view-body {
+  max-height: calc(100vh - 64px);
+}
+
 .page-body > .full {
   max-height: calc(100vh - 52px);
   height: calc(100vh - 52px);
