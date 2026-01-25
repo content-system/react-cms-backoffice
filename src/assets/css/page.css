@@ -87,7 +87,8 @@
 .page-body > .form,
 .page-body > article,
 .page-body > article > div,
-.search-body {
+.search-body,
+.main-body {
   max-height: calc(100vh - 52px); /* - page-header */
   height: calc(100vh - 52px);
 }
@@ -122,13 +123,13 @@
   background-image: inherit;
 }
 
-.modal-portal-content .search-body,
 .detail-content > form > div,
 .form.view-container > div,
 article.view-container > div,
 .page-body > .form > div,
 .page-body > article > div,
 .search-body,
+.main-body,
 .form-body,
 .view-body {
   padding: 0;
@@ -215,7 +216,8 @@ article.view-container > div,
   .top-menu .page-container > .page-body > .form,
   .top-menu .page-body > article,
   .top-menu .page-container > .page-body > article > div,
-  .top-menu .page-container > .search-body {
+  .top-menu .page-container .search-body,
+  .top-menu .page-container .main-body {
     max-height: calc(100vh - 46px - 52px);
   }
   /* Set height for table container, prevent the parent scroll of whole page  */
@@ -226,7 +228,8 @@ article.view-container > div,
   }
   */
 }
-.modal-portal-content .search-body {
+.modal-portal-content .search-body,
+.modal-portal-content .main-body {
   max-height: calc(100vh - 150px);
   height: calc(100vh - 150px);
 }

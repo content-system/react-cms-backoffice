@@ -189,7 +189,6 @@ ul.list.row > li.col > p {
 .video-container > h3,
 .img-card > h3,
 .card > section > h3 {
-  width: 100%;
   font-size: 18px;
   font-weight: 500;
   background-color: inherit;
@@ -275,11 +274,15 @@ ul.list > li > section:first-child > div > p {
   margin-right: 16px;
   width: calc(100% - 32px);
 }
+.card > section > hr,
+.card > hr {
+  width: calc(100% - 32px);
+  margin-left: 16px;
+  margin-right: 16px;
+}
 
 .card > section,
 .video > section {
-  margin-top: 4px;
-  margin-bottom: 4px;
   flex: 1 1 auto;
   flex-direction: column;
   border: 1px solid #ebebeb;
@@ -290,15 +293,8 @@ ul.list > li > section:first-child > div > p {
   display: flex;
   align-items: center;
   margin: 0 16px;
-  padding-bottom: 8px;
 }
 
-.card > section > hr,
-.card > hr {
-  width: calc(100% - 32px);
-  margin-left: 16px;
-  margin-right: 16px;
-}
 .card > section > label.checkbox-container {
   margin-left: 16px;
   width: calc(100% - 32px);
@@ -344,27 +340,11 @@ ul.list > li > section:first-child > div > p {
   width: calc(100% - 32px);
 }
 
-.video-container > p,
-.card > section > p,
-.video > section > p,
-.video > p,
-.card > p {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  margin: 0;
-}
 .video p,
 .card p {
-  width: calc(100% - 32px);
-  margin-left: 16px;
-  margin-right: 16px;
   font-size: 14px;
+  font-weight: 400;
 }
-.card > p:last-child {
-  padding-bottom: 16px;
-}
-
 .card p.article-meta {
   font-size: 16px;
 }
@@ -376,8 +356,23 @@ ul.list > li > section:first-child > div > p {
   width: calc(100% - 32px);
   margin: 0 16px 8px 16px;
 }
+p.icon-text:last-child {
+  padding-bottom: 16px;
+}
 .icon-text .material-icons {
   font-size: 20px;
+}
+
+.video-container > p,
+.card > section > p,
+.video > section > p,
+.video > p,
+.card > p {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  margin-left: 16px;
+  margin-right: 16px;
 }
 
 .card > section > h3,
@@ -389,19 +384,20 @@ ul.list > li > section:first-child > div > p {
   margin-left: 16px;
   margin-right: 16px;
   margin-bottom: 8px;
-  font-weight: 400;
 }
-.card > section > h3 {
-  margin-top: 8px;
+.card > section > h3:first-child,
+.card > section > h4:first-child,
+.card > section > a:first-child {
+  margin-top: 16px;
+}
+.card > section >p:last-child,
+.card > p:last-child,
+.video > p:last-child {
+  margin-bottom: 16px;
 }
 .card > section > a {
-  margin-top: 8px;
   font-size: 16px;
   font-weight: 600;
-}
-.card > section > *:last-child,
-.video > section > *:last-child {
-  margin-bottom: 0;
 }
 .card > section > p > a,
 .video > section > p > a {
@@ -411,11 +407,15 @@ ul.list > li > section:first-child > div > p {
 
 .card .cover,
 .video .cover {
+  margin-top: 0;
+}
+.card .cover,
+.video .cover {
   position: relative;
   flex: none;
   width: 100%;
   height: 220px;
-  margin-right: 0;
+  margin-bottom: 16px;
   background-size: cover;
   background-repeat: no-repeat;
   background-position-x: center;
@@ -508,28 +508,25 @@ i.date {
   font-weight: 600;
   opacity: 0.8;
 }
+
 .img-card {
   margin-bottom: 16px;
+}
+.img-card > *,
+.img-card > h4 {
+  margin-bottom: 8px;
+}
+.img-card > *:last-child {
+  margin-bottom: 0;
 }
 .img-card > img {
   max-width: calc(100% - 16px);
   height: auto;
-}
-.img-card > h3 {
-  margin-top: 16px;
-  margin-bottom: 12px;
-}
-.img-card > h4 {
-  margin-top: 0;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 .img-card > p {
   font-size: 14px;
-  margin-top: 0;
-  margin-bottom: 8px;
-}
-.img-card > p:last-child {
-  margin-bottom: 0;
+  font-weight: 400;
 }
 .img-card > h4.center,
 .img-card > p.center {
