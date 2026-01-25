@@ -25,7 +25,7 @@ import { hideLoading, showLoading } from "ui-loading"
 import { addDays, addSeconds, createDate, formatFullDateTime } from "ui-plus"
 import { toast } from "ui-toast"
 import { getDateFormat, handleError, useLocale, useResource } from "uione"
-import { AuditLog, AuditLogFilter, getAuditService } from "./service"
+import { AuditLog, AuditLogFilter, getAuditLogService } from "./service"
 import "./style.css"
 
 interface AuditLogSearch extends Sortable {
@@ -106,8 +106,8 @@ export const AuditLogsForm = () => {
     const filter = buildSortFilter(state.filter, state)
     addParametersIntoUrl(filter, isFirstLoad)
     const fields = getFields(refForm.current, state.fields)
-    getAuditService()
-      .search(filter, limit, page, fields)
+    const service = getAuditLogService()
+    service.search(filter, limit, page, fields)
       .then((res) => {
         setState({ ...state, filter: state.filter, list: res.list, total: res.total, fields })
         toast(buildMessage(resource, res.list, limit, page, res.total))
@@ -243,7 +243,7 @@ export const AuditLogsForm = () => {
                           <td>
                             <span className={"badge badge-sm " + mapStyleStatus.get(item.status)}>{item.status || ""}</span>
                           </td>
-                          <td>{item.email}</td>
+                          <td>{item.userId}</td>
                           <td>{item.ip}</td>
                           <td>{item.remark}</td>
                         </tr>

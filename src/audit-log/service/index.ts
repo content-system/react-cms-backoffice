@@ -6,7 +6,7 @@ import { AuditLog, AuditLogFilter, auditLogModel, AuditLogService } from "./audi
 
 export * from "./audit-log"
 
-export class AuditClient extends ViewSearchClient<AuditLog, string, AuditLogFilter> implements AuditLogService {
+export class AuditLogClient extends ViewSearchClient<AuditLog, string, AuditLogFilter> implements AuditLogService {
   constructor(http: HttpRequest, url: string) {
     super(http, url, auditLogModel)
   }
@@ -15,28 +15,17 @@ export class AuditClient extends ViewSearchClient<AuditLog, string, AuditLogFilt
   }
 }
 
-// axios.defaults.withCredentials = true;
 const httpRequest = new HttpRequest(axios, options)
 export interface Config {
   audit_log_url: string
 }
-class ApplicationContext {
-  private auditService?: AuditClient
-  constructor() {
-    this.getConfig = this.getConfig.bind(this)
-    this.getAuditService = this.getAuditService.bind(this)
-  }
-  getConfig(): Config {
-    return storage.config()
-  }
-  getAuditService(): AuditClient {
-    if (!this.auditService) {
-      const c = this.getConfig()
-      this.auditService = new AuditClient(httpRequest, c.audit_log_url)
-    }
-    return this.auditService
-  }
-}
 
-export const context = new ApplicationContext()
-export const getAuditService = context.getAuditService
+let auditLogService: AuditLogService | undefined
+
+export function getAuditLogService(): AuditLogService {
+  if (!auditLogService) {
+    const c = storage.config()
+    auditLogService = new AuditLogClient(httpRequest, c.audit_log_url)
+  }
+  return auditLogService
+}

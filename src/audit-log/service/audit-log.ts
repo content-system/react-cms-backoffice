@@ -4,10 +4,10 @@ export interface AuditLog {
   id: string
   resource: string
   userId: string
+  email: string
   ip: string
   action: string
   time: Date
-  email: string
   status: string
   remark?: string
 }
