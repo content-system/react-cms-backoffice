@@ -13,7 +13,6 @@
 
 /* impact on responsive design */
 .view-container {
-  /* padding: 10px 5%; */
   padding: 0;
 }
 
@@ -27,21 +26,6 @@
   .page-container {
     flex-direction: column-reverse;
   }
-  /*
-  .page-header {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    height: 52px;
-    padding-top: 5px;
-    z-index: 10;
-  }
-
-  .page-body {
-    margin-bottom: 52px;
-  }
-*/
 }
 
 .page-header {
@@ -52,29 +36,12 @@
   border: 0;
   border-bottom: 1px solid;
 }
-/*
-.mobile .page-header {
-  border-bottom: 0;
-}
-*/
 @media screen and (max-width: 600px) {
   .page-header {
     border-top: 1px solid;
     border-bottom: 0;
   }
 }
-/*
-.view-container.no-footer > form > div,
-.view-container.no-footer > div,
-.view-container.no-footer .view-body {
-  max-height: calc(100vh);
-}
-
-.view-container.fixed-search > div > form:nth-child(2) > ul.list {
-  overflow-y: auto;
-  max-height: calc(100vh - 64px - 52px - 13px);
-}
-*/
 
 .list-detail-container > .list-content > header,
 .list-detail-container > .detail-content > form > header,
@@ -115,21 +82,6 @@ article.view-container > div,
   background-image: inherit;
 }
 
-/*
-.page-body .view-container > div.list-detail-container {
-  overflow-y: unset;
-  padding-bottom: 0;
-  max-height: calc(100vh - 64px - 52px + 20px);
-  height: calc(100vh - 64px - 52px + 20px);
-}
-.page-body .view-container > div.list-detail-container > div.list-content,
-.page-body .view-container > div.list-detail-container > div.detail-content {
-  overflow-y: auto;
-  max-height: calc(100vh - 64px - 52px + 20px);
-  height: calc(100vh - 64px - 52px + 20px);
-}
-*/
-
 .page-body > .form > div.background-content,
 .view-body.background-content {
   height: 100%;
@@ -138,22 +90,6 @@ article.view-container > div,
   background-position: center;
   background-repeat: no-repeat;
 }
-/*
-.mobile .page-header {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  height: 52px;
-  padding-top: 5px;
-  z-index: 10;
-}
-
-.mobile .page-body {
-  margin-bottom: 52px;
-}
-*/
-
 
 .page-body {
   -ms-flex: 1 1 auto;
@@ -222,13 +158,6 @@ article.view-container > div,
   .top-menu .page-container .main-body {
     max-height: calc(100vh - 46px - 52px);
   }
-  /* Set height for table container, prevent the parent scroll of whole page  */
-  /*
-  .top-menu .page-container > .page-body .view-container > .view-body > form:last-child{
-    max-height: calc(100vh - 400px);
-    height: calc(100vh - 500px);
-  }
-  */
 }
 .modal-portal-content .search-body,
 .modal-portal-content .main-body {
