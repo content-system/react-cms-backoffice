@@ -25,7 +25,7 @@ import { hideLoading, showLoading } from "ui-loading"
 import { addDays, addSeconds, createDate, formatFullDateTime } from "ui-plus"
 import { toast } from "ui-toast"
 import { getDateFormat, handleError, useLocale, useResource } from "uione"
-import { AuditLog, AuditLogFilter, getAuditLogService } from "./service"
+import { AuditLog, AuditLogFilter, getAuditLogService } from "./audit-log"
 import "./style.css"
 
 interface AuditLogSearch extends Sortable {

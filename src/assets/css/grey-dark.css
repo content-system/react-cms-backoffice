@@ -48,6 +48,15 @@
   color: #778497;
 }
 
+.grey.dark label.search-input select,
+.grey.dark label.search-input input {
+  color: #778497 !important;
+}
+.grey.dark .row > label.search-input > *,
+.grey.dark .search-input > * {
+  border-color: #2f3033 !important;
+}
+
 .grey.dark .list-item > *:last-child,
 .grey.dark .img-item > *:last-child {
   border-bottom-color: #1f1f1f;
@@ -93,36 +102,41 @@
   color: #4c4c4c !important;
 }
 
-/*
-.grey.dark .table > thead > tr,
-.grey.dark div.card {
-  background-color: #1f1f1f;
+.grey.dark input:read-only,
+.grey.dark input:disabled,
+.grey.dark select:disabled {
+  color: #4c4c4c !important;
 }
-*/
-.grey.dark .btn-more,
-.grey.dark h1,
-.grey.dark h2,
-.grey.dark .row .form-group.focused label,
-.grey.dark .row > label.focused,
-.grey.dark .row > .col label.focused,
-.grey.dark .view-container > form > div > label.focused,
-.grey.dark .view-container > div > label.focused,
-.grey.dark .view-body > label.focused,
-.grey.dark .card > footer > button,
-.grey.dark .btn-select,
-.grey.dark .btn-new,
-.grey.dark a.btn-new,
-.grey.dark .btn-table,
-.grey.dark .btn-list,
-.grey.dark .btn-search,
-.grey.dark .btn-lookup,
-.grey.dark .chip:focus,
-.grey.dark header > .btn-group,
-.grey.dark header > .btn-group > button,
-.grey.dark .page-header > form > div > section > button,
-.grey.dark .round-border.active {
-  color: #657181;
-  text-decoration: none;
+
+.grey.dark button:disabled {
+  color: #778497 !important;
+  background-color: #4c4c4c !important;
+}
+
+.grey.dark .chip-input-container > input,
+.grey.dark .form-group .form-control,
+.grey.dark .form-textarea,
+.grey.dark textarea,
+.grey.dark .inline-input > input,
+.grey.dark label > input,
+.grey.dark .form .row > label > input,
+.grey.dark label > select:not([multiple]),
+.grey.dark .form .row > label > select:not([multiple]) {
+  color: #fff;
+  border-color: #4e4e4e;
+  -webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075);
+}
+
+.grey.dark .switch-container > input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]):before,
+.grey.dark input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]).switch:before {
+  border-color: #778497;
+  color: #4c4c4c;
+  background: #000;
+}
+.grey.dark input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]):before {
+  border-color: #778497;
+  background: #000;
 }
 
 @media screen and (max-width: 600px) {
@@ -166,52 +180,59 @@
   color: #000;
 }
 
-.grey.dark footer > .btn-cancel::before {
-  color: #000;
-  background-color: #fc671a;
-}
-
-.grey.dark footer > .btn-accept::after,
-.grey.dark footer > .btn-next::after,
-.grey.dark .section.search > .btn-search,
-.grey.dark .central-full button,
-.grey.dark .view-footer > button,
-.grey.dark footer > button {
-  color: #000;
-  background-color: #657181;
-}
-.grey.dark .btn-secondary {
-  background-color: inherit;
-  color: #657181;
-}
-.grey.dark .btn-delete {
-  background-color: inherit;
-  color: #fc671a;
-}
 .grey.dark .btn-more:hover,
 .grey.dark footer > button:hover {
   box-shadow: #565656;
+}
+
+.grey.dark .btn-delete {
+  background-color: inherit;
+  color: #fc671a;
 }
 .grey.dark section.footer > button#btnReject,
 .grey.dark footer > button#btnReject {
   background-color: #d74738;
 }
-
-.grey.dark .switch-container > input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]):before,
-.grey.dark input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]).switch:before {
-  border-color: #778497;
-  color: #4c4c4c;
-  background: #000;
+.grey.dark footer > .btn-cancel::before {
+  color: #000;
+  background-color: #fc671a;
 }
+
+.grey.dark .form-group .form-control.invalid,
+.grey.dark label > input:not([type="checkbox"]):not([type="radio"]).invalid,
+.grey.dark label.invalid > input:not([type="checkbox"]):not([type="radio"]):focus,
+.grey.dark label.invalid > select:focus {
+  border-color: #d74738;
+  box-shadow: 0 1px 0 0 #d74738;
+}
+.grey.dark label.invalid > textarea {
+  border-color: #d74738;
+  outline-color: #d74738;
+}
+
+.grey.dark .btn-deselect,
+.grey.dark .row .form-group.invalid label,
+.grey.dark .row .form-group.invalid.focused label,
+.grey.dark label.invalid,
+.grey.dark label.invalid.focused,
+.grey.dark .btn-remove,
+.grey.dark label.required:before,
+.grey.dark .span-error,
+.grey.dark .alert-error,
+.grey.dark .danger-icon .alert-icon {
+  color: #d74738;
+}
+
+.grey.dark .span-error {
+  color: #000;
+  background-color: #d74738;
+}
+
 .grey.dark .switch-container > input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]):after,
 .grey.dark input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]).switch:after {
   border-color: #808080;
   color: #000;
   background: #657181;
-}
-.grey.dark input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]):before {
-  border-color: #778497;
-  background: #000;
 }
 .grey.dark input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]):after {
   color: #000;
@@ -222,20 +243,10 @@
   border-color: #778497;
   background-image: radial-gradient(circle, #657181 40%, inherit 50%);
 }
-
 .grey.dark input[type="radio"]:checked:before {
   background-color: #657181;
   background-image: radial-gradient(circle, #657181 40%, #657181 50%);
   border-color: #657181;
-}
-
-.grey.dark label.search-input select,
-.grey.dark label.search-input input {
-  color: #778497 !important;
-}
-.grey.dark .row > label.search-input > *,
-.grey.dark .search-input > * {
-  border-color: #2f3033 !important;
 }
 
 .grey.dark .row .form-group.valid label,
@@ -261,62 +272,6 @@
 .grey.dark select.valid {
   border-color: #657181;
   box-shadow: 0 1px 0 0 #657181;
-}
-
-.grey.dark .chip-input-container > input,
-.grey.dark .form-group .form-control,
-.grey.dark .form-textarea,
-.grey.dark textarea,
-.grey.dark .inline-input > input,
-.grey.dark label > input,
-.grey.dark .form .row > label > input,
-.grey.dark label > select:not([multiple]),
-.grey.dark .form .row > label > select:not([multiple]) {
-  color: #fff;
-  border-color: #4e4e4e;
-  -webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075);
-  box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075);
-}
-
-.grey.dark .form-group .form-control.invalid,
-.grey.dark label > input:not([type="checkbox"]):not([type="radio"]).invalid,
-.grey.dark label.invalid > input:not([type="checkbox"]):not([type="radio"]):focus,
-.grey.dark label.invalid > select:focus {
-  border-color: #d74738;
-  box-shadow: 0 1px 0 0 #d74738;
-}
-.grey.dark label.invalid > textarea {
-  border-color: #d74738;
-  outline-color: #d74738;
-}
-
-.grey.dark input:read-only,
-.grey.dark input:disabled,
-.grey.dark select:disabled {
-  color: #4c4c4c !important;
-}
-
-.grey.dark button:disabled {
-  color: #778497 !important;
-  background-color: #4c4c4c !important;
-}
-
-.grey.dark .btn-deselect,
-.grey.dark .row .form-group.invalid label,
-.grey.dark .row .form-group.invalid.focused label,
-.grey.dark label.invalid,
-.grey.dark label.invalid.focused,
-.grey.dark .btn-remove,
-.grey.dark label.required:before,
-.grey.dark .span-error,
-.grey.dark .alert-error,
-.grey.dark .danger-icon .alert-icon {
-  color: #d74738;
-}
-
-.grey.dark .span-error {
-  color: #000;
-  background-color: #d74738;
 }
 
 .grey.dark .player-music {
@@ -424,6 +379,46 @@
 }
 .grey.dark .sidebar {
   border-right: 1px solid #212325;
+}
+
+.grey.dark .btn-more,
+.grey.dark h1,
+.grey.dark h2,
+.grey.dark .row .form-group.focused label,
+.grey.dark .row > label.focused,
+.grey.dark .row > .col label.focused,
+.grey.dark .view-container > form > div > label.focused,
+.grey.dark .view-container > div > label.focused,
+.grey.dark .view-body > label.focused,
+.grey.dark .card > footer > button,
+.grey.dark .btn-select,
+.grey.dark .btn-new,
+.grey.dark a.btn-new,
+.grey.dark .btn-table,
+.grey.dark .btn-list,
+.grey.dark .btn-search,
+.grey.dark .btn-lookup,
+.grey.dark .chip:focus,
+.grey.dark header > .btn-group,
+.grey.dark header > .btn-group > button,
+.grey.dark .page-header > form > div > section > button,
+.grey.dark .round-border.active {
+  color: #657181;
+  text-decoration: none;
+}
+
+.grey.dark footer > .btn-accept::after,
+.grey.dark footer > .btn-next::after,
+.grey.dark .section.search > .btn-search,
+.grey.dark .central-full button,
+.grey.dark .view-footer > button,
+.grey.dark footer > button {
+  color: #000;
+  background-color: #657181;
+}
+.grey.dark .btn-secondary {
+  background-color: inherit;
+  color: #657181;
 }
 
 .grey.dark .pagination > li > a,

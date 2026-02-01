@@ -4,7 +4,7 @@ import { createModel, DispatchWithCallback, EditComponentParam, setReadOnly, use
 import { useNavigate } from "react-router-dom"
 import { emailOnBlur, formatPhone, phoneOnBlur, requiredOnBlur } from "ui-plus"
 import { Gender, handleError, handleSelect, hasPermission, inputEdit, Permission, Status, useResource } from "uione"
-import { getMasterData, getUserService, User } from "./service"
+import { getMasterDataService, getUserService, User } from "./service"
 
 interface InternalState {
   user: User
@@ -18,7 +18,7 @@ const createUser = (): User => {
   return user
 }
 const initialize = (id: string | null, load: (id: string | null) => void, set: DispatchWithCallback<Partial<InternalState>>) => {
-  const masterDataService = getMasterData()
+  const masterDataService = getMasterDataService()
   Promise.all([masterDataService.getTitles(), masterDataService.getPositions()])
     .then((values) => {
       const [titleList, positionList] = values

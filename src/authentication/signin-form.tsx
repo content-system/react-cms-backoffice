@@ -9,7 +9,7 @@ import { initForm, registerEvents } from "ui-plus"
 import { toast } from "ui-toast"
 import { handleError, loading, setPrivileges, setUser, storage, useResource } from "uione"
 import logo from "../assets/images/logo.png"
-import { getAuthen } from "./service"
+import { getAuthenticator } from "./service"
 
 export const map = {
   "3": "fail_authentication",
@@ -92,7 +92,7 @@ export const SigninForm = () => {
     const remember = state.remember
     try {
       loading().showLoading()
-      const authenticator = getAuthen()
+      const authenticator = getAuthenticator()
       const result = await authenticator.authenticate(user)
       const s = result.status
       if (s === status.two_factor_required) {
