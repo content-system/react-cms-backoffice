@@ -22,7 +22,7 @@ export const ApproveArticleForm = () => {
     } else {
       showLoading()
       service
-        .load(id)
+        .loadDraft(id)
         .then((obj) => {
           if (!obj) {
             alertError(resource.error_404, () => navigate(-1))
@@ -87,23 +87,15 @@ export const ApproveArticleForm = () => {
         <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
         <h2 className="view-title">{resource.article}</h2>
       </header>
-      <div>
-        <dl className="data-list row">
-          <dt className="col s4 l3">{resource.id}</dt>
-          <dd className="col s8 l9">{article.id}</dd>
-          <dt className="col s4 l3">{resource.published_at}</dt>
-          <dd className="col s8 l9">{formatDateTime(article.publishedAt, dateFormat)}</dd>
-          <dt className="col s4 l3">{resource.status}</dt>
-          <dd className="col s8 l9">{article.status}</dd>
-          <dt className="col s4 l3">{resource.title}</dt>
-          <dd className="col s8 l9">{article.title}</dd>
-          <dt className="col s12 l3">{resource.thumbnail}</dt>
-          <dd className="col s12 l9">{article.thumbnail}</dd>
-          <dt className="col s12 l3">{resource.description}</dt>
-          <dd className="col s12 l9">{article.description}</dd>
-          <dt className="col s12 l3">{resource.content}</dt>
-          <dd className="col s12 l9">{article.content}</dd>
-        </dl>
+      <div className="article-body">
+        <h3 className="article-description">{article.title}</h3>
+        <h4 className="article-description">{article.description}</h4>
+        <h4 className="article-meta center-align-items">{formatDateTime(article.publishedAt, dateFormat)}</h4>
+        {article.createdBy && <div className="article-meta">{resource.created_by}: <strong>{article.createdBy}</strong></div>}
+        {article.createdAt && <div className="article-meta">{resource.created_at}: <strong>{formatDateTime(article.createdAt, dateFormat)}</strong></div>}
+        {article.submittedBy && <div className="article-meta">{resource.submitted_by}: <strong>{article.submittedBy}</strong></div>}
+        {article.submittedAt && <div className="article-meta">{resource.submitted_at}: <strong>{formatDateTime(article.submittedAt, dateFormat)}</strong></div>}
+        <div className="article-content" dangerouslySetInnerHTML={{ __html: article.content }}></div>
       </div>
       <footer>
         {canApprove && (
@@ -117,6 +109,6 @@ export const ApproveArticleForm = () => {
           </button>
         )}
       </footer>
-    </form>
+    </form >
   )
 }

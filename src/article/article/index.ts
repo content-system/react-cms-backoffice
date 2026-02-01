@@ -1,11 +1,26 @@
 import { HttpRequest } from "axios-core"
-import { Client } from "web-clients"
+import { Client, json } from "web-clients"
 import { Article, ArticleFilter, articleModel, ArticleService } from "./article"
 export * from "./article"
 
 export class ArticleClient extends Client<Article, string, ArticleFilter> implements ArticleService {
   constructor(http: HttpRequest, url: string) {
     super(http, url, articleModel)
+  }
+  loadDraft(id: string): Promise<Article | null> {
+    let url = `${this.serviceUrl}/${id}/draft`
+    return this.http.get<Article>(url).then(obj => {
+      if (!this._metamodel) {
+        return obj;
+      }
+      return json(obj, this._metamodel);
+    }).catch(err => {
+      const data = (err && err.response) ? err.response : err;
+      if (data && (data.status === 404 || data.status === 410)) {
+        return Promise.resolve(null);
+      }
+      throw err;
+    });
   }
   approve(id: string): Promise<number> {
     let url = `${this.serviceUrl}/${id}/approve`

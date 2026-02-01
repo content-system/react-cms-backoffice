@@ -34,6 +34,7 @@ export interface ArticleFilter extends Filter {
 
 export interface ArticleService extends Service<Article, string, ArticleFilter> {
   search(filter: ArticleFilter, limit: number, page?: number, fields?: string[]): Promise<SearchResult<Article>>
+  loadDraft(id: string): Promise<Article | null>
   load(id: string): Promise<Article | null>
   create(article: Article): Promise<Result<Article>>
   update(article: Article): Promise<Result<Article>>

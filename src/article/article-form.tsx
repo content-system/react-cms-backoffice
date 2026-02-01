@@ -40,7 +40,7 @@ export const ArticleForm = () => {
     } else {
       showLoading()
       getArticleService()
-        .load(id)
+        .loadDraft(id)
         .then((article) => {
           if (!article) {
             alertError(resource.error_404, () => navigate(-1))

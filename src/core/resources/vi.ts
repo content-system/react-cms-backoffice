@@ -280,6 +280,11 @@ export const vi = {
   min_salary: "Min Salary",
   max_salary: "Max Salary",
 
+  created_by: "Created By",
+  created_at: "Created At",
+  submitted_by: "Submitted By",
+  approved_by: "Approved By",
+
   contacts: "Contacts",
   submitted_at: "Submitted At",
   contacted_by: "Contacted By",

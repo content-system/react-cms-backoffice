@@ -5,6 +5,7 @@ pre[class*="language-"] {
   border: 1px solid;
   font-size: 14px;
 }
+.page-body > .form > div.article-body,
 .page-body > article > div.article-body {
   padding-left: 16px;
   padding-right: 16px;
