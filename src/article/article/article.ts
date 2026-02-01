@@ -1,5 +1,14 @@
 import { Attributes, Filter, Result, SearchResult, Service, TimeRange } from "onecore"
 
+export class Status {
+  static readonly Draft = "D"
+  static readonly Submitted = "S"
+  static readonly Rejected = "R"
+  static readonly Approved = "A"
+  static readonly Published = "P"
+  static readonly RequestToEdit = "E"
+}
+
 export interface Article {
   id: string
   title: string

@@ -191,6 +191,13 @@ export const vi = {
   active: "Active",
   inactive: "Inactive",
 
+  status_draft: "Draft",
+  status_submitted: "Submitted",
+  status_rejected: "Rejected",
+  status_approved: "Approved",
+  status_published: "Published",
+  status_expired: "Expired",
+
   please_select: "Please Select",
 
   address: "Address",

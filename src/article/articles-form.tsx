@@ -29,7 +29,7 @@ import { hideLoading, showLoading } from "ui-loading"
 import { addSeconds, createDate, formatDateTime } from "ui-plus"
 import { toast } from "ui-toast"
 import { getDateFormat, handleError, hasPermission, Permission, useResource } from "uione"
-import { Article, ArticleFilter, getArticleService } from "./service"
+import { Article, ArticleFilter, getArticleService, Status } from "./service"
 
 interface ArticleSearch extends Sortable {
   statusList: Item[]
@@ -44,7 +44,7 @@ interface ArticleSearch extends Sortable {
 const now = new Date()
 const articleFilter: ArticleFilter = {
   limit: 24,
-  status: ["A"],
+  status: [],
   q: "",
   publishedAt: {
     max: addSeconds(now, 300),
@@ -61,6 +61,9 @@ export const ArticlesForm = () => {
     list: [],
     filter: articleFilter,
     hideFilter: true,
+  }
+  if (canApprove) {
+    initialState.filter.status = [Status.Submitted]
   }
   const resource = useResource()
   const navigate = useNavigate()
@@ -229,46 +232,28 @@ export const ArticlesForm = () => {
                 }}
               />
             </label>
-            <label className="col s12 m4 l4">
-              {resource.title}
-              <input
-                type="text"
-                id="title"
-                name="title"
-                value={filter.title || ""}
-                onChange={(e) => {
-                  filter.title = e.target.value
-                  setState({ ...state, filter })
-                }}
-                maxLength={255}
-                placeholder={resource.title}
-              />
-            </label>
-            <label className="col s12 m4 l4">
-              {resource.description}
-              <input
-                type="text"
-                id="description"
-                name="description"
-                value={filter.description || ""}
-                onChange={(e) => {
-                  filter.description = e.target.value
-                  setState({ ...state, filter })
-                }}
-                maxLength={255}
-                placeholder={resource.description}
-              />
-            </label>
-            <label className="col s12 m4 l4 checkbox-section">
+            <label className="col s12 checkbox-section">
               {resource.status}
               <section className="checkbox-group">
                 <label>
-                  <input type="checkbox" id="A" name="status" value="A" checked={checked(filter.status, "A")} onChange={checkboxOnChange} />
-                  {resource.active}
+                  <input type="checkbox" id="status_D" name="status" value="D" checked={checked(filter.status, "D")} onChange={checkboxOnChange} />
+                  {resource.status_draft}
                 </label>
                 <label>
-                  <input type="checkbox" id="I" name="status" value="I" checked={checked(filter.status, "I")} onChange={checkboxOnChange} />
-                  {resource.inactive}
+                  <input type="checkbox" id="status_S" name="status" value="S" checked={checked(filter.status, "S")} onChange={checkboxOnChange} />
+                  {resource.status_submitted}
+                </label>
+                <label>
+                  <input type="checkbox" id="status_R" name="status" value="R" checked={checked(filter.status, "R")} onChange={checkboxOnChange} />
+                  {resource.status_rejected}
+                </label>
+                <label>
+                  <input type="checkbox" id="status_A" name="status" value="A" checked={checked(filter.status, "A")} onChange={checkboxOnChange} />
+                  {resource.status_approved}
+                </label>
+                <label>
+                  <input type="checkbox" id="status_P" name="status" value="P" checked={checked(filter.status, "P")} onChange={checkboxOnChange} />
+                  {resource.status_published}
                 </label>
               </section>
             </label>
