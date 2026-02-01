@@ -132,13 +132,12 @@ export const ArticleForm = () => {
             name="id"
             className="form-control"
             value={article.id || ""}
-            readOnly={!newMode}
+            readOnly={true}
             onChange={(e) => {
               article.id = e.target.value
               setState({ ...state, article })
             }}
             maxLength={80}
-            required={true}
             placeholder={resource.id}
           />
         </label>
@@ -203,7 +202,7 @@ export const ArticleForm = () => {
             placeholder={resource.title}
           />
         </label>
-        <label className="col s12 textarea-container required">
+        <label className="col s12 auto-height required">
           {resource.description}
           <textarea
             id="description"
@@ -220,7 +219,7 @@ export const ArticleForm = () => {
             placeholder={resource.content}
           />
         </label>
-        <label className="col s12 textarea-container required">
+        <label className="col s12 auto-height required">
           {resource.content}
           <textarea
             id="content"

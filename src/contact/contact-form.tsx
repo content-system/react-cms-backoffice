@@ -252,7 +252,7 @@ export const ContactForm = () => {
             placeholder={resource.contacted_at}
           />
         </label>
-        <label className="col s12 textarea-container required">
+        <label className="col s12 auto-height required">
           {resource.message}
           <textarea
             id="message"

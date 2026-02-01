@@ -202,7 +202,7 @@ export const ContentForm = () => {
             placeholder={resource.title}
           />
         </label>
-        <label className="col s12 textarea-container required">
+        <label className="col s12 auto-height required">
           {resource.body}
           <textarea
             id="body"
