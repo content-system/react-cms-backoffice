@@ -134,18 +134,6 @@ input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([i
   background: #fff;
 }
 
-@media screen and (max-width: 600px) {
-  .page-body > .form > header > h2,
-  .page-body > div > header > h2,
-  .view-header > h2,
-  header > .btn-group > button,
-  header > .btn-group > button,
-  header > .btn-group > *,
-  header > .btn-new {
-    color: #fff;
-  }
-}
-
 .card > section > p.description,
 label,
 .diff .row .col p > span,
@@ -160,14 +148,6 @@ header > .btn-back,
   color: #808080;
 }
 
-@media screen and (max-width: 600px) {
-  header > .btn-back,
-  header > .btn-close,
-  .view-header > .btn-back,
-  .view-header > .btn-close {
-    color: #fff;
-  }
-}
 .modal-portal-content header > .btn-group > button,
 .modal-portal-content > div > header > .btn-close,
 .form > div > section.header-container > p,
@@ -341,27 +321,6 @@ select.valid {
   background-color: #fff;
   background-image: none;
 }
-@media screen and (max-width: 600px) {
-  .page-body > .form > header,
-  .page-body > article > header,
-  .page-body > div > header,
-  .view-header {
-    color: #fff;
-    background-image: linear-gradient(90deg, #008577, #00574b);
-  }
-}
-h3 {
-  color: #3d7678;
-}
-
-@media screen and (max-width: 600px) {
-  .header {
-    background-color: #f2f2f2;
-  }
-  h3.header {
-    background-color: #e1ebe9;
-  }
-}
 
 .toast-message,
 .sidebar {
@@ -418,6 +377,41 @@ footer > button {
 }
 .btn-secondary {
   color: #4db6ac;
+}
+
+h3 {
+  color: #3d7678;
+}
+
+@media screen and (max-width: 600px) {
+  .page-body > .form > header,
+  .page-body > article > header,
+  .page-body > div > header,
+  .view-header {
+    color: #fff;
+    background-image: linear-gradient(90deg, #008577, #00574b);
+  }
+
+  .header {
+    background-color: #f2f2f2;
+  }
+  h3.header {
+    background-color: #e1ebe9;
+  }
+
+  .page-body > .form > header > h2,
+  .page-body > div > header > h2,
+  .view-header > h2,
+  header > .btn-group > button,
+  header > .btn-group > button,
+  header > .btn-group > *,
+  header > .btn-new,
+  header > .btn-back,
+  header > .btn-close,
+  .view-header > .btn-back,
+  .view-header > .btn-close {
+    color: #fff;
+  }
 }
 
 .pagination > li > a,

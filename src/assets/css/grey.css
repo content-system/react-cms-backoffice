@@ -136,17 +136,6 @@
   background: #fff;
 }
 
-@media screen and (max-width: 600px) {
-  .grey .page-body > .form > header > h2,
-  .grey .page-body > div > header > h2,
-  .grey .view-header > h2,
-  .grey header > .btn-group > button,
-  .grey header > .btn-group > *,
-  .grey header > .btn-new {
-    color: #fff;
-  }
-}
-
 .grey .card > section > p.description,
 .grey label,
 .grey .table > tbody,
@@ -162,14 +151,6 @@
   color: #7f7f7f;
 }
 
-@media screen and (max-width: 600px) {
-  .grey header > .btn-back,
-  .grey header > .btn-close,
-  .grey .view-header > .btn-back,
-  .grey .view-header > .btn-close {
-    color: #fff;
-  }
-}
 .grey .modal-portal-content header > .btn-group > button,
 .grey .modal-portal-content > div > header > .btn-close,
 .grey .form > div > section.header-container > p,
@@ -332,6 +313,11 @@
   background-color: #fff;
   background-image: none;
 }
+
+.grey h3 {
+  color: #181b1f;
+}
+
 @media screen and (max-width: 600px) {
   .grey .page-body > .form > header,
   .grey .page-body > article > header,
@@ -340,16 +326,25 @@
     color: #fff;
     background-image: linear-gradient(90deg, #657181, #657181);
   }
-}
-.grey h3 {
-  color: #181b1f;
-}
-@media screen and (max-width: 600px) {
+
   .grey .header {
     background-color: #f2f2f2;
   }
   .grey h3.header {
     background-color: #e2e2e2;
+  }
+
+  .grey .page-body > .form > header > h2,
+  .grey .page-body > div > header > h2,
+  .grey .view-header > h2,
+  .grey header > .btn-group > button,
+  .grey header > .btn-group > *,
+  .grey header > .btn-new,
+  .grey header > .btn-back,
+  .grey header > .btn-close,
+  .grey .view-header > .btn-back,
+  .grey .view-header > .btn-close {
+    color: #fff;
   }
 }
 

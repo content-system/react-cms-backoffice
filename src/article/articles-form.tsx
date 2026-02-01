@@ -41,29 +41,30 @@ interface ArticleSearch extends Sortable {
   fields?: string[]
 }
 
-const now = new Date()
-const articleFilter: ArticleFilter = {
-  limit: 24,
-  status: [],
-  q: "",
-  publishedAt: {
-    max: addSeconds(now, 300),
-  },
-}
-
 const sizes = pageSizes
 export const ArticlesForm = () => {
   const canWrite = hasPermission(Permission.write)
   const canApprove = hasPermission(Permission.approve)
   const dateFormat = getDateFormat().toUpperCase()
+
+  const now = new Date()
+  const articleFilter: ArticleFilter = {
+    limit: 24,
+    status: [],
+    q: "",
+    publishedAt: {
+      max: addSeconds(now, 300),
+    },
+  }
+  if (canApprove) {
+    articleFilter.status = [Status.Submitted]
+  }
+
   const initialState: ArticleSearch = {
     statusList: [],
     list: [],
     filter: articleFilter,
     hideFilter: true,
-  }
-  if (canApprove) {
-    initialState.filter.status = [Status.Submitted]
   }
   const resource = useResource()
   const navigate = useNavigate()
