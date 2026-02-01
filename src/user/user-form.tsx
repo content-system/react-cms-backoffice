@@ -98,7 +98,7 @@ export const UserForm = () => {
             name="userId"
             className="form-control"
             value={user.userId || ""}
-            readOnly={!flag.newMode}
+            readOnly={true}
             onChange={updateState}
             maxLength={20}
             required={true}

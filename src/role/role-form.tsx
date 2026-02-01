@@ -538,7 +538,7 @@ export function RoleForm() {
     } else {
       return (
         <div className={`row ${isChild && "sub-menu-level-2"}`} key={p.id}>
-          <div className={`col s6 m4 inline flex-gap-2`}>
+          <div className={`col s6 m3 inline flex-gap-2`}>
             {seq++} .
             <input
               type="checkbox"
@@ -660,13 +660,13 @@ export function RoleForm() {
               id="roleId"
               name="roleId"
               value={role.roleId || ""}
+              readOnly={!newMode}
               onBlur={patternOnBlur}
               pattern={regexId}
               config-pattern-error-key={"invalid_pattern_id"}
               onChange={updateState}
               maxLength={20}
               required={true}
-              readOnly={!newMode}
               placeholder={resource.role_id}
             />
           </label>
@@ -735,6 +735,7 @@ export function RoleForm() {
             <p className="col s1 m2 center">{resource.read}</p>
             <p className="col s1 m2 center">{resource.write}</p>
             <p className="col s1 m2 center">{resource.delete}</p>
+            <p className="col s1 m2 center">{resource.approve}</p>
           </div>
           {renderForms(state.shownPrivileges, "", isReadOnly || state.keyword !== "")}
         </section>
