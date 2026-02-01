@@ -11,6 +11,16 @@ export interface Article {
   type?: string
   authorId?: string
   status?: string
+
+  submittedBy: string
+  submittedAt?: Date
+  approvedBy?: string
+  approvedAt?: Date
+
+  createdBy: string
+  createdAt?: Date
+  updatedBy: string
+  updatedAt?: Date
 }
 
 export interface ArticleFilter extends Filter {
@@ -28,6 +38,8 @@ export interface ArticleService extends Service<Article, string, ArticleFilter> 
   create(article: Article): Promise<Result<Article>>
   update(article: Article): Promise<Result<Article>>
   patch(article: Partial<Article>): Promise<Result<Article>>
+  approve(id: string): Promise<number>
+  reject(id: string): Promise<number>
   delete(id: string): Promise<number>
 }
 
@@ -69,4 +81,36 @@ export const articleModel: Attributes = {
   */
   type: {},
   status: {},
+
+  submittedBy: {
+    column: "submitted_by",
+  },
+  submittedAt: {
+    column: "submitted_at",
+    type: "datetime",
+  },
+  approvedBy: {
+    column: "approved_by",
+  },
+  approvedAt: {
+    column: "approved_at",
+    type: "datetime",
+  },
+
+  createdBy: {
+    column: "created_by",
+    noupdate: true,
+  },
+  createdAt: {
+    column: "created_at",
+    type: "datetime",
+    noupdate: true,
+  },
+  updatedBy: {
+    column: "updated_by",
+  },
+  updatedAt: {
+    column: "updated_at",
+    type: "datetime",
+  },
 }

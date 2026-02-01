@@ -1,6 +1,6 @@
 import { Result } from "onecore"
 import React, { useEffect, useRef, useState } from "react"
-import { clone, datetimeToString, hasDiff, isEmptyObject, isSuccessful, makeDiff } from "react-hook-core"
+import { clone, datetimeToString, hasDiff, isEmptyObject, isSuccessful, makeDiff, OnClick } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -8,9 +8,10 @@ import { initForm, registerEvents, requiredOnBlur, setReadOnly, showFormError, v
 import { getLocale, handleError, hasPermission, Permission, Status, useResource } from "uione"
 import { Article, getArticleService } from "./service"
 
+const Draft = "D"
 const createArticle = (): Article => {
   const article = {} as Article
-  article.status = Status.Active
+  article.status = Draft
   return article
 }
 
@@ -22,7 +23,7 @@ const initialState: InternalState = {
 }
 
 export const ArticleForm = () => {
-  const isReadOnly = !hasPermission(Permission.write, 1)
+  const canWrite = hasPermission(Permission.write, 1)
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
@@ -46,7 +47,7 @@ export const ArticleForm = () => {
           } else {
             setInitialArticle(clone(article))
             setState({ article })
-            if (isReadOnly) {
+            if (!canWrite) {
               setReadOnly(refForm?.current)
             }
           }
@@ -54,7 +55,7 @@ export const ArticleForm = () => {
         .catch(handleError)
         .finally(hideLoading)
     }
-  }, [id, newMode, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [id, newMode, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const article = state.article
   const back = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
@@ -69,33 +70,54 @@ export const ArticleForm = () => {
     article.status = e.target.value
     setState({ ...state, article })
   }
-  const save = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+
+  const save = (event: OnClick) => {
+    event.preventDefault()
+    const obj = clone(article)
+    obj.status = Draft
+    onSave(obj)
+  }
+  const submit = (event: OnClick) => {
     event.preventDefault()
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
-      const service = getArticleService()
-      confirm(resource.msg_confirm_save, () => {
-        if (newMode) {
+      confirm(resource.msg_confirm_submit, () => {
+        const obj = clone(article)
+        obj.status = Status.Submitted
+        onSave(obj)
+      })
+    }
+  }
+  const onSave = (article: Article) => {
+    const service = getArticleService()
+    if (newMode) {
+      showLoading()
+      service
+        .create(article)
+        .then((res) => afterSaved(res))
+        .catch(handleError)
+        .finally(hideLoading)
+    } else {
+      if (article.status === Status.Submitted) {
+        showLoading()
+        service
+          .update(article)
+          .then((res) => afterSaved(res))
+          .catch(handleError)
+          .finally(hideLoading)
+      } else {
+        const diff = makeDiff(initialArticle, article, ["id"])
+        if (isEmptyObject(diff)) {
+          alertWarning(resource.msg_no_change)
+        } else {
           showLoading()
           service
-            .create(article)
+            .patch(diff)
             .then((res) => afterSaved(res))
             .catch(handleError)
             .finally(hideLoading)
-        } else {
-          const diff = makeDiff(initialArticle, article, ["id"])
-          if (isEmptyObject(diff)) {
-            alertWarning(resource.msg_no_change)
-          } else {
-            showLoading()
-            service
-              .patch(article)
-              .then((res) => afterSaved(res))
-              .catch(handleError)
-              .finally(hideLoading)
-          }
         }
-      })
+      }
     }
   }
   const afterSaved = (res: Result<Article>) => {
@@ -237,9 +259,14 @@ export const ArticleForm = () => {
         </label>
       </div>
       <footer>
-        {!isReadOnly && (
-          <button type="submit" id="btnSave" name="btnSave" onClick={save}>
-            {resource.save}
+        {canWrite && (
+          <button type="button" id="btnSave" name="btnSave" className="btn-secondary" onClick={save}>
+            {resource.save_draft}
+          </button>
+        )}
+        {canWrite && (
+          <button type="submit" id="btnSave" name="btnSave" onClick={submit}>
+            {resource.submit}
           </button>
         )}
       </footer>

@@ -54,6 +54,7 @@ const articleFilter: ArticleFilter = {
 const sizes = pageSizes
 export const ArticlesForm = () => {
   const canWrite = hasPermission(Permission.write)
+  const canApprove = hasPermission(Permission.approve)
   const dateFormat = getDateFormat().toUpperCase()
   const initialState: ArticleSearch = {
     statusList: [],
@@ -117,6 +118,10 @@ export const ArticlesForm = () => {
   const edit = (e: OnClick, id: string) => {
     e.preventDefault()
     navigate(`${id}`)
+  }
+  const approve = (e: OnClick, id: string) => {
+    e.preventDefault()
+    navigate(`${id}/approve`)
   }
   const checkboxOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { filter } = state
@@ -303,7 +308,7 @@ export const ArticlesForm = () => {
                   list.length > 0 &&
                   list.map((item, i) => {
                     return (
-                      <tr key={i} onClick={(e) => edit(e, item.id)}>
+                      <tr key={i}>
                         <td className="text-right">{offset + i + 1}</td>
                         <td>{item.id}</td>
                         <td>
@@ -313,7 +318,13 @@ export const ArticlesForm = () => {
                         <td>{item.description}</td>
                         <td>
                           <div className="btn-group">
+                            {canWrite && (
+                              <button type="button" className="btn-copy" onClick={(e) => edit(e, item.id)}></button>
+                            )}
                             <button type="button" className="btn-edit" onClick={(e) => edit(e, item.id)}></button>
+                            {canApprove && (
+                              <button type="button" className="btn-approve" onClick={(e) => approve(e, item.id)}></button>
+                            )}
                             <button type="button" className="btn-history" onClick={(e) => edit(e, item.id)}></button>
                           </div>
                         </td>
