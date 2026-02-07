@@ -1,17 +1,16 @@
 import { Result } from "onecore"
 import React, { useEffect, useRef, useState } from "react"
 import { clone, datetimeToString, hasDiff, isEmptyObject, isSuccessful, makeDiff, OnClick } from "react-hook-core"
-import { useNavigate, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
-import { initForm, registerEvents, requiredOnBlur, setReadOnly, showFormError, validateForm } from "ui-plus"
-import { getLocale, handleError, hasPermission, Permission, Status, useResource } from "uione"
+import { formatDateTime, initForm, registerEvents, requiredOnBlur, showFormError, validateForm } from "ui-plus"
+import { canSubmit, getDateFormat, getFlowStatusName, getLocale, handleError, hasPermission, Permission, Status, useResource } from "uione"
 import { Article, getArticleService } from "./service"
 
-const Draft = "D"
 const createArticle = (): Article => {
   const article = {} as Article
-  article.status = Draft
+  article.status = Status.Draft
   return article
 }
 
@@ -24,6 +23,8 @@ const initialState: InternalState = {
 
 export const ArticleForm = () => {
   const canWrite = hasPermission(Permission.write, 1)
+  const canApprove = hasPermission(Permission.approve, 1)
+  const dateFormat = getDateFormat()
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
@@ -47,9 +48,6 @@ export const ArticleForm = () => {
           } else {
             setInitialArticle(clone(article))
             setState({ article })
-            if (!canWrite) {
-              setReadOnly(refForm?.current)
-            }
           }
         })
         .catch(handleError)
@@ -66,15 +64,10 @@ export const ArticleForm = () => {
     }
   }
 
-  const statusOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    article.status = e.target.value
-    setState({ ...state, article })
-  }
-
   const save = (event: OnClick) => {
     event.preventDefault()
     const obj = clone(article)
-    obj.status = Draft
+    obj.status = Status.Draft
     onSave(obj)
   }
   const submit = (event: OnClick) => {
@@ -132,6 +125,27 @@ export const ArticleForm = () => {
     }
   }
   return (
+    (!canWrite ? 
+    (<article id="articleForm">
+      <header>
+        <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
+        <h2 className="view-title">{resource.article}</h2>
+        {canApprove && 
+          <div className="btn-group">
+            <Link id="btnApprove" className="btn-approve" to={`/articles/${article.id}/approve`}></Link>
+          </div>}
+      </header>
+      <div className="article-body">
+        <h3 className="article-description">{article.title}</h3>
+        {article.description && <h4 className="article-description">{article.description}</h4>}
+        {article.publishedAt && <h4 className="article-meta center-align-items">{resource.published_at}: {formatDateTime(article.publishedAt, dateFormat)}</h4>}
+        {article.createdBy && <div className="article-meta">{resource.created_by}: <strong>{article.createdBy}</strong></div>}
+        {article.createdAt && <div className="article-meta">{resource.created_at}: <strong>{formatDateTime(article.createdAt, dateFormat)}</strong></div>}
+        {article.submittedBy && <div className="article-meta">{resource.submitted_by}: <strong>{article.submittedBy}</strong></div>}
+        {article.submittedAt && <div className="article-meta">{resource.submitted_at}: <strong>{formatDateTime(article.submittedAt, dateFormat)}</strong></div>}
+        <div className="article-content" dangerouslySetInnerHTML={{ __html: article.content }}></div>
+      </div>
+    </article>) : 
     <form id="articleForm" name="articleForm" className="form" model-name="article" ref={refForm as any}>
       <header>
         <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
@@ -194,19 +208,17 @@ export const ArticleForm = () => {
             }}
           />
         </label>
-        <div className="col s12 m6 radio-section">
+        <label className="col s12 m6">
           {resource.status}
-          <div className="radio-group">
-            <label>
-              <input type="radio" id="active" name="status" onChange={statusOnChange} value={Status.Active} checked={article.status === Status.Active} />
-              {resource.yes}
-            </label>
-            <label>
-              <input type="radio" id="inactive" name="status" onChange={statusOnChange} value={Status.Inactive} checked={article.status === Status.Inactive} />
-              {resource.number}
-            </label>
-          </div>
-        </div>
+          <input
+            type="text"
+            id="status"
+            name="status"
+            value={getFlowStatusName(article.status)}
+            readOnly={true}
+            placeholder={resource.status}
+          />
+        </label>
         <label className="col s12">
           {resource.title}
           <input
@@ -259,17 +271,17 @@ export const ArticleForm = () => {
         </label>
       </div>
       <footer>
-        {canWrite && (
-          <button type="button" id="btnSave" name="btnSave" className="btn-secondary" onClick={save}>
+        {canWrite &&
+          <button type="button" id="btnSave" name="btnSave" className="btn-secondary" onClick={save} disabled={!canSubmit(article.status)}>
             {resource.save_draft}
           </button>
-        )}
-        {canWrite && (
-          <button type="submit" id="btnSave" name="btnSave" onClick={submit}>
+        }
+        {canWrite &&
+          <button type="submit" id="btnSave" name="btnSave" onClick={submit} disabled={!canSubmit(article.status)}>
             {resource.submit}
           </button>
-        )}
+        }
       </footer>
-    </form>
+    </form>)
   )
 }

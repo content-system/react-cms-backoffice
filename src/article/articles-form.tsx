@@ -1,26 +1,26 @@
 import { Item } from "onecore"
 import { ChangeEvent, useEffect, useRef, useState } from "react"
 import {
-    addParametersIntoUrl,
-    buildFromUrl,
-    buildMessage,
-    buildSortFilter,
-    checked,
-    datetimeToString,
-    getFields,
-    getNumber,
-    getOffset,
-    getSortElement,
-    handleSort,
-    handleToggle,
-    mergeFilter,
-    OnClick,
-    PageChange,
-    pageSizes,
-    removeSortStatus,
-    setSort,
-    Sortable,
-    value,
+  addParametersIntoUrl,
+  buildFromUrl,
+  buildMessage,
+  buildSortFilter,
+  checked,
+  datetimeToString,
+  getFields,
+  getNumber,
+  getOffset,
+  getSortElement,
+  handleSort,
+  handleToggle,
+  mergeFilter,
+  OnClick,
+  PageChange,
+  pageSizes,
+  removeSortStatus,
+  setSort,
+  Sortable,
+  value,
 } from "react-hook-core"
 import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
@@ -28,7 +28,7 @@ import { Pagination } from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
 import { addSeconds, createDate, formatDateTime } from "ui-plus"
 import { toast } from "ui-toast"
-import { getDateFormat, handleError, hasPermission, Permission, useResource } from "uione"
+import { canSubmit, getDateFormat, getFlowStatusName, getUserId, handleError, hasPermission, isSubmitted, Permission, useResource } from "uione"
 import { Article, ArticleFilter, getArticleService, Status } from "./service"
 
 interface ArticleSearch extends Sortable {
@@ -46,6 +46,7 @@ export const ArticlesForm = () => {
   const canWrite = hasPermission(Permission.write)
   const canApprove = hasPermission(Permission.approve)
   const dateFormat = getDateFormat()
+  const userId = getUserId()
 
   const now = new Date()
   const articleFilter: ArticleFilter = {
@@ -286,6 +287,11 @@ export const ArticlesForm = () => {
                       {resource.description}
                     </button>
                   </th>
+                  <th data-field="status">
+                    <button type="button" id="sortStatus" onClick={sort}>
+                      {resource.status}
+                    </button>
+                  </th>
                   <th className="action">{resource.action}</th>
                 </tr>
               </thead>
@@ -302,15 +308,13 @@ export const ArticlesForm = () => {
                         </td>
                         <td>{formatDateTime(item.publishedAt, dateFormat)}</td>
                         <td>{item.description}</td>
+                        <td>{getFlowStatusName(item.status, resource)}</td>
                         <td>
                           <div className="btn-group">
-                            {canWrite && (
-                              <button type="button" className="btn-copy" onClick={(e) => edit(e, item.id)}></button>
-                            )}
-                            <button type="button" className="btn-edit" onClick={(e) => edit(e, item.id)}></button>
-                            {canApprove && (
-                              <button type="button" className="btn-approve" onClick={(e) => approve(e, item.id)}></button>
-                            )}
+                            {canWrite && <button type="button" className="btn-copy" onClick={(e) => edit(e, item.id)}></button>}
+                            {canWrite && canSubmit(item.status) && <button type="button" className="btn-edit" onClick={(e) => edit(e, item.id)}></button>}
+                            {canApprove && userId !== item.submittedBy && 
+                              isSubmitted(item.status) && <button type="button" className="btn-approve" onClick={(e) => approve(e, item.id)}></button>}
                             <button type="button" className="btn-history" onClick={(e) => edit(e, item.id)}></button>
                           </div>
                         </td>

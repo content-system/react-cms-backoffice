@@ -64,12 +64,29 @@ export const statusNames: Map<string, string> = new Map([
   ["A", "Active"],
   ["I", "Inactive"],
 ])
+
+export const flowStatusNames: Map<string, string> = new Map([
+  ["D", "Draft"],
+  ["S", "Submitted"],
+  ["R", "Rejected"],
+  ["A", "Approved"],
+  ["P", "Published"],
+  ["E", "Expired"],
+])
 function getStatusName(status?: string, map?: StringMap): string | undefined {
   if (!status) {
     return ""
   }
   return statusNames.get(status)
 }
+
+function getFlowStatusName(status?: string, map?: StringMap): string | undefined {
+  if (!status) {
+    return ""
+  }
+  return flowStatusNames.get(status)
+}
+
 let isInit = false
 export function init() {
   if (isInit) {
@@ -93,6 +110,7 @@ export function init() {
   storage.confirm = confirm
   storage.message = toast
   storage.getStatusName = getStatusName
+  storage.getFlowStatusName = getFlowStatusName
 
   const resource = storage.resource()
   vresources.phonecodes = phonecodes

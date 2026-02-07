@@ -29,10 +29,10 @@
     "ui-loading": "^0.0.5",
     "ui-plus": "^0.4.0",
     "ui-toast": "^0.0.5",
-    "uione": "^0.5.0",
+    "uione": "^0.5.2",
     "validation-core": "^1.0.1",
     "web-clients": "^0.3.1",
-    "web-vitals": "^3.5.0"
+    "web-vitals": "^5.1.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.9.1",

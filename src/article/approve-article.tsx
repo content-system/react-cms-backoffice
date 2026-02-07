@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
 import { formatDateTime } from "ui-plus"
-import { getDateFormat, handleError, hasPermission, Permission, useResource } from "uione"
+import { getDateFormat, handleError, hasPermission, isSubmitted, Permission, useResource } from "uione"
 import { Article, getArticleService } from "./service"
 
 export const ApproveArticleForm = () => {
@@ -89,8 +89,8 @@ export const ApproveArticleForm = () => {
       </header>
       <div className="article-body">
         <h3 className="article-description">{article.title}</h3>
-        <h4 className="article-description">{article.description}</h4>
-        <h4 className="article-meta center-align-items">{formatDateTime(article.publishedAt, dateFormat)}</h4>
+        {article.description && <h4 className="article-description">{article.description}</h4>}
+        {article.publishedAt && <h4 className="article-meta center-align-items">{resource.published_at}: {formatDateTime(article.publishedAt, dateFormat)}</h4>}
         {article.createdBy && <div className="article-meta">{resource.created_by}: <strong>{article.createdBy}</strong></div>}
         {article.createdAt && <div className="article-meta">{resource.created_at}: <strong>{formatDateTime(article.createdAt, dateFormat)}</strong></div>}
         {article.submittedBy && <div className="article-meta">{resource.submitted_by}: <strong>{article.submittedBy}</strong></div>}
@@ -99,16 +99,16 @@ export const ApproveArticleForm = () => {
       </div>
       <footer>
         {canApprove && (
-          <button type="button" id="btnReject" name="btnReject" onClick={reject}>
+          <button type="button" id="btnReject" name="btnReject" onClick={reject} disabled={!isSubmitted(article.status)}>
             {resource.reject}
           </button>
         )}
         {canApprove && (
-          <button type="submit" id="btnApprove" name="btnApprove" onClick={approve}>
+          <button type="submit" id="btnApprove" name="btnApprove" onClick={approve} disabled={!isSubmitted(article.status)}>
             {resource.approve}
           </button>
         )}
       </footer>
-    </form >
+    </form>
   )
 }
