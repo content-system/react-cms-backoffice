@@ -53,7 +53,7 @@ export const ArticleForm = () => {
         .catch(handleError)
         .finally(hideLoading)
     }
-  }, [id, newMode, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [id, newMode, canWrite, canApprove]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const article = state.article
   const back = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
