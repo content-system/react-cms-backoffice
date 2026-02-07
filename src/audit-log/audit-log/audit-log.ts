@@ -32,23 +32,23 @@ export const auditLogModel: Attributes = {
     length: 40,
   },
   resource: {
-    match: "equal",
+    operator: "=",
   },
   userId: {
     required: true,
     length: 40,
-    match: "equal",
+    operator: "=",
   },
   ip: {},
   action: {
-    match: "equal",
+    operator: "=",
   },
   time: {
     type: "datetime",
   },
   status: {
-    match: "equal",
     length: 1,
+    operator: "=",
   },
   remark: {},
 }

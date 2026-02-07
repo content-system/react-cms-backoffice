@@ -9,7 +9,7 @@ import { Article, getArticleService } from "./service"
 
 export const ApproveArticleForm = () => {
   const canApprove = hasPermission(Permission.approve, 2)
-  const dateFormat = getDateFormat().toUpperCase()
+  const dateFormat = getDateFormat()
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)

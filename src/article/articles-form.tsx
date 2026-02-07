@@ -1,26 +1,26 @@
 import { Item } from "onecore"
 import { ChangeEvent, useEffect, useRef, useState } from "react"
 import {
-  addParametersIntoUrl,
-  buildFromUrl,
-  buildMessage,
-  buildSortFilter,
-  checked,
-  datetimeToString,
-  getFields,
-  getNumber,
-  getOffset,
-  getSortElement,
-  handleSort,
-  handleToggle,
-  mergeFilter,
-  OnClick,
-  PageChange,
-  pageSizes,
-  removeSortStatus,
-  setSort,
-  Sortable,
-  value,
+    addParametersIntoUrl,
+    buildFromUrl,
+    buildMessage,
+    buildSortFilter,
+    checked,
+    datetimeToString,
+    getFields,
+    getNumber,
+    getOffset,
+    getSortElement,
+    handleSort,
+    handleToggle,
+    mergeFilter,
+    OnClick,
+    PageChange,
+    pageSizes,
+    removeSortStatus,
+    setSort,
+    Sortable,
+    value,
 } from "react-hook-core"
 import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
@@ -45,7 +45,7 @@ const sizes = pageSizes
 export const ArticlesForm = () => {
   const canWrite = hasPermission(Permission.write)
   const canApprove = hasPermission(Permission.approve)
-  const dateFormat = getDateFormat().toUpperCase()
+  const dateFormat = getDateFormat()
 
   const now = new Date()
   const articleFilter: ArticleFilter = {

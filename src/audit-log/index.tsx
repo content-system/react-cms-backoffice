@@ -1,24 +1,24 @@
 import { Item } from "onecore"
 import { ChangeEvent, useEffect, useRef, useState } from "react"
 import {
-  addParametersIntoUrl,
-  buildFromUrl,
-  buildMessage,
-  buildSortFilter,
-  datetimeToString,
-  getFields,
-  getNumber,
-  getOffset,
-  getSortElement,
-  handleSort,
-  mergeFilter,
-  PageChange,
-  pageSizes,
-  PageSizeSelect,
-  removeSortStatus,
-  setSort,
-  Sortable,
-  value,
+    addParametersIntoUrl,
+    buildFromUrl,
+    buildMessage,
+    buildSortFilter,
+    datetimeToString,
+    getFields,
+    getNumber,
+    getOffset,
+    getSortElement,
+    handleSort,
+    mergeFilter,
+    PageChange,
+    pageSizes,
+    PageSizeSelect,
+    removeSortStatus,
+    setSort,
+    Sortable,
+    value,
 } from "react-hook-core"
 import Pagination from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
@@ -56,7 +56,7 @@ const mapStyleStatus: Map<string, string> = new Map([
 
 const sizes = pageSizes
 export const AuditLogsForm = () => {
-  const dateFormat = getDateFormat().toUpperCase()
+  const dateFormat = getDateFormat()
   const initialState: AuditLogSearch = {
     statusList: [],
     list: [],

@@ -1,25 +1,25 @@
 import { Item } from "onecore"
 import { ChangeEvent, useEffect, useRef, useState } from "react"
 import {
-  addParametersIntoUrl,
-  buildFromUrl,
-  buildMessage,
-  buildSortFilter,
-  checked,
-  getFields,
-  getNumber,
-  getOffset,
-  getSortElement,
-  handleSort,
-  handleToggle,
-  mergeFilter,
-  OnClick,
-  PageChange,
-  pageSizes,
-  removeSortStatus,
-  setSort,
-  Sortable,
-  value,
+    addParametersIntoUrl,
+    buildFromUrl,
+    buildMessage,
+    buildSortFilter,
+    checked,
+    getFields,
+    getNumber,
+    getOffset,
+    getSortElement,
+    handleSort,
+    handleToggle,
+    mergeFilter,
+    OnClick,
+    PageChange,
+    pageSizes,
+    removeSortStatus,
+    setSort,
+    Sortable,
+    value,
 } from "react-hook-core"
 import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
@@ -48,7 +48,7 @@ const contentFilter: ContentFilter = {
 const sizes = pageSizes
 export const ContentsForm = () => {
   const canWrite = hasPermission(Permission.write)
-  const dateFormat = getDateFormat().toUpperCase()
+  const dateFormat = getDateFormat()
   const initialState: ContentSearch = {
     statusList: [],
     list: [],

@@ -54,7 +54,7 @@ const jobFilter: JobFilter = {
 const sizes = pageSizes
 export const JobsForm = () => {
   const canWrite = hasPermission(Permission.write)
-  const dateFormat = getDateFormat().toUpperCase()
+  const dateFormat = getDateFormat()
   const initialState: JobSearch = {
     statusList: [],
     list: [],
