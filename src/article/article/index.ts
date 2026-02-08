@@ -22,8 +22,9 @@ export class ArticleClient extends Client<Article, string, ArticleFilter> implem
       throw err;
     });
   }
-  async getHistories(id: string): Promise<History<Article>[]> {
-    let url = `${this.serviceUrl}/${id}/history`
+  async getHistories(id: string, limit: number, nextPageToken?: string): Promise<History<Article>[]> {
+    const s = nextPageToken ? `&historyId=${nextPageToken}` : ""
+    let url = `${this.serviceUrl}/${id}/history?limit=${limit}${s}`
     const histories = await this.http.get<History<Article>[]>(url)
     for (const history of histories) {
       history.time = new Date(history.time)

@@ -6,11 +6,24 @@ import { formatDateTime } from "ui-plus"
 import { getDateFormat, handleError, useResource } from "uione"
 import { Article, getArticleService, History } from "./service"
 
+export const actionNames: Map<string, string> = new Map([
+  ["R", "Reject"],
+  ["P", "Publish"],
+])
+function getActionName(s?: string): string {
+  if (!s) {
+    return "Unknown action"
+  }
+  const x = actionNames.get(s)
+  return x ? x : s
+}
+const limit = 3
 export const ArticleHistory = () => {
   const dateFormat = getDateFormat()
   const resource = useResource()
   const navigate = useNavigate()
   const [histories, setHistories] = useState<History<Article>[]>([])
+  const [nextPageToken, setNextPageToken] = useState<string>();
   const { id } = useParams()
   const service = getArticleService()
 
@@ -20,14 +33,45 @@ export const ArticleHistory = () => {
     } else {
       showLoading()
       service
-        .getHistories(id)
-        .then((objs) => setHistories(objs))
+        .getHistories(id, limit)
+        .then((res) => {
+          let next: string | undefined = undefined
+          if (res.length > 0) {
+            if (res.length >= limit) {
+              next = res[res.length - 1].id
+            }
+            setHistories(res)
+          }
+          setNextPageToken(next)
+        })
         .catch(handleError)
         .finally(hideLoading)
     }
   }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const back = (event: OnClick) => navigate(-1)
+  const loadMore = async (event: OnClick) => {
+    event.preventDefault()
+    if (id) {
+      try {
+        showLoading()
+        let res = await service.getHistories(id, limit, nextPageToken)
+        let next: string | undefined = undefined
+        if (res.length > 0) {
+          if (res.length >= limit) {
+            next = res[res.length - 1].id
+          }
+          const newList = [...histories].concat(res);
+          setHistories(newList)
+        }
+        setNextPageToken(next)
+      } catch (err) {
+        handleError(err)
+      } finally {
+        hideLoading()
+      }
+    }
+  }
 
   return (
     <form id="approveArticleForm" name="approveArticleForm" className="form">
@@ -40,7 +84,10 @@ export const ArticleHistory = () => {
           const article = item.data
           return (
             <Fragment key={i}>
-              <h3 className="article-description">{article.title}</h3>
+              <h3 className="article-description">{resource.user}: {item.author}</h3>
+              <h4 className="article-description">{resource.action}: {getActionName(article.status)}</h4>
+              
+              <h4 className="article-description">{article.title}</h4>
               {article.description && <h4 className="article-description">{article.description}</h4>}
               {article.publishedAt && (
                 <h4 className="article-meta center-align-items">
@@ -53,15 +100,12 @@ export const ArticleHistory = () => {
                 </div>
               )}
               <div className="article-content" dangerouslySetInnerHTML={{ __html: article.content }}/>
+              <hr></hr>
             </Fragment>
           )
         })}
+        {nextPageToken && <button type='submit' id='btnMore' name='btnMore' className='btn-more' onClick={loadMore}>{resource.button_more}</button>}
       </div>
-      <footer>
-        <button type="submit" id="btnApprove" name="btnApprove" className="btn-approve">
-          {resource.approve}
-        </button>
-      </footer>
     </form>
   )
 }

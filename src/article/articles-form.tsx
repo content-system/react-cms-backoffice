@@ -28,8 +28,12 @@ import { Pagination } from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
 import { addSeconds, createDate, formatDateTime } from "ui-plus"
 import { toast } from "ui-toast"
-import { canSubmit, getDateFormat, getFlowStatusName, getUserId, handleError, hasPermission, isSubmitted, Permission, useResource } from "uione"
+import { getDateFormat, getFlowStatusName, getUserId, handleError, hasPermission, isSubmitted, Permission, Status, useResource } from "uione"
 import { Article, ArticleFilter, getArticleService } from "./service"
+
+function canEdit(s?: string): boolean {
+  return s !== Status.Approved && s !== Status.Expired
+}
 
 interface ArticleSearch extends Sortable {
   statusList: Item[]
@@ -125,6 +129,10 @@ export const ArticlesForm = () => {
   const edit = (e: OnClick, id: string) => {
     e.preventDefault()
     navigate(`${id}`)
+  }
+  const viewHistory = (e: OnClick, id: string) => {
+    e.preventDefault()
+    navigate(`${id}/history`)
   }
   const approve = (e: OnClick, id: string) => {
     e.preventDefault()
@@ -314,10 +322,10 @@ export const ArticlesForm = () => {
                         <td>
                           <div className="btn-group">
                             {canWrite && <button type="button" className="btn-copy" onClick={(e) => edit(e, item.id)}></button>}
-                            {canWrite && canSubmit(item.status) && <button type="button" className="btn-edit" onClick={(e) => edit(e, item.id)}></button>}
+                            {canWrite && canEdit(item.status) && <button type="button" className="btn-edit" onClick={(e) => edit(e, item.id)}></button>}
                             {canApprove && userId !== item.submittedBy && 
                               isSubmitted(item.status) && <button type="button" className="btn-approve" onClick={(e) => approve(e, item.id)}></button>}
-                            <button type="button" className="btn-history" onClick={(e) => edit(e, item.id)}></button>
+                            <button type="button" className="btn-history" onClick={(e) => viewHistory(e, item.id)}></button>
                           </div>
                         </td>
                       </tr>

@@ -1,12 +1,16 @@
 import { Result } from "onecore"
 import React, { useEffect, useRef, useState } from "react"
-import { clone, datetimeToString, hasDiff, isEmptyObject, isSuccessful, makeDiff, OnClick } from "react-hook-core"
+import { clone, hasDiff, isEmptyObject, isSuccessful, makeDiff, OnClick } from "react-hook-core"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
-import { formatDateTime, initForm, registerEvents, requiredOnBlur, showFormError, validateForm } from "ui-plus"
-import { canSubmit, getDateFormat, getFlowStatusName, getLocale, handleError, hasPermission, isSubmitted, Permission, Status, useResource } from "uione"
+import { formatDateTime, formatLongDateTime, initForm, registerEvents, requiredOnBlur, showFormError, validateForm } from "ui-plus"
+import { getDateFormat, getFlowStatusName, getLocale, handleError, hasPermission, isSubmitted, Permission, Status, useResource } from "uione"
 import { Article, getArticleService } from "./service"
+
+function canEdit(s?: string): boolean {
+  return s !== Status.Approved && s !== Status.Expired
+}
 
 const createArticle = (): Article => {
   const article = {} as Article
@@ -14,6 +18,9 @@ const createArticle = (): Article => {
   return article
 }
 
+function canSubmit(s?: string): boolean {
+  return s !== Status.Approved && s !== Status.Expired
+}
 interface InternalState {
   article: Article
 }
@@ -129,7 +136,7 @@ export const ArticleForm = () => {
     }
   }
   return (
-    (!canWrite || !canSubmit(article.status) ?
+    (!canWrite || !canEdit(article.status) ?
     (<article id="articleForm">
       <header>
         <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
@@ -197,15 +204,11 @@ export const ArticleForm = () => {
         <label className="col s12 m6">
           {resource.published_at}
           <input
-            type="datetime-local"
-            step=".010"
+            type="text"
             id="publishedAt"
             name="publishedAt"
-            value={datetimeToString(article.publishedAt)}
-            onChange={(e) => {
-              article.publishedAt = e.target.value.length > 0 ? new Date(e.target.value) : undefined
-              setState({ ...state, article })
-            }}
+            value={formatLongDateTime(article.publishedAt, dateFormat)}
+            readOnly={true}
           />
         </label>
         <label className="col s12 m6">

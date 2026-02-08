@@ -51,7 +51,7 @@ export interface ArticleService extends Service<Article, string, ArticleFilter> 
   search(filter: ArticleFilter, limit: number, page?: number, fields?: string[]): Promise<SearchResult<Article>>
   loadDraft(id: string): Promise<Article | null>
   load(id: string): Promise<Article | null>
-  getHistories(id: string): Promise<History<Article>[]>
+  getHistories(id: string, limit: number, nextPageToken?: string): Promise<History<Article>[]>
   create(article: Article): Promise<Result<Article>>
   update(article: Article): Promise<Result<Article>>
   patch(article: Partial<Article>): Promise<Result<Article>>
