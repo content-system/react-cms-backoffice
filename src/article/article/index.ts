@@ -1,6 +1,6 @@
 import { HttpRequest } from "axios-core"
 import { Client, json } from "web-clients"
-import { Article, ArticleFilter, articleModel, ArticleService } from "./article"
+import { Article, ArticleFilter, articleModel, ArticleService, History } from "./article"
 export * from "./article"
 
 export class ArticleClient extends Client<Article, string, ArticleFilter> implements ArticleService {
@@ -21,6 +21,15 @@ export class ArticleClient extends Client<Article, string, ArticleFilter> implem
       }
       throw err;
     });
+  }
+  async getHistories(id: string): Promise<History<Article>[]> {
+    let url = `${this.serviceUrl}/${id}/history`
+    const histories = await this.http.get<History<Article>[]>(url)
+    for (const history of histories) {
+      history.time = new Date(history.time)
+      history.data = json(history.data, this._metamodel)
+    }
+    return histories
   }
   approve(id: string): Promise<number> {
     let url = `${this.serviceUrl}/${id}/approve`
