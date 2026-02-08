@@ -5,7 +5,7 @@ import { Link, useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
 import { formatDateTime, initForm, registerEvents, requiredOnBlur, showFormError, validateForm } from "ui-plus"
-import { canSubmit, getDateFormat, getFlowStatusName, getLocale, handleError, hasPermission, Permission, Status, useResource } from "uione"
+import { canSubmit, getDateFormat, getFlowStatusName, getLocale, handleError, hasPermission, isSubmitted, Permission, Status, useResource } from "uione"
 import { Article, getArticleService } from "./service"
 
 const createArticle = (): Article => {
@@ -57,10 +57,14 @@ export const ArticleForm = () => {
 
   const article = state.article
   const back = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    if (!hasDiff(initialArticle, article)) {
+    if (!canWrite || !canSubmit(article.status)) {
       navigate(-1)
     } else {
-      confirm(resource.msg_confirm_back, () => navigate(-1))
+      if (!hasDiff(initialArticle, article)) {
+        navigate(-1)
+      } else {
+        confirm(resource.msg_confirm_back, () => navigate(-1))
+      }
     }
   }
 
@@ -125,12 +129,12 @@ export const ArticleForm = () => {
     }
   }
   return (
-    (!canWrite ? 
+    (!canWrite || !canSubmit(article.status) ?
     (<article id="articleForm">
       <header>
         <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
         <h2 className="view-title">{resource.article}</h2>
-        {canApprove && 
+        {canApprove && isSubmitted(article.status) &&
           <div className="btn-group">
             <Link id="btnApprove" className="btn-approve" to={`/articles/${article.id}/approve`}></Link>
           </div>}
@@ -150,14 +154,10 @@ export const ArticleForm = () => {
       <header>
         <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
         <h2 className="view-title">{resource.article}</h2>
-        <div className="btn-group">
-          <button className="btn-group btn-right" hidden={newMode}>
-            <i className="material-icons">group</i>
-          </button>
-          <button className="btn-group btn-right" hidden={newMode}>
-            <i className="material-icons">group</i>
-          </button>
-        </div>
+        {canApprove && isSubmitted(article.status) &&
+          <div className="btn-group">
+            <Link id="btnApprove" className="btn-approve" to={`/articles/${article.id}/approve`}></Link>
+          </div>}
       </header>
       <div className="row">
         <label className="col s12 m6">

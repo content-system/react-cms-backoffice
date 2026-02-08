@@ -10,7 +10,7 @@
     "csvtojson": "^2.0.14",
     "js-base64": "^3.7.8",
     "locale-service": "^0.1.0",
-    "onecore": "^0.5.8",
+    "onecore": "^0.5.9",
     "password-client": "^0.1.4",
     "phonecodes": "^0.0.2",
     "query-string": "^9.3.1",
@@ -29,7 +29,7 @@
     "ui-loading": "^0.0.5",
     "ui-plus": "^0.4.0",
     "ui-toast": "^0.0.5",
-    "uione": "^0.5.2",
+    "uione": "^0.5.3",
     "validation-core": "^1.0.1",
     "web-clients": "^0.3.1",
     "web-vitals": "^5.1.0"

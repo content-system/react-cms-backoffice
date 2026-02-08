@@ -29,7 +29,7 @@ import { hideLoading, showLoading } from "ui-loading"
 import { addSeconds, createDate, formatDateTime } from "ui-plus"
 import { toast } from "ui-toast"
 import { canSubmit, getDateFormat, getFlowStatusName, getUserId, handleError, hasPermission, isSubmitted, Permission, useResource } from "uione"
-import { Article, ArticleFilter, getArticleService, Status } from "./service"
+import { Article, ArticleFilter, getArticleService } from "./service"
 
 interface ArticleSearch extends Sortable {
   statusList: Item[]
@@ -57,9 +57,11 @@ export const ArticlesForm = () => {
       max: addSeconds(now, 300),
     },
   }
+  /*
   if (canApprove) {
     articleFilter.status = [Status.Submitted]
   }
+  */
 
   const initialState: ArticleSearch = {
     statusList: [],
