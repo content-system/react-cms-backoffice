@@ -83,6 +83,7 @@ export const en = {
   msg_save_success: "Data have been saved successfully",
   msg_confirm_submit: "Are you sure you want to submit?",
   msg_submit_success: "Data have been submitted successfully",
+  msg_confirm_approve: "Are you sure you want to approve?",
   msg_approve_success: "Data have been approved successfully",
   msg_approve_conflict: "Cannot approve. Maybe someone already approved or rejected.",
   msg_approver_conflict: "Approver cannot be submitter.",
