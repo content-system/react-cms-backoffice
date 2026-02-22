@@ -319,7 +319,7 @@ export const ArticlesForm = () => {
                           <div className="btn-group">
                             {canWrite && <button type="button" className="btn-copy" onClick={(e) => edit(e, item.id)}></button>}
                             {canWrite && canUpdate(item.status) && <button type="button" className="btn-edit" onClick={(e) => edit(e, item.id)}></button>}
-                            {canApprove && userId !== item.submittedBy && 
+                            {canApprove && userId !== item.submittedBy &&
                               canReject(item.status) && <button type="button" className="btn-approve" onClick={(e) => approve(e, item.id)}></button>}
                             <button type="button" className="btn-history" onClick={(e) => viewHistory(e, item.id)}></button>
                           </div>

@@ -45,7 +45,8 @@ export interface History<T> {
   id: string
   author: string
   time: Date
-  data: T
+  action: string
+  data?: T
 }
 export interface ArticleService extends Service<Article, string, ArticleFilter> {
   search(filter: ArticleFilter, limit: number, page?: number, fields?: string[]): Promise<SearchResult<Article>>

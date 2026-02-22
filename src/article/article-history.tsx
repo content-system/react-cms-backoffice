@@ -3,20 +3,9 @@ import { OnClick } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { hideLoading, showLoading } from "ui-loading"
 import { formatDateTime } from "ui-plus"
-import { getDateFormat, handleError, useResource } from "uione"
+import { getActionName, getDateFormat, handleError, useResource } from "uione"
 import { Article, getArticleService, History } from "./service"
 
-export const actionNames: Map<string, string> = new Map([
-  ["R", "Reject"],
-  ["P", "Publish"],
-])
-function getActionName(s?: string): string {
-  if (!s) {
-    return "Unknown action"
-  }
-  const x = actionNames.get(s)
-  return x ? x : s
-}
 const limit = 3
 export const ArticleHistory = () => {
   const dateFormat = getDateFormat()
@@ -85,21 +74,25 @@ export const ArticleHistory = () => {
           return (
             <Fragment key={i}>
               <h3 className="article-description">{resource.user}: {item.author}</h3>
-              <h4 className="article-description">{resource.action}: {getActionName(article.status)}</h4>
-              
-              <h4 className="article-description">{article.title}</h4>
-              {article.description && <h4 className="article-description">{article.description}</h4>}
-              {article.publishedAt && (
-                <h4 className="article-meta center-align-items">
-                  {resource.published_at}: {formatDateTime(article.publishedAt, dateFormat)}
-                </h4>
-              )}
-              {article.submittedAt && (
-                <div className="article-meta">
-                  {resource.submitted_at}: <strong>{formatDateTime(article.submittedAt, dateFormat)}</strong>
-                </div>
-              )}
-              <div className="article-content" dangerouslySetInnerHTML={{ __html: article.content }}/>
+              <h4 className="article-description">{formatDateTime(item.time, dateFormat)}</h4>
+              <h4 className="article-description">{resource.action}: {getActionName(item.action)}</h4>
+              {
+                article && <Fragment>
+                  <h4 className="article-description">{article.title}</h4>
+                  {article.description && <h4 className="article-description">{article.description}</h4>}
+                  {article.publishedAt && (
+                    <h4 className="article-meta center-align-items">
+                      {resource.published_at}: {formatDateTime(article.publishedAt, dateFormat)}
+                    </h4>
+                  )}
+                  {article.submittedAt && (
+                    <div className="article-meta">
+                      {resource.submitted_at}: <strong>{formatDateTime(article.submittedAt, dateFormat)}</strong>
+                    </div>
+                  )}
+                  <div className="article-content" dangerouslySetInnerHTML={{ __html: article.content }} />
+                </Fragment>
+              }
               <hr></hr>
             </Fragment>
           )
