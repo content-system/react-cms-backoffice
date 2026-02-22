@@ -2,7 +2,7 @@ import axios from "axios"
 import { HttpRequest } from "axios-core"
 import { options, storage } from "uione"
 import { MasterDataClient, MasterDataService } from "./master-data"
-import { SettingsClient } from "./settings"
+import { SettingsClient, SettingsService } from "./settings"
 
 export * from "./settings"
 
@@ -12,33 +12,21 @@ export interface Config {
   master_data_url: string
 }
 
-class ApplicationContext {
-  private settingsService?: SettingsClient
-  private masterDataService?: MasterDataClient
-  constructor() {
-    this.getConfig = this.getConfig.bind(this)
-    this.getSettingsService = this.getSettingsService.bind(this)
-    this.getMasterDataService = this.getMasterDataService.bind(this)
+let masterDataService: MasterDataService | undefined
+export function getMasterDataService(): MasterDataService {
+  if (!masterDataService) {
+    const c = storage.config()
+    masterDataService = new MasterDataClient(httpRequest, c.master_data_url)
   }
-  getConfig(): Config {
-    return storage.config()
-  }
-  getSettingsService(): SettingsClient {
-    if (!this.settingsService) {
-      const c = this.getConfig()
-      this.settingsService = new SettingsClient(httpRequest, c.settings_url)
-    }
-    return this.settingsService
-  }
-  getMasterDataService(): MasterDataService {
-    if (!this.masterDataService) {
-      const c = this.getConfig()
-      this.masterDataService = new MasterDataClient(httpRequest, c.master_data_url)
-    }
-    return this.masterDataService
-  }
+  return masterDataService
 }
 
-export const context = new ApplicationContext()
-export const getSettingsService = context.getSettingsService
-export const getMasterDataService = context.getMasterDataService
+let settingsService: SettingsService | undefined
+export function getSettingsService(): SettingsService {
+  if (!settingsService) {
+    const c = storage.config()
+    settingsService = new SettingsClient(httpRequest, c.settings_url)
+  }
+  return settingsService
+}
+
