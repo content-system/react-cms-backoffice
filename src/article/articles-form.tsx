@@ -28,12 +28,8 @@ import { Pagination } from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
 import { addSeconds, createDate, formatDateTime } from "ui-plus"
 import { toast } from "ui-toast"
-import { getDateFormat, getFlowStatusName, getUserId, handleError, hasPermission, isSubmitted, Permission, Status, useResource } from "uione"
+import { canReject, canUpdate, getDateFormat, getFlowStatusName, getUserId, handleError, hasPermission, Permission, useResource } from "uione"
 import { Article, ArticleFilter, getArticleService } from "./service"
-
-function canEdit(s?: string): boolean {
-  return s !== Status.Approved && s !== Status.Expired
-}
 
 interface ArticleSearch extends Sortable {
   statusList: Item[]
@@ -322,9 +318,9 @@ export const ArticlesForm = () => {
                         <td>
                           <div className="btn-group">
                             {canWrite && <button type="button" className="btn-copy" onClick={(e) => edit(e, item.id)}></button>}
-                            {canWrite && canEdit(item.status) && <button type="button" className="btn-edit" onClick={(e) => edit(e, item.id)}></button>}
+                            {canWrite && canUpdate(item.status) && <button type="button" className="btn-edit" onClick={(e) => edit(e, item.id)}></button>}
                             {canApprove && userId !== item.submittedBy && 
-                              isSubmitted(item.status) && <button type="button" className="btn-approve" onClick={(e) => approve(e, item.id)}></button>}
+                              canReject(item.status) && <button type="button" className="btn-approve" onClick={(e) => approve(e, item.id)}></button>}
                             <button type="button" className="btn-history" onClick={(e) => viewHistory(e, item.id)}></button>
                           </div>
                         </td>
@@ -341,7 +337,7 @@ export const ArticlesForm = () => {
               state.list.length > 0 &&
               state.list.map((item, i) => {
                 return (
-                  <li key={i} className="col s12 m6 l4 xl3 card" onClick={(e) => edit(e, item.id)}>
+                  <li key={i} className="col s12 m6 l4 xl3 img-card" onClick={(e) => edit(e, item.id)}>
                     <section>
                       <div className="cover" style={{ backgroundImage: `url('${item.thumbnail}')` }}></div>
                       <Link to={`${item.id}`}>{item.title}</Link>

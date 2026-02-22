@@ -1,11 +1,11 @@
 import { Result } from "onecore"
 import React, { useEffect, useRef, useState } from "react"
 import { clone, hasDiff, isEmptyObject, isSuccessful, makeDiff, OnClick } from "react-hook-core"
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
 import { formatDateTime, formatLongDateTime, initForm, registerEvents, requiredOnBlur, showFormError, validateForm } from "ui-plus"
-import { getDateFormat, getFlowStatusName, getLocale, handleError, hasPermission, isSubmitted, Permission, Status, useResource } from "uione"
+import { canReject, getDateFormat, getFlowStatusName, getLocale, handleError, hasPermission, Permission, Status, useResource } from "uione"
 import { Article, getArticleService } from "./service"
 
 function canEdit(s?: string): boolean {
@@ -74,6 +74,14 @@ export const ArticleForm = () => {
       }
     }
   }
+  const viewHistory = (e: OnClick, id: string) => {
+    e.preventDefault()
+    navigate(`/articles/${id}/history`)
+  }
+  const approve = (e: OnClick, id: string) => {
+    e.preventDefault()
+    navigate(`/articles/${id}/approve`)
+  }
 
   const save = (event: OnClick) => {
     event.preventDefault()
@@ -141,10 +149,11 @@ export const ArticleForm = () => {
       <header>
         <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
         <h2 className="view-title">{resource.article}</h2>
-        {canApprove && isSubmitted(article.status) &&
-          <div className="btn-group">
-            <Link id="btnApprove" className="btn-approve" to={`/articles/${article.id}/approve`}></Link>
-          </div>}
+        <div className="btn-group">
+          {/*<Link id="btnApprove" className="btn-approve" to={`/articles/${article.id}/approve`}></Link>*/}
+          {canApprove && canReject(article.status) && <button type="button" className="btn-approve" onClick={(e) => approve(e, article.id)}></button>}
+          <button type="button" className="btn-history" onClick={(e) => viewHistory(e, article.id)}></button>
+        </div>
       </header>
       <div className="article-body">
         <h3 className="article-description">{article.title}</h3>
@@ -161,10 +170,11 @@ export const ArticleForm = () => {
       <header>
         <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
         <h2 className="view-title">{resource.article}</h2>
-        {canApprove && isSubmitted(article.status) &&
-          <div className="btn-group">
-            <Link id="btnApprove" className="btn-approve" to={`/articles/${article.id}/approve`}></Link>
-          </div>}
+        <div className="btn-group">
+          {/*<Link id="btnApprove" className="btn-approve" to={`/articles/${article.id}/approve`}></Link>*/}
+          {canApprove && canReject(article.status) && <button type="button" className="btn-approve" onClick={(e) => approve(e, article.id)}></button>}
+          <button type="button" className="btn-history" onClick={(e) => viewHistory(e, article.id)}></button>
+        </div>
       </header>
       <div className="row">
         <label className="col s12 m6">

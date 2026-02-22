@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
 import { formatDateTime } from "ui-plus"
-import { getDateFormat, handleError, hasPermission, isSubmitted, Permission, useResource } from "uione"
+import { canReject, getDateFormat, handleError, hasPermission, isSubmitted, Permission, useResource } from "uione"
 import { Article, getArticleService } from "./service"
 
 export const ApproveArticleForm = () => {
@@ -99,7 +99,7 @@ export const ApproveArticleForm = () => {
       </div>
       <footer>
         {canApprove && (
-          <button type="button" id="btnReject" name="btnReject" onClick={reject} disabled={!isSubmitted(article.status)}>
+          <button type="button" id="btnReject" name="btnReject" onClick={reject} disabled={!canReject(article.status)}>
             {resource.reject}
           </button>
         )}
