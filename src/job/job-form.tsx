@@ -14,13 +14,6 @@ const createJob = (): Job => {
   return job
 }
 
-interface InternalState {
-  job: Job
-}
-const initialState: InternalState = {
-  job: {} as Job,
-}
-
 export const JobForm = () => {
   const isReadOnly = !hasPermission(Permission.write, 1)
   const resource = useResource()
@@ -56,16 +49,7 @@ export const JobForm = () => {
     }
   }, [id, newMode, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const back = (event: OnClick) => {
-    goBack(navigate, confirm, resource, initialJob, job)
-    /*
-    if (!hasDiff(initialJob, job)) {
-      navigate(-1)
-    } else {
-      confirm(resource.msg_confirm_back, () => navigate(-1))
-    }
-    */
-  }
+  const back = (event: OnClick) => goBack(navigate, confirm, resource, initialJob, job)
 
   const save = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     event.preventDefault()
