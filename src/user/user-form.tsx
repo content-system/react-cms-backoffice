@@ -1,6 +1,6 @@
-import { Item } from "onecore"
+import { Item, Result } from "onecore"
 import React, { useEffect, useRef, useState } from "react"
-import { afterSaved, clone, goBack, isEmptyObject, makeDiff } from "react-hook-core"
+import { clone, goBack, isEmptyObject, isSuccessful, makeDiff } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -14,24 +14,15 @@ const createUser = (): User => {
   return user
 }
 
-interface InternalState {
-  user: User
-  titleList: Item[]
-  positionList: Item[]
-}
-const initialState: InternalState = {
-  user: {} as User,
-  titleList: [],
-  positionList: [],
-}
-
 export const UserForm = () => {
   const isReadOnly = !hasPermission(Permission.write, 1)
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
   const [initialUser, setInitialUser] = useState<User>(createUser())
-  const [state, setState] = useState<InternalState>(initialState)
+  const [titleList, setTitleList] = useState<Item[]>([])
+  const [positionList, setPositionList] = useState<Item[]>([])
+  const [user, setUser] = useState<User>(createUser())
   const { id } = useParams()
   const newMode = !id
   useEffect(() => {
@@ -40,10 +31,12 @@ export const UserForm = () => {
     Promise.all([masterDataService.getTitles(), masterDataService.getPositions()])
       .then((values) => {
         const [titleList, positionList] = values
+        setTitleList(titleList)
+        setPositionList(positionList)
         if (!id) {
           const user = createUser()
           setInitialUser(clone(user))
-          setState({ titleList, positionList, user })
+          setUser(user)
         } else {
           showLoading()
           getUserService()
@@ -53,7 +46,7 @@ export const UserForm = () => {
                 alertError(resource.error_404, () => navigate(-1))
               } else {
                 setInitialUser(clone(user))
-                setState({ titleList, positionList, user })
+                setUser(user)
                 if (isReadOnly) {
                   setReadOnly(refForm?.current)
                 }
@@ -78,10 +71,9 @@ export const UserForm = () => {
     handleSelect(ele)
     user.title = ele.value
     user.gender = user.title === "Mr" ? Gender.Male : Gender.Female
-    setState({ ...state, user })
+    setUser({ ...user })
   }
 
-  const user = state.user
   const back = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     goBack(navigate, confirm, resource, initialUser, user)
     /*
@@ -93,11 +85,11 @@ export const UserForm = () => {
   }
   const genderOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     user.gender = e.target.value
-    setState({ ...state, user })
+    setUser({ ...user })
   }
   const statusOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     user.status = e.target.value
-    setState({ ...state, user })
+    setUser({ ...user })
   }
   const save = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     event.preventDefault()
@@ -109,7 +101,7 @@ export const UserForm = () => {
           showLoading()
           service
             .create(user)
-            .then((res) => afterSaved(res, refForm?.current, resource, showFormError, alertSuccess, alertError, navigate))
+            .then((res) => afterSaved(res))
             .catch(handleError)
             .finally(hideLoading)
         } else {
@@ -120,7 +112,7 @@ export const UserForm = () => {
             showLoading()
             service
               .patch(user)
-              .then((res) => afterSaved(res, refForm?.current, resource, showFormError, alertSuccess, alertError, navigate))
+              .then((res) => afterSaved(res))
               .catch(handleError)
               .finally(hideLoading)
           }
@@ -128,7 +120,7 @@ export const UserForm = () => {
       })
     }
   }
-  /*
+  
   const afterSaved = (res: Result<User>) => {
     if (Array.isArray(res)) {
       showFormError(refForm?.current, res)
@@ -139,7 +131,7 @@ export const UserForm = () => {
     } else {
       alertError(resource.error_conflict)
     }
-  }*/
+  }
   return (
     <form id="userForm" name="userForm" className="form" model-name="user" ref={refForm as any}>
       <header>
@@ -171,7 +163,7 @@ export const UserForm = () => {
               readOnly={!newMode}
               onChange={(e) => {
                 user.userId = e.target.value
-                setState({ ...state, user })
+                setUser({ ...user })
               }}
               maxLength={20}
               required={true}
@@ -188,7 +180,7 @@ export const UserForm = () => {
               readOnly={!newMode}
               onChange={(e) => {
                 user.username = e.target.value
-                setState({ ...state, user })
+                setUser({ ...user })
               }}
               onBlur={requiredOnBlur}
               maxLength={40}
@@ -205,7 +197,7 @@ export const UserForm = () => {
               value={user.displayName || ""}
               onChange={(e) => {
                 user.displayName = e.target.value
-                setState({ ...state, user })
+                setUser({ ...user })
               }}
               onBlur={requiredOnBlur}
               maxLength={40}
@@ -268,11 +260,11 @@ export const UserForm = () => {
               data-value
               onChange={(e) => {
                 user.position = e.target.value
-                setState({ ...state, user })
+                setUser({ ...user })
               }}
             >
               <option value="">{resource.please_select}</option>
-              {state.positionList.map((item, index) => (
+              {positionList.map((item, index) => (
                 <option key={index} value={item.value}>
                   {item.text}
                 </option>
@@ -281,9 +273,9 @@ export const UserForm = () => {
           </label>
           <label className="col s12 m6 flying">
             {resource.person_title}
-            <select id="title" name="title" value={user.title || ""} data-value onChange={(e) => updateTitle(e.target, state.user)}>
+            <select id="title" name="title" value={user.title || ""} data-value onChange={(e) => updateTitle(e.target, user)}>
               <option value="">{resource.please_select}</option>)
-              {state.titleList.map((item, index) => (
+              {titleList.map((item, index) => (
                 <option key={index} value={item.value}>
                   {item.text}
                 </option>
@@ -299,7 +291,7 @@ export const UserForm = () => {
               value={formatPhone(user.phone) || ""}
               onChange={(e) => {
                 user.phone = e.target.value
-                setState({ ...state, user })
+                setUser({ ...user })
               }}
               onBlur={phoneOnBlur}
               maxLength={17}
@@ -316,7 +308,7 @@ export const UserForm = () => {
               value={user.email || ""}
               onChange={(e) => {
                 user.email = e.target.value
-                setState({ ...state, user })
+                setUser({ ...user })
               }}
               onBlur={emailOnBlur}
               maxLength={100}
