@@ -1,243 +1,332 @@
 import { Item } from "onecore"
-import React, { useEffect, useRef } from "react"
-import { createModel, DispatchWithCallback, EditComponentParam, setReadOnly, useEdit } from "react-hook-core"
-import { useNavigate } from "react-router-dom"
-import { emailOnBlur, formatPhone, phoneOnBlur, requiredOnBlur } from "ui-plus"
-import { Gender, handleError, handleSelect, hasPermission, inputEdit, Permission, Status, useResource } from "uione"
+import React, { useEffect, useRef, useState } from "react"
+import { afterSaved, clone, goBack, isEmptyObject, makeDiff } from "react-hook-core"
+import { useNavigate, useParams } from "react-router-dom"
+import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
+import { hideLoading, showLoading } from "ui-loading"
+import { emailOnBlur, formatPhone, initForm, phoneOnBlur, registerEvents, requiredOnBlur, setReadOnly, showFormError, validateForm } from "ui-plus"
+import { Gender, getLocale, handleError, handleSelect, hasPermission, Permission, Status, useResource } from "uione"
 import { getMasterDataService, getUserService, User } from "./service"
+
+const createUser = (): User => {
+  const user = {} as User
+  user.status = Status.Active
+  return user
+}
 
 interface InternalState {
   user: User
   titleList: Item[]
   positionList: Item[]
 }
-
-const createUser = (): User => {
-  const user = createModel<User>()
-  user.status = Status.Active
-  return user
-}
-const initialize = (id: string | null, load: (id: string | null) => void, set: DispatchWithCallback<Partial<InternalState>>) => {
-  const masterDataService = getMasterDataService()
-  Promise.all([masterDataService.getTitles(), masterDataService.getPositions()])
-    .then((values) => {
-      const [titleList, positionList] = values
-      set({ titleList, positionList }, () => load(id))
-    })
-    .catch(handleError)
-}
-const updateTitle = (ele: HTMLSelectElement, user: User, set: DispatchWithCallback<Partial<InternalState>>) => {
-  handleSelect(ele)
-  user.title = ele.value
-  user.gender = user.title === "Mr" ? Gender.Male : Gender.Female
-  set({ user })
-}
-
 const initialState: InternalState = {
   user: {} as User,
   titleList: [],
   positionList: [],
 }
 
-const param: EditComponentParam<User, string, InternalState> = {
-  createModel: createUser,
-  initialize,
-}
 export const UserForm = () => {
+  const isReadOnly = !hasPermission(Permission.write, 1)
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
-  const { state, setState, updateState, flag, save, updatePhoneState, back } = useEdit<User, string, InternalState>(
-    refForm,
-    initialState,
-    getUserService(),
-    resource,
-    inputEdit(),
-    param,
-  )
+  const [initialUser, setInitialUser] = useState<User>(createUser())
+  const [state, setState] = useState<InternalState>(initialState)
+  const { id } = useParams()
+  const newMode = !id
   useEffect(() => {
-    const isReadOnly = !hasPermission(Permission.write, 1)
-    if (isReadOnly) {
-      setReadOnly(refForm.current as any)
-    }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    initForm(refForm?.current, registerEvents)
+    const masterDataService = getMasterDataService()
+    Promise.all([masterDataService.getTitles(), masterDataService.getPositions()])
+      .then((values) => {
+        const [titleList, positionList] = values
+        if (!id) {
+          const user = createUser()
+          setInitialUser(clone(user))
+          setState({ titleList, positionList, user })
+        } else {
+          showLoading()
+          getUserService()
+            .load(id)
+            .then((user) => {
+              if (!user) {
+                alertError(resource.error_404, () => navigate(-1))
+              } else {
+                setInitialUser(clone(user))
+                setState({ titleList, positionList, user })
+                if (isReadOnly) {
+                  setReadOnly(refForm?.current)
+                }
+              }
+            })
+            .catch(handleError)
+            .finally(hideLoading)
+        }
+      })
+      .catch(handleError)
+  }, [id, newMode, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const view = (e: React.MouseEvent<HTMLElement, MouseEvent>, id: string) => {
+  const view = (e: React.MouseEvent<HTMLElement, MouseEvent>, userId: string) => {
     e.preventDefault()
-    navigate(`/users/${id}/view`)
+    navigate(`/users/${userId}/view`)
   }
-  const assign = (e: React.MouseEvent<HTMLElement, MouseEvent>, id: string) => {
+  const assign = (e: React.MouseEvent<HTMLElement, MouseEvent>, userId: string) => {
     e.preventDefault()
-    navigate(`/users/${id}/assign`)
+    navigate(`/users/${userId}/assign`)
   }
+  const updateTitle = (ele: HTMLSelectElement, user: User) => {
+    handleSelect(ele)
+    user.title = ele.value
+    user.gender = user.title === "Mr" ? Gender.Male : Gender.Female
+    setState({ ...state, user })
+  }
+
   const user = state.user
+  const back = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    goBack(navigate, confirm, resource, initialUser, user)
+    /*
+    if (!hasDiff(initialUser, user)) {
+      navigate(-1)
+    } else {
+      confirm(resource.msg_confirm_back, () => navigate(-1))
+    }*/
+  }
+  const genderOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    user.gender = e.target.value
+    setState({ ...state, user })
+  }
+  const statusOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    user.status = e.target.value
+    setState({ ...state, user })
+  }
+  const save = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    event.preventDefault()
+    const valid = validateForm(refForm?.current, getLocale())
+    if (valid) {
+      const service = getUserService()
+      confirm(resource.msg_confirm_save, () => {
+        if (newMode) {
+          showLoading()
+          service
+            .create(user)
+            .then((res) => afterSaved(res, refForm?.current, resource, showFormError, alertSuccess, alertError, navigate))
+            .catch(handleError)
+            .finally(hideLoading)
+        } else {
+          const diff = makeDiff(initialUser, user, ["userId"])
+          if (isEmptyObject(diff)) {
+            alertWarning(resource.msg_no_change)
+          } else {
+            showLoading()
+            service
+              .patch(user)
+              .then((res) => afterSaved(res, refForm?.current, resource, showFormError, alertSuccess, alertError, navigate))
+              .catch(handleError)
+              .finally(hideLoading)
+          }
+        }
+      })
+    }
+  }
+  /*
+  const afterSaved = (res: Result<User>) => {
+    if (Array.isArray(res)) {
+      showFormError(refForm?.current, res)
+    } else if (isSuccessful(res)) {
+      alertSuccess(resource.msg_save_success, () => navigate(-1))
+    } else if (res === 0) {
+      alertError(resource.error_not_found)
+    } else {
+      alertError(resource.error_conflict)
+    }
+  }*/
   return (
     <form id="userForm" name="userForm" className="form" model-name="user" ref={refForm as any}>
-      <header className="view-header">
+      <header>
         <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
         <h2 className="view-title">{resource.user}</h2>
         <div className="btn-group">
-          <button className="btn-group btn-right" hidden={flag.newMode}>
+          <button className="btn-group btn-right" hidden={newMode}>
             <i className="material-icons" onClick={(e) => view(e, user.userId)}>
               group
             </i>
           </button>
-          <button className="btn-group btn-right" hidden={flag.newMode}>
+          <button className="btn-group btn-right" hidden={newMode}>
             <i className="material-icons" onClick={(e) => assign(e, user.userId)}>
               group
             </i>
           </button>
         </div>
       </header>
-      <div className="row">
-        <label className="col s12 m6">
-          {resource.user_id}
-          <input
-            type="text"
-            id="userId"
-            name="userId"
-            className="form-control"
-            value={user.userId || ""}
-            readOnly={true}
-            onChange={updateState}
-            maxLength={20}
-            required={true}
-            placeholder={resource.user_id}
-          />
-        </label>
-        <label className="col s12 m6">
-          {resource.username}
-          <input
-            type="text"
-            id="username"
-            name="username"
-            className="form-control"
-            value={user.username || ""}
-            readOnly={!flag.newMode}
-            onChange={updateState}
-            onBlur={requiredOnBlur}
-            maxLength={40}
-            required={true}
-            placeholder={resource.username}
-          />
-        </label>
-        <label className="col s12 m6">
-          {resource.display_name}
-          <input
-            type="text"
-            id="displayName"
-            name="displayName"
-            className="form-control"
-            value={user.displayName || ""}
-            onChange={updateState}
-            onBlur={requiredOnBlur}
-            maxLength={40}
-            required={true}
-            placeholder={resource.display_name}
-          />
-        </label>
-        <label className="col s12 m6 flying">
-          {resource.person_title}
-          <select
-            id="title"
-            name="title"
-            value={user.title || ""}
-            className="form-control"
-            data-value
-            onChange={(e) => updateTitle(e.target, state.user, setState)}
-          >
-            <option value="">{resource.please_select}</option>)
-            {state.titleList.map((item, index) => (
-              <option key={index} value={item.value}>
-                {item.text}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="col s12 m6 flying">
-          {resource.position}
-          <select style={{ width: "99%" }} id="position" name="position" className="form-control" value={user.position || ""} data-value onChange={updateState}>
-            <option value="">{resource.please_select}</option>
-            {state.positionList.map((item, index) => (
-              <option key={index} value={item.value}>
-                {item.text}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="col s12 m6 flying">
-          {resource.phone}
-          <input
-            type="tel"
-            id="phone"
-            name="phone"
-            className="form-control"
-            value={formatPhone(user.phone) || ""}
-            onChange={updatePhoneState}
-            onBlur={phoneOnBlur}
-            maxLength={17}
-            placeholder={resource.phone}
-          />
-        </label>
-        <label className="col s12 m6 flying">
-          {resource.email}
-          <input
-            type="text"
-            id="email"
-            name="email"
-            data-type="email"
-            value={user.email || ""}
-            onChange={updateState}
-            onBlur={emailOnBlur}
-            maxLength={100}
-            placeholder={resource.email}
-          />
-        </label>
-        <label className="col s12 m6">
-          {resource.gender}
-          <div className="radio-group">
-            <label>
-              <input
-                type="radio"
-                id="gender"
-                name="gender"
-                onChange={updateState}
-                disabled={user.title !== "Dr"}
-                value={Gender.Male}
-                checked={user.gender === Gender.Male}
-              />
-              {resource.male}
-            </label>
-            <label>
-              <input
-                type="radio"
-                id="gender"
-                name="gender"
-                onChange={updateState}
-                disabled={user.title !== "Dr"}
-                value={Gender.Female}
-                checked={user.gender === Gender.Female}
-              />
-              {resource.female}
-            </label>
+      <div>
+        <section className="row section">
+          <h3 className="header">User Information</h3>
+          <label className="col s12 m6">
+            {resource.user_id}
+            <input
+              type="text"
+              id="userId"
+              name="userId"
+              value={user.userId || ""}
+              readOnly={!newMode}
+              onChange={(e) => {
+                user.userId = e.target.value
+                setState({ ...state, user })
+              }}
+              maxLength={20}
+              required={true}
+              placeholder={resource.user_id}
+            />
+          </label>
+          <label className="col s12 m6">
+            {resource.username}
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={user.username || ""}
+              readOnly={!newMode}
+              onChange={(e) => {
+                user.username = e.target.value
+                setState({ ...state, user })
+              }}
+              onBlur={requiredOnBlur}
+              maxLength={40}
+              required={true}
+              placeholder={resource.username}
+            />
+          </label>
+          <label className="col s12 m6">
+            {resource.display_name}
+            <input
+              type="text"
+              id="displayName"
+              name="displayName"
+              value={user.displayName || ""}
+              onChange={(e) => {
+                user.displayName = e.target.value
+                setState({ ...state, user })
+              }}
+              onBlur={requiredOnBlur}
+              maxLength={40}
+              required={true}
+              placeholder={resource.display_name}
+            />
+          </label>
+          <label className="col s12 m6">
+            {resource.gender}
+            <div className="radio-group">
+              <label>
+                <input
+                  type="radio"
+                  id="gender"
+                  name="gender"
+                  onChange={genderOnChange}
+                  disabled={user.title !== "Dr"}
+                  value={Gender.Male}
+                  checked={user.gender === Gender.Male}
+                />
+                {resource.male}
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  id="gender"
+                  name="gender"
+                  onChange={genderOnChange}
+                  disabled={user.title !== "Dr"}
+                  value={Gender.Female}
+                  checked={user.gender === Gender.Female}
+                />
+                {resource.female}
+              </label>
+            </div>
+          </label>
+          <div className="col s12 m6 radio-section">
+            {resource.status}
+            <div className="radio-group">
+              <label>
+                <input type="radio" id="active" name="status" onChange={statusOnChange} value={Status.Active} checked={user.status === Status.Active} />
+                {resource.yes}
+              </label>
+              <label>
+                <input type="radio" id="inactive" name="status" onChange={statusOnChange} value={Status.Inactive} checked={user.status === Status.Inactive} />
+                {resource.no}
+              </label>
+            </div>
           </div>
-        </label>
-        <div className="col s12 m6 radio-section">
-          {resource.status}
-          <div className="radio-group">
-            <label>
-              <input type="radio" id="active" name="status" onChange={updateState} value={Status.Active} checked={user.status === Status.Active} />
-              {resource.yes}
-            </label>
-            <label>
-              <input type="radio" id="inactive" name="status" onChange={updateState} value={Status.Inactive} checked={user.status === Status.Inactive} />
-              {resource.no}
-            </label>
-          </div>
-        </div>
+        </section>
+        <section className="row section">
+          <h4 className="header">Contact Information</h4>
+          <label className="col s12 m6 flying ">
+            {resource.position}
+            <select
+              style={{ width: "99%" }}
+              id="position"
+              name="position"
+              value={user.position || ""}
+              data-value
+              onChange={(e) => {
+                user.position = e.target.value
+                setState({ ...state, user })
+              }}
+            >
+              <option value="">{resource.please_select}</option>
+              {state.positionList.map((item, index) => (
+                <option key={index} value={item.value}>
+                  {item.text}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="col s12 m6 flying">
+            {resource.person_title}
+            <select id="title" name="title" value={user.title || ""} data-value onChange={(e) => updateTitle(e.target, state.user)}>
+              <option value="">{resource.please_select}</option>)
+              {state.titleList.map((item, index) => (
+                <option key={index} value={item.value}>
+                  {item.text}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="col s12 m6 flying">
+            {resource.phone}
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              value={formatPhone(user.phone) || ""}
+              onChange={(e) => {
+                user.phone = e.target.value
+                setState({ ...state, user })
+              }}
+              onBlur={phoneOnBlur}
+              maxLength={17}
+              placeholder={resource.phone}
+            />
+          </label>
+          <label className="col s12 m6 flying">
+            {resource.email}
+            <input
+              type="text"
+              id="email"
+              name="email"
+              data-type="email"
+              value={user.email || ""}
+              onChange={(e) => {
+                user.email = e.target.value
+                setState({ ...state, user })
+              }}
+              onBlur={emailOnBlur}
+              maxLength={100}
+              placeholder={resource.email}
+            />
+          </label>
+        </section>
       </div>
-      <footer className="view-footer">
-        {!flag.readOnly && (
+      <footer>
+        {!isReadOnly && (
           <button type="submit" id="btnSave" name="btnSave" onClick={save}>
             {resource.save}
           </button>

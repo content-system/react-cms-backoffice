@@ -14,15 +14,13 @@ import {
   handleSort,
   handleToggle,
   mergeFilter,
-  OnClick,
   PageChange,
   pageSizes,
   removeSortStatus,
   setSort,
   Sortable,
-  value,
+  value
 } from "react-hook-core"
-import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
@@ -62,7 +60,6 @@ export const JobsForm = () => {
     hideFilter: true,
   }
   const resource = useResource()
-  const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
   const [state, setState] = useState<JobSearch>(initialState)
 
@@ -113,10 +110,6 @@ export const JobsForm = () => {
       })
       .catch(handleError)
       .finally(hideLoading)
-  }
-  const edit = (e: OnClick, id: string) => {
-    e.preventDefault()
-    navigate(`${id}`)
   }
   const checkboxOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { filter } = state
@@ -313,7 +306,7 @@ export const JobsForm = () => {
                   list.length > 0 &&
                   list.map((item, i) => {
                     return (
-                      <tr key={i} onClick={(e) => edit(e, item.id)}>
+                      <tr key={i}>
                         <td className="text-right">{offset + i + 1}</td>
                         <td>{item.id}</td>
                         <td>
@@ -325,8 +318,8 @@ export const JobsForm = () => {
                         <td>{item.location}</td>
                         <td>
                           <div className="btn-group">
-                            <button type="button" className="btn-edit" onClick={(e) => edit(e, item.id)}></button>
-                            <button type="button" className="btn-history" onClick={(e) => edit(e, item.id)}></button>
+                            <button type="button" className="btn-edit"></button>
+                            <button type="button" className="btn-history"></button>
                           </div>
                         </td>
                       </tr>
@@ -342,7 +335,7 @@ export const JobsForm = () => {
               state.list.length > 0 &&
               state.list.map((item, i) => {
                 return (
-                  <li key={i} className="col s12 m6 l4 xl3 list-item" onClick={(e) => edit(e, item.id)}>
+                  <li key={i} className="col s12 m6 l4 xl3 list-item">
                     <Link to={`${item.id}`}>{item.title}</Link>
                     <p>
                       {item.location} {item.quantity}

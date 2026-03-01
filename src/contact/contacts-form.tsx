@@ -12,15 +12,13 @@ import {
   handleSort,
   handleToggle,
   mergeFilter,
-  OnClick,
   PageChange,
   pageSizes,
   removeSortStatus,
   setSort,
   Sortable,
-  value,
+  value
 } from "react-hook-core"
-import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
@@ -54,7 +52,6 @@ export const ContactsForm = () => {
     hideFilter: true,
   }
   const resource = useResource()
-  const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
   const [state, setState] = useState<ContactSearch>(initialState)
 
@@ -105,10 +102,6 @@ export const ContactsForm = () => {
       })
       .catch(handleError)
       .finally(hideLoading)
-  }
-  const edit = (e: OnClick, id: string) => {
-    e.preventDefault()
-    navigate(`${id}`)
   }
   const { list } = state
   const filter = value(state.filter)
@@ -244,7 +237,7 @@ export const ContactsForm = () => {
                   list.length > 0 &&
                   list.map((contact, i) => {
                     return (
-                      <tr key={i} onClick={(e) => edit(e, contact.id)}>
+                      <tr key={i}>
                         <td className="text-right">{offset + i + 1}</td>
                         <td>
                           <Link to={`${contact.id}`}>{contact.name}</Link>
@@ -266,7 +259,7 @@ export const ContactsForm = () => {
               list.length > 0 &&
               list.map((contact, i) => {
                 return (
-                  <li key={i} className="col s12 m6 l4 xl3 list-item" onClick={(e) => edit(e, contact.id)}>
+                  <li key={i} className="col s12 m6 l4 xl3 list-item">
                     <Link to={`${contact.id}`}>{contact.name}</Link>
                     <button className="btn-detail" />
                     <p>

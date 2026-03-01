@@ -1,9 +1,9 @@
 import { Attributes, Filter, Result, SearchResult, Tracking } from "onecore"
 
 export interface UserFilter extends Filter {
-  userId: string
+  userId?: string
   username: string
-  email: string
+  email?: string
   displayName: string
   status: string[]
 }

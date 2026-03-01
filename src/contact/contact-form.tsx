@@ -1,6 +1,5 @@
-import { Result } from "onecore"
 import React, { useEffect, useRef, useState } from "react"
-import { goBack, hasDiff, isEmptyObject, isSuccessful, makeDiff } from "react-hook-core"
+import { afterSaved, goBack, isEmptyObject, makeDiff, OnClick } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -48,6 +47,7 @@ export const ContactForm = () => {
         .load(id as string)
         .then((contact) => {
           if (contact) {
+            setInitialContact(contact)
             setState({ contact })
           }
         })
@@ -56,14 +56,9 @@ export const ContactForm = () => {
   }, [id, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const contact = state.contact
-  const back = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    goBack(navigate, confirm, resource, initialContact, contact)
-    if (!hasDiff(initialContact, contact)) {
-      navigate(-1)
-    } else {
-      confirm(resource.msg_confirm_back, () => navigate(-1))
-    }
-  }
+  
+  const back = (event: OnClick) => goBack(navigate, confirm, resource, initialContact, contact)
+  
   const save = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     event.preventDefault()
     const valid = validateForm(refForm?.current, getLocale())
@@ -77,22 +72,11 @@ export const ContactForm = () => {
           showLoading()
           service
             .patch(contact)
-            .then((res) => afterSaved(res))
+            .then((res) => afterSaved(res, refForm?.current, resource, showFormError, alertSuccess, alertError, navigate))
             .catch(handleError)
             .finally(hideLoading)
         })
       }
-    }
-  }
-  const afterSaved = (res: Result<Contact>) => {
-    if (Array.isArray(res)) {
-      showFormError(refForm?.current, res)
-    } else if (isSuccessful(res)) {
-      alertSuccess(resource.msg_save_success, () => navigate(-1))
-    } else if (res === 0) {
-      alertError(resource.error_not_found)
-    } else {
-      alertError(resource.error_conflict)
     }
   }
   return (

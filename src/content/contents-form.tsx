@@ -1,27 +1,25 @@
 import { Item } from "onecore"
 import { ChangeEvent, useEffect, useRef, useState } from "react"
 import {
-    addParametersIntoUrl,
-    buildFromUrl,
-    buildMessage,
-    buildSortFilter,
-    checked,
-    getFields,
-    getNumber,
-    getOffset,
-    getSortElement,
-    handleSort,
-    handleToggle,
-    mergeFilter,
-    OnClick,
-    PageChange,
-    pageSizes,
-    removeSortStatus,
-    setSort,
-    Sortable,
-    value,
+  addParametersIntoUrl,
+  buildFromUrl,
+  buildMessage,
+  buildSortFilter,
+  checked,
+  getFields,
+  getNumber,
+  getOffset,
+  getSortElement,
+  handleSort,
+  handleToggle,
+  mergeFilter,
+  PageChange,
+  pageSizes,
+  removeSortStatus,
+  setSort,
+  Sortable,
+  value
 } from "react-hook-core"
-import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
@@ -41,7 +39,7 @@ interface ContentSearch extends Sortable {
 }
 const contentFilter: ContentFilter = {
   limit: 24,
-  status: ["A"],
+  status: [],
   q: "",
 }
 
@@ -56,7 +54,6 @@ export const ContentsForm = () => {
     hideFilter: true,
   }
   const resource = useResource()
-  const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
   const [state, setState] = useState<ContentSearch>(initialState)
 
@@ -107,10 +104,6 @@ export const ContentsForm = () => {
       })
       .catch(handleError)
       .finally(hideLoading)
-  }
-  const edit = (e: OnClick, id: string, lang: string) => {
-    e.preventDefault()
-    navigate(`${id}/${lang}`)
   }
   const checkboxOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { filter } = state
@@ -272,19 +265,19 @@ export const ContentsForm = () => {
                   list.length > 0 &&
                   list.map((item, i) => {
                     return (
-                      <tr key={i} onClick={(e) => edit(e, item.id, item.lang)}>
+                      <tr key={i}>
                         <td className="text-right">{offset + i + 1}</td>
                         <td>{item.id}</td>
                         <td>{item.lang}</td>
                         <td>
-                          <Link to={`${item.id}`}>{item.id}</Link>
+                          <Link to={`${item.id}/${item.lang}`}>{item.title}</Link>
                         </td>
                         <td>{formatDateTime(item.publishedAt, dateFormat)}</td>
                         <td>{item.status}</td>
                         <td>
                           <div className="btn-group">
-                            <button type="button" className="btn-edit" onClick={(e) => edit(e, item.id, item.lang)}></button>
-                            <button type="button" className="btn-history" onClick={(e) => edit(e, item.id, item.lang)}></button>
+                            <button type="button" className="btn-edit"></button>
+                            <button type="button" className="btn-history"></button>
                           </div>
                         </td>
                       </tr>
@@ -300,7 +293,7 @@ export const ContentsForm = () => {
               state.list.length > 0 &&
               state.list.map((item, i) => {
                 return (
-                  <li key={i} className="col s12 m6 l4 xl3 list-item" onClick={(e) => edit(e, item.id, item.lang)}>
+                  <li key={i} className="col s12 m6 l4 xl3 list-item">
                     <Link to={`${item.id}/${item.lang}`}>
                       {item.id} {item.lang}
                     </Link>

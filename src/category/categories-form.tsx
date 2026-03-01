@@ -13,15 +13,13 @@ import {
   handleSort,
   handleToggle,
   mergeFilter,
-  OnClick,
   PageChange,
   pageSizes,
   removeSortStatus,
   setSort,
   Sortable,
-  value,
+  value
 } from "react-hook-core"
-import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
@@ -54,7 +52,6 @@ export const CategoriesForm = () => {
     hideFilter: true,
   }
   const resource = useResource()
-  const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
   const [state, setState] = useState<CategorySearch>(initialState)
 
@@ -105,10 +102,6 @@ export const CategoriesForm = () => {
       })
       .catch(handleError)
       .finally(hideLoading)
-  }
-  const edit = (e: OnClick, id: string) => {
-    e.preventDefault()
-    navigate(`${id}`)
   }
   const checkboxOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { filter } = state
@@ -260,7 +253,7 @@ export const CategoriesForm = () => {
                   list.length > 0 &&
                   list.map((item, i) => {
                     return (
-                      <tr key={i} onClick={(e) => edit(e, item.id)}>
+                      <tr key={i}>
                         <td className="text-right">{offset + i + 1}</td>
                         <td>{item.id}</td>
                         <td>
@@ -275,8 +268,8 @@ export const CategoriesForm = () => {
                         <td>{item.status}</td>
                         <td>
                           <div className="btn-group">
-                            <button type="button" className="btn-edit" onClick={(e) => edit(e, item.id)}></button>
-                            <button type="button" className="btn-history" onClick={(e) => edit(e, item.id)}></button>
+                            <button type="button" className="btn-edit"></button>
+                            <button type="button" className="btn-history"></button>
                           </div>
                         </td>
                       </tr>
