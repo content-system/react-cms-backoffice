@@ -1,6 +1,6 @@
 import { Result } from "onecore"
 import React, { useEffect, useRef, useState } from "react"
-import { clone, datetimeToString, hasDiff, isEmptyObject, isSuccessful, makeDiff } from "react-hook-core"
+import { clone, datetimeToString, goBack, isEmptyObject, isSuccessful, makeDiff, OnClick, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -27,7 +27,7 @@ export const JobForm = () => {
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
   const [initialJob, setInitialJob] = useState<Job>(createJob())
-  const [state, setState] = useState<InternalState>(initialState)
+  const [job, setJob] = useState<Job>(createJob())
   const { id } = useParams()
   const newMode = !id
   useEffect(() => {
@@ -35,7 +35,7 @@ export const JobForm = () => {
     if (!id) {
       const job = createJob()
       setInitialJob(clone(job))
-      setState({ job })
+      setJob(job)
     } else {
       showLoading()
       getJobService()
@@ -45,7 +45,7 @@ export const JobForm = () => {
             alertError(resource.error_404, () => navigate(-1))
           } else {
             setInitialJob(clone(job))
-            setState({ job })
+            setJob(job)
             if (isReadOnly) {
               setReadOnly(refForm?.current)
             }
@@ -56,19 +56,17 @@ export const JobForm = () => {
     }
   }, [id, newMode, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const job = state.job
-  const back = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const back = (event: OnClick) => {
+    goBack(navigate, confirm, resource, initialJob, job)
+    /*
     if (!hasDiff(initialJob, job)) {
       navigate(-1)
     } else {
       confirm(resource.msg_confirm_back, () => navigate(-1))
     }
+    */
   }
 
-  const statusOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    job.status = e.target.value
-    setState({ ...state, job })
-  }
   const save = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     event.preventDefault()
     const valid = validateForm(refForm?.current, getLocale())
@@ -132,10 +130,7 @@ export const JobForm = () => {
             name="id"
             value={job.id || ""}
             readOnly={!newMode}
-            onChange={(e) => {
-              job.id = e.target.value
-              setState({ ...state, job })
-            }}
+            onChange={(e) => updateState(e, job, setJob)}
             maxLength={40}
             required={true}
             placeholder={resource.id}
@@ -149,10 +144,7 @@ export const JobForm = () => {
             id="publishedAt"
             name="publishedAt"
             value={datetimeToString(job.publishedAt)}
-            onChange={(e) => {
-              job.publishedAt = e.target.value.length > 0 ? new Date(e.target.value) : undefined
-              setState({ ...state, job })
-            }}
+            onChange={(e) => updateState(e, job, setJob)}
           />
         </label>
         <label className="col s12 m6">
@@ -162,10 +154,7 @@ export const JobForm = () => {
             id="position"
             name="position"
             value={job.position || ""}
-            onChange={(e) => {
-              job.position = e.target.value
-              setState({ ...state, job })
-            }}
+            onChange={(e) => updateState(e, job, setJob)}
             onBlur={requiredOnBlur}
             maxLength={255}
             required={true}
@@ -180,10 +169,7 @@ export const JobForm = () => {
             id="quantity"
             name="quantity"
             value={job.quantity || ""}
-            onChange={(e) => {
-              job.quantity = parseInt(e.target.value)
-              setState({ ...state, job })
-            }}
+            onChange={(e) => updateState(e, job, setJob)}
             onBlur={requiredOnBlur}
             maxLength={255}
             required={true}
@@ -197,10 +183,7 @@ export const JobForm = () => {
             id="location"
             name="location"
             value={job.location || ""}
-            onChange={(e) => {
-              job.location = e.target.value
-              setState({ ...state, job })
-            }}
+            onChange={(e) => updateState(e, job, setJob)}
             onBlur={requiredOnBlur}
             maxLength={255}
             required={true}
@@ -215,10 +198,7 @@ export const JobForm = () => {
             id="minSalary"
             name="minSalary"
             value={job.minSalary || ""}
-            onChange={(e) => {
-              job.minSalary = parseInt(e.target.value)
-              setState({ ...state, job })
-            }}
+            onChange={(e) => updateState(e, job, setJob)}
             onBlur={requiredOnBlur}
             maxLength={16}
             placeholder={resource.min_salary}
@@ -232,10 +212,7 @@ export const JobForm = () => {
             id="maxSalary"
             name="maxSalary"
             value={job.minSalary || ""}
-            onChange={(e) => {
-              job.minSalary = parseInt(e.target.value)
-              setState({ ...state, job })
-            }}
+            onChange={(e) => updateState(e, job, setJob)}
             onBlur={requiredOnBlur}
             maxLength={16}
             placeholder={resource.max_salary}
@@ -245,12 +222,12 @@ export const JobForm = () => {
           {resource.status}
           <div className="radio-group">
             <label>
-              <input type="radio" id="active" name="status" onChange={statusOnChange} value={Status.Active} checked={job.status === Status.Active} />
+              <input type="radio" id="active" name="status" onChange={(e) => updateState(e, job, setJob)} value={Status.Active} checked={job.status === Status.Active} />
               {resource.yes}
             </label>
             <label>
-              <input type="radio" id="inactive" name="status" onChange={statusOnChange} value={Status.Inactive} checked={job.status === Status.Inactive} />
-              {resource.number}
+              <input type="radio" id="inactive" name="status" onChange={(e) => updateState(e, job, setJob)} value={Status.Inactive} checked={job.status === Status.Inactive} />
+              {resource.no}
             </label>
           </div>
         </div>
@@ -261,10 +238,7 @@ export const JobForm = () => {
             id="title"
             name="title"
             value={job.title || ""}
-            onChange={(e) => {
-              job.title = e.target.value
-              setState({ ...state, job })
-            }}
+            onChange={(e) => updateState(e, job, setJob)}
             onBlur={requiredOnBlur}
             maxLength={255}
             required={true}
@@ -278,10 +252,7 @@ export const JobForm = () => {
             name="description"
             rows={24}
             value={job.description || ""}
-            onChange={(e) => {
-              job.description = e.target.value
-              setState({ ...state, job })
-            }}
+            onChange={(e) => updateState(e, job, setJob)}
             onBlur={requiredOnBlur}
             required={true}
             maxLength={1200}
