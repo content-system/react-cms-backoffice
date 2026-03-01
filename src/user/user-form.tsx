@@ -1,6 +1,6 @@
 import { Item, Result } from "onecore"
 import React, { useEffect, useRef, useState } from "react"
-import { clone, goBack, isEmptyObject, isSuccessful, makeDiff } from "react-hook-core"
+import { clone, goBack, isEmptyObject, isSuccessful, makeDiff, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -87,10 +87,7 @@ export const UserForm = () => {
     user.gender = e.target.value
     setUser({ ...user })
   }
-  const statusOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    user.status = e.target.value
-    setUser({ ...user })
-  }
+
   const save = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     event.preventDefault()
     const valid = validateForm(refForm?.current, getLocale())
@@ -161,10 +158,7 @@ export const UserForm = () => {
               name="userId"
               value={user.userId || ""}
               readOnly={!newMode}
-              onChange={(e) => {
-                user.userId = e.target.value
-                setUser({ ...user })
-              }}
+              onChange={(e) => updateState(e, user, setUser)}
               maxLength={20}
               required={true}
               placeholder={resource.user_id}
@@ -178,10 +172,7 @@ export const UserForm = () => {
               name="username"
               value={user.username || ""}
               readOnly={!newMode}
-              onChange={(e) => {
-                user.username = e.target.value
-                setUser({ ...user })
-              }}
+              onChange={(e) => updateState(e, user, setUser)}
               onBlur={requiredOnBlur}
               maxLength={40}
               required={true}
@@ -195,10 +186,7 @@ export const UserForm = () => {
               id="displayName"
               name="displayName"
               value={user.displayName || ""}
-              onChange={(e) => {
-                user.displayName = e.target.value
-                setUser({ ...user })
-              }}
+              onChange={(e) => updateState(e, user, setUser)}
               onBlur={requiredOnBlur}
               maxLength={40}
               required={true}
@@ -238,11 +226,11 @@ export const UserForm = () => {
             {resource.status}
             <div className="radio-group">
               <label>
-                <input type="radio" id="active" name="status" onChange={statusOnChange} value={Status.Active} checked={user.status === Status.Active} />
+                <input type="radio" id="active" name="status" onChange={(e) => updateState(e, user, setUser)} value={Status.Active} checked={user.status === Status.Active} />
                 {resource.yes}
               </label>
               <label>
-                <input type="radio" id="inactive" name="status" onChange={statusOnChange} value={Status.Inactive} checked={user.status === Status.Inactive} />
+                <input type="radio" id="inactive" name="status" onChange={(e) => updateState(e, user, setUser)} value={Status.Inactive} checked={user.status === Status.Inactive} />
                 {resource.no}
               </label>
             </div>

@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from "react"
-import { afterSaved, clone, goBack, isEmptyObject, makeDiff, OnClick } from "react-hook-core"
+import { afterSaved, clone, goBack, isEmptyObject, makeDiff, OnClick, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
 import {
-  createDate,
   datetimeToString,
   emailOnBlur,
   formatPhone,
@@ -14,7 +13,7 @@ import {
   removePhoneFormat,
   requiredOnBlur,
   showFormError,
-  validateForm,
+  validateForm
 } from "ui-plus"
 import { getLocale, handleError, hasPermission, Permission, useResource } from "uione"
 import { Contact, getContactService } from "./service"
@@ -85,10 +84,7 @@ export const ContactForm = () => {
             id="name"
             name="name"
             value={contact.name || ""}
-            onChange={(e) => {
-              contact.name = e.target.value
-              setContact({...contact})
-            }}
+            onChange={(e) => updateState(e, contact, setContact)}
             onBlur={requiredOnBlur}
             maxLength={100}
             required={true}
@@ -102,10 +98,7 @@ export const ContactForm = () => {
             id="country"
             name="country"
             value={contact.country || ""}
-            onChange={(e) => {
-              contact.country = e.target.value
-              setContact({...contact})
-            }}
+            onChange={(e) => updateState(e, contact, setContact)}
             onBlur={requiredOnBlur}
             maxLength={100}
             required={true}
@@ -119,10 +112,7 @@ export const ContactForm = () => {
             id="company"
             name="company"
             value={contact.company || ""}
-            onChange={(e) => {
-              contact.company = e.target.value
-              setContact({...contact})
-            }}
+            onChange={(e) => updateState(e, contact, setContact)}
             onBlur={requiredOnBlur}
             maxLength={100}
             required={true}
@@ -137,10 +127,7 @@ export const ContactForm = () => {
             name="jobTitle"
             data-type="jobTitle"
             value={contact.jobTitle || ""}
-            onChange={(e) => {
-              contact.jobTitle = e.target.value
-              setContact({...contact})
-            }}
+            onChange={(e) => updateState(e, contact, setContact)}
             onBlur={requiredOnBlur}
             maxLength={100}
             placeholder={resource.job_title}
@@ -154,10 +141,7 @@ export const ContactForm = () => {
             name="email"
             data-type="email"
             value={contact.email || ""}
-            onChange={(e) => {
-              contact.email = e.target.value
-              setContact({...contact})
-            }}
+            onChange={(e) => updateState(e, contact, setContact)}
             onBlur={emailOnBlur}
             required={true}
             maxLength={120}
@@ -188,10 +172,7 @@ export const ContactForm = () => {
             id="submittedAt"
             name="submittedAt"
             value={datetimeToString(contact.submittedAt)}
-            onChange={(e) => {
-              contact.submittedAt = createDate(e.target.value)
-              setContact({...contact})
-            }}
+            onChange={(e) => updateState(e, contact, setContact)}
             onBlur={requiredOnBlur}
             maxLength={19}
             required={true}
@@ -205,10 +186,7 @@ export const ContactForm = () => {
             id="contactedBy"
             name="contactedBy"
             value={contact.contactedBy || ""}
-            onChange={(e) => {
-              contact.contactedBy = e.target.value
-              setContact({...contact})
-            }}
+            onChange={(e) => updateState(e, contact, setContact)}
             maxLength={100}
             placeholder={resource.contacted_by}
           />
@@ -220,10 +198,7 @@ export const ContactForm = () => {
             id="contactedAt"
             name="contactedAt"
             value={datetimeToString(contact.contactedAt)}
-            onChange={(e) => {
-              contact.contactedAt = createDate(e.target.value)
-              setContact({...contact})
-            }}
+            onChange={(e) => updateState(e, contact, setContact)}
             maxLength={19}
             placeholder={resource.contacted_at}
           />
