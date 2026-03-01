@@ -1,6 +1,6 @@
 import { Result } from "onecore"
 import React, { useEffect, useRef, useState } from "react"
-import { clone, hasDiff, isEmptyObject, isSuccessful, makeDiff } from "react-hook-core"
+import { clone, hasDiff, isEmptyObject, isSuccessful, makeDiff, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -14,29 +14,20 @@ const createCategory = (): Category => {
   return category
 }
 
-interface InternalState {
-  category: Category
-}
-const initialState: InternalState = {
-  category: {} as Category,
-}
-
 export const CategoryForm = () => {
   const isReadOnly = !hasPermission(Permission.write, 1)
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
   const [initialCategory, setInitialCategory] = useState<Category>(createCategory())
-  const [state, setState] = useState<InternalState>(initialState)
+  const [category, setCategory] = useState<Category>(createCategory())
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => updateState(e, category, setCategory)
+
   const { id } = useParams()
   const newMode = !id
   useEffect(() => {
     initForm(refForm?.current, registerEvents)
-    if (!id) {
-      const category = createCategory()
-      setInitialCategory(clone(category))
-      setState({ category })
-    } else {
+    if (id) {
       showLoading()
       getCategoryService()
         .load(id)
@@ -45,7 +36,7 @@ export const CategoryForm = () => {
             alertError(resource.error_404, () => navigate(-1))
           } else {
             setInitialCategory(clone(category))
-            setState({ category })
+            setCategory(category)
             if (isReadOnly) {
               setReadOnly(refForm?.current)
             }
@@ -56,8 +47,7 @@ export const CategoryForm = () => {
     }
   }, [id, newMode, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const category = state.category
-  const back = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const back = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     if (!hasDiff(initialCategory, category)) {
       navigate(-1)
     } else {
@@ -65,37 +55,34 @@ export const CategoryForm = () => {
     }
   }
 
-  const statusOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    category.status = e.target.value
-    setState({ ...state, category })
-  }
-  const save = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    event.preventDefault()
+  const save = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    e.preventDefault()
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
       const service = getCategoryService()
-      confirm(resource.msg_confirm_save, () => {
-        if (newMode) {
+      if (!newMode) {
+        const diff = makeDiff(initialCategory, category, ["id"])
+        if (isEmptyObject(diff)) {
+          return alertWarning(resource.msg_no_change)
+        }
+        confirm(resource.msg_confirm_save, () => {
+          showLoading()
+          service
+            .patch(category)
+            .then((res) => afterSaved(res))
+            .catch(handleError)
+            .finally(hideLoading)
+        })
+      } else {
+        confirm(resource.msg_confirm_save, () => {
           showLoading()
           service
             .create(category)
             .then((res) => afterSaved(res))
             .catch(handleError)
             .finally(hideLoading)
-        } else {
-          const diff = makeDiff(initialCategory, category, ["id"])
-          if (isEmptyObject(diff)) {
-            alertWarning(resource.msg_no_change)
-          } else {
-            showLoading()
-            service
-              .patch(category)
-              .then((res) => afterSaved(res))
-              .catch(handleError)
-              .finally(hideLoading)
-          }
-        }
-      })
+        })
+      }
     }
   }
   const afterSaved = (res: Result<Category>) => {
@@ -109,6 +96,7 @@ export const CategoryForm = () => {
       alertError(resource.error_conflict)
     }
   }
+
   return (
     <form id="categoryForm" name="categoryForm" className="form" model-name="category" ref={refForm as any}>
       <header>
@@ -131,12 +119,9 @@ export const CategoryForm = () => {
             id="id"
             name="id"
             className="form-control"
-            value={category.id || ""}
+            value={category.id}
             readOnly={!newMode}
-            onChange={(e) => {
-              category.id = e.target.value
-              setState({ ...state, category })
-            }}
+            onChange={onChange}
             maxLength={80}
             required={true}
             placeholder={resource.id}
@@ -148,11 +133,8 @@ export const CategoryForm = () => {
             type="text"
             id="name"
             name="name"
-            value={category.name || ""}
-            onChange={(e) => {
-              category.name = e.target.value
-              setState({ ...state, category })
-            }}
+            value={category.name}
+            onChange={onChange}
             onBlur={requiredOnBlur}
             maxLength={255}
             required={true}
@@ -165,11 +147,8 @@ export const CategoryForm = () => {
             type="text"
             id="path"
             name="path"
-            value={category.path || ""}
-            onChange={(e) => {
-              category.path = e.target.value
-              setState({ ...state, category })
-            }}
+            value={category.path}
+            onChange={onChange}
             onBlur={requiredOnBlur}
             maxLength={255}
             required={true}
@@ -182,11 +161,8 @@ export const CategoryForm = () => {
             type="text"
             id="resource"
             name="resource"
-            value={category.resource || ""}
-            onChange={(e) => {
-              category.resource = e.target.value
-              setState({ ...state, category })
-            }}
+            value={category.resource}
+            onChange={onChange}
             onBlur={requiredOnBlur}
             maxLength={255}
             required={true}
@@ -199,11 +175,8 @@ export const CategoryForm = () => {
             type="text"
             id="icon"
             name="icon"
-            value={category.icon || ""}
-            onChange={(e) => {
-              category.icon = e.target.value
-              setState({ ...state, category })
-            }}
+            value={category.icon}
+            onChange={onChange}
             onBlur={requiredOnBlur}
             maxLength={255}
             required={true}
@@ -216,11 +189,8 @@ export const CategoryForm = () => {
             type="text"
             id="type"
             name="type"
-            value={category.type || ""}
-            onChange={(e) => {
-              category.type = e.target.value
-              setState({ ...state, category })
-            }}
+            value={category.type}
+            onChange={onChange}
             maxLength={10}
             placeholder={resource.type}
           />
@@ -231,11 +201,8 @@ export const CategoryForm = () => {
             type="text"
             id="parent"
             name="parent"
-            value={category.parent || ""}
-            onChange={(e) => {
-              category.parent = e.target.value
-              setState({ ...state, category })
-            }}
+            value={category.parent}
+            onChange={onChange}
             onBlur={requiredOnBlur}
             maxLength={40}
             placeholder={resource.parent}
@@ -245,13 +212,14 @@ export const CategoryForm = () => {
           {resource.sequence}
           <input
             type="tel"
+            className="text-right"
             id="sequence"
             name="sequence"
-            className="right-align"
-            value={category.sequence || ""}
+            data-type="integer"
+            value={category.sequence}
             onChange={(e) => {
               category.sequence = parseInt(e.target.value)
-              setState({ ...state, category })
+              setCategory({ ...category })
             }}
             onBlur={requiredOnBlur}
             maxLength={3}
@@ -263,11 +231,11 @@ export const CategoryForm = () => {
           {resource.status}
           <div className="radio-group">
             <label>
-              <input type="radio" id="active" name="status" onChange={statusOnChange} value={Status.Active} checked={category.status === Status.Active} />
+              <input type="radio" id="active" name="status" onChange={onChange} value={Status.Active} checked={category.status === Status.Active} />
               {resource.yes}
             </label>
             <label>
-              <input type="radio" id="inactive" name="status" onChange={statusOnChange} value={Status.Inactive} checked={category.status === Status.Inactive} />
+              <input type="radio" id="inactive" name="status" onChange={onChange} value={Status.Inactive} checked={category.status === Status.Inactive} />
               {resource.number}
             </label>
           </div>

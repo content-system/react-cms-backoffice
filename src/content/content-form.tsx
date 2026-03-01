@@ -14,29 +14,18 @@ const createContent = (): Content => {
   return content
 }
 
-interface InternalState {
-  content: Content
-}
-const initialState: InternalState = {
-  content: {} as Content,
-}
-
 export const ContentForm = () => {
   const isReadOnly = !hasPermission(Permission.write, 2)
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
   const [initialContent, setInitialContent] = useState<Content>(createContent())
-  const [state, setState] = useState<InternalState>(initialState)
+  const [content, setContent] = useState<Content>(createContent())
   const { id, lang } = useParams()
   const newMode = !id
   useEffect(() => {
     initForm(refForm?.current, registerEvents)
-    if (!id || !lang) {
-      const content = createContent()
-      setInitialContent(clone(content))
-      setState({ content })
-    } else {
+    if (id && lang) {
       showLoading()
       getContentService()
         .load(id, lang)
@@ -45,7 +34,7 @@ export const ContentForm = () => {
             alertError(resource.error_404, () => navigate(-1))
           } else {
             setInitialContent(clone(content))
-            setState({ content })
+            setContent(content)
             if (isReadOnly) {
               setReadOnly(refForm?.current)
             }
@@ -56,7 +45,6 @@ export const ContentForm = () => {
     }
   }, [id, newMode, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const content = state.content
   const back = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     if (!hasDiff(initialContent, content)) {
       navigate(-1)
@@ -67,35 +55,36 @@ export const ContentForm = () => {
 
   const statusOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     content.status = e.target.value
-    setState({ ...state, content })
+    setContent({ ...content })
   }
-  const save = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    event.preventDefault()
+  const save = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    e.preventDefault()
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
       const service = getContentService()
-      confirm(resource.msg_confirm_save, () => {
-        if (newMode) {
+      if (!newMode) {
+        const diff = makeDiff(initialContent, content, ["id", "lang"])
+        if (isEmptyObject(diff)) {
+          return alertWarning(resource.msg_no_change)
+        }
+        confirm(resource.msg_confirm_save, () => {
+          showLoading()
+          service
+            .patch(content)
+            .then((res) => afterSaved(res))
+            .catch(handleError)
+            .finally(hideLoading)
+        })
+      } else {
+        confirm(resource.msg_confirm_save, () => {
           showLoading()
           service
             .create(content)
             .then((res) => afterSaved(res))
             .catch(handleError)
             .finally(hideLoading)
-        } else {
-          const diff = makeDiff(initialContent, content, ["id", "lang"])
-          if (isEmptyObject(diff)) {
-            alertWarning(resource.msg_no_change)
-          } else {
-            showLoading()
-            service
-              .patch(content)
-              .then((res) => afterSaved(res))
-              .catch(handleError)
-              .finally(hideLoading)
-          }
-        }
-      })
+        })
+      }
     }
   }
   const afterSaved = (res: Result<Content>) => {
@@ -130,11 +119,11 @@ export const ContentForm = () => {
             type="text"
             id="id"
             name="id"
-            value={content.id || ""}
+            value={content.id}
             readOnly={!newMode}
             onChange={(e) => {
               content.id = e.target.value
-              setState({ ...state, content })
+              setContent({ ...content })
             }}
             maxLength={80}
             required={true}
@@ -147,11 +136,11 @@ export const ContentForm = () => {
             type="text"
             id="lang"
             name="lang"
-            value={content.lang || ""}
+            value={content.lang}
             readOnly={!newMode}
             onChange={(e) => {
               content.lang = e.target.value
-              setState({ ...state, content })
+              setContent({ ...content })
             }}
             maxLength={80}
             required={true}
@@ -168,7 +157,7 @@ export const ContentForm = () => {
             value={datetimeToString(content.publishedAt)}
             onChange={(e) => {
               content.publishedAt = e.target.value.length > 0 ? new Date(e.target.value) : undefined
-              setState({ ...state, content })
+              setContent({ ...content })
             }}
           />
         </label>
@@ -191,10 +180,10 @@ export const ContentForm = () => {
             type="text"
             id="title"
             name="title"
-            value={content.title || ""}
+            value={content.title}
             onChange={(e) => {
               content.title = e.target.value
-              setState({ ...state, content })
+              setContent({ ...content })
             }}
             onBlur={requiredOnBlur}
             maxLength={255}
@@ -208,10 +197,10 @@ export const ContentForm = () => {
             id="body"
             name="body"
             rows={80}
-            value={content.body || ""}
+            value={content.body}
             onChange={(e) => {
               content.body = e.target.value
-              setState({ ...state, content })
+              setContent({ ...content })
             }}
             onBlur={requiredOnBlur}
             maxLength={9000}

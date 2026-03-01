@@ -574,8 +574,8 @@ export function RoleForm() {
     role.status = e.target.value
     setState({ ...state, role })
   }
-  const back = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    event.preventDefault()
+  const back = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    e.preventDefault()
     const diff = makeDiff(initialRole, role)
     if (isEmptyObject(diff)) {
       navigate(-1)
@@ -583,8 +583,8 @@ export function RoleForm() {
       confirm(resource.msg_confirm_back, () => navigate(-1))
     }
   }
-  const deleteOnClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    event.preventDefault()
+  const deleteOnClick = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    e.preventDefault()
     confirm(resource.msg_confirm_delete, () => {
       const service = getRoleService()
       showLoading()
@@ -603,33 +603,34 @@ export function RoleForm() {
         .finally(hideLoading)
     })
   }
-  const save = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    event.preventDefault()
+  const save = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    e.preventDefault()
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
       const service = getRoleService()
-      confirm(resource.msg_confirm_save, () => {
-        if (newMode) {
+      if (!newMode) {
+        const diff = makeDiff(initialRole, role, ["roleId"])
+        if (isEmptyObject(diff)) {
+          return alertWarning(resource.msg_no_change)
+        }
+        confirm(resource.msg_confirm_save, () => {
+          showLoading()
+          service
+            .patch(role)
+            .then((res) => afterSaved(res))
+            .catch(handleError)
+            .finally(hideLoading)
+        })
+      } else {
+        confirm(resource.msg_confirm_save, () => {
           showLoading()
           service
             .create(role)
             .then((res) => afterSaved(res))
             .catch(handleError)
             .finally(hideLoading)
-        } else {
-          const diff = makeDiff(initialRole, role, ["roleId"])
-          if (isEmptyObject(diff)) {
-            alertWarning(resource.msg_no_change)
-          } else {
-            showLoading()
-            service
-              .patch(role)
-              .then((res) => afterSaved(res))
-              .catch(handleError)
-              .finally(hideLoading)
-          }
-        }
-      })
+        })
+      }
     }
   }
   const afterSaved = (res: Result<Role>) => {
@@ -764,9 +765,9 @@ export function RoleForm() {
         {!isReadOnly && (
           <>
             {!newMode && (
-            <button type="button" id="btnDelete" name="btnDelete" className="btn-delete" onClick={deleteOnClick}>
-              {resource.delete}
-            </button>
+              <button type="button" id="btnDelete" name="btnDelete" className="btn-delete" onClick={deleteOnClick}>
+                {resource.delete}
+              </button>
             )}
             <button type="submit" id="btnSave" name="btnSave" onClick={save}>
               {resource.save}

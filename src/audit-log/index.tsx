@@ -68,10 +68,10 @@ export const AuditLogsForm = () => {
     const initFilter = mergeFilter(buildFromUrl<AuditLogFilter>(), filter, sizes, ["status", "auditLogType"])
     setSort(state, initFilter.sort)
     setFilter(initFilter)
-    search() // eslint-disable-next-line react-hooks/exhaustive-deps
+    search(true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  const sort = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => onSort(event, search, state)
 
+  const sort = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => onSort(event, search, state)
   const pageSizeChanged = (event: ChangeEvent<HTMLSelectElement>) => {
     filter.page = 1
     filter.limit = getNumber(event)
@@ -98,13 +98,12 @@ export const AuditLogsForm = () => {
 
   const search = (isFirstLoad?: boolean) => {
     showLoading()
-    const finalFilter = buildSortFilter(filter, state)
-    addParametersIntoUrl(finalFilter, isFirstLoad)
+    const urlFilter = buildSortFilter(filter, state)
+    addParametersIntoUrl(urlFilter, isFirstLoad)
     const fields = getFields(refForm.current, state.fields)
-    setFilter(finalFilter)
     const { limit, page } = filter
     getAuditLogService()
-      .search(filter, limit, page, fields)
+      .search({ ...filter }, limit, page, fields)
       .then((res) => {
         setState({ ...state, list: res.list, total: res.total, fields })
         toast(buildMessage(resource, res.list, limit, page, res.total))
@@ -121,7 +120,7 @@ export const AuditLogsForm = () => {
         <h2>{resource.audit_logs}</h2>
         <div className="btn-group float-left">
           {state.view === "list" && (
-            <button type="button" id="btnTable" name="btnTable" className="btn-table" onClick={(e) => setState({ ...state, view: "" })} />
+            <button type="button" id="btnTable" name="btnTable" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />
           )}
           {state.view !== "list" && (
             <button type="button" id="btnListView" name="btnListView" className="btn-list" onClick={(e) => setState({ ...state, view: "list" })} />

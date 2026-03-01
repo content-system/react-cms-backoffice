@@ -58,8 +58,9 @@ export const RolesForm = () => {
     const initFilter = mergeFilter(buildFromUrl<RoleFilter>(), filter, sizes, ["status", "userType"])
     setSort(state, initFilter.sort)
     setFilter(initFilter)
-    search() // eslint-disable-next-line react-hooks/exhaustive-deps
+    search(true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
   const sort = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => onSort(event, search, state, setState)
   const pageSizeChanged = (event: ChangeEvent<HTMLSelectElement>) => {
     filter.page = 1
@@ -87,13 +88,12 @@ export const RolesForm = () => {
 
   const search = (isFirstLoad?: boolean) => {
     showLoading()
-    const finalFilter = buildSortFilter(filter, state)
-    addParametersIntoUrl(finalFilter, isFirstLoad)
+    const urlFilter = buildSortFilter(filter, state)
+    addParametersIntoUrl(urlFilter, isFirstLoad)
     const fields = getFields(refForm.current, state.fields)
-    setFilter(finalFilter)
     const { limit, page } = filter
     getRoleService()
-      .search(filter, limit, page, fields)
+      .search({ ...filter }, limit, page, fields)
       .then((res) => {
         setState({ ...state, list: res.list, total: res.total, fields })
         toast(buildMessage(resource, res.list, limit, page, res.total))
@@ -120,9 +120,11 @@ export const RolesForm = () => {
       <header>
         <h2>{resource.roles}</h2>
         <div className="btn-group">
-          {state.view !== "table" && <button type="button" id="btnTable" name="btnTable" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />}
-          {state.view === "table" && (
-            <button type="button" id="btnListView" name="btnListView" className="btn-list" onClick={(e) => setState({ ...state, view: "" })} />
+          {state.view === "list" && (
+            <button type="button" id="btnTable" name="btnTable" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />
+          )}
+          {state.view !== "list" && (
+            <button type="button" id="btnListView" name="btnListView" className="btn-list" onClick={(e) => setState({ ...state, view: "list" })} />
           )}
           {canWrite && <Link id="btnNew" className="btn-new" to="new" />}
         </div>
@@ -189,7 +191,7 @@ export const RolesForm = () => {
             </label>
           </section>
         </form>
-        {state.view === "table" && (
+        {state.view !== "list" && (
           <div className="table-responsive">
             <table className="table">
               <thead>
@@ -237,7 +239,7 @@ export const RolesForm = () => {
             </table>
           </div>
         )}
-        {state.view !== "table" && (
+        {state.view === "list" && (
           <ul className="row list">
             {state.list &&
               state.list.length > 0 &&

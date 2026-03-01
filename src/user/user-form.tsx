@@ -19,10 +19,11 @@ export const UserForm = () => {
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
-  const [initialUser, setInitialUser] = useState<User>(createUser())
   const [titleList, setTitleList] = useState<Item[]>([])
   const [positionList, setPositionList] = useState<Item[]>([])
+  const [initialUser, setInitialUser] = useState<User>(createUser())
   const [user, setUser] = useState<User>(createUser())
+
   const { id } = useParams()
   const newMode = !id
   useEffect(() => {
@@ -33,11 +34,7 @@ export const UserForm = () => {
         const [titleList, positionList] = values
         setTitleList(titleList)
         setPositionList(positionList)
-        if (!id) {
-          const user = createUser()
-          setInitialUser(clone(user))
-          setUser(user)
-        } else {
+        if (id) {
           showLoading()
           getUserService()
             .load(id)
@@ -67,21 +64,14 @@ export const UserForm = () => {
     e.preventDefault()
     navigate(`/users/${userId}/assign`)
   }
+
+  const back = (e: React.MouseEvent<HTMLElement, MouseEvent>) => goBack(navigate, confirm, resource, initialUser, user)
+
   const updateTitle = (ele: HTMLSelectElement, user: User) => {
     handleSelect(ele)
     user.title = ele.value
     user.gender = user.title === "Mr" ? Gender.Male : Gender.Female
     setUser({ ...user })
-  }
-
-  const back = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    goBack(navigate, confirm, resource, initialUser, user)
-    /*
-    if (!hasDiff(initialUser, user)) {
-      navigate(-1)
-    } else {
-      confirm(resource.msg_confirm_back, () => navigate(-1))
-    }*/
   }
   const genderOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     user.gender = e.target.value
@@ -93,31 +83,32 @@ export const UserForm = () => {
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
       const service = getUserService()
-      confirm(resource.msg_confirm_save, () => {
-        if (newMode) {
+      if (!newMode) {
+        const diff = makeDiff(initialUser, user, ["userId"])
+        if (isEmptyObject(diff)) {
+          return alertWarning(resource.msg_no_change)
+        }
+        confirm(resource.msg_confirm_save, () => {
+          showLoading()
+          service
+            .patch(user)
+            .then((res) => afterSaved(res))
+            .catch(handleError)
+            .finally(hideLoading)
+        })
+      } else {
+        confirm(resource.msg_confirm_save, () => {
           showLoading()
           service
             .create(user)
             .then((res) => afterSaved(res))
             .catch(handleError)
             .finally(hideLoading)
-        } else {
-          const diff = makeDiff(initialUser, user, ["userId"])
-          if (isEmptyObject(diff)) {
-            alertWarning(resource.msg_no_change)
-          } else {
-            showLoading()
-            service
-              .patch(user)
-              .then((res) => afterSaved(res))
-              .catch(handleError)
-              .finally(hideLoading)
-          }
-        }
-      })
+        })
+      }
     }
   }
-  
+
   const afterSaved = (res: Result<User>) => {
     if (Array.isArray(res)) {
       showFormError(refForm?.current, res)
@@ -277,10 +268,7 @@ export const UserForm = () => {
               id="phone"
               name="phone"
               value={formatPhone(user.phone) || ""}
-              onChange={(e) => {
-                user.phone = e.target.value
-                setUser({ ...user })
-              }}
+              onChange={(e) => updateState(e, user, setUser)}
               onBlur={phoneOnBlur}
               maxLength={17}
               placeholder={resource.phone}
@@ -294,10 +282,7 @@ export const UserForm = () => {
               name="email"
               data-type="email"
               value={user.email || ""}
-              onChange={(e) => {
-                user.email = e.target.value
-                setUser({ ...user })
-              }}
+              onChange={(e) => updateState(e, user, setUser)}
               onBlur={emailOnBlur}
               maxLength={100}
               placeholder={resource.email}

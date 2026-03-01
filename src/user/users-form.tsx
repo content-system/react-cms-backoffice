@@ -16,7 +16,8 @@ import {
   pageSizes,
   removeSortStatus,
   setSort,
-  Sortable
+  Sortable,
+  updateState
 } from "react-hook-core"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
@@ -36,6 +37,7 @@ interface UserSearch extends Sortable {
 }
 
 const sizes = pageSizes
+export type ReactMouseEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>
 export const UsersForm = () => {
   const canWrite = hasPermission(Permission.write)
 
@@ -61,11 +63,10 @@ export const UsersForm = () => {
     const initFilter = mergeFilter(buildFromUrl<UserFilter>(), filter, sizes, ["status"])
     setSort(state, filter.sort)
     setFilter(initFilter)
-    search() // eslint-disable-next-line react-hooks/exhaustive-deps
+    search(true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const sort = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => onSort(event, search, state)
-
+  const sort = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => onSort(event, search, state, setState)
   const pageSizeChanged = (event: ChangeEvent<HTMLSelectElement>) => {
     filter.page = 1
     filter.limit = getNumber(event)
@@ -92,13 +93,12 @@ export const UsersForm = () => {
 
   const search = (isFirstLoad?: boolean) => {
     showLoading()
-    const finalFilter = buildSortFilter(filter, state)
-    addParametersIntoUrl(finalFilter, isFirstLoad)
+    const urlFilter = buildSortFilter(filter, state)
+    addParametersIntoUrl(urlFilter, isFirstLoad)
     const fields = getFields(refForm.current, state.fields)
-    setFilter(finalFilter)
     const { limit, page } = filter
     getUserService()
-      .search(filter, limit, page, fields)
+      .search({ ...filter }, limit, page, fields)
       .then((res) => {
         setState({ ...state, list: res.list, total: res.total, fields })
         toast(buildMessage(resource, res.list, limit, page, res.total))
@@ -125,11 +125,11 @@ export const UsersForm = () => {
       <header>
         <h2>{resource.users}</h2>
         <div className="btn-group">
-          {state.view !== "table" && (
+          {state.view === "list" && (
             <button type="button" id="btnTable" name="btnTable" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />
           )}
-          {state.view === "table" && (
-            <button type="button" id="btnListView" name="btnListView" className="btn-list" onClick={(e) => setState({ ...state, view: "" })} />
+          {state.view !== "list" && (
+            <button type="button" id="btnListView" name="btnListView" className="btn-list" onClick={(e) => setState({ ...state, view: "list" })} />
           )}
           {canWrite && <Link id="btnNew" className="btn-new" to="new" />}
         </div>
@@ -188,10 +188,7 @@ export const UsersForm = () => {
                 id="username"
                 name="username"
                 value={filter.username || ""}
-                onChange={(e) => {
-                  filter.username = e.target.value
-                  setFilter({ ...filter })
-                }}
+                onChange={(e) => updateState(e, filter, setFilter)}
                 maxLength={255}
                 placeholder={resource.username}
               />
@@ -203,10 +200,7 @@ export const UsersForm = () => {
                 id="displayName"
                 name="displayName"
                 value={filter.displayName || ""}
-                onChange={(e) => {
-                  filter.displayName = e.target.value
-                  setFilter({ ...filter })
-                }}
+                onChange={(e) => updateState(e, filter, setFilter)}
                 maxLength={255}
                 placeholder={resource.display_name}
               />
@@ -226,7 +220,7 @@ export const UsersForm = () => {
             </label>
           </section>
         </form>
-        {state.view === "table" && (
+        {state.view !== "list" && (
           <div className="table-responsive">
             <table className="table">
               <thead>
@@ -287,7 +281,7 @@ export const UsersForm = () => {
             </table>
           </div>
         )}
-        {state.view !== "table" && (
+        {state.view === "list" && (
           <ul className="row list">
             {list &&
               list.length > 0 &&

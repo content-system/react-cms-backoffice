@@ -30,13 +30,13 @@ export const ContactForm = () => {
   const refForm = useRef<HTMLFormElement>(null)
   const [initialContact, setInitialContact] = useState<Contact>(createContact())
   const [contact, setContact] = useState<Contact>(createContact())
-  
+
   const { id } = useParams()
   useEffect(() => {
     initForm(refForm?.current, registerEvents)
     if (id) {
       getContactService()
-        .load(id as string)
+        .load(id)
         .then((contact) => {
           if (contact) {
             setInitialContact(clone(contact))
@@ -47,15 +47,14 @@ export const ContactForm = () => {
     }
   }, [id, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const back = (event: OnClick) => goBack(navigate, confirm, resource, initialContact, contact)
-  
-  const save = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    event.preventDefault()
+  const back = (e: OnClick) => goBack(navigate, confirm, resource, initialContact, contact)
+
+  const save = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    e.preventDefault()
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
       const service = getContactService()
       const diff = makeDiff(initialContact, contact, ["id"])
-      debugger
       if (isEmptyObject(diff)) {
         alertWarning(resource.msg_no_change)
       } else {
@@ -83,7 +82,7 @@ export const ContactForm = () => {
             type="text"
             id="name"
             name="name"
-            value={contact.name || ""}
+            value={contact.name}
             onChange={(e) => updateState(e, contact, setContact)}
             onBlur={requiredOnBlur}
             maxLength={100}
@@ -97,7 +96,7 @@ export const ContactForm = () => {
             type="text"
             id="country"
             name="country"
-            value={contact.country || ""}
+            value={contact.country}
             onChange={(e) => updateState(e, contact, setContact)}
             onBlur={requiredOnBlur}
             maxLength={100}
@@ -111,7 +110,7 @@ export const ContactForm = () => {
             type="text"
             id="company"
             name="company"
-            value={contact.company || ""}
+            value={contact.company}
             onChange={(e) => updateState(e, contact, setContact)}
             onBlur={requiredOnBlur}
             maxLength={100}
@@ -126,7 +125,7 @@ export const ContactForm = () => {
             id="jobTitle"
             name="jobTitle"
             data-type="jobTitle"
-            value={contact.jobTitle || ""}
+            value={contact.jobTitle}
             onChange={(e) => updateState(e, contact, setContact)}
             onBlur={requiredOnBlur}
             maxLength={100}
@@ -140,7 +139,7 @@ export const ContactForm = () => {
             id="email"
             name="email"
             data-type="email"
-            value={contact.email || ""}
+            value={contact.email}
             onChange={(e) => updateState(e, contact, setContact)}
             onBlur={emailOnBlur}
             required={true}
@@ -154,10 +153,13 @@ export const ContactForm = () => {
             type="tel"
             id="phone"
             name="phone"
-            value={formatPhone(contact.phone) || ""}
+            value={formatPhone(contact.phone)}
             onChange={(e) => {
               contact.phone = removePhoneFormat(e.target.value)
-              setContact({...contact})
+              setContact({ ...contact })
+            }}
+            onFocus={(e) => {
+              e.target.value = removePhoneFormat(e.target.value)
             }}
             onBlur={phoneOnBlur}
             required={true}
@@ -185,7 +187,7 @@ export const ContactForm = () => {
             type="text"
             id="contactedBy"
             name="contactedBy"
-            value={contact.contactedBy || ""}
+            value={contact.contactedBy}
             onChange={(e) => updateState(e, contact, setContact)}
             maxLength={100}
             placeholder={resource.contacted_by}
@@ -210,10 +212,7 @@ export const ContactForm = () => {
             name="message"
             rows={8}
             value={contact.message}
-            onChange={(e) => {
-              contact.message = e.target.value
-              setContact({...contact})
-            }}
+            onChange={(e) => updateState(e, contact, setContact)}
             onBlur={requiredOnBlur}
             maxLength={400}
             placeholder={resource.message}

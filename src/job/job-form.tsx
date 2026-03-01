@@ -16,11 +16,13 @@ const createJob = (): Job => {
 
 export const JobForm = () => {
   const isReadOnly = !hasPermission(Permission.write, 1)
+  const locale = getLocale()
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
   const [initialJob, setInitialJob] = useState<Job>(createJob())
   const [job, setJob] = useState<Job>(createJob())
+
   const { id } = useParams()
   const newMode = !id
   useEffect(() => {
@@ -49,35 +51,36 @@ export const JobForm = () => {
     }
   }, [id, newMode, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const back = (event: OnClick) => goBack(navigate, confirm, resource, initialJob, job)
+  const back = (e: OnClick) => goBack(navigate, confirm, resource, initialJob, job)
 
   const save = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     event.preventDefault()
-    const valid = validateForm(refForm?.current, getLocale())
+    const valid = validateForm(refForm?.current, locale)
     if (valid) {
       const service = getJobService()
-      confirm(resource.msg_confirm_save, () => {
-        if (newMode) {
+      if (!newMode) {
+        const diff = makeDiff(initialJob, job, ["id"])
+        if (isEmptyObject(diff)) {
+          return alertWarning(resource.msg_no_change)
+        }
+        confirm(resource.msg_confirm_save, () => {
+          showLoading()
+          service
+            .patch(job)
+            .then((res) => afterSaved(res))
+            .catch(handleError)
+            .finally(hideLoading)
+        })
+      } else {
+        confirm(resource.msg_confirm_save, () => {
           showLoading()
           service
             .create(job)
             .then((res) => afterSaved(res))
             .catch(handleError)
             .finally(hideLoading)
-        } else {
-          const diff = makeDiff(initialJob, job, ["id"])
-          if (isEmptyObject(diff)) {
-            alertWarning(resource.msg_no_change)
-          } else {
-            showLoading()
-            service
-              .patch(job)
-              .then((res) => afterSaved(res))
-              .catch(handleError)
-              .finally(hideLoading)
-          }
-        }
-      })
+        })
+      }
     }
   }
   const afterSaved = (res: Result<Job>) => {
@@ -91,6 +94,7 @@ export const JobForm = () => {
       alertError(resource.error_conflict)
     }
   }
+
   return (
     <form id="jobForm" name="jobForm" className="form" model-name="job" ref={refForm as any}>
       <header>
@@ -112,7 +116,7 @@ export const JobForm = () => {
             type="text"
             id="id"
             name="id"
-            value={job.id || ""}
+            value={job.id}
             readOnly={!newMode}
             onChange={(e) => updateState(e, job, setJob)}
             maxLength={40}
@@ -137,7 +141,7 @@ export const JobForm = () => {
             type="text"
             id="position"
             name="position"
-            value={job.position || ""}
+            value={job.position}
             onChange={(e) => updateState(e, job, setJob)}
             onBlur={requiredOnBlur}
             maxLength={255}
@@ -148,11 +152,12 @@ export const JobForm = () => {
         <label className="col s12 m6">
           {resource.quantity}
           <input
-            type="text"
+            type="tel"
             className="text-right"
             id="quantity"
             name="quantity"
-            value={job.quantity || ""}
+            data-type="integer"
+            value={job.quantity?.toString()}
             onChange={(e) => updateState(e, job, setJob)}
             onBlur={requiredOnBlur}
             maxLength={255}
@@ -166,7 +171,7 @@ export const JobForm = () => {
             type="text"
             id="location"
             name="location"
-            value={job.location || ""}
+            value={job.location}
             onChange={(e) => updateState(e, job, setJob)}
             onBlur={requiredOnBlur}
             maxLength={255}
@@ -181,7 +186,8 @@ export const JobForm = () => {
             className="text-right"
             id="minSalary"
             name="minSalary"
-            value={job.minSalary || ""}
+            data-type="integer"
+            value={job.minSalary?.toString()}
             onChange={(e) => updateState(e, job, setJob)}
             onBlur={requiredOnBlur}
             maxLength={16}
@@ -195,7 +201,8 @@ export const JobForm = () => {
             className="text-right"
             id="maxSalary"
             name="maxSalary"
-            value={job.minSalary || ""}
+            data-type="integer"
+            value={job.maxSalary?.toString()}
             onChange={(e) => updateState(e, job, setJob)}
             onBlur={requiredOnBlur}
             maxLength={16}
@@ -221,7 +228,7 @@ export const JobForm = () => {
             type="text"
             id="title"
             name="title"
-            value={job.title || ""}
+            value={job.title}
             onChange={(e) => updateState(e, job, setJob)}
             onBlur={requiredOnBlur}
             maxLength={255}
@@ -235,7 +242,7 @@ export const JobForm = () => {
             id="description"
             name="description"
             rows={24}
-            value={job.description || ""}
+            value={job.description}
             onChange={(e) => updateState(e, job, setJob)}
             onBlur={requiredOnBlur}
             required={true}

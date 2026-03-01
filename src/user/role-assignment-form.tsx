@@ -25,13 +25,14 @@ const getRoles = (roles?: Role[]): string[] => {
 }
 
 export const RoleAssignmentForm = () => {
+  const disabled = !hasPermission(Permission.write, 2)
   const resource = useResource()
   const navigate = useNavigate()
   const userService = getUserService()
   const [state, setState] = useState(initialState)
   const { user } = state
   let { roles, selectedRoles, checkedAll } = state
-  const disabled = !hasPermission(Permission.write, 2)
+
   const { id } = useParams()
   useEffect(() => {
     if (id) {

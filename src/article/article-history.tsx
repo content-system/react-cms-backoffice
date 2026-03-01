@@ -13,9 +13,9 @@ export const ArticleHistory = () => {
   const navigate = useNavigate()
   const [histories, setHistories] = useState<History<Article>[]>([])
   const [nextPageToken, setNextPageToken] = useState<string>();
+
   const { id } = useParams()
   const service = getArticleService()
-
   useEffect(() => {
     if (!id) {
       navigate(-1)

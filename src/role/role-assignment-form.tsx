@@ -33,13 +33,14 @@ const getIds = (users?: User[]): string[] => {
 }
 
 export const RoleAssignmentForm = () => {
+  const isReadOnly = !hasPermission(write, 2)
   const resource = useResource()
   const navigate = useNavigate()
   const [state, setState] = useState(initialState)
   const { role, isOpenModel, q } = state
   let { users, selectedUsers, isCheckboxShown } = state
   const { shownUsers } = state
-  const isReadOnly = !hasPermission(write, 2)
+
   const { id } = useParams()
   useEffect(() => {
     if (id) {
@@ -216,7 +217,7 @@ export const RoleAssignmentForm = () => {
               shownUsers?.map((user, i) => {
                 const result = selectedUsers.find((v) => v.userId === user.userId)
                 return (
-                  <li key={i} className="col s12 m6 l4 xl3 small img-item" onClick={isCheckboxShown === true ? () => onCheck(user.userId) : () => {}}>
+                  <li key={i} className="col s12 m6 l4 xl3 small img-item" onClick={isCheckboxShown === true ? () => onCheck(user.userId) : () => { }}>
                     <img
                       alt=""
                       src={user.imageURL && user.imageURL.length > 0 ? user.imageURL : user.gender === "F" ? femaleIcon : maleIcon}

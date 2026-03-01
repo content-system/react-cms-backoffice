@@ -69,11 +69,10 @@ export const ArticlesForm = () => {
     const initFilter = mergeFilter(buildFromUrl<ArticleFilter>(), filter, sizes, ["status"])
     setSort(state, initFilter.sort)
     setFilter(initFilter)
-    search() // eslint-disable-next-line react-hooks/exhaustive-deps
+    search(true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const sort = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => onSort(event, search, state)
-
   const pageSizeChanged = (event: ChangeEvent<HTMLSelectElement>) => {
     filter.page = 1
     filter.limit = getNumber(event)
@@ -100,13 +99,12 @@ export const ArticlesForm = () => {
 
   const search = (isFirstLoad?: boolean) => {
     showLoading()
-    const finalFilter = buildSortFilter(filter, state)
-    addParametersIntoUrl(finalFilter, isFirstLoad)
+    const urlFilter = buildSortFilter(filter, state)
+    addParametersIntoUrl(urlFilter, isFirstLoad)
     const fields = getFields(refForm.current, state.fields)
-    setFilter(finalFilter)
     const { limit, page } = filter
     getArticleService()
-      .search(filter, limit, page, fields)
+      .search({ ...filter }, limit, page, fields)
       .then((res) => {
         setState({ ...state, list: res.list, total: res.total, fields })
         toast(buildMessage(resource, res.list, limit, page, res.total))
@@ -146,7 +144,7 @@ export const ArticlesForm = () => {
         <h2>{resource.articles}</h2>
         <div className="btn-group">
           {state.view === "list" && (
-            <button type="button" id="btnTable" name="btnTable" className="btn-table" onClick={(e) => setState({ ...state, view: "" })} />
+            <button type="button" id="btnTable" name="btnTable" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />
           )}
           {state.view !== "list" && (
             <button type="button" id="btnListView" name="btnListView" className="btn-list" onClick={(e) => setState({ ...state, view: "list" })} />

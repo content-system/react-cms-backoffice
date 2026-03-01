@@ -10,6 +10,7 @@ export const UserView = () => {
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
   const [user, setUser] = useState<User>()
+
   const { id } = useParams()
   useLayoutEffect(() => {
     if (id) {

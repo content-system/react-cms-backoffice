@@ -14,6 +14,7 @@ export const ApproveArticleForm = () => {
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
   const [article, setArticle] = useState<Article>({} as Article)
+
   const { id } = useParams()
   const service = getArticleService()
   useEffect(() => {
