@@ -1,5 +1,5 @@
 import { Item } from "onecore"
-import { ChangeEvent, useEffect, useRef } from "react"
+import { ChangeEvent, useEffect, useRef, useState } from "react"
 import {
   addParametersIntoUrl,
   buildFromUrl,
@@ -8,16 +8,15 @@ import {
   checked,
   getFields,
   getNumber,
-  handleSort,
+  getOffset,
   handleToggle,
   mergeFilter,
+  onSort,
   PageChange,
   pageSizes,
   removeSortStatus,
   setSort,
-  Sortable,
-  useMergeState,
-  value
+  Sortable
 } from "react-hook-core"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
@@ -28,11 +27,9 @@ import { getRoleService, Role, RoleFilter } from "./service"
 
 interface RoleSearch extends Sortable {
   statusList: Item[]
-  filter: RoleFilter
   list: Role[]
   total?: number
   view?: string
-  hideFilter?: boolean
   fields?: string[]
 }
 const roleFilter: RoleFilter = {
@@ -50,64 +47,55 @@ export const RolesForm = () => {
   const initialState: RoleSearch = {
     statusList: [],
     list: [],
-    filter: roleFilter,
-    hideFilter: true
   }
   const resource = useResource()
   const refForm = useRef<HTMLFormElement>(null)
-  const [state, setState] = useMergeState<RoleSearch>(initialState)
+  const [state, setState] = useState<RoleSearch>(initialState)
+  const [filter, setFilter] = useState<RoleFilter>(roleFilter)
+  const [showFilter, setShowFilter] = useState<boolean>(false)
 
   useEffect(() => {
-    const filter = mergeFilter(buildFromUrl<RoleFilter>(), state.filter, sizes, ["status", "userType"])
-    setSort(state, filter.sort)
+    const initFilter = mergeFilter(buildFromUrl<RoleFilter>(), filter, sizes, ["status", "userType"])
+    setSort(state, initFilter.sort)
+    setFilter(initFilter)
     search() // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  const sort = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    event.preventDefault()
-    if (event && event.target) {
-      const target = event.target as any
-      const s = handleSort(target, state.sortTarget, state.sortField, state.sortType)
-      setState({
-        sortField: s.field,
-        sortType: s.type,
-        sortTarget: target,
-      })
-      state.sortField = s.field
-      state.sortType = s.type
-      state.sortTarget = target
-    }
-    search()
-  }
-  const pageSizeChanged = (event: any) => {
-    state.filter.page = 1
-    state.filter.limit = getNumber(event)
+  const sort = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => onSort(event, search, state, setState)
+  const pageSizeChanged = (event: ChangeEvent<HTMLSelectElement>) => {
+    filter.page = 1
+    filter.limit = getNumber(event)
+    setFilter(filter)
     search()
   }
   const pageChanged = (data: PageChange) => {
     const { page, size } = data
-    state.filter.page = page
-    state.filter.limit = size
+    filter.page = page
+    filter.limit = size
+    setFilter(filter)
     search()
   }
   const searchOnClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
     event.preventDefault()
     removeSortStatus(state.sortTarget)
-    state.filter.page = 1
+    filter.page = 1
     state.sortTarget = undefined
     state.sortField = undefined
+    setFilter(filter)
+    setState(state)
     search()
   }
-  const limit = state.filter.limit
-  const page = state.filter.page
+
   const search = (isFirstLoad?: boolean) => {
     showLoading()
-    const filter = buildSortFilter(state.filter, state)
-    addParametersIntoUrl(filter, isFirstLoad)
+    const finalFilter = buildSortFilter(filter, state)
+    addParametersIntoUrl(finalFilter, isFirstLoad)
     const fields = getFields(refForm.current, state.fields)
+    setFilter(finalFilter)
+    const { limit, page } = filter
     getRoleService()
       .search(filter, limit, page, fields)
       .then((res) => {
-        setState({ ...state, filter: state.filter, list: res.list, total: res.total, fields })
+        setState({ ...state, list: res.list, total: res.total, fields })
         toast(buildMessage(resource, res.list, limit, page, res.total))
       })
       .catch(handleError)
@@ -115,7 +103,6 @@ export const RolesForm = () => {
   }
 
   const checkboxOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { filter } = state
     const value = event.target.value
     if (event.target.checked) {
       filter.status.push(value)
@@ -123,28 +110,19 @@ export const RolesForm = () => {
       filter.status = filter.status.filter((i) => i !== value)
     }
     filter.page = 1
-    setState({ ...state, filter })
+    setFilter({ ...filter })
     search()
   }
-  const changeView = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    if (event && event.target) {
-      const target = event.target as any
-      const v: string = target.getAttribute("data-view")
-      if (v && v.length > 0) {
-        setState({ view: v })
-      }
-    }
-  }
 
-  const filter = value(state.filter)
+  const offset = getOffset(filter.limit, filter.page)
   return (
     <div>
       <header>
         <h2>{resource.roles}</h2>
         <div className="btn-group">
-          {state.view !== "table" && <button type="button" id="btnTable" name="btnTable" className="btn-table" data-view="table" onClick={changeView} />}
+          {state.view !== "table" && <button type="button" id="btnTable" name="btnTable" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />}
           {state.view === "table" && (
-            <button type="button" id="btnListView" name="btnListView" className="btn-list" data-view="listview" onClick={changeView} />
+            <button type="button" id="btnListView" name="btnListView" className="btn-list" onClick={(e) => setState({ ...state, view: "" })} />
           )}
           {canWrite && <Link id="btnNew" className="btn-new" to="new" />}
         </div>
@@ -170,7 +148,7 @@ export const RolesForm = () => {
                 maxLength={255}
                 onChange={(e) => {
                   filter.q = e.target.value
-                  setState({ ...state, filter })
+                  setFilter({ ...filter })
                 }}
                 placeholder={resource.keyword}
               />
@@ -180,22 +158,22 @@ export const RolesForm = () => {
                 className="btn-remove-text"
                 onClick={(e) => {
                   filter.q = ""
-                  setState({ ...state, filter })
+                  setFilter({ ...filter })
                 }}
               />
               <button
                 type="button"
                 className="btn-filter"
                 onClick={(e) => {
-                  const hideFilter = handleToggle(e.target as HTMLElement, state.hideFilter)
-                  setState({ ...state, hideFilter })
+                  const toggleFilter = handleToggle(e.target as HTMLElement, showFilter)
+                  setShowFilter(toggleFilter)
                 }}
               />
               <button type="submit" className="btn-search" onClick={searchOnClick} />
             </label>
-            <Pagination className="col s12 m6" total={state.total} size={state.filter.limit} max={7} page={state.filter.page} onChange={pageChanged} />
+            <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
           </section>
-          <section className="row search-group inline" hidden={state.hideFilter}>
+          <section className="row search-group inline" hidden={!showFilter}>
             <label className="col s12 m6">
               {resource.status}
               <section className="checkbox-group">
@@ -245,7 +223,7 @@ export const RolesForm = () => {
                   state.list.map((item, i) => {
                     return (
                       <tr key={i}>
-                        <td className="text-right">{(item as any).sequenceNo}</td>
+                        <td className="text-right">{offset + i + 1}</td>
                         <td>{item.roleId}</td>
                         <td>
                           <Link to={`${item.roleId}`}>{item.roleName}</Link>

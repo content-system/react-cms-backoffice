@@ -9,16 +9,14 @@ import {
   getFields,
   getNumber,
   getOffset,
-  getSortElement,
-  handleSort,
   handleToggle,
   mergeFilter,
+  onSort,
   PageChange,
   pageSizes,
   removeSortStatus,
   setSort,
-  Sortable,
-  value
+  Sortable
 } from "react-hook-core"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
@@ -29,82 +27,82 @@ import { Category, CategoryFilter, getCategoryService } from "./service"
 
 interface CategorySearch extends Sortable {
   statusList: Item[]
-  filter: CategoryFilter
   list: Category[]
   total?: number
   view?: string
-  hideFilter?: boolean
   fields?: string[]
-}
-const categoryFilter: CategoryFilter = {
-  limit: 24,
-  status: ["A"],
-  q: "",
 }
 
 const sizes = pageSizes
 export const CategoriesForm = () => {
   const canWrite = hasPermission(Permission.write)
+
+  const categoryFilter: CategoryFilter = {
+    limit: 24,
+    status: ["A"],
+    q: "",
+  }
   const initialState: CategorySearch = {
     statusList: [],
     list: [],
-    filter: categoryFilter,
-    hideFilter: true,
   }
+
   const resource = useResource()
   const refForm = useRef<HTMLFormElement>(null)
   const [state, setState] = useState<CategorySearch>(initialState)
+  const [filter, setFilter] = useState<CategoryFilter>(categoryFilter)
+  const [showFilter, setShowFilter] = useState<boolean>(false)
 
   useEffect(() => {
-    const filter = mergeFilter(buildFromUrl<CategoryFilter>(), state.filter, sizes, ["status"])
-    setSort(state, filter.sort)
+    const initFilter = mergeFilter(buildFromUrl<CategoryFilter>(), filter, sizes, ["status"])
+    setSort(state, initFilter.sort)
+    setFilter(initFilter)
     search() // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  const sort = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    const target = getSortElement(event.target as HTMLElement)
-    const sort = handleSort(target, state.sortTarget, state.sortField, state.sortType)
-    state.sortField = sort.field
-    state.sortType = sort.type
-    state.sortTarget = target
-    search()
-  }
+  const sort = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => onSort(event, search, state)
+
   const pageSizeChanged = (event: ChangeEvent<HTMLSelectElement>) => {
-    state.filter.page = 1
-    state.filter.limit = getNumber(event)
+    filter.page = 1
+    filter.limit = getNumber(event)
+    setFilter(filter)
     search()
   }
   const pageChanged = (data: PageChange) => {
     const { page, size } = data
-    state.filter.page = page
-    state.filter.limit = size
+    filter.page = page
+    filter.limit = size
+    setFilter(filter)
     search()
   }
   const searchOnClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
     event.preventDefault()
     removeSortStatus(state.sortTarget)
-    state.filter.page = 1
+    filter.page = 1
     state.sortTarget = undefined
     state.sortField = undefined
+    setFilter(filter)
+    setState(state)
     search()
   }
-  const limit = state.filter.limit
-  const page = state.filter.page
+
   const search = (isFirstLoad?: boolean) => {
     showLoading()
-    const filter = buildSortFilter(state.filter, state)
-    addParametersIntoUrl(filter, isFirstLoad)
+    const finalFilter = buildSortFilter(filter, state)
+    addParametersIntoUrl(finalFilter, isFirstLoad)
     const fields = getFields(refForm.current, state.fields)
+    setFilter(finalFilter)
+    const { limit, page } = filter
     getCategoryService()
       .search(filter, limit, page, fields)
       .then((res) => {
-        setState({ ...state, filter: state.filter, list: res.list, total: res.total, fields })
+        setState({ ...state, list: res.list, total: res.total, fields })
         toast(buildMessage(resource, res.list, limit, page, res.total))
       })
       .catch(handleError)
       .finally(hideLoading)
   }
+
   const checkboxOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { filter } = state
     const value = event.target.value
     if (event.target.checked) {
       filter.status.push(value)
@@ -112,12 +110,11 @@ export const CategoriesForm = () => {
       filter.status = filter.status.filter((i) => i !== value)
     }
     filter.page = 1
-    setState({ ...state, filter })
+    setFilter(filter)
     search()
   }
   const { list } = state
-  const filter = value(state.filter)
-  const offset = getOffset(limit, page)
+  const offset = getOffset(filter.limit, filter.page)
   return (
     <div>
       <header>
@@ -153,7 +150,7 @@ export const CategoriesForm = () => {
                 maxLength={255}
                 onChange={(e) => {
                   filter.q = e.target.value
-                  setState({ ...state, filter })
+                  setFilter(filter)
                 }}
                 placeholder={resource.keyword}
               />
@@ -163,22 +160,22 @@ export const CategoriesForm = () => {
                 className="btn-remove-text"
                 onClick={(e) => {
                   filter.q = ""
-                  setState({ ...state, filter })
+                  setFilter(filter)
                 }}
               />
               <button
                 type="button"
                 className="btn-filter"
                 onClick={(e) => {
-                  const hideFilter = handleToggle(e.target as HTMLElement, state.hideFilter)
-                  setState({ ...state, hideFilter })
+                  const toggleFilter = handleToggle(e.target as HTMLElement, showFilter)
+                  setShowFilter(toggleFilter)
                 }}
               />
               <button type="submit" className="btn-search" onClick={searchOnClick} />
             </label>
-            <Pagination className="col s12 m6" total={state.total} size={state.filter.limit} max={7} page={state.filter.page} onChange={pageChanged} />
+            <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
           </section>
-          <section className="row search-group inline" hidden={state.hideFilter}>
+          <section className="row search-group inline" hidden={!showFilter}>
             <label className="col s12 m6">
               {resource.status}
               <section className="checkbox-group">
