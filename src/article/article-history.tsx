@@ -38,9 +38,9 @@ export const ArticleHistory = () => {
     }
   }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const back = (event: OnClick) => navigate(-1)
-  const loadMore = async (event: OnClick) => {
-    event.preventDefault()
+  const back = (e: OnClick) => navigate(-1)
+  const loadMore = async (e: OnClick) => {
+    e.preventDefault()
     if (id) {
       try {
         showLoading()

@@ -53,8 +53,8 @@ export const JobForm = () => {
 
   const back = (e: OnClick) => goBack(navigate, confirm, resource, initialJob, job)
 
-  const save = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    event.preventDefault()
+  const save = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    e.preventDefault()
     const valid = validateForm(refForm?.current, locale)
     if (valid) {
       const service = getJobService()

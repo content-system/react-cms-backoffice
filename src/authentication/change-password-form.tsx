@@ -49,8 +49,8 @@ export const ChangePasswordForm = () => {
     initForm(form.current, registerEvents)
   }, [])
 
-  const changePassword = (event: OnClick) => {
-    event.preventDefault()
+  const changePassword = (e: OnClick) => {
+    e.preventDefault()
     const passwordService = getPasswordService()
     const user = state.user
     validateAndChangePassword(

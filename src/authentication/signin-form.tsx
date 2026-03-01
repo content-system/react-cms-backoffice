@@ -81,8 +81,8 @@ export const SigninForm = () => {
     store(result.user, setUser, setPrivileges)
     navigate(storage.home)
   }
-  const signin = async (event: OnClick) => {
-    event.preventDefault()
+  const signin = async (e: OnClick) => {
+    e.preventDefault()
     const user = state.user
     if (!validate(user, resource, showError)) {
       return

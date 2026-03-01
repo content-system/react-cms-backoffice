@@ -383,10 +383,10 @@ export function RoleForm() {
     navigate(`/roles/${id}/assign`)
     return
   }
-  const handleCheckBox = (event: ChangeEvent<HTMLInputElement>, id: string, parentId?: string, currentPrivilege?: Privilege, force?: boolean) => {
-    event.preventDefault()
-    const uChecked: boolean = event.target.checked
-    let pChecked: number = +event.target.value
+  const handleCheckBox = (e: ChangeEvent<HTMLInputElement>, id: string, parentId?: string, currentPrivilege?: Privilege, force?: boolean) => {
+    e.preventDefault()
+    const uChecked: boolean = e.target.checked
+    let pChecked: number = +e.target.value
     const { actions, allPrivileges } = state
     let permissions = privileges
 

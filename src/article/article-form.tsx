@@ -65,14 +65,14 @@ export const ArticleForm = () => {
     navigate(`/articles/${id}/approve`)
   }
 
-  const saveOnClick = (event: OnClick) => {
-    event.preventDefault()
+  const saveOnClick = (e: OnClick) => {
+    e.preventDefault()
     const obj = clone(article)
     obj.status = Status.Draft
     onSave(obj)
   }
-  const submit = (event: OnClick) => {
-    event.preventDefault()
+  const submit = (e: OnClick) => {
+    e.preventDefault()
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
       confirm(resource.msg_confirm_submit, () => {

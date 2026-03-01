@@ -143,8 +143,8 @@ export const LayoutPage = () => {
     setState({ keyword: "" })
     navigate(`home?q=`)
   }
-  const search = (event: OnClick) => {
-    event.preventDefault()
+  const search = (e: OnClick) => {
+    e.preventDefault()
   }
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     const v = e.target.value
@@ -220,20 +220,20 @@ export const LayoutPage = () => {
       }
     }
   }
-  const signout = (event: { preventDefault: () => void }) => {
-    event.preventDefault()
+  const signout = (e: { preventDefault: () => void }) => {
+    e.preventDefault()
     const request = new HttpRequest(axios, options)
     const config: any = storage.config()
     const url = config.authentication_url + "/authentication/signout/" // + storage.username();
-    request.get(url).catch(() => {})
+    request.get(url).catch(() => { })
     sessionStorage.removeItem("authService")
     sessionStorage.clear()
     storage.setUser(null)
     navigate("/signin")
   }
 
-  const pin = (event: OnClick, index: number, item: Privilege) => {
-    event.stopPropagation()
+  const pin = (e: OnClick, index: number, item: Privilege) => {
+    e.stopPropagation()
     const { items, pinnedItems } = state
     if (items.find((i) => i === item)) {
       const removedItem = items.splice(index, 1)

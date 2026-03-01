@@ -67,10 +67,10 @@ export const JobsForm = () => {
     search(true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const sort = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => onSort(event, search, state)
-  const pageSizeChanged = (event: ChangeEvent<HTMLSelectElement>) => {
+  const sort = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => onSort(e, search, state)
+  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => {
     filter.page = 1
-    filter.limit = getNumber(event)
+    filter.limit = getNumber(e)
     setFilter(filter)
     search()
   }
@@ -81,8 +81,8 @@ export const JobsForm = () => {
     setFilter(filter)
     search()
   }
-  const searchOnClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-    event.preventDefault()
+  const searchOnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+    e.preventDefault()
     removeSortStatus(state.sortTarget)
     filter.page = 1
     state.sortTarget = undefined
@@ -108,9 +108,9 @@ export const JobsForm = () => {
       .finally(hideLoading)
   }
 
-  const checkboxOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value
-    if (event.target.checked) {
+  const checkboxOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    if (e.target.checked) {
       filter.status.push(value)
     } else {
       filter.status = filter.status.filter((i) => i !== value)

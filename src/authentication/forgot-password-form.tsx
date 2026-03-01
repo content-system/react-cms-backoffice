@@ -34,8 +34,8 @@ export const ForgotPasswordForm = () => {
     initForm(form.current, registerEvents)
   }, [])
 
-  const forgotPassword = (event: OnClick) => {
-    event.preventDefault()
+  const forgotPassword = (e: OnClick) => {
+    e.preventDefault()
     const passwordServicer = getPasswordService()
     validateAndForgotPassword(
       passwordServicer.forgotPassword,

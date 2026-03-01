@@ -36,10 +36,10 @@ export const ApproveArticleForm = () => {
     }
   }, [id, canApprove]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const back = (event: OnClick) => navigate(-1)
+  const back = (e: OnClick) => navigate(-1)
 
-  const reject = (event: OnClick) => {
-    event.preventDefault()
+  const reject = (e: OnClick) => {
+    e.preventDefault()
     confirm(resource.msg_confirm_reject, () => {
       const service = getArticleService()
       service
@@ -60,8 +60,8 @@ export const ApproveArticleForm = () => {
     })
   }
 
-  const approve = (event: OnClick) => {
-    event.preventDefault()
+  const approve = (e: OnClick) => {
+    e.preventDefault()
     confirm(resource.msg_confirm_approve, () => {
       const service = getArticleService()
       service

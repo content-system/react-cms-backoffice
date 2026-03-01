@@ -58,8 +58,8 @@ export const SignupForm = () => {
     initForm(form.current, registerEvents)
   }, [])
 
-  const signup = (event: OnClick) => {
-    event.preventDefault()
+  const signup = (e: OnClick) => {
+    e.preventDefault()
     const signupService = getSignupService()
     const { reCAPTCHA } = state
     if (!reCAPTCHA) {

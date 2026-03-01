@@ -45,7 +45,7 @@ export const ContentForm = () => {
     }
   }, [id, newMode, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const back = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const back = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     if (!hasDiff(initialContent, content)) {
       navigate(-1)
     } else {

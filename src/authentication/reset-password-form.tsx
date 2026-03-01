@@ -40,9 +40,9 @@ export const ResetPasswordForm = () => {
     initForm(form.current, registerEvents)
   }, [])
 
-  const onResetPassword = (event: OnClick) => {
+  const onResetPassword = (e: OnClick) => {
     const passwordService = getPasswordService()
-    event.preventDefault()
+    e.preventDefault()
     const { user } = state
     const customPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/
     const results = validateReset(user, user.confirmPassword, resource, customPassword)
