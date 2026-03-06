@@ -5,21 +5,26 @@ import {
   buildFromUrl,
   buildMessage,
   buildSortFilter,
+  ButtonMouseEvent,
   checked,
   datetimeToString,
   getFields,
-  getNumber,
   getOffset,
-  handleToggle,
   mergeFilter,
+  onClearQ,
   OnClick,
+  onPageChanged,
+  onPageSizeChanged,
+  onSearch,
   onSort,
+  onToggleSearch,
   PageChange,
   pageSizes,
-  removeSortStatus,
+  resetSearch,
   resources,
   setSort,
-  Sortable
+  Sortable,
+  updateState
 } from "react-hook-core"
 import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
@@ -53,17 +58,18 @@ export const ArticlesForm = () => {
       max: addSeconds(now, 300),
     },
   }
-
   const initialState: ArticleSearch = {
     statusList: [],
     list: [],
   }
+
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
+  const [showFilter, setShowFilter] = useState<boolean>(false)
   const [state, setState] = useState<ArticleSearch>(initialState)
   const [filter, setFilter] = useState<ArticleFilter>(articleFilter)
-  const [showFilter, setShowFilter] = useState<boolean>(false)
+  const [list, setList] = useState<Article[]>([])
 
   useEffect(() => {
     const initFilter = mergeFilter(buildFromUrl<ArticleFilter>(), filter, sizes, ["status"])
@@ -72,41 +78,23 @@ export const ArticlesForm = () => {
     search(true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const sort = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => onSort(e, search, state)
-  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => {
-    filter.page = 1
-    filter.limit = getNumber(e)
-    setFilter(filter)
-    search()
-  }
-  const pageChanged = (data: PageChange) => {
-    const { page, size } = data
-    filter.page = page
-    filter.limit = size
-    setFilter(filter)
-    search()
-  }
-  const searchOnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-    e.preventDefault()
-    removeSortStatus(state.sortTarget)
-    filter.page = 1
-    state.sortTarget = undefined
-    state.sortField = undefined
-    setFilter(filter)
-    setState(state)
-    search()
-  }
+  const sort = (e: ButtonMouseEvent) => onSort(e, search, state)
+  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter, setFilter)
+  const pageChanged = (data: PageChange) => onPageChanged(data, search, filter, setFilter)
+  const searchOnClick = (e: ButtonMouseEvent) => onSearch(e, search, filter, state, setFilter, setState)
 
   const search = (isFirstLoad?: boolean) => {
     showLoading()
     const urlFilter = buildSortFilter(filter, state)
     addParametersIntoUrl(urlFilter, isFirstLoad)
     const fields = getFields(refForm.current, state.fields)
+    setFilter(filter)
     const { limit, page } = filter
     getArticleService()
       .search({ ...filter }, limit, page, fields)
       .then((res) => {
         setState({ ...state, list: res.list, total: res.total, fields })
+        setList(res.list)
         toast(buildMessage(resource, res.list, limit, page, res.total))
       })
       .catch(handleError)
@@ -125,18 +113,8 @@ export const ArticlesForm = () => {
     e.preventDefault()
     navigate(`${id}/approve`)
   }
-  const checkboxOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    if (e.target.checked) {
-      filter.status.push(value)
-    } else {
-      filter.status = filter.status.filter((i) => i !== value)
-    }
-    filter.page = 1
-    setFilter({ ...filter })
-    search()
-  }
-  const { list } = state
+  const checkboxOnChange = (e: ChangeEvent<HTMLInputElement>) => resetSearch(e, filter, setFilter, search)
+
   const offset = getOffset(filter.limit, filter.page)
   return (
     <div>
@@ -165,35 +143,9 @@ export const ArticlesForm = () => {
                   )
                 })}
               </select>
-              <input
-                type="text"
-                id="q"
-                name="q"
-                value={filter.q || ""}
-                maxLength={255}
-                onChange={(e) => {
-                  filter.q = e.target.value
-                  setFilter({ ...filter })
-                }}
-                placeholder={resource.keyword}
-              />
-              <button
-                type="button"
-                hidden={!filter.q}
-                className="btn-remove-text"
-                onClick={(e) => {
-                  filter.q = ""
-                  setFilter({ ...filter })
-                }}
-              />
-              <button
-                type="button"
-                className="btn-filter"
-                onClick={(e) => {
-                  const toggleFilter = handleToggle(e.target as HTMLElement, showFilter)
-                  setShowFilter(toggleFilter)
-                }}
-              />
+              <input type="text" id="q" name="q" value={filter.q} maxLength={100} onChange={(e) => updateState(e, filter, setFilter)} placeholder={resource.keyword} />
+              <button type="button" hidden={!filter.q} className="btn-remove-text" onClick={(e) => onClearQ(filter, setFilter)} />
+              <button type="button" className="btn-filter" onClick={(e) => onToggleSearch(e, showFilter, setShowFilter)} />
               <button type="submit" className="btn-search" onClick={searchOnClick} />
             </label>
             <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
@@ -233,7 +185,7 @@ export const ArticlesForm = () => {
               {resource.status}
               <section className="checkbox-group">
                 <label>
-                  <input type="checkbox" id="status_D" name="status" value="D" checked={checked(filter.status, "D")} onChange={checkboxOnChange} />
+                  <input type="checkbox" id="status_D" name="status" value="D" checked={checked(filter.status, "D")} onChange={e => resetSearch(e, filter, setFilter, search)} />
                   {resource.status_draft}
                 </label>
                 <label>

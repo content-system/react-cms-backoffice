@@ -14,10 +14,10 @@ export interface Role extends Tracking {
   privileges?: string[]
 }
 export interface RoleFilter extends Filter {
-  roleId: string
-  roleName: string
+  roleId?: string
+  roleName?: string
   status: string[]
-  remark: string
+  remark?: string
   description?: string
 }
 

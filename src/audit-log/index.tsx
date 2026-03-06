@@ -5,15 +5,17 @@ import {
   buildFromUrl,
   buildMessage,
   buildSortFilter,
+  ButtonMouseEvent,
   datetimeToString,
   getFields,
-  getNumber,
   getOffset,
   mergeFilter,
+  onPageChanged,
+  onPageSizeChanged,
+  onSearch,
   onSort,
   PageChange,
   pageSizes,
-  removeSortStatus,
   resources,
   setSort,
   Sortable
@@ -71,40 +73,20 @@ export const AuditLogsForm = () => {
     search(true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const sort = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => onSort(e, search, state)
-  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => {
-    filter.page = 1
-    filter.limit = getNumber(e)
-    setFilter(filter)
-    search()
-  }
-  const pageChanged = (data: PageChange) => {
-    const { page, size } = data
-    filter.page = page
-    filter.limit = size
-    setFilter(filter)
-    search()
-  }
-  const searchOnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-    e.preventDefault()
-    removeSortStatus(state.sortTarget)
-    filter.page = 1
-    state.sortTarget = undefined
-    state.sortField = undefined
-    setFilter(filter)
-    setState(state)
-    search()
-  }
+  const sort = (e: ButtonMouseEvent) => onSort(e, search, state)
+  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter, setFilter)
+  const pageChanged = (data: PageChange) => onPageChanged(data, search, filter, setFilter)
+  const searchOnClick = (e: ButtonMouseEvent) => onSearch(e, search, filter, state, setFilter, setState)
 
   const search = (isFirstLoad?: boolean) => {
     showLoading()
     const urlFilter = buildSortFilter(filter, state)
     addParametersIntoUrl(urlFilter, isFirstLoad)
     const fields = getFields(refForm.current, state.fields)
-    setFilter(urlFilter)
+    setFilter(filter)
     const { limit, page } = urlFilter
     getAuditLogService()
-      .search(urlFilter, limit, page, fields)
+      .search({ ...filter }, limit, page, fields)
       .then((res) => {
         setState({ ...state, total: res.total, fields })
         setList(res.list)
@@ -235,47 +217,43 @@ export const AuditLogsForm = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {list &&
-                    list.length > 0 &&
-                    list.map((item: any, i: number) => {
-                      return (
-                        <tr key={i}>
-                          <td className="text-right">{offset + i + 1}</td>
-                          <td>{formatFullDateTime(item.time, dateFormat, locale.decimalSeparator)}</td>
-                          <td>{item.resource}</td>
-                          <td>{item.action}</td>
-                          <td>
-                            <span className={"badge badge-sm " + mapStyleStatus.get(item.status)}>{item.status || ""}</span>
-                          </td>
-                          <td>{item.userId}</td>
-                          <td>{item.ip}</td>
-                          <td>{item.remark}</td>
-                        </tr>
-                      )
-                    })}
+                  {list.map((item: any, i: number) => {
+                    return (
+                      <tr key={i}>
+                        <td className="text-right">{offset + i + 1}</td>
+                        <td>{formatFullDateTime(item.time, dateFormat, locale.decimalSeparator)}</td>
+                        <td>{item.resource}</td>
+                        <td>{item.action}</td>
+                        <td>
+                          <span className={"badge badge-sm " + mapStyleStatus.get(item.status)}>{item.status || ""}</span>
+                        </td>
+                        <td>{item.userId}</td>
+                        <td>{item.ip}</td>
+                        <td>{item.remark}</td>
+                      </tr>
+                    )
+                  })}
                 </tbody>
               </table>
             </div>
           )}
           {state.view === "list" && (
             <ul className="row list">
-              {list &&
-                list.length > 0 &&
-                list.map((item, i) => {
-                  return (
-                    <li key={i} className="col s12 m6 l4 xl3 list-item">
-                      <h4>{item.email}</h4>
-                      <p className="space-between">
-                        {item.resource} <span>{item.action}</span>
-                      </p>
-                      <p>{item.remark}</p>
-                      <p>
-                        {formatFullDateTime(item.time, dateFormat, locale.decimalSeparator)}{" "}
-                        <span className={"badge badge-sm " + mapStyleStatus.get(item.status)}>{item.status || ""}</span>
-                      </p>
-                    </li>
-                  )
-                })}
+              {list.map((item, i) => {
+                return (
+                  <li key={i} className="col s12 m6 l4 xl3 list-item">
+                    <h4>{item.email}</h4>
+                    <p className="space-between">
+                      {item.resource} <span>{item.action}</span>
+                    </p>
+                    <p>{item.remark}</p>
+                    <p>
+                      {formatFullDateTime(item.time, dateFormat, locale.decimalSeparator)}{" "}
+                      <span className={"badge badge-sm " + mapStyleStatus.get(item.status)}>{item.status || ""}</span>
+                    </p>
+                  </li>
+                )
+              })}
             </ul>
           )}
           <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />

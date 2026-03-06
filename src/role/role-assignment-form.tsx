@@ -86,6 +86,7 @@ export const RoleAssignmentForm = () => {
   }
 
   const onModelSave = (arr: User[]) => {
+    debugger
     arr.map((value) => users.push(value))
     setState({ ...state, q: "", role, users, shownUsers: users, isOpenModel: false })
   }

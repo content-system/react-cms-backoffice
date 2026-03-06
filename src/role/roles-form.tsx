@@ -5,19 +5,24 @@ import {
   buildFromUrl,
   buildMessage,
   buildSortFilter,
+  ButtonMouseEvent,
   checked,
   getFields,
-  getNumber,
   getOffset,
-  handleToggle,
   mergeFilter,
+  onClearQ,
+  onPageChanged,
+  onPageSizeChanged,
+  onSearch,
   onSort,
+  onToggleSearch,
   PageChange,
   pageSizes,
-  removeSortStatus,
+  resetSearch,
   resources,
   setSort,
-  Sortable
+  Sortable,
+  updateState
 } from "react-hook-core"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
@@ -39,10 +44,7 @@ export const RolesForm = () => {
 
   const roleFilter: RoleFilter = {
     limit: resources.defaultLimit,
-    roleId: "",
-    roleName: "",
     status: [],
-    remark: "",
   }
   const initialState: RoleSearch = {
     statusList: [],
@@ -62,40 +64,20 @@ export const RolesForm = () => {
     search(true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const sort = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => onSort(e, search, state, setState)
-  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => {
-    filter.page = 1
-    filter.limit = getNumber(e)
-    setFilter(filter)
-    search()
-  }
-  const pageChanged = (data: PageChange) => {
-    const { page, size } = data
-    filter.page = page
-    filter.limit = size
-    setFilter(filter)
-    search()
-  }
-  const searchOnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-    e.preventDefault()
-    removeSortStatus(state.sortTarget)
-    filter.page = 1
-    state.sortTarget = undefined
-    state.sortField = undefined
-    setFilter(filter)
-    setState(state)
-    search()
-  }
+  const sort = (event: ButtonMouseEvent) => onSort(event, search, state)
+  const pageSizeChanged = (event: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(event, search, filter, setFilter)
+  const pageChanged = (data: PageChange) => onPageChanged(data, search, filter, setFilter)
+  const searchOnClick = (event: ButtonMouseEvent) => onSearch(event, search, filter, state, setFilter, setState)
 
   const search = (isFirstLoad?: boolean) => {
     showLoading()
     const urlFilter = buildSortFilter(filter, state)
     addParametersIntoUrl(urlFilter, isFirstLoad)
     const fields = getFields(refForm.current, state.fields)
-    setFilter(urlFilter)
-    const { limit, page } = urlFilter
+    setFilter(filter)
+    const { limit, page } = filter
     getRoleService()
-      .search(urlFilter, limit, page, fields)
+      .search({ ...filter }, limit, page, fields)
       .then((res) => {
         setState({ ...state, total: res.total, fields })
         setList(res.list)
@@ -103,18 +85,6 @@ export const RolesForm = () => {
       })
       .catch(handleError)
       .finally(hideLoading)
-  }
-
-  const checkboxOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    if (e.target.checked) {
-      filter.status.push(value)
-    } else {
-      filter.status = filter.status.filter((i) => i !== value)
-    }
-    filter.page = 1
-    setFilter({ ...filter })
-    search()
   }
 
   const offset = getOffset(filter.limit, filter.page)
@@ -145,35 +115,9 @@ export const RolesForm = () => {
                   )
                 })}
               </select>
-              <input
-                type="text"
-                id="q"
-                name="q"
-                value={filter.q || ""}
-                maxLength={255}
-                onChange={(e) => {
-                  filter.q = e.target.value
-                  setFilter({ ...filter })
-                }}
-                placeholder={resource.keyword}
-              />
-              <button
-                type="button"
-                hidden={!filter.q}
-                className="btn-remove-text"
-                onClick={(e) => {
-                  filter.q = ""
-                  setFilter({ ...filter })
-                }}
-              />
-              <button
-                type="button"
-                className="btn-filter"
-                onClick={(e) => {
-                  const toggleFilter = handleToggle(e.target as HTMLElement, showFilter)
-                  setShowFilter(toggleFilter)
-                }}
-              />
+              <input type="text" id="q" name="q" value={filter.q} maxLength={100} onChange={(e) => updateState(e, filter, setFilter)} placeholder={resource.keyword} />
+              <button type="button" hidden={!filter.q} className="btn-remove-text" onClick={(e) => onClearQ(filter, setFilter)} />
+              <button type="button" className="btn-filter" onClick={(e) => onToggleSearch(e, showFilter, setShowFilter)} />
               <button type="submit" className="btn-search" onClick={searchOnClick} />
             </label>
             <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
@@ -183,11 +127,11 @@ export const RolesForm = () => {
               {resource.status}
               <section className="checkbox-group">
                 <label>
-                  <input type="checkbox" id="active" name="status" value="A" checked={checked(filter.status, "A")} onChange={checkboxOnChange} />
+                  <input type="checkbox" id="active" name="status" value="A" checked={checked(filter.status, "A")} onChange={e => resetSearch(e, filter, setFilter, search)} />
                   {resource.active}
                 </label>
                 <label>
-                  <input type="checkbox" id="inactive" name="status" value="I" checked={checked(filter.status, "I")} onChange={checkboxOnChange} />
+                  <input type="checkbox" id="inactive" name="status" value="I" checked={checked(filter.status, "I")} onChange={e => resetSearch(e, filter, setFilter, search)} />
                   {resource.inactive}
                 </label>
               </section>
@@ -223,36 +167,34 @@ export const RolesForm = () => {
                 </tr>
               </thead>
               <tbody>
-                {list &&
-                  list.map((item, i) => {
-                    return (
-                      <tr key={i}>
-                        <td className="text-right">{offset + i + 1}</td>
-                        <td>{item.roleId}</td>
-                        <td>
-                          <Link to={`${item.roleId}`}>{item.roleName}</Link>
-                        </td>
-                        <td>{item.remark}</td>
-                        <td>{getStatusName(item.status, resource)}</td>
-                      </tr>
-                    )
-                  })}
+                {list.map((item, i) => {
+                  return (
+                    <tr key={i}>
+                      <td className="text-right">{offset + i + 1}</td>
+                      <td>{item.roleId}</td>
+                      <td>
+                        <Link to={`${item.roleId}`}>{item.roleName}</Link>
+                      </td>
+                      <td>{item.remark}</td>
+                      <td>{getStatusName(item.status, resource)}</td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           </div>
         )}
         {state.view === "list" && (
           <ul className="row list">
-            {list &&
-              list.map((item, i) => {
-                return (
-                  <li key={i} className="col s12 m6 l4 xl3 list-item">
-                    <Link to={`${item.roleId}`}>{item.roleName}</Link>
-                    <button className="btn-detail"></button>
-                    <p>{item.remark}</p>
-                  </li>
-                )
-              })}
+            {list.map((item, i) => {
+              return (
+                <li key={i} className="col s12 m6 l4 xl3 list-item">
+                  <Link to={`${item.roleId}`}>{item.roleName}</Link>
+                  <button className="btn-detail"></button>
+                  <p>{item.remark}</p>
+                </li>
+              )
+            })}
           </ul>
         )}
       </div>

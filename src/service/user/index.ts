@@ -14,4 +14,10 @@ export class UserClient extends SearchClient<User, string, UserFilter> implement
     const url = `${this.serviceUrl}?roleId=${id}`
     return this.http.get<User[]>(url)
   }
+  protected postOnly(filter: UserFilter): boolean {
+    if (filter.excluding && filter.excluding.length > 0) {
+      return true
+    }
+    return false;
+  }
 }

@@ -5,19 +5,24 @@ import {
   buildFromUrl,
   buildMessage,
   buildSortFilter,
+  ButtonMouseEvent,
   checked,
   getFields,
-  getNumber,
   getOffset,
-  handleToggle,
   mergeFilter,
+  onClearQ,
+  onPageChanged,
+  onPageSizeChanged,
+  onSearch,
   onSort,
+  onToggleSearch,
   PageChange,
   pageSizes,
-  removeSortStatus,
+  resetSearch,
   resources,
   setSort,
-  Sortable
+  Sortable,
+  updateState
 } from "react-hook-core"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
@@ -60,30 +65,10 @@ export const CategoriesForm = () => {
     search(true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const sort = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => onSort(e, search, state)
-  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => {
-    filter.page = 1
-    filter.limit = getNumber(e)
-    setFilter(filter)
-    search()
-  }
-  const pageChanged = (data: PageChange) => {
-    const { page, size } = data
-    filter.page = page
-    filter.limit = size
-    setFilter(filter)
-    search()
-  }
-  const searchOnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-    e.preventDefault()
-    removeSortStatus(state.sortTarget)
-    filter.page = 1
-    state.sortTarget = undefined
-    state.sortField = undefined
-    setFilter(filter)
-    setState(state)
-    search()
-  }
+  const sort = (e: ButtonMouseEvent) => onSort(e, search, state)
+  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter, setFilter)
+  const pageChanged = (data: PageChange) => onPageChanged(data, search, filter, setFilter)
+  const searchOnClick = (e: ButtonMouseEvent) => onSearch(e, search, filter, state, setFilter, setState)
 
   const search = (isFirstLoad?: boolean) => {
     showLoading()
@@ -101,17 +86,6 @@ export const CategoriesForm = () => {
       .finally(hideLoading)
   }
 
-  const checkboxOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    if (e.target.checked) {
-      filter.status.push(value)
-    } else {
-      filter.status = filter.status.filter((i) => i !== value)
-    }
-    filter.page = 1
-    setFilter(filter)
-    search()
-  }
   const { list } = state
   const offset = getOffset(filter.limit, filter.page)
   return (
@@ -141,35 +115,9 @@ export const CategoriesForm = () => {
                   )
                 })}
               </select>
-              <input
-                type="text"
-                id="q"
-                name="q"
-                value={filter.q || ""}
-                maxLength={255}
-                onChange={(e) => {
-                  filter.q = e.target.value
-                  setFilter(filter)
-                }}
-                placeholder={resource.keyword}
-              />
-              <button
-                type="button"
-                hidden={!filter.q}
-                className="btn-remove-text"
-                onClick={(e) => {
-                  filter.q = ""
-                  setFilter(filter)
-                }}
-              />
-              <button
-                type="button"
-                className="btn-filter"
-                onClick={(e) => {
-                  const toggleFilter = handleToggle(e.target as HTMLElement, showFilter)
-                  setShowFilter(toggleFilter)
-                }}
-              />
+              <input type="text" id="q" name="q" value={filter.q} maxLength={100} onChange={(e) => updateState(e, filter, setFilter)} placeholder={resource.keyword} />
+              <button type="button" hidden={!filter.q} className="btn-remove-text" onClick={(e) => onClearQ(filter, setFilter)} />
+              <button type="button" className="btn-filter" onClick={(e) => onToggleSearch(e, showFilter, setShowFilter)} />
               <button type="submit" className="btn-search" onClick={searchOnClick} />
             </label>
             <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
@@ -179,11 +127,11 @@ export const CategoriesForm = () => {
               {resource.status}
               <section className="checkbox-group">
                 <label>
-                  <input type="checkbox" id="active" name="status" value="A" checked={checked(filter.status, "A")} onChange={checkboxOnChange} />
+                  <input type="checkbox" id="active" name="status" value="A" checked={checked(filter.status, "A")} onChange={e => resetSearch(e, filter, setFilter, search)} />
                   {resource.active}
                 </label>
                 <label>
-                  <input type="checkbox" id="inactive" name="status" value="I" checked={checked(filter.status, "I")} onChange={checkboxOnChange} />
+                  <input type="checkbox" id="inactive" name="status" value="I" checked={checked(filter.status, "I")} onChange={e => resetSearch(e, filter, setFilter, search)} />
                   {resource.inactive}
                 </label>
               </section>

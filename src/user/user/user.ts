@@ -15,9 +15,9 @@ export interface User extends Tracking {
 }
 export interface UserFilter extends Filter {
   userId?: string
-  username: string
+  username?: string
   email?: string
-  displayName: string
+  displayName?: string
   status: string[]
 }
 

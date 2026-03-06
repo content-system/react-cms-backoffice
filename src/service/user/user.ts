@@ -1,12 +1,5 @@
 import { Attributes, Filter, SearchService } from "onecore"
 
-export interface UserFilter extends Filter {
-  userId?: string
-  username?: string
-  email?: string
-  displayName?: string
-  status: string[]
-}
 export interface User {
   userId: string
   username: string
@@ -19,6 +12,15 @@ export interface User {
   title?: string
   position?: string
 }
+export interface UserFilter extends Filter {
+  userId?: string
+  username?: string
+  email?: string
+  displayName?: string
+  status: string[]
+  excluding: string[]
+}
+
 export interface UserService extends SearchService<User, UserFilter> {
   getUsersByRole(id: string): Promise<User[]>
 }
@@ -62,17 +64,5 @@ export const userModel: Attributes = {
   },
   status: {
     length: 1,
-  },
-  createdBy: {
-    length: 40,
-  },
-  createdAt: {
-    type: "datetime",
-  },
-  updatedBy: {
-    length: 40,
-  },
-  updatedAt: {
-    type: "datetime",
   },
 }

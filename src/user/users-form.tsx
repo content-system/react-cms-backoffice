@@ -5,17 +5,20 @@ import {
   buildFromUrl,
   buildMessage,
   buildSortFilter,
+  ButtonMouseEvent,
   checked,
   getFields,
-  getNumber,
   getOffset,
-  getSortElement,
-  handleSort,
-  handleToggle,
   mergeFilter,
+  onClearQ,
+  onPageChanged,
+  onPageSizeChanged,
+  onSearch,
+  onSort,
+  onToggleSearch,
   PageChange,
   pageSizes,
-  removeSortStatus,
+  resetSearch,
   resources,
   setSort,
   Sortable,
@@ -38,16 +41,12 @@ interface UserSearch extends Sortable {
 }
 
 const sizes = pageSizes
-export type ReactMouseEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>
 export const UsersForm = () => {
   const canWrite = hasPermission(Permission.write)
 
   const userFilter: UserFilter = {
     limit: resources.defaultLimit,
-    username: "",
-    displayName: "",
     status: ["A"],
-    q: "",
   }
   const initialState: UserSearch = {
     statusList: [],
@@ -67,50 +66,20 @@ export const UsersForm = () => {
     search(true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const sort = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    const target = getSortElement(e.target as HTMLElement)
-    const sort = handleSort(target, state.sortTarget, state.sortField, state.sortType)
-    state.sortField = sort.field
-    state.sortType = sort.type
-    state.sortTarget = target
-    if (setState) {
-      setState(state)
-    }
-    search()
-  }
-  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => {
-    filter.page = 1
-    filter.limit = getNumber(e)
-    setFilter(filter)
-    search()
-  }
-  const pageChanged = (data: PageChange) => {
-    const { page, size } = data
-    filter.page = page
-    filter.limit = size
-    setFilter(filter)
-    search()
-  }
-  const searchOnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-    e.preventDefault()
-    removeSortStatus(state.sortTarget)
-    filter.page = 1
-    state.sortTarget = undefined
-    state.sortField = undefined
-    setFilter(filter)
-    setState(state)
-    search()
-  }
+  const sort = (event: ButtonMouseEvent) => onSort(event, search, state)
+  const pageSizeChanged = (event: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(event, search, filter, setFilter)
+  const pageChanged = (data: PageChange) => onPageChanged(data, search, filter, setFilter)
+  const searchOnClick = (event: ButtonMouseEvent) => onSearch(event, search, filter, state, setFilter, setState)
 
   const search = (isFirstLoad?: boolean) => {
     showLoading()
     const urlFilter = buildSortFilter(filter, state)
     addParametersIntoUrl(urlFilter, isFirstLoad)
     const fields = getFields(refForm.current, state.fields)
-    setFilter(urlFilter)
-    const { limit, page } = urlFilter
+    setFilter(filter)
+    const { limit, page } = filter
     getUserService()
-      .search(urlFilter, limit, page, fields)
+      .search({ ...filter }, limit, page, fields)
       .then((res) => {
         setState({ ...state, total: res.total, fields })
         setList(res.list)
@@ -120,17 +89,6 @@ export const UsersForm = () => {
       .finally(hideLoading)
   }
 
-  const checkboxOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    if (e.target.checked) {
-      filter.status.push(value)
-    } else {
-      filter.status = filter.status.filter((i) => i !== value)
-    }
-    filter.page = 1
-    setFilter({ ...filter })
-    search()
-  }
   const offset = getOffset(filter.limit, filter.page)
   return (
     <div>
@@ -159,32 +117,9 @@ export const UsersForm = () => {
                   )
                 })}
               </select>
-              <input
-                type="text"
-                id="q"
-                name="q"
-                value={filter.q || ""}
-                maxLength={255}
-                onChange={(e) => updateState(e, filter, setFilter)}
-                placeholder={resource.keyword}
-              />
-              <button
-                type="button"
-                hidden={!filter.q}
-                className="btn-remove-text"
-                onClick={(e) => {
-                  filter.q = ""
-                  setFilter({ ...filter })
-                }}
-              />
-              <button
-                type="button"
-                className="btn-filter"
-                onClick={(e) => {
-                  const toggleFilter = handleToggle(e.target as HTMLElement, showFilter)
-                  setShowFilter(toggleFilter)
-                }}
-              />
+              <input type="text" id="q" name="q" value={filter.q} maxLength={100} onChange={(e) => updateState(e, filter, setFilter)} placeholder={resource.keyword} />
+              <button type="button" hidden={!filter.q} className="btn-remove-text" onClick={(e) => onClearQ(filter, setFilter)} />
+              <button type="button" className="btn-filter" onClick={(e) => onToggleSearch(e, showFilter, setShowFilter)} />
               <button type="submit" className="btn-search" onClick={searchOnClick} />
             </label>
             <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
@@ -218,11 +153,11 @@ export const UsersForm = () => {
               {resource.status}
               <section className="checkbox-group">
                 <label>
-                  <input type="checkbox" id="A" name="status" value="A" checked={checked(filter.status, "A")} onChange={checkboxOnChange} />
+                  <input type="checkbox" id="A" name="status" value="A" checked={checked(filter.status, "A")} onChange={e => resetSearch(e, filter, setFilter, search)} />
                   {resource.active}
                 </label>
                 <label>
-                  <input type="checkbox" id="I" name="status" value="I" checked={checked(filter.status, "I")} onChange={checkboxOnChange} />
+                  <input type="checkbox" id="I" name="status" value="I" checked={checked(filter.status, "I")} onChange={e => resetSearch(e, filter, setFilter, search)} />
                   {resource.inactive}
                 </label>
               </section>
@@ -264,48 +199,46 @@ export const UsersForm = () => {
                 </tr>
               </thead>
               <tbody>
-                {list &&
-                  list.map((user, i) => {
-                    return (
-                      <tr key={i}>
-                        <td className="text-right">{offset + i + 1}</td>
-                        <td>{user.userId}</td>
-                        <td>
-                          <Link to={`${user.userId}`}>{user.username}</Link>
-                        </td>
-                        <td>{user.email}</td>
-                        <td>{user.displayName}</td>
-                        <td>{getStatusName(user.status, resource)}</td>
-                        <td>
-                          <div className="btn-group">
-                            <button type="button" className="btn-edit"></button>
-                            <button type="button" className="btn-history"></button>
-                          </div>
-                        </td>
-                      </tr>
-                    )
-                  })}
+                {list.map((user, i) => {
+                  return (
+                    <tr key={i}>
+                      <td className="text-right">{offset + i + 1}</td>
+                      <td>{user.userId}</td>
+                      <td>
+                        <Link to={`${user.userId}`}>{user.username}</Link>
+                      </td>
+                      <td>{user.email}</td>
+                      <td>{user.displayName}</td>
+                      <td>{getStatusName(user.status, resource)}</td>
+                      <td>
+                        <div className="btn-group">
+                          <button type="button" className="btn-edit"></button>
+                          <button type="button" className="btn-history"></button>
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           </div>
         )}
         {state.view === "list" && (
           <ul className="row list">
-            {list &&
-              list.map((user, i) => {
-                return (
-                  <li key={i} className="col s12 m6 l4 xl3 img-item">
-                    <img
-                      src={user.imageURL && user.imageURL.length > 0 ? user.imageURL : user.gender === "F" ? femaleIcon : maleIcon}
-                      alt="user"
-                      className="round-border"
-                    />
-                    <Link to={`${user.userId}`}>{user.displayName}</Link>
-                    <button className="btn-detail" />
-                    <p>{user.email}</p>
-                  </li>
-                )
-              })}
+            {list.map((user, i) => {
+              return (
+                <li key={i} className="col s12 m6 l4 xl3 img-item">
+                  <img
+                    src={user.imageURL && user.imageURL.length > 0 ? user.imageURL : user.gender === "F" ? femaleIcon : maleIcon}
+                    alt="user"
+                    className="round-border"
+                  />
+                  <Link to={`${user.userId}`}>{user.displayName}</Link>
+                  <button className="btn-detail" />
+                  <p>{user.email}</p>
+                </li>
+              )
+            })}
           </ul>
         )}
       </div>
