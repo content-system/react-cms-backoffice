@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { hideLoading, showLoading } from "ui-loading"
 import { formatPhone } from "ui-plus"
-import { handleError, useResource } from "uione"
+import { Gender, handleError, useResource } from "uione"
 import { getUserService, User } from "./service"
 
 export const UserView = () => {
@@ -42,10 +42,12 @@ export const UserView = () => {
           <dd className="col s6 l9">{user?.userId}</dd>
           <dt className="col s6 l3">{resource.username}</dt>
           <dd className="col s6 l9">{user?.username}</dd>
-          <dt className="col s6 l3">{resource.person_title}</dt>
-          <dd className="col s6 l9">{user?.title}</dd>
           <dt className="col s6 l3">{resource.display_name}</dt>
           <dd className="col s6 l9">{user?.displayName}</dd>
+          <dt className="col s6 l3">{resource.person_title}</dt>
+          <dd className="col s6 l9">{user?.title}</dd>
+          <dt className="col s6 l3">{resource.gender}</dt>
+          <dd className="col s6 l9">{user?.gender === Gender.Male ? resource.male : resource.female}</dd>
           <dt className="col s6 l3">{resource.phone}</dt>
           <dd className="col s6 l9">{formatPhone(user?.phone)}</dd>
           <dt className="col s6 l3">{resource.email}</dt>

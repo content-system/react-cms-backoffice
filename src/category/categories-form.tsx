@@ -15,6 +15,7 @@ import {
   PageChange,
   pageSizes,
   removeSortStatus,
+  resources,
   setSort,
   Sortable
 } from "react-hook-core"
@@ -38,9 +39,8 @@ export const CategoriesForm = () => {
   const canWrite = hasPermission(Permission.write)
 
   const categoryFilter: CategoryFilter = {
-    limit: 24,
+    limit: resources.defaultLimit,
     status: ["A"],
-    q: "",
   }
   const initialState: CategorySearch = {
     statusList: [],

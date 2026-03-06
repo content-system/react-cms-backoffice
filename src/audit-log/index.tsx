@@ -14,6 +14,7 @@ import {
   PageChange,
   pageSizes,
   removeSortStatus,
+  resources,
   setSort,
   Sortable
 } from "react-hook-core"
@@ -28,7 +29,6 @@ import "./style.css"
 
 interface AuditLogSearch extends Sortable {
   statusList: Item[]
-  list: AuditLog[]
   total?: number
   view?: string
   fields?: string[]
@@ -45,7 +45,7 @@ export const AuditLogsForm = () => {
 
   const now = new Date()
   const auditLogfilter: AuditLogFilter = {
-    limit: 24,
+    limit: resources.defaultLimit,
     id: "",
     action: "",
     time: {
@@ -55,7 +55,6 @@ export const AuditLogsForm = () => {
   }
   const initialState: AuditLogSearch = {
     statusList: [],
-    list: [],
   }
 
   const locale = useLocale()
@@ -63,6 +62,7 @@ export const AuditLogsForm = () => {
   const refForm = useRef<HTMLFormElement>(null)
   const [state, setState] = useState<AuditLogSearch>(initialState)
   const [filter, setFilter] = useState<AuditLogFilter>(auditLogfilter)
+  const [list, setList] = useState<AuditLog[]>([])
 
   useEffect(() => {
     const initFilter = mergeFilter(buildFromUrl<AuditLogFilter>(), filter, sizes, ["status", "auditLogType"])
@@ -101,18 +101,19 @@ export const AuditLogsForm = () => {
     const urlFilter = buildSortFilter(filter, state)
     addParametersIntoUrl(urlFilter, isFirstLoad)
     const fields = getFields(refForm.current, state.fields)
-    const { limit, page } = filter
+    setFilter(urlFilter)
+    const { limit, page } = urlFilter
     getAuditLogService()
-      .search({ ...filter }, limit, page, fields)
+      .search(urlFilter, limit, page, fields)
       .then((res) => {
-        setState({ ...state, list: res.list, total: res.total, fields })
+        setState({ ...state, total: res.total, fields })
+        setList(res.list)
         toast(buildMessage(resource, res.list, limit, page, res.total))
       })
       .catch(handleError)
       .finally(hideLoading)
   }
 
-  const { list } = state
   const offset = getOffset(filter.limit, filter.page)
   return (
     <div>

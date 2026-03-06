@@ -9,12 +9,14 @@ import {
   getFields,
   getNumber,
   getOffset,
+  getSortElement,
+  handleSort,
   handleToggle,
   mergeFilter,
-  onSort,
   PageChange,
   pageSizes,
   removeSortStatus,
+  resources,
   setSort,
   Sortable,
   updateState
@@ -30,7 +32,6 @@ import { getUserService, User, UserFilter } from "./service"
 
 interface UserSearch extends Sortable {
   statusList: Item[]
-  list: User[]
   total?: number
   view?: string
   fields?: string[]
@@ -42,7 +43,7 @@ export const UsersForm = () => {
   const canWrite = hasPermission(Permission.write)
 
   const userFilter: UserFilter = {
-    limit: 24,
+    limit: resources.defaultLimit,
     username: "",
     displayName: "",
     status: ["A"],
@@ -50,14 +51,14 @@ export const UsersForm = () => {
   }
   const initialState: UserSearch = {
     statusList: [],
-    list: [],
   }
 
   const resource = useResource()
   const refForm = useRef<HTMLFormElement>(null)
+  const [showFilter, setShowFilter] = useState<boolean>(false)
   const [state, setState] = useState<UserSearch>(initialState)
   const [filter, setFilter] = useState<UserFilter>(userFilter)
-  const [showFilter, setShowFilter] = useState<boolean>(false)
+  const [list, setList] = useState<User[]>([])
 
   useEffect(() => {
     const initFilter = mergeFilter(buildFromUrl<UserFilter>(), filter, sizes, ["status"])
@@ -66,7 +67,17 @@ export const UsersForm = () => {
     search(true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const sort = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => onSort(e, search, state, setState)
+  const sort = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const target = getSortElement(e.target as HTMLElement)
+    const sort = handleSort(target, state.sortTarget, state.sortField, state.sortType)
+    state.sortField = sort.field
+    state.sortType = sort.type
+    state.sortTarget = target
+    if (setState) {
+      setState(state)
+    }
+    search()
+  }
   const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => {
     filter.page = 1
     filter.limit = getNumber(e)
@@ -96,11 +107,13 @@ export const UsersForm = () => {
     const urlFilter = buildSortFilter(filter, state)
     addParametersIntoUrl(urlFilter, isFirstLoad)
     const fields = getFields(refForm.current, state.fields)
-    const { limit, page } = filter
+    setFilter(urlFilter)
+    const { limit, page } = urlFilter
     getUserService()
-      .search({ ...filter }, limit, page, fields)
+      .search(urlFilter, limit, page, fields)
       .then((res) => {
-        setState({ ...state, list: res.list, total: res.total, fields })
+        setState({ ...state, total: res.total, fields })
+        setList(res.list)
         toast(buildMessage(resource, res.list, limit, page, res.total))
       })
       .catch(handleError)
@@ -118,7 +131,6 @@ export const UsersForm = () => {
     setFilter({ ...filter })
     search()
   }
-  const { list } = state
   const offset = getOffset(filter.limit, filter.page)
   return (
     <div>
@@ -153,10 +165,7 @@ export const UsersForm = () => {
                 name="q"
                 value={filter.q || ""}
                 maxLength={255}
-                onChange={(e) => {
-                  filter.q = e.target.value
-                  setFilter({ ...filter })
-                }}
+                onChange={(e) => updateState(e, filter, setFilter)}
                 placeholder={resource.keyword}
               />
               <button
@@ -225,7 +234,7 @@ export const UsersForm = () => {
             <table className="table">
               <thead>
                 <tr>
-                  <th>{resource.sequence}</th>
+                  <th>{resource.number}</th>
                   <th data-field="userId">
                     <button type="button" id="sortUserId" onClick={sort}>
                       {resource.user_id}
@@ -256,7 +265,6 @@ export const UsersForm = () => {
               </thead>
               <tbody>
                 {list &&
-                  list.length > 0 &&
                   list.map((user, i) => {
                     return (
                       <tr key={i}>
@@ -284,7 +292,6 @@ export const UsersForm = () => {
         {state.view === "list" && (
           <ul className="row list">
             {list &&
-              list.length > 0 &&
               list.map((user, i) => {
                 return (
                   <li key={i} className="col s12 m6 l4 xl3 img-item">

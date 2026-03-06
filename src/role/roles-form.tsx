@@ -15,6 +15,7 @@ import {
   PageChange,
   pageSizes,
   removeSortStatus,
+  resources,
   setSort,
   Sortable
 } from "react-hook-core"
@@ -27,32 +28,32 @@ import { getRoleService, Role, RoleFilter } from "./service"
 
 interface RoleSearch extends Sortable {
   statusList: Item[]
-  list: Role[]
   total?: number
   view?: string
   fields?: string[]
-}
-const roleFilter: RoleFilter = {
-  limit: 24,
-  q: "",
-  roleId: "",
-  roleName: "",
-  status: [],
-  remark: "",
 }
 
 const sizes = pageSizes
 export const RolesForm = () => {
   const canWrite = hasPermission(write)
+
+  const roleFilter: RoleFilter = {
+    limit: resources.defaultLimit,
+    roleId: "",
+    roleName: "",
+    status: [],
+    remark: "",
+  }
   const initialState: RoleSearch = {
     statusList: [],
-    list: [],
   }
+
   const resource = useResource()
   const refForm = useRef<HTMLFormElement>(null)
+  const [showFilter, setShowFilter] = useState<boolean>(false)
   const [state, setState] = useState<RoleSearch>(initialState)
   const [filter, setFilter] = useState<RoleFilter>(roleFilter)
-  const [showFilter, setShowFilter] = useState<boolean>(false)
+  const [list, setList] = useState<Role[]>([])
 
   useEffect(() => {
     const initFilter = mergeFilter(buildFromUrl<RoleFilter>(), filter, sizes, ["status", "userType"])
@@ -91,11 +92,13 @@ export const RolesForm = () => {
     const urlFilter = buildSortFilter(filter, state)
     addParametersIntoUrl(urlFilter, isFirstLoad)
     const fields = getFields(refForm.current, state.fields)
-    const { limit, page } = filter
+    setFilter(urlFilter)
+    const { limit, page } = urlFilter
     getRoleService()
-      .search({ ...filter }, limit, page, fields)
+      .search(urlFilter, limit, page, fields)
       .then((res) => {
-        setState({ ...state, list: res.list, total: res.total, fields })
+        setState({ ...state, total: res.total, fields })
+        setList(res.list)
         toast(buildMessage(resource, res.list, limit, page, res.total))
       })
       .catch(handleError)
@@ -220,9 +223,8 @@ export const RolesForm = () => {
                 </tr>
               </thead>
               <tbody>
-                {state.list &&
-                  state.list.length > 0 &&
-                  state.list.map((item, i) => {
+                {list &&
+                  list.map((item, i) => {
                     return (
                       <tr key={i}>
                         <td className="text-right">{offset + i + 1}</td>
@@ -241,9 +243,8 @@ export const RolesForm = () => {
         )}
         {state.view === "list" && (
           <ul className="row list">
-            {state.list &&
-              state.list.length > 0 &&
-              state.list.map((item, i) => {
+            {list &&
+              list.map((item, i) => {
                 return (
                   <li key={i} className="col s12 m6 l4 xl3 list-item">
                     <Link to={`${item.roleId}`}>{item.roleName}</Link>

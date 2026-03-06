@@ -17,6 +17,7 @@ import {
   PageChange,
   pageSizes,
   removeSortStatus,
+  resources,
   setSort,
   Sortable
 } from "react-hook-core"
@@ -46,9 +47,8 @@ export const ArticlesForm = () => {
 
   const now = new Date()
   const articleFilter: ArticleFilter = {
-    limit: 24,
+    limit: resources.defaultLimit,
     status: [],
-    q: "",
     publishedAt: {
       max: addSeconds(now, 300),
     },

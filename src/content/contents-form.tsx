@@ -15,6 +15,7 @@ import {
   PageChange,
   pageSizes,
   removeSortStatus,
+  resources,
   setSort,
   Sortable
 } from "react-hook-core"
@@ -40,9 +41,8 @@ export const ContentsForm = () => {
   const dateFormat = getDateFormat()
 
   const contentFilter: ContentFilter = {
-    limit: 24,
+    limit: resources.defaultLimit,
     status: [],
-    q: "",
   }
   const initialState: ContentSearch = {
     statusList: [],

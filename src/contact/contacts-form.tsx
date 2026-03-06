@@ -14,6 +14,7 @@ import {
   PageChange,
   pageSizes,
   removeSortStatus,
+  resources,
   setSort,
   Sortable
 } from "react-hook-core"
@@ -37,10 +38,9 @@ export const ContactsForm = () => {
   const canWrite = hasPermission(Permission.write)
 
   const contactFilter: ContactFilter = {
-    limit: 24,
+    limit: resources.defaultLimit,
     name: "",
     email: "",
-    q: "",
   }
   const initialState: ContactSearch = {
     statusList: [],

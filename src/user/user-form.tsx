@@ -4,7 +4,7 @@ import { clone, goBack, isEmptyObject, isSuccessful, makeDiff, updateState } fro
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
-import { emailOnBlur, formatPhone, initForm, phoneOnBlur, registerEvents, requiredOnBlur, setReadOnly, showFormError, validateForm } from "ui-plus"
+import { emailOnBlur, formatPhone, initForm, phoneOnBlur, registerEvents, requiredOnBlur, showFormError, validateForm } from "ui-plus"
 import { Gender, getLocale, handleError, handleSelect, hasPermission, Permission, Status, useResource } from "uione"
 import { getMasterDataService, getUserService, User } from "./service"
 
@@ -15,7 +15,7 @@ const createUser = (): User => {
 }
 
 export const UserForm = () => {
-  const isReadOnly = !hasPermission(Permission.write, 1)
+  const canWrite = hasPermission(Permission.write, 1)
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
@@ -44,9 +44,6 @@ export const UserForm = () => {
               } else {
                 setInitialUser(clone(user))
                 setUser(user)
-                if (isReadOnly) {
-                  setReadOnly(refForm?.current)
-                }
               }
             })
             .catch(handleError)
@@ -54,12 +51,8 @@ export const UserForm = () => {
         }
       })
       .catch(handleError)
-  }, [id, newMode, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [id, newMode, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const view = (e: React.MouseEvent<HTMLElement, MouseEvent>, userId: string) => {
-    e.preventDefault()
-    navigate(`/users/${userId}/view`)
-  }
   const assign = (e: React.MouseEvent<HTMLElement, MouseEvent>, userId: string) => {
     e.preventDefault()
     navigate(`/users/${userId}/assign`)
@@ -71,10 +64,6 @@ export const UserForm = () => {
     handleSelect(ele)
     user.title = ele.value
     user.gender = user.title === "Mr" ? Gender.Male : Gender.Female
-    setUser({ ...user })
-  }
-  const genderOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    user.gender = e.target.value
     setUser({ ...user })
   }
 
@@ -108,7 +97,6 @@ export const UserForm = () => {
       }
     }
   }
-
   const afterSaved = (res: Result<User>) => {
     if (Array.isArray(res)) {
       showFormError(refForm?.current, res)
@@ -120,183 +108,215 @@ export const UserForm = () => {
       alertError(resource.error_conflict)
     }
   }
+
   return (
-    <form id="userForm" name="userForm" className="form" model-name="user" ref={refForm as any}>
-      <header>
-        <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
-        <h2 className="view-title">{resource.user}</h2>
-        <div className="btn-group">
-          <button className="btn-group btn-right" hidden={newMode}>
-            <i className="material-icons" onClick={(e) => view(e, user.userId)}>
-              group
-            </i>
-          </button>
-          <button className="btn-group btn-right" hidden={newMode}>
-            <i className="material-icons" onClick={(e) => assign(e, user.userId)}>
-              group
-            </i>
-          </button>
-        </div>
-      </header>
-      <div>
-        <section className="row section">
-          <h3 className="header">User Information</h3>
-          <label className="col s12 m6">
-            {resource.user_id}
-            <input
-              type="text"
-              id="userId"
-              name="userId"
-              value={user.userId || ""}
-              readOnly={!newMode}
-              onChange={(e) => updateState(e, user, setUser)}
-              maxLength={20}
-              required={true}
-              placeholder={resource.user_id}
-            />
-          </label>
-          <label className="col s12 m6">
-            {resource.username}
-            <input
-              type="text"
-              id="username"
-              name="username"
-              value={user.username || ""}
-              readOnly={!newMode}
-              onChange={(e) => updateState(e, user, setUser)}
-              onBlur={requiredOnBlur}
-              maxLength={40}
-              required={true}
-              placeholder={resource.username}
-            />
-          </label>
-          <label className="col s12 m6">
-            {resource.display_name}
-            <input
-              type="text"
-              id="displayName"
-              name="displayName"
-              value={user.displayName || ""}
-              onChange={(e) => updateState(e, user, setUser)}
-              onBlur={requiredOnBlur}
-              maxLength={40}
-              required={true}
-              placeholder={resource.display_name}
-            />
-          </label>
-          <label className="col s12 m6">
-            {resource.gender}
-            <div className="radio-group">
-              <label>
-                <input
-                  type="radio"
-                  id="gender"
-                  name="gender"
-                  onChange={genderOnChange}
-                  disabled={user.title !== "Dr"}
-                  value={Gender.Male}
-                  checked={user.gender === Gender.Male}
-                />
-                {resource.male}
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  id="gender"
-                  name="gender"
-                  onChange={genderOnChange}
-                  disabled={user.title !== "Dr"}
-                  value={Gender.Female}
-                  checked={user.gender === Gender.Female}
-                />
-                {resource.female}
-              </label>
-            </div>
-          </label>
-          <div className="col s12 m6 radio-section">
-            {resource.status}
-            <div className="radio-group">
-              <label>
-                <input type="radio" id="active" name="status" onChange={(e) => updateState(e, user, setUser)} value={Status.Active} checked={user.status === Status.Active} />
-                {resource.yes}
-              </label>
-              <label>
-                <input type="radio" id="inactive" name="status" onChange={(e) => updateState(e, user, setUser)} value={Status.Inactive} checked={user.status === Status.Inactive} />
-                {resource.no}
-              </label>
-            </div>
+    !canWrite ? (
+      <form id="userForm" name="userForm" className="form" ref={refForm as any}>
+        <header className="view-header">
+          <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
+          <h2 className="view-title">{resource.user}</h2>
+          <div className="btn-group">
+            <button className="btn-group btn-right" hidden={newMode}>
+              <i className="material-icons" onClick={(e) => assign(e, user.userId)}>
+                group
+              </i>
+            </button>
           </div>
-        </section>
-        <section className="row section">
-          <h4 className="header">Contact Information</h4>
-          <label className="col s12 m6 flying ">
-            {resource.position}
-            <select
-              style={{ width: "99%" }}
-              id="position"
-              name="position"
-              value={user.position || ""}
-              data-value
-              onChange={(e) => {
-                user.position = e.target.value
-                setUser({ ...user })
-              }}
-            >
-              <option value="">{resource.please_select}</option>
-              {positionList.map((item, index) => (
-                <option key={index} value={item.value}>
-                  {item.text}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="col s12 m6 flying">
-            {resource.person_title}
-            <select id="title" name="title" value={user.title || ""} data-value onChange={(e) => updateTitle(e.target, user)}>
-              <option value="">{resource.please_select}</option>)
-              {titleList.map((item, index) => (
-                <option key={index} value={item.value}>
-                  {item.text}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="col s12 m6 flying">
-            {resource.phone}
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              value={formatPhone(user.phone) || ""}
-              onChange={(e) => updateState(e, user, setUser)}
-              onBlur={phoneOnBlur}
-              maxLength={17}
-              placeholder={resource.phone}
-            />
-          </label>
-          <label className="col s12 m6 flying">
-            {resource.email}
-            <input
-              type="text"
-              id="email"
-              name="email"
-              data-type="email"
-              value={user.email || ""}
-              onChange={(e) => updateState(e, user, setUser)}
-              onBlur={emailOnBlur}
-              maxLength={100}
-              placeholder={resource.email}
-            />
-          </label>
-        </section>
-      </div>
-      <footer>
-        {!isReadOnly && (
+        </header>
+        <div>
+          <dl className="data-list row">
+            <dt className="col s6 l3">{resource.user_id}</dt>
+            <dd className="col s6 l9">{user.userId}</dd>
+            <dt className="col s6 l3">{resource.username}</dt>
+            <dd className="col s6 l9">{user.username}</dd>
+            <dt className="col s6 l3">{resource.display_name}</dt>
+            <dd className="col s6 l9">{user.displayName}</dd>
+            <dt className="col s6 l3">{resource.person_title}</dt>
+            <dd className="col s6 l9">{user.title}</dd>
+            <dt className="col s6 l3">{resource.gender}</dt>
+            <dd className="col s6 l9">{user.gender === Gender.Male ? resource.male : resource.female}</dd>
+            <dt className="col s6 l3">{resource.phone}</dt>
+            <dd className="col s6 l9">{formatPhone(user?.phone)}</dd>
+            <dt className="col s6 l3">{resource.email}</dt>
+            <dd className="col s6 l9">{user.email}</dd>
+          </dl>
+        </div>
+        <footer className="view-footer">
+          <button type="button" id="btnClose" name="btnClose" onClick={back}>
+            {resource.close}
+          </button>
+        </footer>
+      </form>
+    ) : (
+      <form id="userForm" name="userForm" className="form" model-name="user" ref={refForm as any}>
+        <header>
+          <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
+          <h2 className="view-title">{resource.user}</h2>
+          <div className="btn-group">
+            <button className="btn-group btn-right" hidden={newMode}>
+              <i className="material-icons" onClick={(e) => assign(e, user.userId)}>
+                group
+              </i>
+            </button>
+          </div>
+        </header>
+        <div>
+          <section className="row section">
+            <h3 className="header">User Information</h3>
+            <label className="col s12 m6">
+              {resource.user_id}
+              <input
+                type="text"
+                id="userId"
+                name="userId"
+                value={user.userId || ""}
+                readOnly={!newMode}
+                onChange={(e) => updateState(e, user, setUser)}
+                maxLength={20}
+                required={true}
+                placeholder={resource.user_id}
+              />
+            </label>
+            <label className="col s12 m6">
+              {resource.username}
+              <input
+                type="text"
+                id="username"
+                name="username"
+                value={user.username || ""}
+                readOnly={!newMode}
+                onChange={(e) => updateState(e, user, setUser)}
+                onBlur={requiredOnBlur}
+                maxLength={40}
+                required={true}
+                placeholder={resource.username}
+              />
+            </label>
+            <label className="col s12 m6">
+              {resource.display_name}
+              <input
+                type="text"
+                id="displayName"
+                name="displayName"
+                value={user.displayName || ""}
+                onChange={(e) => updateState(e, user, setUser)}
+                onBlur={requiredOnBlur}
+                maxLength={40}
+                required={true}
+                placeholder={resource.display_name}
+              />
+            </label>
+            <label className="col s12 m6">
+              {resource.gender}
+              <div className="radio-group">
+                <label>
+                  <input
+                    type="radio"
+                    id="gender"
+                    name="gender"
+                    onChange={(e) => updateState(e, user, setUser)}
+                    disabled={user.title !== "Dr"}
+                    value={Gender.Male}
+                    checked={user.gender === Gender.Male}
+                  />
+                  {resource.male}
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    id="gender"
+                    name="gender"
+                    onChange={(e) => updateState(e, user, setUser)}
+                    disabled={user.title !== "Dr"}
+                    value={Gender.Female}
+                    checked={user.gender === Gender.Female}
+                  />
+                  {resource.female}
+                </label>
+              </div>
+            </label>
+            <div className="col s12 m6 radio-section">
+              {resource.status}
+              <div className="radio-group">
+                <label>
+                  <input type="radio" id="active" name="status" onChange={(e) => updateState(e, user, setUser)} value={Status.Active} checked={user.status === Status.Active} />
+                  {resource.yes}
+                </label>
+                <label>
+                  <input type="radio" id="inactive" name="status" onChange={(e) => updateState(e, user, setUser)} value={Status.Inactive} checked={user.status === Status.Inactive} />
+                  {resource.no}
+                </label>
+              </div>
+            </div>
+          </section>
+          <section className="row section">
+            <h4 className="header">Contact Information</h4>
+            <label className="col s12 m6 flying ">
+              {resource.position}
+              <select
+                style={{ width: "99%" }}
+                id="position"
+                name="position"
+                value={user.position || ""}
+                data-value
+                onChange={(e) => {
+                  user.position = e.target.value
+                  setUser({ ...user })
+                }}
+              >
+                <option value="">{resource.please_select}</option>
+                {positionList.map((item, index) => (
+                  <option key={index} value={item.value}>
+                    {item.text}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="col s12 m6 flying">
+              {resource.person_title}
+              <select id="title" name="title" value={user.title || ""} data-value onChange={(e) => updateTitle(e.target, user)}>
+                <option value="">{resource.please_select}</option>)
+                {titleList.map((item, index) => (
+                  <option key={index} value={item.value}>
+                    {item.text}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="col s12 m6 flying">
+              {resource.phone}
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                value={formatPhone(user.phone) || ""}
+                onChange={(e) => updateState(e, user, setUser)}
+                onBlur={phoneOnBlur}
+                maxLength={17}
+                placeholder={resource.phone}
+              />
+            </label>
+            <label className="col s12 m6 flying">
+              {resource.email}
+              <input
+                type="text"
+                id="email"
+                name="email"
+                data-type="email"
+                value={user.email || ""}
+                onChange={(e) => updateState(e, user, setUser)}
+                onBlur={emailOnBlur}
+                maxLength={100}
+                placeholder={resource.email}
+              />
+            </label>
+          </section>
+        </div>
+        <footer>
           <button type="submit" id="btnSave" name="btnSave" onClick={save}>
             {resource.save}
           </button>
-        )}
-      </footer>
-    </form>
+        </footer>
+      </form>)
   )
 }

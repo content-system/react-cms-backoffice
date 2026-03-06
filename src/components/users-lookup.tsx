@@ -1,16 +1,18 @@
 import { Item } from "onecore"
-import { ChangeEvent, KeyboardEvent, MouseEvent, useRef } from "react"
-import { OnClick, PageSizeSelect, SearchComponentState, useSearch, value } from "react-hook-core"
+import React, { ChangeEvent, useRef, useState } from "react"
+import { buildMessage, buildSortFilter, getFields, getNumber, OnClick, onSort, PageChange, pageSizes, removeSortStatus, resources, SearchComponentState } from "react-hook-core"
 import ReactModal from "react-modal"
 import Pagination from "reactx-pagination"
-import { inputSearch, useResource } from "uione"
+import { hideLoading, showLoading } from "ui-loading"
+import { toast } from "ui-toast"
+import { handleError, useResource } from "uione"
 import { getUserService, User, UserFilter } from "../service"
 
 ReactModal.setAppElement("#root")
 interface Props {
   isOpenModel: boolean
   users: User[]
-  onModelClose?: (e: MouseEvent | KeyboardEvent) => void
+  onModelClose?: (e: React.MouseEvent | React.KeyboardEvent) => void
   onModelSave: (e: User[]) => void
 }
 
@@ -21,56 +23,90 @@ interface UserSearch extends SearchComponentState<User, UserFilter> {
   filter: UserFilter
   list: any[]
   model: {
-    q: string
-    userId: string
-    username: string
-    email: string
+    q?: string
+    userId?: string
     status: string[]
   }
 }
 const userFilter: UserFilter = {
-  limit: 24,
-  userId: "",
-  username: "",
-  displayName: "",
-  email: "",
+  limit: resources.defaultLimit,
   status: [],
 }
 const initialState: UserSearch = {
-  limit: 24,
+  limit: resources.defaultLimit,
   statusList: [],
   list: [],
   filter: userFilter,
   users: [],
   model: {
-    q: "",
     userId: "",
-    username: "",
-    email: "",
     status: [],
   },
   availableUsers: [],
 }
 // props onModelSave onModelClose isOpenModel users?=[]
+const sizes = pageSizes
 export const UsersLookup = (props: Props) => {
   const resource = useResource()
   const refForm = useRef<HTMLFormElement>(null)
-  const { state, setState, component, search, sort, pageChanged, pageSizeChanged, changeView } = useSearch<User, UserFilter, UserSearch>(
-    refForm,
-    initialState,
-    getUserService(),
-    resource,
-    inputSearch(),
-  )
+  //const [state, setState] = useState<UserSearch>(initialState)
+  const [state, setState] = useState<UserSearch>(initialState)
+  const [filter, setFilter] = useState<UserFilter>(userFilter)
+  const [list, setList] = useState<User[]>([])
+  const [availableUsers, setAvailableUsers] = useState<User[]>([])
+  const [users, setUsers] = useState<User[]>(props.users)
+
   const isOpenModel = props.isOpenModel
-  const users = props.users ? props.users : []
-  const { list } = state
-  const filter = value(state.model)
+  // const { list } = state
+  // const filter = value(state.model)
   let index = 0
 
+  const sort = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => onSort(e, search, state, setState)
+  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => {
+    filter.page = 1
+    filter.limit = getNumber(e)
+    setFilter(filter)
+    search()
+  }
+  const pageChanged = (data: PageChange) => {
+    const { page, size } = data
+    filter.page = page
+    filter.limit = size
+    setFilter(filter)
+    search()
+  }
+  const searchOnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+    e.preventDefault()
+    removeSortStatus(state.sortTarget)
+    filter.page = 1
+    state.sortTarget = undefined
+    state.sortField = undefined
+    setFilter(filter)
+    setState(state)
+    search()
+  }
+
+  const search = (isFirstLoad?: boolean) => {
+    showLoading()
+    const urlFilter = buildSortFilter(filter, state)
+    const fields = getFields(refForm.current, state.fields)
+    setFilter(urlFilter)
+    const { limit, page } = urlFilter
+    getUserService()
+      .search(urlFilter, limit, page, fields)
+      .then((res) => {
+        setState({ ...state, total: res.total, fields })
+        setList(res.list)
+        setUsers(res.list)
+        toast(buildMessage(resource, res.list, limit, page, res.total))
+      })
+      .catch(handleError)
+      .finally(hideLoading)
+  }
+
   const onCheckUser = (e: OnClick) => {
-    const listState = state.list
-    const usersState = state.users
+    const listState = list
+    const usersState = users
     const target: HTMLInputElement = e.target as HTMLInputElement
     const result = listState ? listState.find((v: any) => v.userId === target.value) : undefined
     if (result) {
@@ -80,50 +116,66 @@ export const UsersLookup = (props: Props) => {
       } else {
         usersState.push(result)
       }
-      setState({ users: usersState })
+      setUsers(usersState)
+      // setState({ users: usersState })
     }
   }
 
   const onModelSave = () => {
+    const xUser = users
+    setUsers([])
+    setAvailableUsers([])
+    filter.q = ""
+    filter.page = 1
+    setFilter(filter)
+    /*
     setState({
       users: [],
       availableUsers: [],
       model: { ...state.model, q: "" },
     })
-    props.onModelSave(state.users)
+      */
+    props.onModelSave(xUser)
   }
 
-  const onModelClose = (e: MouseEvent | KeyboardEvent) => {
+  const onModelClose = (e: React.MouseEvent | React.KeyboardEvent) => {
+    setUsers([])
+    setAvailableUsers([])
+    filter.q = ""
+    filter.page = 1
+    setFilter(filter)
+    /*
     setState({
       users: [],
       availableUsers: [],
       model: { ...state.model, q: "" },
-    })
+    })*/
     if (props.onModelClose) {
       props.onModelClose(e)
     }
   }
 
-  const clearUserId = () => {
-    const m = state.model
-    if (m) {
-      m.q = ""
-      setState({ model: m })
-    }
+  const clearQ = () => {
+    filter.q = ""
+    setFilter(filter)
   }
 
   const onChangeText = (e: ChangeEvent<HTMLInputElement>) => {
+    filter.q = e.target.value
+    setFilter(filter)
+    /*
     const { model } = state
     setState({
       model: { ...model, ...({ [e.target.name]: e.target.value } as any) },
     })
+      */
   }
-
-  const onSearch = (e: OnClick) => {
-    setState({ list: [] })
-    search(e)
-  }
-
+  /*
+    const onSearch = (e: OnClick) => {
+      setState({ list: [] })
+      search(e)
+    }
+  */
   return (
     <ReactModal
       isOpen={isOpenModel}
@@ -138,9 +190,11 @@ export const UsersLookup = (props: Props) => {
         <header className="view-header">
           <h2>{resource.users_lookup}</h2>
           <div className="btn-group">
-            {component.view !== "table" && <button type="button" id="btnTable" name="btnTable" className="btn-table" data-view="table" onClick={changeView} />}
-            {component.view === "table" && (
-              <button type="button" id="btnListView" name="btnListView" className="btn-list" data-view="listview" onClick={changeView} />
+            {state.view === "list" && (
+              <button type="button" id="btnTable" name="btnTable" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />
+            )}
+            {state.view !== "list" && (
+              <button type="button" id="btnListView" name="btnListView" className="btn-list" onClick={(e) => setState({ ...state, view: "list" })} />
             )}
           </div>
           <button type="button" id="btnClose" name="btnClose" className="btn-close" onClick={onModelClose} />
@@ -149,23 +203,24 @@ export const UsersLookup = (props: Props) => {
           <form id="usersLookupForm" name="usersLookupForm" className="usersLookupForm" noValidate={true} ref={refForm as any}>
             <section className="row search-group">
               <label className="col s12 m6 search-input">
-                <PageSizeSelect size={component.limit} sizes={component.pageSizes} onChange={pageSizeChanged} />
+                <select id="limit" name="limit" onChange={pageSizeChanged} defaultValue={filter.limit}>
+                  {sizes.map((item, i) => {
+                    return (
+                      <option key={i} value={item}>
+                        {item}
+                      </option>
+                    )
+                  })}
+                </select>
                 <input type="text" id="q" name="q" onChange={onChangeText} value={filter.q} maxLength={40} placeholder={resource.user_lookup} />
-                <button type="button" hidden={!filter.userId} className="btn-remove-text" onClick={clearUserId} />
-                <button type="submit" className="btn-search" onClick={onSearch} />
+                <button type="button" hidden={!filter.q} className="btn-remove-text" onClick={clearQ} />
+                <button type="submit" className="btn-search" onClick={searchOnClick} />
               </label>
-              <Pagination
-                className="col s6 m3"
-                total={component.total}
-                size={component.limit}
-                max={component.pageMaxSize}
-                page={component.page}
-                onChange={pageChanged}
-              />
+              <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
             </section>
           </form>
           <form className="list-result">
-            {component.view === "table" && (
+            {state.view === "list" && (
               <div className="table-responsive">
                 <table>
                   <thead>
@@ -204,32 +259,27 @@ export const UsersLookup = (props: Props) => {
                       list &&
                       list.map((user: any, i: number) => {
                         const result = users.find((v) => v.userId === user.userId)
-                        if (!result) {
-                          index++
-                          return (
-                            <tr key={i}>
-                              <td className="text-right">{index}</td>
-                              <td>{user.userId}</td>
-                              <td>{user.username}</td>
-                              <td>{user.email}</td>
-                              <td>{user.displayName}</td>
-                              <td>{user.status}</td>
-                              <td>
-                                <input type="checkbox" id={`chkSelect${i}`} value={user.userId} onClick={onCheckUser} />
-                              </td>
-                            </tr>
-                          )
-                        }
-                        return null
+                        return (
+                          <tr key={i}>
+                            <td className="text-right">{index}</td>
+                            <td>{user.userId}</td>
+                            <td>{user.username}</td>
+                            <td>{user.email}</td>
+                            <td>{user.displayName}</td>
+                            <td>{user.status}</td>
+                            <td>
+                              <input type="checkbox" id={`chkSelect${i}`} value={user.userId} onClick={onCheckUser} />
+                            </td>
+                          </tr>
+                        )
                       })}
                   </tbody>
                 </table>
               </div>
             )}
-            {component.view !== "table" && (
+            {state.view === "list" && (
               <ul className="row list">
-                {state &&
-                  list &&
+                {
                   list.map((user: any, i: number) => {
                     const result = users.find((v) => v.userId === user.userId)
                     if (!result) {

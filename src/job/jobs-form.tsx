@@ -16,6 +16,7 @@ import {
   PageChange,
   pageSizes,
   removeSortStatus,
+  resources,
   setSort,
   Sortable
 } from "react-hook-core"
@@ -42,7 +43,7 @@ export const JobsForm = () => {
 
   const now = new Date()
   const jobFilter: JobFilter = {
-    limit: 24,
+    limit: resources.defaultLimit,
     status: ["A"],
     q: "",
     publishedAt: {
