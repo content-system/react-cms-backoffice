@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import ReCAPTCHA from "react-google-recaptcha"
-import { OnClick, useMessage, useUpdate } from "react-hook-core"
+import { OnClick, updateState, useMessage } from "react-hook-core"
 import { Link } from "react-router-dom"
 import { isEmail, isValidUsername, Status, strongPassword, validate, validateAndSignup } from "signup-client"
 import { initForm, registerEvents } from "ui-plus"
@@ -25,16 +25,20 @@ interface User {
   confirmPassword: string
 }
 
+interface SignupState {
+  reCAPTCHA: string | null
+  passwordRequired: boolean
+}
+
+const initUser: User = {
+  username: "",
+  contact: "",
+  password: "",
+  confirmPassword: "",
+}
 const userData: SignupState = {
-  user: {
-    username: "",
-    contact: "",
-    password: "",
-    confirmPassword: "",
-  },
   reCAPTCHA: "",
   passwordRequired: true,
-  message: "",
 }
 
 const msgData = {
@@ -42,17 +46,14 @@ const msgData = {
   alertClass: "",
 }
 
-interface SignupState {
-  user: User
-  reCAPTCHA: string | null
-  passwordRequired: boolean
-  message: string
-}
+
 export const SignupForm = () => {
   const resource = useResource()
   const form = useRef<HTMLFormElement>(null)
   const { msg, showError, hideMessage } = useMessage(msgData)
-  const { state, setState, updateState } = useUpdate<SignupState>(userData, "user")
+  const [user, setUser] = useState<User>(initUser)
+  const [state, setState] = useState<SignupState>(userData)
+  //const { state, setState, updateState } = useUpdate<SignupState>(userData, "user")
 
   useEffect(() => {
     initForm(form.current, registerEvents)
@@ -61,17 +62,15 @@ export const SignupForm = () => {
   const signup = (e: OnClick) => {
     e.preventDefault()
     const signupService = getSignupService()
-    const { reCAPTCHA } = state
-    if (!reCAPTCHA) {
+    if (!state.reCAPTCHA) {
       showError(resource.error_captcha)
       return
     }
-    const { user, passwordRequired } = state
     validateAndSignup(
       signupService.signup,
       status,
       user,
-      passwordRequired,
+      state.passwordRequired,
       user.confirmPassword,
       resource,
       message,
@@ -87,7 +86,7 @@ export const SignupForm = () => {
   }
 
   const onChange = (value: string | null) => {
-    setState({ reCAPTCHA: value })
+    setState({ ...state, reCAPTCHA: value })
   }
 
   return (
@@ -106,11 +105,11 @@ export const SignupForm = () => {
               type="text"
               id="username"
               name="username"
-              value={state.user.username}
-              placeholder={resource.placeholder_username}
-              onChange={updateState}
-              maxLength={255}
+              value={user.username}
+              onChange={e => updateState(e, user, setUser)}
+              maxLength={120}
               required={true}
+              placeholder={resource.placeholder_username}
             />
           </label>
           <label className="col s12">
@@ -119,11 +118,11 @@ export const SignupForm = () => {
               type="text"
               id="contact"
               name="contact"
-              value={state.user.contact}
-              placeholder={resource.placeholder_email}
-              onChange={updateState}
+              value={user.contact}
+              onChange={e => updateState(e, user, setUser)}
               maxLength={255}
               required={true}
+              placeholder={resource.placeholder_email}
             />
           </label>
           <label className="col s12" hidden={!state.passwordRequired}>
@@ -132,10 +131,10 @@ export const SignupForm = () => {
               type="password"
               id="password"
               name="password"
-              value={state.user.password}
+              value={user.password}
+              onChange={e => updateState(e, user, setUser)}
+              maxLength={100}
               placeholder={resource.placeholder_password}
-              onChange={updateState}
-              maxLength={255}
             />
           </label>
           <label className="col s12" hidden={!state.passwordRequired}>
@@ -144,9 +143,9 @@ export const SignupForm = () => {
               type="password"
               id="confirmPassword"
               name="confirmPassword"
+              onChange={e => updateState(e, user, setUser)}
+              maxLength={100}
               placeholder={resource.placeholder_confirm_password}
-              onChange={updateState}
-              maxLength={255}
             />
           </label>
           <div style={{ marginTop: "10px" }}>

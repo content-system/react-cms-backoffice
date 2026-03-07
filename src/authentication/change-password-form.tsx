@@ -1,6 +1,6 @@
 import { strongPassword, validateAndChangePassword, validateChange } from "password-client"
 import { useEffect, useRef, useState } from "react"
-import { OnClick, useMessage, useUpdate } from "react-hook-core"
+import { OnClick, updateState, useMessage } from "react-hook-core"
 import { Link } from "react-router-dom"
 import { initForm, registerEvents } from "ui-plus"
 import { handleError, loading, message, useResource } from "uione"
@@ -8,7 +8,6 @@ import logo from "../assets/images/logo.png"
 import { getPasswordService } from "./service"
 
 export interface ChangePasswordState {
-  user: User
   hiddenPasscode: boolean
   message: string
 }
@@ -23,16 +22,12 @@ interface User {
   currentPassword: string
 }
 
-const ChangePasswordData: ChangePasswordState = {
-  user: {
-    username: "",
-    currentPassword: "",
-    password: "",
-    passcode: "",
-    confirmPassword: "",
-  },
-  message: "",
-  hiddenPasscode: true,
+const initUser: User = {
+  username: "",
+  currentPassword: "",
+  password: "",
+  passcode: "",
+  confirmPassword: "",
 }
 
 const msgData = {
@@ -44,7 +39,8 @@ export const ChangePasswordForm = () => {
   const resource = useResource()
   const form = useRef<HTMLFormElement>(null)
   const { msg, showError, hideMessage } = useMessage(msgData)
-  const { state, setState, updateState } = useUpdate<ChangePasswordState>(ChangePasswordData, "user")
+  const [user, setUser] = useState<User>(initUser)
+
   useEffect(() => {
     initForm(form.current, registerEvents)
   }, [])
@@ -52,11 +48,10 @@ export const ChangePasswordForm = () => {
   const changePassword = (e: OnClick) => {
     e.preventDefault()
     const passwordService = getPasswordService()
-    const user = state.user
     validateAndChangePassword(
       passwordService.changePassword,
       user,
-      state.user.confirmPassword,
+      user.confirmPassword,
       resource,
       message,
       showError,
@@ -66,14 +61,14 @@ export const ChangePasswordForm = () => {
       strongPassword,
       loading(),
     )
-    setState({ ...state, user })
+    setUser(user)
   }
 
-  const [hiddenPasscode, setHiddenPasscode] = useState(!(state.user.step && state.user.step >= 1))
+  const [hiddenPasscode, setHiddenPasscode] = useState(!(user.step && user.step >= 1))
 
   useEffect(() => {
-    setHiddenPasscode(!(state.user.step && state.user.step >= 1))
-  }, [state.user])
+    setHiddenPasscode(!(user.step && user.step >= 1))
+  }, [user])
 
   return (
     <div className="central-full">
@@ -91,9 +86,9 @@ export const ChangePasswordForm = () => {
               type="text"
               id="username"
               name="username"
-              value={state.user.username}
-              onChange={updateState}
-              maxLength={255}
+              value={user.username}
+              onChange={e => updateState(e, user, setUser)}
+              maxLength={120}
               placeholder={resource.placeholder_username}
             />
           </label>
@@ -104,9 +99,9 @@ export const ChangePasswordForm = () => {
               className="form-control"
               id="currentPassword"
               name="currentPassword"
-              value={state.user.currentPassword}
-              onChange={updateState}
-              maxLength={255}
+              value={user.currentPassword}
+              onChange={e => updateState(e, user, setUser)}
+              maxLength={100}
               placeholder={resource.placeholder_current_password}
             />
           </label>
@@ -117,9 +112,9 @@ export const ChangePasswordForm = () => {
               className="form-control"
               id="password"
               name="password"
-              value={state.user.password}
-              onChange={updateState}
-              maxLength={255}
+              value={user.password}
+              onChange={e => updateState(e, user, setUser)}
+              maxLength={100}
               placeholder={resource.placeholder_new_password}
             />
           </label>
@@ -130,9 +125,9 @@ export const ChangePasswordForm = () => {
               className="form-control"
               id="confirmPassword"
               name="confirmPassword"
-              value={state.user.confirmPassword}
-              onChange={updateState}
-              maxLength={255}
+              value={user.confirmPassword}
+              onChange={e => updateState(e, user, setUser)}
+              maxLength={100}
               placeholder={resource.placeholder_confirm_password}
             />
           </label>
@@ -143,8 +138,8 @@ export const ChangePasswordForm = () => {
               className="form-control"
               id="passcode"
               name="passcode"
-              value={state.user.passcode}
-              onChange={updateState}
+              value={user.passcode}
+              onChange={e => updateState(e, user, setUser)}
               maxLength={255}
               placeholder={resource.placeholder_passcode}
             />

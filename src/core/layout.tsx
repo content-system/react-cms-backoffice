@@ -1,7 +1,7 @@
 import axios from "axios"
 import { HttpRequest } from "axios-core"
 import { ChangeEvent, useEffect, useState } from "react"
-import { OnClick, useMergeState } from "react-hook-core"
+import { OnClick } from "react-hook-core"
 import { useNavigate } from "react-router"
 import { Link, Outlet, useLocation, useSearchParams } from "react-router-dom"
 import { collapseAll, expandAll, Nav, sub } from "reactx-nav"
@@ -116,7 +116,7 @@ export const LayoutPage = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const [searchParams] = useSearchParams()
-  const [state, setState] = useMergeState<InternalState>(initialState)
+  const [state, setState] = useState<InternalState>(initialState)
   const [topClass, setTopClass] = useState("")
   const loginUser = useUser()
   const [user, setUser] = useState(loginUser)
@@ -130,17 +130,17 @@ export const LayoutPage = () => {
         }
       }
     }
-    setState({ items })
+    setState({ ...state, items })
 
     const username = getUsername()
     const userType = getUserType()
     if (username || userType) {
-      setState({ username, userType })
+      setState({ ...state, username, userType })
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const clearQ = () => {
-    setState({ keyword: "" })
+    setState({ ...state, keyword: "" })
     navigate(`home?q=`)
   }
   const search = (e: OnClick) => {
@@ -148,22 +148,22 @@ export const LayoutPage = () => {
   }
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     const v = e.target.value
-    setState({ keyword: v })
+    setState({ ...state, keyword: v })
     navigate(`home?q=${v}`)
   }
   const toggleSearch = () => {
-    setState({ isToggleSearch: !state.isToggleSearch })
+    setState({ ...state, isToggleSearch: !state.isToggleSearch })
   }
 
   const toggleMenu = (e: OnClick) => {
-    setState({ isToggleMenu: !state.isToggleMenu })
+    setState({ ...state, isToggleMenu: !state.isToggleMenu })
   }
 
   function toggleProfile() {
     if (!user) {
       navigate("/signin")
     } else {
-      setState({ showProfile: state.showProfile === "show" ? "" : "show" })
+      setState({ ...state, showProfile: state.showProfile === "show" ? "" : "show" })
     }
   }
   const changeClassicMenu = () => {
@@ -171,10 +171,10 @@ export const LayoutPage = () => {
     if (body) {
       if (body.classList.contains("classic")) {
         body.classList.remove("classic")
-        setState({ classicMenu: true })
+        setState({ ...state, classicMenu: true })
       } else {
         body.classList.add("classic")
-        setState({ classicMenu: false })
+        setState({ ...state, classicMenu: false })
       }
     }
   }
@@ -183,10 +183,10 @@ export const LayoutPage = () => {
     if (body) {
       if (body.classList.contains("top-menu")) {
         body.classList.remove("top-menu")
-        setState({ isMenu: true })
+        setState({ ...state, isMenu: true })
       } else {
         body.classList.add("top-menu")
-        setState({ isMenu: false })
+        setState({ ...state, isMenu: false })
       }
     }
   }
@@ -197,10 +197,10 @@ export const LayoutPage = () => {
       if (parent) {
         if (parent.classList.contains("dark")) {
           parent.classList.remove("dark")
-          setState({ darkMode: false })
+          setState({ ...state, darkMode: false })
         } else {
           parent.classList.add("dark")
-          setState({ darkMode: true })
+          setState({ ...state, darkMode: true })
         }
       }
     }
@@ -212,10 +212,10 @@ export const LayoutPage = () => {
       if (parent) {
         if (parent.classList.contains("grey")) {
           parent.classList.remove("grey")
-          setState({ darkMode: false })
+          setState({ ...state, darkMode: false })
         } else {
           parent.classList.add("grey")
-          setState({ darkMode: true })
+          setState({ ...state, darkMode: true })
         }
       }
     }
@@ -240,20 +240,20 @@ export const LayoutPage = () => {
       pinnedItems.push(removedItem[0])
       items.sort((moduleA, moduleB) => sub(moduleA.sequence, moduleB.sequence))
       pinnedItems.sort((moduleA, moduleB) => sub(moduleA.sequence, moduleB.sequence))
-      setState({ items: items, pinnedItems: pinnedItems })
+      setState({ ...state, items: items, pinnedItems: pinnedItems })
     } else {
       const removedModule = pinnedItems.splice(index, 1)
       items.push(removedModule[0])
       items.sort((moduleA, moduleB) => sub(moduleA.sequence, moduleB.sequence))
       pinnedItems.sort((moduleA, moduleB) => sub(moduleA.sequence, moduleB.sequence))
-      setState({ items: items, pinnedItems: pinnedItems })
+      setState({ ...state, items: items, pinnedItems: pinnedItems })
     }
   }
   useEffect(() => {
     setUser(loginUser)
   }, [loginUser])
   useEffect(() => {
-    setState({ keyword: searchParams.get("q") as string }) // eslint-disable-next-line react-hooks/exhaustive-deps
+    setState({ ...state, keyword: searchParams.get("q") as string }) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams])
   useEffect(() => {
     const { isToggleMenu, isToggleSearch } = state

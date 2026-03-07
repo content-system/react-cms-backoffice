@@ -64,10 +64,10 @@ export const RolesForm = () => {
     search(true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const sort = (event: ButtonMouseEvent) => onSort(event, search, state)
-  const pageSizeChanged = (event: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(event, search, filter, setFilter)
+  const sort = (e: ButtonMouseEvent) => onSort(e, search, state)
+  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter, setFilter)
   const pageChanged = (data: PageChange) => onPageChanged(data, search, filter, setFilter)
-  const searchOnClick = (event: ButtonMouseEvent) => onSearch(event, search, filter, state, setFilter, setState)
+  const searchOnClick = (e: ButtonMouseEvent) => onSearch(e, search, filter, state, setFilter, setState)
 
   const search = (isFirstLoad?: boolean) => {
     showLoading()
