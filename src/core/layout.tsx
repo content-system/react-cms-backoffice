@@ -5,7 +5,7 @@ import { OnClick } from "react-hook-core"
 import { useNavigate } from "react-router"
 import { Link, Outlet, useLocation, useSearchParams } from "react-router-dom"
 import { collapseAll, expandAll, Nav, sub } from "reactx-nav"
-import { getPrivileges, getUsername, getUserType, hasClass, options, parentHasClass, Privilege, storage, StringMap, useResource, useUser } from "uione"
+import { getPrivileges, getUsername, hasClass, options, parentHasClass, Privilege, storage, StringMap, useResource, useUser } from "uione"
 import logo from "../assets/images/logo.png"
 import "./layout.css"
 
@@ -17,10 +17,6 @@ interface InternalState {
   darkMode?: boolean
   keyword: string
   showProfile: string
-  items: Privilege[]
-  username?: string
-  userType?: string
-  pinnedItems: Privilege[]
 }
 let sysBody: HTMLElement | null | undefined
 function getBody(): HTMLElement | null | undefined {
@@ -106,10 +102,6 @@ const initialState: InternalState = {
   darkMode: false,
   keyword: "",
   showProfile: "",
-  items: [],
-  username: "",
-  userType: "",
-  pinnedItems: [],
 }
 export const LayoutPage = () => {
   const resource = useResource()
@@ -117,11 +109,16 @@ export const LayoutPage = () => {
   const location = useLocation()
   const [searchParams] = useSearchParams()
   const [state, setState] = useState<InternalState>(initialState)
+  const [items, setItems] = useState<Privilege[]>([])
+  const [pinnedItems, setPinnedItems] = useState<Privilege[]>([])
+  const [username, setUsername] = useState<string>()
   const [topClass, setTopClass] = useState("")
   const loginUser = useUser()
   const [user, setUser] = useState(loginUser)
 
   useEffect(() => {
+    const username = getUsername()
+    setUsername(username)
     const items = getPrivileges()
     if (items && items.length > 0) {
       for (let i = 0; i <= items.length; i++) {
@@ -130,14 +127,8 @@ export const LayoutPage = () => {
         }
       }
     }
-    setState({ ...state, items })
-
-    const username = getUsername()
-    const userType = getUserType()
-    if (username || userType) {
-      setState({ ...state, username, userType })
-    }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    setItems(items)
+  }, [username]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const clearQ = () => {
     setState({ ...state, keyword: "" })
@@ -234,20 +225,19 @@ export const LayoutPage = () => {
 
   const pin = (e: OnClick, index: number, item: Privilege) => {
     e.stopPropagation()
-    const { items, pinnedItems } = state
     if (items.find((i) => i === item)) {
       const removedItem = items.splice(index, 1)
       pinnedItems.push(removedItem[0])
       items.sort((moduleA, moduleB) => sub(moduleA.sequence, moduleB.sequence))
       pinnedItems.sort((moduleA, moduleB) => sub(moduleA.sequence, moduleB.sequence))
-      setState({ ...state, items: items, pinnedItems: pinnedItems })
     } else {
       const removedModule = pinnedItems.splice(index, 1)
       items.push(removedModule[0])
       items.sort((moduleA, moduleB) => sub(moduleA.sequence, moduleB.sequence))
       pinnedItems.sort((moduleA, moduleB) => sub(moduleA.sequence, moduleB.sequence))
-      setState({ ...state, items: items, pinnedItems: pinnedItems })
     }
+    setItems([...items])
+    setPinnedItems([...pinnedItems])
   }
   useEffect(() => {
     setUser(loginUser)
@@ -280,8 +270,8 @@ export const LayoutPage = () => {
           className="expanded-all"
           iconClass="material-icons"
           path={location.pathname}
-          pins={state.pinnedItems}
-          items={state.items}
+          pins={pinnedItems}
+          items={items}
           resource={resource}
           pin={pin}
           toggle={toggleMenu}
@@ -362,7 +352,7 @@ export const LayoutPage = () => {
                       <hr style={{ margin: 0 }} />
                       <li>
                         <i className="material-icons">account_circle</i>
-                        <Link to={"settings"}>{state.username}</Link>
+                        <Link to={"settings"}>{username}</Link>
                       </li>
                       {/*<li><i className='material-icons'>settings</i><Link to={'my-profile/settings'}>{resource.my_settings}</Link></li>*/}
                       <hr style={{ margin: 0 }} />
