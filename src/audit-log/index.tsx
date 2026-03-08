@@ -111,7 +111,7 @@ export const AuditLogsForm = () => {
         </div>
       </header>
       <div className="search-body">
-        <form id="rolesForm" name="rolesForm" className="form" noValidate={true} ref={refForm as any}>
+        <form id="rolesForm" name="rolesForm" className="form" noValidate={true} ref={refForm}>
           <section className="row section">
             <label className="col s12 m2 l4">
               {resource.action}
@@ -179,7 +179,7 @@ export const AuditLogsForm = () => {
         <form className="list-result">
           {state.view !== "list" && (
             <div className="table-responsive">
-              <table>
+              <table className="table">
                 <thead>
                   <tr>
                     <th>{resource.number}</th>

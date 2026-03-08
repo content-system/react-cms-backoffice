@@ -1,10 +1,9 @@
-import { Result } from "onecore"
 import { ChangeEvent, useEffect, useRef, useState } from "react"
-import { clone, isEmptyObject, isSuccessful, makeDiff, OnClick } from "react-hook-core"
+import { clone, formatText, isEmptyObject, isSuccessful, makeDiff, onBack, OnClick } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
-import { initForm, patternOnBlur, registerEvents, setReadOnly, showFormError, validateForm } from "ui-plus"
+import { addError, initForm, patternOnBlur, registerEvents, setReadOnly, showFormError, validateForm } from "ui-plus"
 import { getLocale, handleError, hasPermission, Status, useResource, write } from "uione"
 import { getRoleService, Privilege, Role } from "./service"
 import "./style.css"
@@ -574,15 +573,7 @@ export function RoleForm() {
     role.status = e.target.value
     setState({ ...state, role })
   }
-  const back = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    e.preventDefault()
-    const diff = makeDiff(initialRole, role)
-    if (isEmptyObject(diff)) {
-      navigate(-1)
-    } else {
-      confirm(resource.msg_confirm_back, () => navigate(-1))
-    }
-  }
+  const back = (e: OnClick) => onBack(e, navigate, confirm, resource, initialRole, role)
   const deleteOnClick = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.preventDefault()
     confirm(resource.msg_confirm_delete, () => {
@@ -608,7 +599,25 @@ export function RoleForm() {
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
       const service = getRoleService()
-      if (!newMode) {
+      if (newMode) {
+        confirm(resource.msg_confirm_save, () => {
+          showLoading()
+          service
+            .create(role)
+            .then((res) => {
+              if (Array.isArray(res)) {
+                showFormError(refForm?.current, res)
+              } else if (isSuccessful(res)) {
+                alertSuccess(resource.msg_save_success, () => navigate(-1))
+              } else {
+                const msg = formatText(resource.error_duplicated, resource.role_id)
+                addError(refForm?.current as HTMLFormElement, "roleId", msg)
+              }
+            })
+            .catch(handleError)
+            .finally(hideLoading)
+        })
+      } else {
         const diff = makeDiff(initialRole, role, ["roleId"])
         if (isEmptyObject(diff)) {
           return alertWarning(resource.msg_no_change)
@@ -616,36 +625,25 @@ export function RoleForm() {
         confirm(resource.msg_confirm_save, () => {
           showLoading()
           service
-            .patch(role)
-            .then((res) => afterSaved(res))
-            .catch(handleError)
-            .finally(hideLoading)
-        })
-      } else {
-        confirm(resource.msg_confirm_save, () => {
-          showLoading()
-          service
-            .create(role)
-            .then((res) => afterSaved(res))
+            .patch(diff)
+            .then((res) => {
+              if (Array.isArray(res)) {
+                showFormError(refForm?.current, res)
+              } else if (isSuccessful(res)) {
+                alertSuccess(resource.msg_save_success, () => navigate(-1))
+              } else {
+                alertError(resource.error_not_found)
+              }
+            })
             .catch(handleError)
             .finally(hideLoading)
         })
       }
     }
   }
-  const afterSaved = (res: Result<Role>) => {
-    if (Array.isArray(res)) {
-      showFormError(refForm?.current, res)
-    } else if (isSuccessful(res)) {
-      alertSuccess(resource.msg_save_success, () => navigate(-1))
-    } else if (res === 0) {
-      alertError(resource.error_not_found)
-    } else {
-      alertError(resource.error_conflict)
-    }
-  }
+
   return (
-    <form id="roleForm" name="roleForm" className="form" model-name="role" ref={refForm as any}>
+    <form id="roleForm" name="roleForm" className="form" ref={refForm}>
       <header>
         <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
         <h2>{resource.role}</h2>
@@ -664,7 +662,7 @@ export function RoleForm() {
               type="text"
               id="roleId"
               name="roleId"
-              value={role.roleId || ""}
+              value={role.roleId}
               onBlur={patternOnBlur}
               pattern={regexId}
               config-pattern-error-key={"invalid_pattern_id"}
@@ -684,12 +682,12 @@ export function RoleForm() {
               type="text"
               id="roleName"
               name="roleName"
-              value={role.roleName || ""}
+              value={role.roleName}
               onChange={(e) => {
                 role.roleName = e.target.value
                 setState({ ...state, role })
               }}
-              maxLength={255}
+              maxLength={100}
               required={true}
               placeholder={resource.role_name}
             />
@@ -705,7 +703,7 @@ export function RoleForm() {
                 role.remark = e.target.value
                 setState({ ...state, role })
               }}
-              maxLength={255}
+              maxLength={100}
               placeholder={resource.remark}
             />
           </label>

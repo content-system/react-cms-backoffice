@@ -1,11 +1,10 @@
 import { Item } from "onecore"
-import { ChangeEvent, useEffect, useRef, useState } from "react"
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
 import {
   addParametersIntoUrl,
   buildFromUrl,
   buildMessage,
   buildSortFilter,
-  ButtonMouseEvent,
   checked,
   getFields,
   getOffset,
@@ -41,6 +40,7 @@ interface UserSearch extends Sortable {
 }
 
 const sizes = pageSizes
+export type ReactMouseEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>
 export const UsersForm = () => {
   const canWrite = hasPermission(Permission.write)
 
@@ -61,15 +61,15 @@ export const UsersForm = () => {
 
   useEffect(() => {
     const initFilter = mergeFilter(buildFromUrl<UserFilter>(), filter, sizes, ["status"])
-    setSort(state, filter.sort)
+    setSort(state, initFilter.sort)
     setFilter(initFilter)
     search(true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const sort = (e: ButtonMouseEvent) => onSort(e, search, state)
+  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, search, state)
   const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter, setFilter)
   const pageChanged = (data: PageChange) => onPageChanged(data, search, filter, setFilter)
-  const searchOnClick = (e: ButtonMouseEvent) => onSearch(e, search, filter, state, setFilter, setState)
+  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, search, filter, state, setFilter, setState)
 
   const search = (isFirstLoad?: boolean) => {
     showLoading()
@@ -77,7 +77,7 @@ export const UsersForm = () => {
     addParametersIntoUrl(urlFilter, isFirstLoad)
     const fields = getFields(refForm.current, state.fields)
     setFilter(filter)
-    const { limit, page } = filter
+    const { limit, page } = urlFilter
     getUserService()
       .search({ ...filter }, limit, page, fields)
       .then((res) => {
@@ -105,7 +105,7 @@ export const UsersForm = () => {
         </div>
       </header>
       <div className="search-body">
-        <form id="usersForm" name="usersForm" className="form" noValidate={true} ref={refForm as any}>
+        <form id="usersForm" name="usersForm" className="form" noValidate={true} ref={refForm}>
           <section className="row search-group">
             <label className="col s12 m6 search-input">
               <select id="limit" name="limit" onChange={pageSizeChanged} defaultValue={filter.limit}>
@@ -117,7 +117,7 @@ export const UsersForm = () => {
                   )
                 })}
               </select>
-              <input type="text" id="q" name="q" value={filter.q} maxLength={100} onChange={(e) => updateState(e, filter, setFilter)} placeholder={resource.keyword} />
+              <input type="text" id="q" name="q" value={filter.q} maxLength={80} onChange={(e) => updateState(e, filter, setFilter)} placeholder={resource.keyword} />
               <button type="button" hidden={!filter.q} className="btn-remove-text" onClick={(e) => onClearQ(filter, setFilter)} />
               <button type="button" className="btn-filter" onClick={(e) => onToggleSearch(e, showFilter, setShowFilter)} />
               <button type="submit" className="btn-search" onClick={searchOnClick} />
@@ -125,30 +125,6 @@ export const UsersForm = () => {
             <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
           </section>
           <section className="row search-group inline" hidden={!showFilter}>
-            <label className="col s12 m4 l4">
-              {resource.username}
-              <input
-                type="text"
-                id="username"
-                name="username"
-                value={filter.username || ""}
-                onChange={(e) => updateState(e, filter, setFilter)}
-                maxLength={255}
-                placeholder={resource.username}
-              />
-            </label>
-            <label className="col s12 m4 l4">
-              {resource.display_name}
-              <input
-                type="text"
-                id="displayName"
-                name="displayName"
-                value={filter.displayName || ""}
-                onChange={(e) => updateState(e, filter, setFilter)}
-                maxLength={255}
-                placeholder={resource.display_name}
-              />
-            </label>
             <label className="col s12 m4 l4 checkbox-section">
               {resource.status}
               <section className="checkbox-group">
@@ -195,7 +171,6 @@ export const UsersForm = () => {
                       {resource.status}
                     </button>
                   </th>
-                  <th className="action">{resource.action}</th>
                 </tr>
               </thead>
               <tbody>
@@ -210,12 +185,6 @@ export const UsersForm = () => {
                       <td>{user.email}</td>
                       <td>{user.displayName}</td>
                       <td>{getStatusName(user.status, resource)}</td>
-                      <td>
-                        <div className="btn-group">
-                          <button type="button" className="btn-edit"></button>
-                          <button type="button" className="btn-history"></button>
-                        </div>
-                      </td>
                     </tr>
                   )
                 })}

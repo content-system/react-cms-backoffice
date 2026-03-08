@@ -42,7 +42,7 @@ export const ForgotPasswordForm = () => {
 
   return (
     <div className="central-full">
-      <form id="forgotPasswordForm" name="forgotPasswordForm" className="form" noValidate={true} autoComplete="off" ref={form as any}>
+      <form id="forgotPasswordForm" name="forgotPasswordForm" className="form" noValidate={true} autoComplete="off" ref={form}>
         <div className="view-body row">
           <img className="logo" src={logo} alt="logo" />
           <h2>{resource.forgot_password}</h2>

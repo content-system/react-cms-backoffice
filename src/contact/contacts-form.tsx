@@ -1,22 +1,25 @@
 import { Item } from "onecore"
-import { ChangeEvent, useEffect, useRef, useState } from "react"
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
 import {
   addParametersIntoUrl,
   buildFromUrl,
   buildMessage,
   buildSortFilter,
   getFields,
-  getNumber,
   getOffset,
-  handleToggle,
   mergeFilter,
+  onClearQ,
+  onPageChanged,
+  onPageSizeChanged,
+  onSearch,
   onSort,
+  onToggleSearch,
   PageChange,
   pageSizes,
-  removeSortStatus,
   resources,
   setSort,
-  Sortable
+  Sortable,
+  updateState
 } from "react-hook-core"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
@@ -27,7 +30,6 @@ import { Contact, ContactFilter, getContactService } from "./service"
 
 interface ContactSearch extends Sortable {
   statusList: Item[]
-  list: Contact[]
   total?: number
   view?: string
   fields?: string[]
@@ -39,19 +41,17 @@ export const ContactsForm = () => {
 
   const contactFilter: ContactFilter = {
     limit: resources.defaultLimit,
-    name: "",
-    email: "",
   }
   const initialState: ContactSearch = {
     statusList: [],
-    list: [],
   }
 
   const resource = useResource()
   const refForm = useRef<HTMLFormElement>(null)
+  const [showFilter, setShowFilter] = useState<boolean>(false)
   const [state, setState] = useState<ContactSearch>(initialState)
   const [filter, setFilter] = useState<ContactFilter>(contactFilter)
-  const [showFilter, setShowFilter] = useState<boolean>(false)
+  const [list, setList] = useState<Contact[]>([])
 
   useEffect(() => {
     const initFilter = mergeFilter(buildFromUrl<ContactFilter>(), filter, sizes, ["status", "contactType"])
@@ -60,48 +60,29 @@ export const ContactsForm = () => {
     search(true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const sort = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => onSort(e, search, state)
-  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => {
-    filter.page = 1
-    filter.limit = getNumber(e)
-    setFilter(filter)
-    search()
-  }
-  const pageChanged = (data: PageChange) => {
-    const { page, size } = data
-    filter.page = page
-    filter.limit = size
-    setFilter(filter)
-    search()
-  }
-  const searchOnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-    e.preventDefault()
-    removeSortStatus(state.sortTarget)
-    filter.page = 1
-    state.sortTarget = undefined
-    state.sortField = undefined
-    setFilter(filter)
-    setState(state)
-    search()
-  }
+  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, search, state)
+  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter, setFilter)
+  const pageChanged = (data: PageChange) => onPageChanged(data, search, filter, setFilter)
+  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, search, filter, state, setFilter, setState)
 
   const search = (isFirstLoad?: boolean) => {
     showLoading()
     const urlFilter = buildSortFilter(filter, state)
     addParametersIntoUrl(urlFilter, isFirstLoad)
     const fields = getFields(refForm.current, state.fields)
-    const { limit, page } = filter
+    setFilter(filter)
+    const { limit, page } = urlFilter
     getContactService()
       .search({ ...filter }, limit, page, fields)
       .then((res) => {
-        setState({ ...state, list: res.list, total: res.total, fields })
+        setState({ ...state, total: res.total, fields })
+        setList(res.list)
         toast(buildMessage(resource, res.list, limit, page, res.total))
       })
       .catch(handleError)
       .finally(hideLoading)
   }
 
-  const { list } = state
   const offset = getOffset(filter.limit, filter.page)
   return (
     <div>
@@ -130,35 +111,9 @@ export const ContactsForm = () => {
                   )
                 })}
               </select>
-              <input
-                type="text"
-                id="q"
-                name="q"
-                value={filter.q || ""}
-                maxLength={255}
-                onChange={(e) => {
-                  filter.q = e.target.value
-                  setFilter({ ...filter })
-                }}
-                placeholder={resource.keyword}
-              />
-              <button
-                type="button"
-                hidden={!filter.q}
-                className="btn-remove-text"
-                onClick={(e) => {
-                  filter.q = ""
-                  setFilter({ ...filter })
-                }}
-              />
-              <button
-                type="button"
-                className="btn-filter"
-                onClick={(e) => {
-                  const toggleFilter = handleToggle(e.target as HTMLElement, showFilter)
-                  setShowFilter(toggleFilter)
-                }}
-              />
+              <input type="text" id="q" name="q" value={filter.q} maxLength={80} onChange={(e) => updateState(e, filter, setFilter)} placeholder={resource.keyword} />
+              <button type="button" hidden={!filter.q} className="btn-remove-text" onClick={(e) => onClearQ(filter, setFilter)} />
+              <button type="button" className="btn-filter" onClick={(e) => onToggleSearch(e, showFilter, setShowFilter)} />
               <button type="submit" className="btn-search" onClick={searchOnClick} />
             </label>
             <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />

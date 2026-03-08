@@ -1,11 +1,10 @@
 import { Item } from "onecore"
-import { ChangeEvent, useEffect, useRef, useState } from "react"
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
 import {
   addParametersIntoUrl,
   buildFromUrl,
   buildMessage,
   buildSortFilter,
-  ButtonMouseEvent,
   checked,
   datetimeToString,
   getFields,
@@ -35,7 +34,6 @@ import { getJobService, Job, JobFilter } from "./service"
 
 interface JobSearch extends Sortable {
   statusList: Item[]
-  list: Job[]
   total?: number
   view?: string
   fields?: string[]
@@ -50,33 +48,32 @@ export const JobsForm = () => {
   const jobFilter: JobFilter = {
     limit: resources.defaultLimit,
     status: ["A"],
-    q: "",
     publishedAt: {
       max: addSeconds(now, 300),
     },
   }
   const initialState: JobSearch = {
     statusList: [],
-    list: [],
   }
 
   const resource = useResource()
   const refForm = useRef<HTMLFormElement>(null)
+  const [showFilter, setShowFilter] = useState<boolean>(false)
   const [state, setState] = useState<JobSearch>(initialState)
   const [filter, setFilter] = useState<JobFilter>(jobFilter)
-  const [showFilter, setShowFilter] = useState<boolean>(false)
+  const [list, setList] = useState<Job[]>([])
 
   useEffect(() => {
-    const initFilter = mergeFilter(buildFromUrl<JobFilter>(), filter, sizes, ["status", "jobType"])
+    const initFilter = mergeFilter(buildFromUrl<JobFilter>(), filter, sizes, ["status"])
     setSort(state, initFilter.sort)
     setFilter(initFilter)
     search(true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const sort = (e: ButtonMouseEvent) => onSort(e, search, state)
+  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, search, state)
   const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter, setFilter)
   const pageChanged = (data: PageChange) => onPageChanged(data, search, filter, setFilter)
-  const searchOnClick = (e: ButtonMouseEvent) => onSearch(e, search, filter, state, setFilter, setState)
+  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, search, filter, state, setFilter, setState)
 
   const search = (isFirstLoad?: boolean) => {
     showLoading()
@@ -88,14 +85,14 @@ export const JobsForm = () => {
     getJobService()
       .search({ ...filter }, limit, page, fields)
       .then((res) => {
-        setState({ ...state, list: res.list, total: res.total, fields })
+        setState({ ...state, total: res.total, fields })
+        setList(res.list)
         toast(buildMessage(resource, res.list, limit, page, res.total))
       })
       .catch(handleError)
       .finally(hideLoading)
   }
 
-  const { list } = state
   const offset = getOffset(filter.limit, filter.page)
   return (
     <div>
@@ -247,48 +244,44 @@ export const JobsForm = () => {
                 </tr>
               </thead>
               <tbody>
-                {list &&
-                  list.length > 0 &&
-                  list.map((item, i) => {
-                    return (
-                      <tr key={i}>
-                        <td className="text-right">{offset + i + 1}</td>
-                        <td>{item.id}</td>
-                        <td>
-                          <Link to={`${item.id}`}>{item.title}</Link>
-                        </td>
-                        <td>{formatDateTime(item.publishedAt, dateFormat)}</td>
-                        <td>{item.position}</td>
-                        <td className="text-right">{item.quantity}</td>
-                        <td>{item.location}</td>
-                        <td>
-                          <div className="btn-group">
-                            <button type="button" className="btn-edit"></button>
-                            <button type="button" className="btn-history"></button>
-                          </div>
-                        </td>
-                      </tr>
-                    )
-                  })}
+                {list.map((item, i) => {
+                  return (
+                    <tr key={i}>
+                      <td className="text-right">{offset + i + 1}</td>
+                      <td>{item.id}</td>
+                      <td>
+                        <Link to={`${item.id}`}>{item.title}</Link>
+                      </td>
+                      <td>{formatDateTime(item.publishedAt, dateFormat)}</td>
+                      <td>{item.position}</td>
+                      <td className="text-right">{item.quantity}</td>
+                      <td>{item.location}</td>
+                      <td>
+                        <div className="btn-group">
+                          <button type="button" className="btn-edit"></button>
+                          <button type="button" className="btn-history"></button>
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           </div>
         )}
         {state.view === "list" && (
           <ul className="row list">
-            {state.list &&
-              state.list.length > 0 &&
-              state.list.map((item, i) => {
-                return (
-                  <li key={i} className="col s12 m6 l4 xl3 list-item">
-                    <Link to={`${item.id}`}>{item.title}</Link>
-                    <p>
-                      {item.location} {item.quantity}
-                      <span>{formatDateTime(item.publishedAt, dateFormat)}</span>
-                    </p>
-                  </li>
-                )
-              })}
+            {list.map((item, i) => {
+              return (
+                <li key={i} className="col s12 m6 l4 xl3 list-item">
+                  <Link to={`${item.id}`}>{item.title}</Link>
+                  <p>
+                    {item.location} {item.quantity}
+                    <span>{formatDateTime(item.publishedAt, dateFormat)}</span>
+                  </p>
+                </li>
+              )
+            })}
           </ul>
         )}
       </div>

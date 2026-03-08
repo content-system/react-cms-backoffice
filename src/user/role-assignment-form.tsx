@@ -103,7 +103,7 @@ export const RoleAssignmentForm = () => {
     navigate(-1)
   }
   return (
-    <form id="roleAssignmentForm" name="roleAssignmentForm" className="form" model-name="role">
+    <form id="roleAssignmentForm" name="roleAssignmentForm" className="form">
       <header>
         <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
         <h2>{resource.role_assignment_subject}</h2>

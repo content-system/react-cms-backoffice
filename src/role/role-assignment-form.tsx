@@ -153,7 +153,7 @@ export const RoleAssignmentForm = () => {
   }
   return (
     <div className="view-container">
-      <form id="roleAssignmentForm" name="roleAssignmentForm" className="form" model-name="role">
+      <form id="roleAssignmentForm" name="roleAssignmentForm" className="form">
         <header className="view-header">
           <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
           <h2>{role.roleName && role.roleName.length > 0 ? role.roleName : resource.role_assignment_subject}</h2>

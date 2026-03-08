@@ -52,7 +52,7 @@ export const ResetPasswordForm = () => {
 
   return (
     <div className="central-full">
-      <form id="userForm" name="userForm" className="form" noValidate={true} autoComplete="off" ref={form as any} model-name="user">
+      <form id="userForm" name="userForm" className="form" noValidate={true} autoComplete="off" ref={form}>
         <div className="view-body row">
           <img className="logo" src={logo} alt="logo" />
           <h2>{resource.reset_password}</h2>

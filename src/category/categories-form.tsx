@@ -54,9 +54,10 @@ export const CategoriesForm = () => {
 
   const resource = useResource()
   const refForm = useRef<HTMLFormElement>(null)
+  const [showFilter, setShowFilter] = useState<boolean>(false)
   const [state, setState] = useState<CategorySearch>(initialState)
   const [filter, setFilter] = useState<CategoryFilter>(categoryFilter)
-  const [showFilter, setShowFilter] = useState<boolean>(false)
+  const [list, setList] = useState<Category[]>([])
 
   useEffect(() => {
     const initFilter = mergeFilter(buildFromUrl<CategoryFilter>(), filter, sizes, ["status"])
@@ -75,18 +76,19 @@ export const CategoriesForm = () => {
     const urlFilter = buildSortFilter(filter, state)
     addParametersIntoUrl(urlFilter, isFirstLoad)
     const fields = getFields(refForm.current, state.fields)
+    setFilter(filter)
     const { limit, page } = filter
     getCategoryService()
       .search({ ...filter }, limit, page, fields)
       .then((res) => {
         setState({ ...state, list: res.list, total: res.total, fields })
+        setList(res.list)
         toast(buildMessage(resource, res.list, limit, page, res.total))
       })
       .catch(handleError)
       .finally(hideLoading)
   }
 
-  const { list } = state
   const offset = getOffset(filter.limit, filter.page)
   return (
     <div>

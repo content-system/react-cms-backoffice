@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from "react"
-import { buildMessage, buildSortFilter, ButtonMouseEvent, getFields, getOffset, OnClick, onPageChanged, onPageSizeChanged, onSearch, onSort, PageChange, pageSizes, resources, Sortable, updateState } from "react-hook-core"
+import { buildMessage, buildSortFilter, ButtonMouseEvent, getFields, getOffset, onClearQ, OnClick, onPageChanged, onPageSizeChanged, onSearch, onSort, PageChange, pageSizes, resources, Sortable, updateState } from "react-hook-core"
 import ReactModal from "react-modal"
 import Pagination from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
@@ -120,7 +120,7 @@ export const UsersLookup = (props: Props) => {
           <button type="button" id="btnClose" name="btnClose" className="btn-close" onClick={onModelClose} />
         </header>
         <div className="search-body">
-          <form id="usersLookupForm" name="usersLookupForm" className="usersLookupForm" noValidate={true} ref={refForm as any}>
+          <form id="usersLookupForm" name="usersLookupForm" className="usersLookupForm" noValidate={true} ref={refForm}>
             <section className="row search-group">
               <label className="col s12 m6 search-input">
                 <select id="limit" name="limit" onChange={pageSizeChanged} defaultValue={filter.limit}>
@@ -132,16 +132,8 @@ export const UsersLookup = (props: Props) => {
                     )
                   })}
                 </select>
-                <input type="text" id="q" name="q" value={filter.q} onChange={(e) => updateState(e, filter, setFilter)} maxLength={40} placeholder={resource.keyword} />
-                <button
-                  type="button"
-                  hidden={!filter.q}
-                  className="btn-remove-text"
-                  onClick={(e) => {
-                    filter.q = ""
-                    setFilter({ ...filter })
-                  }}
-                />
+                <input type="text" id="q" name="q" value={filter.q} maxLength={100} onChange={(e) => updateState(e, filter, setFilter)} placeholder={resource.keyword} />
+                <button type="button" hidden={!filter.q} className="btn-remove-text" onClick={(e) => onClearQ(filter, setFilter)} />
                 <button type="submit" className="btn-search" onClick={searchOnClick} />
               </label>
               <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />

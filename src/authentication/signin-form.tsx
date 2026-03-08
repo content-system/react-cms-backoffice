@@ -107,7 +107,7 @@ export const SigninForm = () => {
 
   return (
     <div className="central-full">
-      <form id="signinForm" name="signinForm" className="form" noValidate={true} autoComplete="off" ref={form as any}>
+      <form id="signinForm" name="signinForm" className="form" noValidate={true} autoComplete="off" ref={form}>
         <div className="view-body row">
           <img className="logo" src={logo} alt="logo" />
           <h2>{resource.signin}</h2>

@@ -34,7 +34,6 @@ import { Content, ContentFilter, getContentService } from "./service"
 
 interface ContentSearch extends Sortable {
   statusList: Item[]
-  list: Content[]
   total?: number
   view?: string
   fields?: string[]
@@ -51,18 +50,19 @@ export const ContentsForm = () => {
   }
   const initialState: ContentSearch = {
     statusList: [],
-    list: [],
   }
 
   const resource = useResource()
   const refForm = useRef<HTMLFormElement>(null)
+  const [showFilter, setShowFilter] = useState<boolean>(false)
   const [state, setState] = useState<ContentSearch>(initialState)
   const [filter, setFilter] = useState<ContentFilter>(contentFilter)
-  const [showFilter, setShowFilter] = useState<boolean>(false)
+  const [list, setList] = useState<Content[]>([])
 
   useEffect(() => {
     const initFilter = mergeFilter(buildFromUrl<ContentFilter>(), filter, sizes, ["status"])
     setSort(state, initFilter.sort)
+    setFilter(initFilter)
     search() // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -81,14 +81,14 @@ export const ContentsForm = () => {
     getContentService()
       .search({ ...filter }, limit, page, fields)
       .then((res) => {
-        setState({ ...state, list: res.list, total: res.total, fields })
+        setState({ ...state, total: res.total, fields })
+        setList(res.list)
         toast(buildMessage(resource, res.list, limit, page, res.total))
       })
       .catch(handleError)
       .finally(hideLoading)
   }
 
-  const { list } = state
   const offset = getOffset(filter.limit, filter.page)
   return (
     <div>
@@ -205,46 +205,42 @@ export const ContentsForm = () => {
                 </tr>
               </thead>
               <tbody>
-                {list &&
-                  list.length > 0 &&
-                  list.map((item, i) => {
-                    return (
-                      <tr key={i}>
-                        <td className="text-right">{offset + i + 1}</td>
-                        <td>{item.id}</td>
-                        <td>{item.lang}</td>
-                        <td>
-                          <Link to={`${item.id}/${item.lang}`}>{item.title}</Link>
-                        </td>
-                        <td>{formatDateTime(item.publishedAt, dateFormat)}</td>
-                        <td>{item.status}</td>
-                        <td>
-                          <div className="btn-group">
-                            <button type="button" className="btn-edit"></button>
-                            <button type="button" className="btn-history"></button>
-                          </div>
-                        </td>
-                      </tr>
-                    )
-                  })}
+                {list.map((item, i) => {
+                  return (
+                    <tr key={i}>
+                      <td className="text-right">{offset + i + 1}</td>
+                      <td>{item.id}</td>
+                      <td>{item.lang}</td>
+                      <td>
+                        <Link to={`${item.id}/${item.lang}`}>{item.title}</Link>
+                      </td>
+                      <td>{formatDateTime(item.publishedAt, dateFormat)}</td>
+                      <td>{item.status}</td>
+                      <td>
+                        <div className="btn-group">
+                          <button type="button" className="btn-edit"></button>
+                          <button type="button" className="btn-history"></button>
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           </div>
         )}
         {state.view === "list" && (
           <ul className="row list">
-            {state.list &&
-              state.list.length > 0 &&
-              state.list.map((item, i) => {
-                return (
-                  <li key={i} className="col s12 m6 l4 xl3 list-item">
-                    <Link to={`${item.id}/${item.lang}`}>
-                      {item.id} {item.lang}
-                    </Link>
-                    <p>{formatDateTime(item.publishedAt, dateFormat)}</p>
-                  </li>
-                )
-              })}
+            {list.map((item, i) => {
+              return (
+                <li key={i} className="col s12 m6 l4 xl3 list-item">
+                  <Link to={`${item.id}/${item.lang}`}>
+                    {item.id} {item.lang}
+                  </Link>
+                  <p>{formatDateTime(item.publishedAt, dateFormat)}</p>
+                </li>
+              )
+            })}
           </ul>
         )}
       </div>
