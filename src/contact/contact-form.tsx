@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react"
-import { afterSaved, clone, goBack, isEmptyObject, makeDiff, OnClick, updateState } from "react-hook-core"
+import { MouseEvent, useEffect, useRef, useState } from "react"
+import { afterSaved, clone, isEmpty, makeDiff, onBack, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -24,11 +24,11 @@ const createContact = (): Contact => {
 }
 
 export const ContactForm = () => {
-  const isReadOnly = !hasPermission(Permission.write, 1)
+  const canWrite = hasPermission(Permission.write, 1)
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
-  const [initialContact, setInitialContact] = useState<Contact>(createContact())
+  const [initialContact, setInitialContact] = useState<Contact>()
   const [contact, setContact] = useState<Contact>(createContact())
 
   const { id } = useParams()
@@ -45,17 +45,17 @@ export const ContactForm = () => {
         })
         .catch(handleError)
     }
-  }, [id, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [id, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const back = (e: OnClick) => goBack(navigate, confirm, resource, initialContact, contact)
+  const back = (e: MouseEvent<HTMLButtonElement>) => onBack(e, navigate, confirm, resource, contact, initialContact)
 
-  const save = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const save = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault()
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
       const service = getContactService()
-      const diff = makeDiff(initialContact, contact, ["id"])
-      if (isEmptyObject(diff)) {
+      const diff = makeDiff(contact, initialContact, ["id"])
+      if (isEmpty(diff)) {
         alertWarning(resource.msg_no_change)
       } else {
         confirm(resource.msg_confirm_save, () => {
@@ -70,10 +70,10 @@ export const ContactForm = () => {
     }
   }
   return (
-    <form id="contactForm" name="contactForm" className="form" model-name="contact" ref={refForm as any}>
+    <form id="contactForm" name="contactForm" className="form" ref={refForm}>
       <header>
         <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
-        <h2 className="view-title">{resource.contact}</h2>
+        <h2>{resource.contact}</h2>
       </header>
       <div className="row">
         <label className="col s12 m6">
@@ -220,7 +220,7 @@ export const ContactForm = () => {
         </label>
       </div>
       <footer>
-        {!isReadOnly && (
+        {canWrite && (
           <button type="submit" id="btnSave" name="btnSave" onClick={save}>
             {resource.save}
           </button>

@@ -1,8 +1,8 @@
 import { AuthResult, dayDiff, getMessage, handleCookie, initFromCookie, Status, User, validate } from "authen-client"
 import { CookieService } from "cookie-core"
 import { Base64 } from "js-base64"
-import { useEffect, useRef, useState } from "react"
-import { formatText, OnClick, updateState, useMessage } from "react-hook-core"
+import { MouseEvent, useEffect, useRef, useState } from "react"
+import { formatText, updateState, useMessage } from "react-hook-core"
 import { Link, useNavigate } from "react-router-dom"
 import { alertInfo } from "ui-alert"
 import { initForm, registerEvents } from "ui-plus"
@@ -63,7 +63,7 @@ export const SigninForm = () => {
     storage.setPrivileges(result.user?.privileges)
     navigate(storage.home)
   }
-  const signin = async (e: OnClick) => {
+  const signin = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     if (!validate(user, resource, showError)) {
       return

@@ -1,5 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react"
-import { OnClick } from "react-hook-core"
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -72,7 +71,7 @@ export const RoleAssignmentForm = () => {
       setState({ ...state, ...obj })
     }
   }
-  const save = (e: OnClick) => {
+  const save = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     const userIDs = getIds(users)
     confirm(resource.msg_confirm_save, () => {
@@ -147,7 +146,7 @@ export const RoleAssignmentForm = () => {
     setState({ ...state, selectedUsers: [] })
   }
 
-  const back = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const back = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault()
     navigate(-1)
   }

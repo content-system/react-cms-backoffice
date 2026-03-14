@@ -1,6 +1,6 @@
 import { PasswordReset, resetPassword, validateReset } from "password-client"
-import { useEffect, useRef, useState } from "react"
-import { OnClick, updateState, useMessage, } from "react-hook-core"
+import { MouseEvent, useEffect, useRef, useState } from "react"
+import { updateState, useMessage } from "react-hook-core"
 import { Link } from "react-router-dom"
 import { initForm, registerEvents } from "ui-plus"
 import { handleError, message, storage, useResource } from "uione"
@@ -32,7 +32,7 @@ export const ResetPasswordForm = () => {
     initForm(form.current, registerEvents)
   }, [])
 
-  const onResetPassword = (e: OnClick) => {
+  const onResetPassword = (e: MouseEvent<HTMLButtonElement>) => {
     const passwordService = getPasswordService()
     e.preventDefault()
     const customPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/

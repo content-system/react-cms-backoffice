@@ -1,5 +1,5 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react"
-import { clone, formatText, isEmptyObject, isSuccessful, makeDiff, onBack, OnClick } from "react-hook-core"
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
+import { clone, formatText, isEmpty, isSuccessful, makeDiff, onBack } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -279,7 +279,7 @@ export function RoleForm() {
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
-  const [initialRole, setInitialRole] = useState<Role>(createRole())
+  const [initialRole, setInitialRole] = useState<Role>()
   const [state, setState] = useState<InternalState>(initialState)
   const [privileges, setPrivileges] = useState<Permission[]>([])
   let seq = 1
@@ -377,7 +377,7 @@ export function RoleForm() {
     setState({ ...state, keyword: q, shownPrivileges })
   }
 
-  const assign = (e: OnClick, id: string) => {
+  const assign = (e: MouseEvent<HTMLElement>, id: string) => {
     e.preventDefault()
     navigate(`/roles/${id}/assign`)
     return
@@ -569,12 +569,12 @@ export function RoleForm() {
   }
 
   const role = state.role
-  const statusOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const statusOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     role.status = e.target.value
     setState({ ...state, role })
   }
-  const back = (e: OnClick) => onBack(e, navigate, confirm, resource, initialRole, role)
-  const deleteOnClick = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const back = (e: MouseEvent<HTMLButtonElement>) => onBack(e, navigate, confirm, resource, role, initialRole)
+  const deleteOnClick = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault()
     confirm(resource.msg_confirm_delete, () => {
       const service = getRoleService()
@@ -594,7 +594,7 @@ export function RoleForm() {
         .finally(hideLoading)
     })
   }
-  const save = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const save = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault()
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
@@ -611,15 +611,15 @@ export function RoleForm() {
                 alertSuccess(resource.msg_save_success, () => navigate(-1))
               } else {
                 const msg = formatText(resource.error_duplicated, resource.role_id)
-                addError(refForm?.current as HTMLFormElement, "roleId", msg)
+                addError(refForm?.current, "roleId", msg)
               }
             })
             .catch(handleError)
             .finally(hideLoading)
         })
       } else {
-        const diff = makeDiff(initialRole, role, ["roleId"])
-        if (isEmptyObject(diff)) {
+        const diff = makeDiff(role, initialRole, ["roleId"])
+        if (isEmpty(diff)) {
           return alertWarning(resource.msg_no_change)
         }
         confirm(resource.msg_confirm_save, () => {

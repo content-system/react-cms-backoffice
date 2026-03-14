@@ -1,7 +1,6 @@
 import axios from "axios"
 import { HttpRequest } from "axios-core"
-import { ChangeEvent, useEffect, useState } from "react"
-import { OnClick } from "react-hook-core"
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 import { Link, Outlet, useLocation, useSearchParams } from "react-router-dom"
 import { collapseAll, expandAll, Nav, sub } from "reactx-nav"
@@ -134,7 +133,7 @@ export const LayoutPage = () => {
     setState({ ...state, keyword: "" })
     navigate(`home?q=`)
   }
-  const search = (e: OnClick) => {
+  const search = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
   }
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -146,7 +145,7 @@ export const LayoutPage = () => {
     setState({ ...state, isToggleSearch: !state.isToggleSearch })
   }
 
-  const toggleMenu = (e: OnClick) => {
+  const toggleMenu = (e: MouseEvent<HTMLButtonElement>) => {
     setState({ ...state, isToggleMenu: !state.isToggleMenu })
   }
 
@@ -223,7 +222,7 @@ export const LayoutPage = () => {
     navigate("/signin")
   }
 
-  const pin = (e: OnClick, index: number, item: Privilege) => {
+  const pin = (e: MouseEvent<HTMLButtonElement>, index: number, item: Privilege) => {
     e.stopPropagation()
     if (items.find((i) => i === item)) {
       const removedItem = items.splice(index, 1)

@@ -1,11 +1,9 @@
 import { Item } from "onecore"
-import { ChangeEvent, useEffect, useRef, useState } from "react"
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
 import {
-  addParametersIntoUrl,
+  addParametersIntoUrlWithSort,
   buildFromUrl,
   buildMessage,
-  buildSortFilter,
-  ButtonMouseEvent,
   checked,
   getFields,
   getOffset,
@@ -18,9 +16,10 @@ import {
   onToggleSearch,
   PageChange,
   pageSizes,
+  PageSizeSelect,
   resetSearch,
   resources,
-  setSort,
+  setSortFilter,
   Sortable,
   updateState
 } from "react-hook-core"
@@ -39,7 +38,6 @@ interface ContentSearch extends Sortable {
   fields?: string[]
 }
 
-const sizes = pageSizes
 export const ContentsForm = () => {
   const canWrite = hasPermission(Permission.write)
   const dateFormat = getDateFormat()
@@ -54,28 +52,30 @@ export const ContentsForm = () => {
 
   const resource = useResource()
   const refForm = useRef<HTMLFormElement>(null)
-  const [showFilter, setShowFilter] = useState<boolean>(false)
+  const [showFilter, setShowFilter] = useState(false)
+  const [list, setList] = useState<Content[]>([])
   const [state, setState] = useState<ContentSearch>(initialState)
   const [filter, setFilter] = useState<ContentFilter>(contentFilter)
-  const [list, setList] = useState<Content[]>([])
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => updateState(e, filter, setFilter)
+  const statusOnChange = (e: ChangeEvent<HTMLInputElement>) => resetSearch(e, filter, setFilter, search)
 
   useEffect(() => {
-    const initFilter = mergeFilter(buildFromUrl<ContentFilter>(), filter, sizes, ["status"])
-    setSort(state, initFilter.sort)
-    setFilter(initFilter)
+    const initFilter = mergeFilter(buildFromUrl<ContentFilter>(), filter, pageSizes, ["status"])
+    setSortFilter(initFilter, state, setFilter)
     search() // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const sort = (e: ButtonMouseEvent) => onSort(e, search, state)
+  const clearQ = (e: MouseEvent<HTMLButtonElement>) => onClearQ(filter, setFilter)
+  const toggleSearch = (e: MouseEvent<HTMLButtonElement>) => onToggleSearch(e, showFilter, setShowFilter)
+  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, search, state)
   const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter, setFilter)
   const pageChanged = (data: PageChange) => onPageChanged(data, search, filter, setFilter)
-  const searchOnClick = (e: ButtonMouseEvent) => onSearch(e, search, filter, state, setFilter, setState)
+  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, search, filter, state, setFilter, setState)
 
   const search = (isFirstLoad?: boolean) => {
     showLoading()
-    const urlFilter = buildSortFilter(filter, state)
-    addParametersIntoUrl(urlFilter, isFirstLoad)
     const fields = getFields(refForm.current, state.fields)
+    addParametersIntoUrlWithSort(filter, state, isFirstLoad)
     setFilter(filter)
     const { limit, page } = filter
     getContentService()
@@ -105,22 +105,14 @@ export const ContentsForm = () => {
         </div>
       </header>
       <div className="search-body">
-        <form id="contentsForm" name="contentsForm" className="form" noValidate={true} ref={refForm as any}>
+        <form id="contentsForm" name="contentsForm" className="form" noValidate={true} ref={refForm}>
           <section className="row search-group">
             <label className="col s12 m6 search-input">
-              <select id="limit" name="limit" onChange={pageSizeChanged} defaultValue={filter.limit}>
-                {sizes.map((item, i) => {
-                  return (
-                    <option key={i} value={item}>
-                      {item}
-                    </option>
-                  )
-                })}
-              </select>
-              <input type="text" id="q" name="q" value={filter.q} maxLength={100} onChange={(e) => updateState(e, filter, setFilter)} placeholder={resource.keyword} />
-              <button type="button" hidden={!filter.q} className="btn-remove-text" onClick={(e) => onClearQ(filter, setFilter)} />
-              <button type="button" className="btn-filter" onClick={(e) => onToggleSearch(e, showFilter, setShowFilter)} />
-              <button type="submit" className="btn-search" onClick={searchOnClick} />
+              <PageSizeSelect id="limit" name="limit" size={filter.limit} sizes={pageSizes} onChange={pageSizeChanged} />
+              <input type="text" id="q" name="q" value={filter.q} maxLength={80} onChange={onChange} placeholder={resource.keyword} />
+              <button type="button" id="btnClearQ" hidden={!filter.q} className="btn-remove-text" onClick={clearQ} />
+              <button type="button" id="btnToggleSearch" className="btn-filter" onClick={toggleSearch} />
+              <button type="submit" id="btnSearch" className="btn-search" onClick={searchOnClick} />
             </label>
             <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
           </section>

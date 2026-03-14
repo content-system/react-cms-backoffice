@@ -1,5 +1,4 @@
-import { Fragment, useEffect, useState } from "react"
-import { OnClick } from "react-hook-core"
+import { Fragment, MouseEvent, useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { hideLoading, showLoading } from "ui-loading"
 import { formatDateTime } from "ui-plus"
@@ -38,8 +37,8 @@ export const ArticleHistory = () => {
     }
   }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const back = (e: OnClick) => navigate(-1)
-  const loadMore = async (e: OnClick) => {
+  const back = (e: MouseEvent<HTMLButtonElement>) => navigate(-1)
+  const loadMore = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     if (id) {
       try {
@@ -66,7 +65,7 @@ export const ArticleHistory = () => {
     <form id="approveArticleForm" name="approveArticleForm" className="form">
       <header>
         <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
-        <h2 className="view-title">{resource.article}</h2>
+        <h2>{resource.article}</h2>
       </header>
       <div className="article-body">
         {histories.map((item, i) => {

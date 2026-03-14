@@ -1,6 +1,6 @@
-import { Item, Result } from "onecore"
-import React, { useEffect, useRef, useState } from "react"
-import { clone, isEmptyObject, isSuccessful, makeDiff, onBack, updateState } from "react-hook-core"
+import { Item } from "onecore"
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
+import { clone, isEmpty, isSuccessful, makeDiff, onBack, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -22,8 +22,9 @@ export const UserForm = () => {
   const refForm = useRef<HTMLFormElement>(null)
   const [titleList, setTitleList] = useState<Item[]>([])
   const [positionList, setPositionList] = useState<Item[]>([])
-  const [initialUser, setInitialUser] = useState<User>(createUser())
+  const [initialUser, setInitialUser] = useState<User>()
   const [user, setUser] = useState<User>(createUser())
+  const onChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => updateState(e, user, setUser)
 
   const { id } = useParams()
   const newMode = !id
@@ -54,12 +55,12 @@ export const UserForm = () => {
       .catch(handleError)
   }, [id, newMode, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const assign = (e: React.MouseEvent<HTMLElement, MouseEvent>, userId: string) => {
+  const assign = (e: MouseEvent<HTMLElement>, userId: string) => {
     e.preventDefault()
     navigate(`/users/${userId}/assign`)
   }
 
-  const back = (e: React.MouseEvent<HTMLElement, MouseEvent>) => onBack(e, navigate, confirm, resource, initialUser, user)
+  const back = (e: MouseEvent<HTMLElement>) => onBack(e, navigate, confirm, resource, initialUser, user)
 
   const updateTitle = (ele: HTMLSelectElement, user: User) => {
     handleSelect(ele)
@@ -68,7 +69,7 @@ export const UserForm = () => {
     setUser({ ...user })
   }
 
-  const save = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const save = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault()
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
@@ -78,40 +79,45 @@ export const UserForm = () => {
           showLoading()
           service
             .create(user)
-            .then((res) => afterSaved(res))
+            .then((res) => {
+              if (Array.isArray(res)) {
+                showFormError(refForm?.current, res)
+              } else {
+                alertSuccess(resource.msg_save_success, () => navigate(-1))
+              }
+            })
             .catch(handleError)
             .finally(hideLoading)
         })
       } else {
-        const diff = makeDiff(initialUser, user, ["userId"])
-        if (isEmptyObject(diff)) {
+        const diff = makeDiff(user, initialUser, ["userId"])
+        if (isEmpty(diff)) {
           return alertWarning(resource.msg_no_change)
         }
         confirm(resource.msg_confirm_save, () => {
           showLoading()
           service
             .patch(diff)
-            .then((res) => afterSaved(res))
+            .then((res) => {
+              if (Array.isArray(res)) {
+                showFormError(refForm?.current, res)
+              } else if (isSuccessful(res)) {
+                alertSuccess(resource.msg_save_success, () => navigate(-1))
+              } else {
+                alertError(resource.error_not_found)
+              }
+            })
             .catch(handleError)
             .finally(hideLoading)
         })
       }
     }
   }
-  const afterSaved = (res: Result<User>) => {
-    if (Array.isArray(res)) {
-      showFormError(refForm?.current, res)
-    } else if (isSuccessful(res)) {
-      alertSuccess(resource.msg_save_success, () => navigate(-1))
-    } else {
-      alertError(resource.error_not_found)
-    }
-  }
 
   return (
     !canWrite ? (
       <form id="userForm" name="userForm" className="form" ref={refForm}>
-        <header className="view-header">
+        <header>
           <h2>{resource.user}</h2>
           <div className="btn-group">
             <button className="btn-group btn-right" hidden={newMode}>
@@ -149,7 +155,7 @@ export const UserForm = () => {
       <form id="userForm" name="userForm" className="form" ref={refForm}>
         <header>
           <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
-          <h2 className="view-title">{resource.user}</h2>
+          <h2>{resource.user}</h2>
           <div className="btn-group">
             <button className="btn-group btn-right" hidden={newMode}>
               <i className="material-icons" onClick={(e) => assign(e, user.userId)}>
@@ -169,7 +175,7 @@ export const UserForm = () => {
                 name="userId"
                 value={user.userId}
                 readOnly={!newMode}
-                onChange={(e) => updateState(e, user, setUser)}
+                onChange={onChange}
                 maxLength={20}
                 required={true}
                 placeholder={resource.user_id}
@@ -183,7 +189,7 @@ export const UserForm = () => {
                 name="username"
                 value={user.username}
                 readOnly={!newMode}
-                onChange={(e) => updateState(e, user, setUser)}
+                onChange={onChange}
                 onBlur={requiredOnBlur}
                 maxLength={40}
                 required={true}
@@ -197,7 +203,7 @@ export const UserForm = () => {
                 id="displayName"
                 name="displayName"
                 value={user.displayName}
-                onChange={(e) => updateState(e, user, setUser)}
+                onChange={onChange}
                 onBlur={requiredOnBlur}
                 maxLength={40}
                 required={true}
@@ -212,7 +218,7 @@ export const UserForm = () => {
                     type="radio"
                     id="gender"
                     name="gender"
-                    onChange={(e) => updateState(e, user, setUser)}
+                    onChange={onChange}
                     disabled={user.title !== "Dr"}
                     value={Gender.Male}
                     checked={user.gender === Gender.Male}
@@ -224,7 +230,7 @@ export const UserForm = () => {
                     type="radio"
                     id="gender"
                     name="gender"
-                    onChange={(e) => updateState(e, user, setUser)}
+                    onChange={onChange}
                     disabled={user.title !== "Dr"}
                     value={Gender.Female}
                     checked={user.gender === Gender.Female}
@@ -237,11 +243,11 @@ export const UserForm = () => {
               {resource.status}
               <div className="radio-group">
                 <label>
-                  <input type="radio" id="active" name="status" onChange={(e) => updateState(e, user, setUser)} value={Status.Active} checked={user.status === Status.Active} />
+                  <input type="radio" id="active" name="status" onChange={onChange} value={Status.Active} checked={user.status === Status.Active} />
                   {resource.yes}
                 </label>
                 <label>
-                  <input type="radio" id="inactive" name="status" onChange={(e) => updateState(e, user, setUser)} value={Status.Inactive} checked={user.status === Status.Inactive} />
+                  <input type="radio" id="inactive" name="status" onChange={onChange} value={Status.Inactive} checked={user.status === Status.Inactive} />
                   {resource.no}
                 </label>
               </div>
@@ -257,7 +263,7 @@ export const UserForm = () => {
                 name="position"
                 value={user.position}
                 data-value
-                onChange={(e) => updateState(e, user, setUser)}
+                onChange={onChange}
               >
                 <option value="">{resource.please_select}</option>
                 {positionList.map((item, index) => (
@@ -285,7 +291,7 @@ export const UserForm = () => {
                 id="phone"
                 name="phone"
                 value={formatPhone(user.phone)}
-                onChange={(e) => updateState(e, user, setUser)}
+                onChange={onChange}
                 onBlur={phoneOnBlur}
                 maxLength={17}
                 placeholder={resource.phone}
@@ -299,7 +305,7 @@ export const UserForm = () => {
                 name="email"
                 data-type="email"
                 value={user.email}
-                onChange={(e) => updateState(e, user, setUser)}
+                onChange={onChange}
                 onBlur={emailOnBlur}
                 maxLength={100}
                 placeholder={resource.email}

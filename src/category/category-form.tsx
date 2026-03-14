@@ -1,6 +1,6 @@
 import { Result } from "onecore"
-import React, { useEffect, useRef, useState } from "react"
-import { clone, hasDiff, isEmptyObject, isSuccessful, makeDiff, updateState } from "react-hook-core"
+import React, { MouseEvent, useEffect, useRef, useState } from "react"
+import { clone, isEmpty, isSuccessful, makeDiff, onBack, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -15,11 +15,11 @@ const createCategory = (): Category => {
 }
 
 export const CategoryForm = () => {
-  const isReadOnly = !hasPermission(Permission.write, 1)
+  const canWrite = hasPermission(Permission.write, 1)
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
-  const [initialCategory, setInitialCategory] = useState<Category>(createCategory())
+  const [initialCategory, setInitialCategory] = useState<Category>()
   const [category, setCategory] = useState<Category>(createCategory())
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => updateState(e, category, setCategory)
 
@@ -37,7 +37,7 @@ export const CategoryForm = () => {
           } else {
             setInitialCategory(clone(category))
             setCategory(category)
-            if (isReadOnly) {
+            if (!canWrite) {
               setReadOnly(refForm?.current)
             }
           }
@@ -45,39 +45,33 @@ export const CategoryForm = () => {
         .catch(handleError)
         .finally(hideLoading)
     }
-  }, [id, newMode, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [id, newMode, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const back = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    if (!hasDiff(initialCategory, category)) {
-      navigate(-1)
-    } else {
-      confirm(resource.msg_confirm_back, () => navigate(-1))
-    }
-  }
+  const back = (e: MouseEvent<HTMLElement>) => onBack(e, navigate, confirm, resource, category, initialCategory)
 
-  const save = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const save = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault()
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
       const service = getCategoryService()
-      if (!newMode) {
-        const diff = makeDiff(initialCategory, category, ["id"])
-        if (isEmptyObject(diff)) {
+      if (newMode) {
+        confirm(resource.msg_confirm_save, () => {
+          showLoading()
+          service
+            .create(category)
+            .then((res) => afterSaved(res))
+            .catch(handleError)
+            .finally(hideLoading)
+        })
+      } else {
+        const diff = makeDiff(category, initialCategory, ["id"])
+        if (isEmpty(diff)) {
           return alertWarning(resource.msg_no_change)
         }
         confirm(resource.msg_confirm_save, () => {
           showLoading()
           service
             .patch(category)
-            .then((res) => afterSaved(res))
-            .catch(handleError)
-            .finally(hideLoading)
-        })
-      } else {
-        confirm(resource.msg_confirm_save, () => {
-          showLoading()
-          service
-            .create(category)
             .then((res) => afterSaved(res))
             .catch(handleError)
             .finally(hideLoading)
@@ -90,18 +84,16 @@ export const CategoryForm = () => {
       showFormError(refForm?.current, res)
     } else if (isSuccessful(res)) {
       alertSuccess(resource.msg_save_success, () => navigate(-1))
-    } else if (res === 0) {
-      alertError(resource.error_not_found)
     } else {
-      alertError(resource.error_conflict)
+      alertError(resource.error_not_found)
     }
   }
 
   return (
-    <form id="categoryForm" name="categoryForm" className="form" model-name="category" ref={refForm as any}>
+    <form id="categoryForm" name="categoryForm" className="form" ref={refForm}>
       <header>
         <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
-        <h2 className="view-title">{resource.category}</h2>
+        <h2>{resource.category}</h2>
         <div className="btn-group">
           <button className="btn-group btn-right" hidden={newMode}>
             <i className="material-icons">group</i>
@@ -242,7 +234,7 @@ export const CategoryForm = () => {
         </div>
       </div>
       <footer>
-        {!isReadOnly && (
+        {canWrite && (
           <button type="submit" id="btnSave" name="btnSave" onClick={save}>
             {resource.save}
           </button>

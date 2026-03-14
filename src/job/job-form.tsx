@@ -1,6 +1,6 @@
 import { Result } from "onecore"
-import React, { useEffect, useRef, useState } from "react"
-import { clone, datetimeToString, goBack, isEmptyObject, isSuccessful, makeDiff, OnClick, updateState } from "react-hook-core"
+import { MouseEvent, useEffect, useRef, useState } from "react"
+import { clone, datetimeToString, isEmpty, isSuccessful, makeDiff, onBack, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -15,23 +15,20 @@ const createJob = (): Job => {
 }
 
 export const JobForm = () => {
-  const isReadOnly = !hasPermission(Permission.write, 1)
+  const canWrite = hasPermission(Permission.write, 1)
+
   const locale = getLocale()
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
-  const [initialJob, setInitialJob] = useState<Job>(createJob())
+  const [initialJob, setInitialJob] = useState<Job>()
   const [job, setJob] = useState<Job>(createJob())
 
   const { id } = useParams()
   const newMode = !id
   useEffect(() => {
     initForm(refForm?.current, registerEvents)
-    if (!id) {
-      const job = createJob()
-      setInitialJob(clone(job))
-      setJob(job)
-    } else {
+    if (id) {
       showLoading()
       getJobService()
         .load(id)
@@ -41,7 +38,7 @@ export const JobForm = () => {
           } else {
             setInitialJob(clone(job))
             setJob(job)
-            if (isReadOnly) {
+            if (!canWrite) {
               setReadOnly(refForm?.current)
             }
           }
@@ -49,33 +46,33 @@ export const JobForm = () => {
         .catch(handleError)
         .finally(hideLoading)
     }
-  }, [id, newMode, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [id, newMode, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const back = (e: OnClick) => goBack(navigate, confirm, resource, initialJob, job)
+  const back = (e: MouseEvent<HTMLButtonElement>) => onBack(e, navigate, confirm, resource, initialJob, job)
 
-  const save = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const save = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault()
     const valid = validateForm(refForm?.current, locale)
     if (valid) {
       const service = getJobService()
-      if (!newMode) {
-        const diff = makeDiff(initialJob, job, ["id"])
-        if (isEmptyObject(diff)) {
-          return alertWarning(resource.msg_no_change)
-        }
+      if (newMode) {
         confirm(resource.msg_confirm_save, () => {
           showLoading()
           service
-            .patch(job)
+            .create(job)
             .then((res) => afterSaved(res))
             .catch(handleError)
             .finally(hideLoading)
         })
       } else {
+        const diff = makeDiff(job, initialJob, ["id"])
+        if (isEmpty(diff)) {
+          return alertWarning(resource.msg_no_change)
+        }
         confirm(resource.msg_confirm_save, () => {
           showLoading()
           service
-            .create(job)
+            .patch(diff)
             .then((res) => afterSaved(res))
             .catch(handleError)
             .finally(hideLoading)
@@ -88,18 +85,16 @@ export const JobForm = () => {
       showFormError(refForm?.current, res)
     } else if (isSuccessful(res)) {
       alertSuccess(resource.msg_save_success, () => navigate(-1))
-    } else if (res === 0) {
-      alertError(resource.error_not_found)
     } else {
-      alertError(resource.error_conflict)
+      alertError(resource.error_not_found)
     }
   }
 
   return (
-    <form id="jobForm" name="jobForm" className="form" model-name="job" ref={refForm as any}>
+    <form id="jobForm" name="jobForm" className="form" ref={refForm}>
       <header>
         <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
-        <h2 className="view-title">{resource.job}</h2>
+        <h2>{resource.job}</h2>
         <div className="btn-group">
           <button className="btn-group btn-right" hidden={newMode}>
             <i className="material-icons">group</i>
@@ -252,7 +247,7 @@ export const JobForm = () => {
         </label>
       </div>
       <footer>
-        {!isReadOnly && (
+        {canWrite && (
           <button type="submit" id="btnSave" name="btnSave" onClick={save}>
             {resource.save}
           </button>

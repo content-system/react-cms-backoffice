@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react"
+import { MouseEvent, useEffect, useRef, useState } from "react"
 import ReCAPTCHA from "react-google-recaptcha"
-import { OnClick, updateState, useMessage } from "react-hook-core"
+import { updateState, useMessage } from "react-hook-core"
 import { Link } from "react-router-dom"
 import { isEmail, isValidUsername, Status, strongPassword, validate, validateAndSignup } from "signup-client"
 import { initForm, registerEvents } from "ui-plus"
@@ -59,7 +59,7 @@ export const SignupForm = () => {
     initForm(form.current, registerEvents)
   }, [])
 
-  const signup = (e: OnClick) => {
+  const signup = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     const signupService = getSignupService()
     if (!state.reCAPTCHA) {

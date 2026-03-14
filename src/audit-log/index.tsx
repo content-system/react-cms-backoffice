@@ -1,10 +1,9 @@
 import { Item } from "onecore"
 import { ChangeEvent, useEffect, useRef, useState } from "react"
 import {
-  addParametersIntoUrl,
+  addParametersIntoUrlWithSort,
   buildFromUrl,
   buildMessage,
-  buildSortFilter,
   ButtonMouseEvent,
   datetimeToString,
   getFields,
@@ -16,13 +15,15 @@ import {
   onSort,
   PageChange,
   pageSizes,
+  PageSizeSelect,
   resources,
-  setSort,
-  Sortable
+  setSortFilter,
+  Sortable,
+  updateState
 } from "react-hook-core"
 import Pagination from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
-import { addDays, addSeconds, createDate, formatFullDateTime } from "ui-plus"
+import { addDays, addSeconds, formatFullDateTime } from "ui-plus"
 import { toast } from "ui-toast"
 import { getDateFormat, handleError, useLocale, useResource } from "uione"
 import { AuditLog, AuditLogFilter } from "./audit-log"
@@ -41,7 +42,6 @@ const mapStyleStatus: Map<string, string> = new Map([
   ["fail", "badge-outline-danger "],
 ])
 
-const sizes = pageSizes
 export const AuditLogsForm = () => {
   const dateFormat = getDateFormat()
 
@@ -62,14 +62,14 @@ export const AuditLogsForm = () => {
   const locale = useLocale()
   const resource = useResource()
   const refForm = useRef<HTMLFormElement>(null)
+  const [list, setList] = useState<AuditLog[]>([])
   const [state, setState] = useState<AuditLogSearch>(initialState)
   const [filter, setFilter] = useState<AuditLogFilter>(auditLogfilter)
-  const [list, setList] = useState<AuditLog[]>([])
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => updateState(e, filter, setFilter)
 
   useEffect(() => {
-    const initFilter = mergeFilter(buildFromUrl<AuditLogFilter>(), filter, sizes, ["status", "auditLogType"])
-    setSort(state, initFilter.sort)
-    setFilter(initFilter)
+    const initFilter = mergeFilter(buildFromUrl<AuditLogFilter>(), filter, pageSizes)
+    setSortFilter(initFilter, state, setFilter)
     search(true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -80,11 +80,10 @@ export const AuditLogsForm = () => {
 
   const search = (isFirstLoad?: boolean) => {
     showLoading()
-    const urlFilter = buildSortFilter(filter, state)
-    addParametersIntoUrl(urlFilter, isFirstLoad)
     const fields = getFields(refForm.current, state.fields)
+    addParametersIntoUrlWithSort(filter, state, isFirstLoad)
     setFilter(filter)
-    const { limit, page } = urlFilter
+    const { limit, page } = filter
     getAuditLogService()
       .search({ ...filter }, limit, page, fields)
       .then((res) => {
@@ -120,11 +119,8 @@ export const AuditLogsForm = () => {
                 id="action"
                 name="action"
                 value={filter.action}
-                maxLength={240}
-                onChange={(e) => {
-                  filter.action = e.target.value
-                  setFilter({ ...filter })
-                }}
+                maxLength={40}
+                onChange={onChange}
               />
             </label>
             <label className="col s12 m5 l4">
@@ -136,10 +132,7 @@ export const AuditLogsForm = () => {
                 name="time_min"
                 data-field="time.min"
                 value={datetimeToString(filter.time?.min)}
-                onChange={(e) => {
-                  filter.time.min = createDate(e.target.value)
-                  setFilter({ ...filter })
-                }}
+                onChange={onChange}
               />
             </label>
             <label className="col s12 m5 l4">
@@ -151,29 +144,16 @@ export const AuditLogsForm = () => {
                 name="time_max"
                 data-field="time.max"
                 value={datetimeToString(filter.time?.max)}
-                onChange={(e) => {
-                  filter.time.max = createDate(e.target.value)
-                  setFilter({ ...filter })
-                }}
+                onChange={onChange}
               />
             </label>
           </section>
           <section className="section search">
             <label>
               {resource.page_size}
-              <select id="limit" name="limit" onChange={pageSizeChanged} defaultValue={filter.limit}>
-                {sizes.map((item, i) => {
-                  return (
-                    <option key={i} value={item}>
-                      {item}
-                    </option>
-                  )
-                })}
-              </select>
+              <PageSizeSelect id="limit" name="limit" size={filter.limit} sizes={pageSizes} onChange={pageSizeChanged} />
             </label>
-            <button type="submit" className="btn-search" onClick={searchOnClick}>
-              {resource.search}
-            </button>
+            <button type="submit" className="btn-search" onClick={searchOnClick}>{resource.search}</button>
           </section>
         </form>
         <form className="list-result">
@@ -225,7 +205,7 @@ export const AuditLogsForm = () => {
                         <td>{item.resource}</td>
                         <td>{item.action}</td>
                         <td>
-                          <span className={"badge badge-sm " + mapStyleStatus.get(item.status)}>{item.status || ""}</span>
+                          <span className={"badge badge-sm " + mapStyleStatus.get(item.status)}>{item.status}</span>
                         </td>
                         <td>{item.userId}</td>
                         <td>{item.ip}</td>
@@ -249,7 +229,7 @@ export const AuditLogsForm = () => {
                     <p>{item.remark}</p>
                     <p>
                       {formatFullDateTime(item.time, dateFormat, locale.decimalSeparator)}{" "}
-                      <span className={"badge badge-sm " + mapStyleStatus.get(item.status)}>{item.status || ""}</span>
+                      <span className={"badge badge-sm " + mapStyleStatus.get(item.status)}>{item.status}</span>
                     </p>
                   </li>
                 )

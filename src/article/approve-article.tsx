@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react"
-import { isSuccessful, OnClick } from "react-hook-core"
+import { MouseEvent, useEffect, useRef, useState } from "react"
+import { isSuccessful } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -36,9 +36,9 @@ export const ApproveArticleForm = () => {
     }
   }, [id, canApprove]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const back = (e: OnClick) => navigate(-1)
+  const back = (e: MouseEvent<HTMLButtonElement>) => navigate(-1)
 
-  const reject = (e: OnClick) => {
+  const reject = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     confirm(resource.msg_confirm_reject, () => {
       const service = getArticleService()
@@ -60,7 +60,7 @@ export const ApproveArticleForm = () => {
     })
   }
 
-  const approve = (e: OnClick) => {
+  const approve = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     confirm(resource.msg_confirm_approve, () => {
       const service = getArticleService()
@@ -83,10 +83,10 @@ export const ApproveArticleForm = () => {
   }
 
   return (
-    <form id="approveArticleForm" name="approveArticleForm" className="form" ref={refForm as any}>
+    <form id="approveArticleForm" name="approveArticleForm" className="form" ref={refForm}>
       <header>
         <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
-        <h2 className="view-title">{resource.article}</h2>
+        <h2>{resource.article}</h2>
       </header>
       <div className="article-body">
         <h3 className="article-description">{article.title}</h3>

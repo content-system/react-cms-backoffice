@@ -1,6 +1,6 @@
 import { Result } from "onecore"
-import { useEffect, useRef, useState } from "react"
-import { clone, hasDiff, isEmptyObject, isSuccessful, makeDiff, OnClick, updateState } from "react-hook-core"
+import { MouseEvent, useEffect, useRef, useState } from "react"
+import { clone, hasDiff, isEmpty, isSuccessful, makeDiff, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -18,10 +18,11 @@ export const ArticleForm = () => {
   const canWrite = hasPermission(Permission.write, 1)
   const canApprove = hasPermission(Permission.approve, 1)
   const dateFormat = getDateFormat()
+
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
-  const [initialArticle, setInitialArticle] = useState<Article>(createArticle())
+  const [initialArticle, setInitialArticle] = useState<Article>()
   const [article, setArticle] = useState<Article>(createArticle())
 
   const { id } = useParams()
@@ -45,7 +46,7 @@ export const ArticleForm = () => {
     }
   }, [id, newMode, canWrite, canApprove]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const back = (e: OnClick) => {
+  const back = (e: MouseEvent<HTMLElement>) => {
     if (!canWrite || !canSubmit(article.status)) {
       navigate(-1)
     } else {
@@ -56,22 +57,22 @@ export const ArticleForm = () => {
       }
     }
   }
-  const viewHistory = (e: OnClick, id: string) => {
+  const viewHistory = (e: MouseEvent<HTMLElement>, id: string) => {
     e.preventDefault()
     navigate(`/articles/${id}/history`)
   }
-  const approve = (e: OnClick, id: string) => {
+  const approve = (e: MouseEvent<HTMLElement>, id: string) => {
     e.preventDefault()
     navigate(`/articles/${id}/approve`)
   }
 
-  const saveOnClick = (e: OnClick) => {
+  const saveOnClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     const obj = clone(article)
     obj.status = Status.Draft
     onSave(obj)
   }
-  const submit = (e: OnClick) => {
+  const submit = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
@@ -90,8 +91,8 @@ export const ArticleForm = () => {
       if (article.status === Status.Submitted) {
         save(article, service.update)
       } else {
-        const diff = makeDiff(initialArticle, article, ["id"])
-        if (isEmptyObject(diff)) {
+        const diff = makeDiff(article, initialArticle, ["id"])
+        if (isEmpty(diff)) {
           alertWarning(resource.msg_no_change)
         } else {
           showLoading()
@@ -127,7 +128,7 @@ export const ArticleForm = () => {
       (<article id="articleForm">
         <header>
           <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
-          <h2 className="view-title">{resource.article}</h2>
+          <h2>{resource.article}</h2>
           <div className="btn-group">
             {/*<Link id="btnApprove" className="btn-approve" to={`/articles/${article.id}/approve`}></Link>*/}
             {canApprove && canReject(article.status) && <button type="button" className="btn-approve" onClick={(e) => approve(e, article.id)}></button>}
@@ -145,10 +146,10 @@ export const ArticleForm = () => {
           <div className="article-content" dangerouslySetInnerHTML={{ __html: article.content }}></div>
         </div>
       </article>) :
-      <form id="articleForm" name="articleForm" className="form" model-name="article" ref={refForm as any}>
+      <form id="articleForm" name="articleForm" className="form" ref={refForm}>
         <header>
           <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
-          <h2 className="view-title">{resource.article}</h2>
+          <h2>{resource.article}</h2>
           <div className="btn-group">
             {/*<Link id="btnApprove" className="btn-approve" to={`/articles/${article.id}/approve`}></Link>*/}
             {canApprove && canReject(article.status) && <button type="button" className="btn-approve" onClick={(e) => approve(e, article.id)}></button>}

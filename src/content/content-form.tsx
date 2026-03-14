@@ -1,6 +1,6 @@
 import { Result } from "onecore"
-import React, { useEffect, useRef, useState } from "react"
-import { clone, datetimeToString, hasDiff, isEmptyObject, isSuccessful, makeDiff } from "react-hook-core"
+import React, { MouseEvent, useEffect, useRef, useState } from "react"
+import { clone, datetimeToString, isEmpty, isSuccessful, makeDiff, onBack } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -15,12 +15,14 @@ const createContent = (): Content => {
 }
 
 export const ContentForm = () => {
-  const isReadOnly = !hasPermission(Permission.write, 2)
+  const canWrite = hasPermission(Permission.write, 2)
+
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
-  const [initialContent, setInitialContent] = useState<Content>(createContent())
+  const [initialContent, setInitialContent] = useState<Content>()
   const [content, setContent] = useState<Content>(createContent())
+
   const { id, lang } = useParams()
   const newMode = !id
   useEffect(() => {
@@ -35,7 +37,7 @@ export const ContentForm = () => {
           } else {
             setInitialContent(clone(content))
             setContent(content)
-            if (isReadOnly) {
+            if (!canWrite) {
               setReadOnly(refForm?.current)
             }
           }
@@ -43,43 +45,37 @@ export const ContentForm = () => {
         .catch(handleError)
         .finally(hideLoading)
     }
-  }, [id, newMode, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [id, newMode, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const back = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    if (!hasDiff(initialContent, content)) {
-      navigate(-1)
-    } else {
-      confirm(resource.msg_confirm_back, () => navigate(-1))
-    }
-  }
+  const back = (e: MouseEvent<HTMLElement>) => onBack(e, navigate, confirm, resource, content, initialContent)
 
   const statusOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     content.status = e.target.value
     setContent({ ...content })
   }
-  const save = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const save = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault()
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
       const service = getContentService()
-      if (!newMode) {
-        const diff = makeDiff(initialContent, content, ["id", "lang"])
-        if (isEmptyObject(diff)) {
+      if (newMode) {
+        confirm(resource.msg_confirm_save, () => {
+          showLoading()
+          service
+            .create(content)
+            .then((res) => afterSaved(res))
+            .catch(handleError)
+            .finally(hideLoading)
+        })
+      } else {
+        const diff = makeDiff(content, initialContent, ["id", "lang"])
+        if (isEmpty(diff)) {
           return alertWarning(resource.msg_no_change)
         }
         confirm(resource.msg_confirm_save, () => {
           showLoading()
           service
             .patch(content)
-            .then((res) => afterSaved(res))
-            .catch(handleError)
-            .finally(hideLoading)
-        })
-      } else {
-        confirm(resource.msg_confirm_save, () => {
-          showLoading()
-          service
-            .create(content)
             .then((res) => afterSaved(res))
             .catch(handleError)
             .finally(hideLoading)
@@ -92,17 +88,15 @@ export const ContentForm = () => {
       showFormError(refForm?.current, res)
     } else if (isSuccessful(res)) {
       alertSuccess(resource.msg_save_success, () => navigate(-1))
-    } else if (res === 0) {
-      alertError(resource.error_not_found)
     } else {
-      alertError(resource.error_conflict)
+      alertError(resource.error_not_found)
     }
   }
   return (
-    <form id="contentForm" name="contentForm" className="form" model-name="content" ref={refForm as any}>
+    <form id="contentForm" name="contentForm" className="form" ref={refForm}>
       <header>
         <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
-        <h2 className="view-title">{resource.content}</h2>
+        <h2>{resource.content}</h2>
         <div className="btn-group">
           <button className="btn-group btn-right" hidden={newMode}>
             <i className="material-icons">group</i>
@@ -209,7 +203,7 @@ export const ContentForm = () => {
         </label>
       </div>
       <footer>
-        {!isReadOnly && (
+        {canWrite && (
           <button type="submit" id="btnSave" name="btnSave" onClick={save}>
             {resource.save}
           </button>

@@ -1,6 +1,6 @@
 import { strongPassword, validateAndChangePassword, validateChange } from "password-client"
-import { useEffect, useRef, useState } from "react"
-import { OnClick, updateState, useMessage } from "react-hook-core"
+import { MouseEvent, useEffect, useRef, useState } from "react"
+import { updateState, useMessage } from "react-hook-core"
 import { Link } from "react-router-dom"
 import { initForm, registerEvents } from "ui-plus"
 import { handleError, loading, message, useResource } from "uione"
@@ -45,7 +45,7 @@ export const ChangePasswordForm = () => {
     initForm(form.current, registerEvents)
   }, [])
 
-  const changePassword = (e: OnClick) => {
+  const changePassword = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     const passwordService = getPasswordService()
     validateAndChangePassword(

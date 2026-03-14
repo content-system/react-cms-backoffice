@@ -1,6 +1,6 @@
 import { email, validateAndForgotPassword, validateContact } from "password-client"
-import { useEffect, useRef, useState } from "react"
-import { OnClick, useMessage } from "react-hook-core"
+import { MouseEvent, useEffect, useRef, useState } from "react"
+import { useMessage } from "react-hook-core"
 import { Link } from "react-router-dom"
 import { initForm, registerEvents } from "ui-plus"
 import { handleError, message, storage, useResource } from "uione"
@@ -22,7 +22,7 @@ export const ForgotPasswordForm = () => {
     initForm(form.current, registerEvents)
   }, [])
 
-  const forgotPassword = (e: OnClick) => {
+  const forgotPassword = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     const passwordServicer = getPasswordService()
     validateAndForgotPassword(

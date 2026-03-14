@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react"
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -53,7 +53,7 @@ export const RoleAssignmentForm = () => {
     }
   }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const save = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const save = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault()
     const userRoles = getRoles(selectedRoles)
     confirm(resource.msg_confirm_save, () => {
@@ -98,7 +98,7 @@ export const RoleAssignmentForm = () => {
     setState({ ...state, selectedRoles, checkedAll })
   }
 
-  const back = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const back = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault()
     navigate(-1)
   }
