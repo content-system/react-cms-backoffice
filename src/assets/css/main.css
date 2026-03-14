@@ -172,6 +172,12 @@ td > button {
 }
 
 .classic.top-menu .detail-content > form > footer,
+.classic.top-menu .view-container.form > footer,
+.classic.top-menu .page-body > .form > footer,
+.classic.top-menu .view-footer {
+  bottom: unset;
+}
+.classic.top-menu .detail-content > form > footer,
 .modal-portal-content > .form > footer,
 .modal-portal-content > div > footer {
   bottom: unset;
@@ -281,23 +287,14 @@ header > h2 {
   margin-top: 0;
   margin-bottom: 0;
 }
-.header {
-  padding-left: 8px;
-  padding-right: 8px;
-  margin-bottom: 8px;
-}
-.header:first-child {
-  margin-top: 8px;
+.error-body {
+  padding-top: 44px;
 }
 @media screen and (max-width: 600px) {
   header > h1,
   header > h2 {
     display: flex;
     justify-content: center;
-  }
-  h4 {
-    display: flex;
-    justify-content: space-between;
   }
   .header {
     display: flex;
@@ -311,12 +308,8 @@ header > h2 {
     padding-right: 16px;
     margin-bottom: 0;
   }
-  .header:first-child {
-    margin-top: 0;
-  }
-  .section:first-child > h3:first-child,
-  .section:first-child > h4:first-child {
-    margin-top: -8px;
+  .error-body {
+    padding-top: 60px;
   }
 }
 

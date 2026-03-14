@@ -129,10 +129,19 @@ article.view-container > div,
   height: calc(100vh - 52px);
   overflow-x: auto;
 }
+.modal-portal-content .search-body,
+.modal-portal-content .main-body {
+  max-height: calc(100vh - 150px);
+  height: calc(100vh - 150px);
+}
 @media screen and (min-width: 769px) {
   .top-menu .page-body {
     height: calc(100vh - 52px - 56px);
     min-height: calc(100vh - 52px - 56px);
+  }
+  .classic.top-menu .page-body {
+    height: unset;
+    min-height: unset;
   }
   .top-menu .page-body > .full {
     max-height: calc(100vh - 52px - 46px);
@@ -158,9 +167,22 @@ article.view-container > div,
   .top-menu .page-container .main-body {
     max-height: calc(100vh - 46px - 52px);
   }
-}
-.modal-portal-content .search-body,
-.modal-portal-content .main-body {
-  max-height: calc(100vh - 150px);
-  height: calc(100vh - 150px);
+  .classic.top-menu .page-container > .page-body > .view-container > .form,
+  .classic.top-menu .page-container > .page-body > .form,
+  .classic.top-menu .page-body > article,
+  .classic.top-menu .page-container > .page-body > article > div,
+  .classic.top-menu .page-container .search-body,
+  .classic.top-menu .page-container .main-body {
+    max-height: unset;
+    height: unset;
+  }
+  .top-menu .modal-portal-content .search-body,
+  .top-menu .modal-portal-content .main-body {
+    max-height: calc(100vh - 150px - 19px);
+    height: calc(100vh - 150px - 19px);
+  }
+  .classic.top-menu .page-container .search-body {
+    max-height: unset;
+    height: unset;
+  }
 }
