@@ -1,5 +1,5 @@
 import { Result } from "onecore"
-import { MouseEvent, useEffect, useRef, useState } from "react"
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
 import { clone, hasDiff, isEmpty, isSuccessful, makeDiff, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
@@ -24,6 +24,7 @@ export const ArticleForm = () => {
   const refForm = useRef<HTMLFormElement>(null)
   const [initialArticle, setInitialArticle] = useState<Article>()
   const [article, setArticle] = useState<Article>(createArticle())
+  const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => updateState(e, article, setArticle)
 
   const { id } = useParams()
   const newMode = !id
@@ -163,10 +164,9 @@ export const ArticleForm = () => {
               type="text"
               id="id"
               name="id"
-              className="form-control"
-              value={article.id || ""}
+              value={article.id}
               readOnly={true}
-              onChange={(e) => updateState(e, article, setArticle)}
+              onChange={onChange}
               maxLength={80}
               placeholder={resource.id}
             />
@@ -177,8 +177,8 @@ export const ArticleForm = () => {
               type="url"
               id="thumbnail"
               name="thumbnail"
-              value={article.thumbnail || ""}
-              onChange={(e) => updateState(e, article, setArticle)}
+              value={article.thumbnail}
+              onChange={onChange}
               onBlur={requiredOnBlur}
               maxLength={255}
               required={true}
@@ -212,8 +212,8 @@ export const ArticleForm = () => {
               type="text"
               id="title"
               name="title"
-              value={article.title || ""}
-              onChange={(e) => updateState(e, article, setArticle)}
+              value={article.title}
+              onChange={onChange}
               onBlur={requiredOnBlur}
               maxLength={255}
               required={true}
@@ -226,8 +226,8 @@ export const ArticleForm = () => {
               id="description"
               name="description"
               rows={4}
-              value={article.description || ""}
-              onChange={(e) => updateState(e, article, setArticle)}
+              value={article.description}
+              onChange={onChange}
               onBlur={requiredOnBlur}
               required={true}
               maxLength={1200}
@@ -240,8 +240,8 @@ export const ArticleForm = () => {
               id="content"
               name="content"
               rows={80}
-              value={article.content || ""}
-              onChange={(e) => updateState(e, article, setArticle)}
+              value={article.content}
+              onChange={onChange}
               onBlur={requiredOnBlur}
               maxLength={9000}
               placeholder={resource.content}
@@ -249,16 +249,12 @@ export const ArticleForm = () => {
           </label>
         </div>
         <footer>
-          {canWrite &&
-            <button type="button" id="btnSave" name="btnSave" className="btn-secondary" onClick={saveOnClick} disabled={!canSubmit(article.status)}>
-              {resource.save_draft}
-            </button>
-          }
-          {canWrite &&
-            <button type="submit" id="btnSave" name="btnSave" onClick={submit} disabled={!canSubmit(article.status)}>
-              {resource.submit}
-            </button>
-          }
+          <button type="button" id="btnSave" name="btnSave" className="btn-secondary" onClick={saveOnClick} disabled={!canSubmit(article.status)}>
+            {resource.save_draft}
+          </button>
+          <button type="submit" id="btnSave" name="btnSave" onClick={submit} disabled={!canSubmit(article.status)}>
+            {resource.submit}
+          </button>
         </footer>
       </form>)
   )

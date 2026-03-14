@@ -123,11 +123,8 @@ export const ContentsForm = () => {
                 type="text"
                 id="title"
                 name="title"
-                value={filter.title || ""}
-                onChange={(e) => {
-                  filter.title = e.target.value
-                  setFilter({ ...filter })
-                }}
+                value={filter.title}
+                onChange={onChange}
                 maxLength={255}
                 placeholder={resource.title}
               />
@@ -138,11 +135,8 @@ export const ContentsForm = () => {
                 type="text"
                 id="description"
                 name="description"
-                value={filter.body || ""}
-                onChange={(e) => {
-                  filter.body = e.target.value
-                  setFilter({ ...filter })
-                }}
+                value={filter.body}
+                onChange={onChange}
                 maxLength={255}
                 placeholder={resource.description}
               />
@@ -151,11 +145,11 @@ export const ContentsForm = () => {
               {resource.status}
               <section className="checkbox-group">
                 <label>
-                  <input type="checkbox" id="A" name="status" value="A" checked={checked(filter.status, "A")} onChange={e => resetSearch(e, filter, setFilter, search)} />
+                  <input type="checkbox" id="A" name="status" value="A" checked={checked(filter.status, "A")} onChange={statusOnChange} />
                   {resource.active}
                 </label>
                 <label>
-                  <input type="checkbox" id="I" name="status" value="I" checked={checked(filter.status, "I")} onChange={e => resetSearch(e, filter, setFilter, search)} />
+                  <input type="checkbox" id="I" name="status" value="I" checked={checked(filter.status, "I")} onChange={statusOnChange} />
                   {resource.inactive}
                 </label>
               </section>

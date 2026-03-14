@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect, useRef, useState } from "react"
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
 import { afterSaved, clone, isEmpty, makeDiff, onBack, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
@@ -25,11 +25,13 @@ const createContact = (): Contact => {
 
 export const ContactForm = () => {
   const canWrite = hasPermission(Permission.write, 1)
+
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
   const [initialContact, setInitialContact] = useState<Contact>()
   const [contact, setContact] = useState<Contact>(createContact())
+  const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => updateState(e, contact, setContact)
 
   const { id } = useParams()
   useEffect(() => {
@@ -83,7 +85,7 @@ export const ContactForm = () => {
             id="name"
             name="name"
             value={contact.name}
-            onChange={(e) => updateState(e, contact, setContact)}
+            onChange={onChange}
             onBlur={requiredOnBlur}
             maxLength={100}
             required={true}
@@ -97,7 +99,7 @@ export const ContactForm = () => {
             id="country"
             name="country"
             value={contact.country}
-            onChange={(e) => updateState(e, contact, setContact)}
+            onChange={onChange}
             onBlur={requiredOnBlur}
             maxLength={100}
             required={true}
@@ -111,7 +113,7 @@ export const ContactForm = () => {
             id="company"
             name="company"
             value={contact.company}
-            onChange={(e) => updateState(e, contact, setContact)}
+            onChange={onChange}
             onBlur={requiredOnBlur}
             maxLength={100}
             required={true}
@@ -126,7 +128,7 @@ export const ContactForm = () => {
             name="jobTitle"
             data-type="jobTitle"
             value={contact.jobTitle}
-            onChange={(e) => updateState(e, contact, setContact)}
+            onChange={onChange}
             onBlur={requiredOnBlur}
             maxLength={100}
             placeholder={resource.job_title}
@@ -140,7 +142,7 @@ export const ContactForm = () => {
             name="email"
             data-type="email"
             value={contact.email}
-            onChange={(e) => updateState(e, contact, setContact)}
+            onChange={onChange}
             onBlur={emailOnBlur}
             required={true}
             maxLength={120}
@@ -174,7 +176,7 @@ export const ContactForm = () => {
             id="submittedAt"
             name="submittedAt"
             value={datetimeToString(contact.submittedAt)}
-            onChange={(e) => updateState(e, contact, setContact)}
+            onChange={onChange}
             onBlur={requiredOnBlur}
             maxLength={19}
             required={true}
@@ -188,7 +190,7 @@ export const ContactForm = () => {
             id="contactedBy"
             name="contactedBy"
             value={contact.contactedBy}
-            onChange={(e) => updateState(e, contact, setContact)}
+            onChange={onChange}
             maxLength={100}
             placeholder={resource.contacted_by}
           />
@@ -200,7 +202,7 @@ export const ContactForm = () => {
             id="contactedAt"
             name="contactedAt"
             value={datetimeToString(contact.contactedAt)}
-            onChange={(e) => updateState(e, contact, setContact)}
+            onChange={onChange}
             maxLength={19}
             placeholder={resource.contacted_at}
           />
@@ -212,7 +214,7 @@ export const ContactForm = () => {
             name="message"
             rows={8}
             value={contact.message}
-            onChange={(e) => updateState(e, contact, setContact)}
+            onChange={onChange}
             onBlur={requiredOnBlur}
             maxLength={400}
             placeholder={resource.message}

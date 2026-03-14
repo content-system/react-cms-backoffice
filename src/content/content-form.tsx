@@ -1,6 +1,6 @@
 import { Result } from "onecore"
-import React, { MouseEvent, useEffect, useRef, useState } from "react"
-import { clone, datetimeToString, isEmpty, isSuccessful, makeDiff, onBack } from "react-hook-core"
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
+import { clone, datetimeToString, isEmpty, isSuccessful, makeDiff, onBack, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -22,6 +22,7 @@ export const ContentForm = () => {
   const refForm = useRef<HTMLFormElement>(null)
   const [initialContent, setInitialContent] = useState<Content>()
   const [content, setContent] = useState<Content>(createContent())
+  const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => updateState(e, content, setContent)
 
   const { id, lang } = useParams()
   const newMode = !id
@@ -49,10 +50,6 @@ export const ContentForm = () => {
 
   const back = (e: MouseEvent<HTMLElement>) => onBack(e, navigate, confirm, resource, content, initialContent)
 
-  const statusOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    content.status = e.target.value
-    setContent({ ...content })
-  }
   const save = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault()
     const valid = validateForm(refForm?.current, getLocale())
@@ -115,10 +112,7 @@ export const ContentForm = () => {
             name="id"
             value={content.id}
             readOnly={!newMode}
-            onChange={(e) => {
-              content.id = e.target.value
-              setContent({ ...content })
-            }}
+            onChange={onChange}
             maxLength={80}
             required={true}
             placeholder={resource.id}
@@ -132,10 +126,7 @@ export const ContentForm = () => {
             name="lang"
             value={content.lang}
             readOnly={!newMode}
-            onChange={(e) => {
-              content.lang = e.target.value
-              setContent({ ...content })
-            }}
+            onChange={onChange}
             maxLength={80}
             required={true}
             placeholder={resource.lang}
@@ -149,25 +140,22 @@ export const ContentForm = () => {
             id="publishedAt"
             name="publishedAt"
             value={datetimeToString(content.publishedAt)}
-            onChange={(e) => {
-              content.publishedAt = e.target.value.length > 0 ? new Date(e.target.value) : undefined
-              setContent({ ...content })
-            }}
+            onChange={onChange}
           />
         </label>
-        <div className="col s12 m6 radio-section">
+        <label className="col s12 m6">
           {resource.status}
           <div className="radio-group">
             <label>
-              <input type="radio" id="active" name="status" onChange={statusOnChange} value={Status.Active} checked={content.status === Status.Active} />
-              {resource.yes}
+              <input type="radio" id="active" name="status" onChange={onChange} value={Status.Active} checked={content.status === Status.Active} />
+              {resource.active}
             </label>
             <label>
-              <input type="radio" id="inactive" name="status" onChange={statusOnChange} value={Status.Inactive} checked={content.status === Status.Inactive} />
-              {resource.number}
+              <input type="radio" id="inactive" name="status" onChange={onChange} value={Status.Inactive} checked={content.status === Status.Inactive} />
+              {resource.inactive}
             </label>
           </div>
-        </div>
+        </label>
         <label className="col s12">
           {resource.title}
           <input
@@ -175,10 +163,7 @@ export const ContentForm = () => {
             id="title"
             name="title"
             value={content.title}
-            onChange={(e) => {
-              content.title = e.target.value
-              setContent({ ...content })
-            }}
+            onChange={onChange}
             onBlur={requiredOnBlur}
             maxLength={255}
             required={true}
@@ -192,10 +177,7 @@ export const ContentForm = () => {
             name="body"
             rows={80}
             value={content.body}
-            onChange={(e) => {
-              content.body = e.target.value
-              setContent({ ...content })
-            }}
+            onChange={onChange}
             onBlur={requiredOnBlur}
             maxLength={9000}
             placeholder={resource.body}

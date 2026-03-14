@@ -112,7 +112,7 @@ export const RoleAssignmentForm = () => {
         <section className="row section">
           <label className="col s12 m6">
             {resource.email}
-            <input type="text" id="email" name="email" value={user.email || ""} maxLength={255} placeholder={resource.email} disabled={true} />
+            <input type="text" id="email" name="email" value={user.email} maxLength={255} placeholder={resource.email} disabled={true} />
           </label>
         </section>
         <section className="list-container">

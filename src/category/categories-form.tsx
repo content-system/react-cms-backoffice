@@ -32,7 +32,6 @@ import { Category, CategoryFilter, getCategoryService } from "./service"
 
 interface CategorySearch extends Sortable {
   statusList: Item[]
-  list: Category[]
   total?: number
   view?: string
   fields?: string[]
@@ -47,7 +46,6 @@ export const CategoriesForm = () => {
   }
   const initialState: CategorySearch = {
     statusList: [],
-    list: [],
   }
 
   const resource = useResource()
@@ -81,7 +79,7 @@ export const CategoriesForm = () => {
     getCategoryService()
       .search({ ...filter }, limit, page, fields)
       .then((res) => {
-        setState({ ...state, list: res.list, total: res.total, fields })
+        setState({ ...state, total: res.total, fields })
         setList(res.list)
         toast(buildMessage(resource, res.list, limit, page, res.total))
       })
@@ -187,51 +185,47 @@ export const CategoriesForm = () => {
                 </tr>
               </thead>
               <tbody>
-                {list &&
-                  list.length > 0 &&
-                  list.map((item, i) => {
-                    return (
-                      <tr key={i}>
-                        <td className="text-right">{offset + i + 1}</td>
-                        <td>{item.id}</td>
-                        <td>
-                          <Link to={`${item.id}`}>{item.name}</Link>
-                        </td>
-                        <td>{item.path}</td>
-                        <td>{item.resource}</td>
-                        <td>{item.icon}</td>
-                        <td>{item.type}</td>
-                        <td>{item.parent}</td>
-                        <td className="right-align">{item.sequence}</td>
-                        <td>{item.status}</td>
-                        <td>
-                          <div className="btn-group">
-                            <button type="button" className="btn-edit"></button>
-                            <button type="button" className="btn-history"></button>
-                          </div>
-                        </td>
-                      </tr>
-                    )
-                  })}
+                {list.map((item, i) => {
+                  return (
+                    <tr key={i}>
+                      <td className="text-right">{offset + i + 1}</td>
+                      <td>{item.id}</td>
+                      <td>
+                        <Link to={`${item.id}`}>{item.name}</Link>
+                      </td>
+                      <td>{item.path}</td>
+                      <td>{item.resource}</td>
+                      <td>{item.icon}</td>
+                      <td>{item.type}</td>
+                      <td>{item.parent}</td>
+                      <td className="right-align">{item.sequence}</td>
+                      <td>{item.status}</td>
+                      <td>
+                        <div className="btn-group">
+                          <button type="button" className="btn-edit"></button>
+                          <button type="button" className="btn-history"></button>
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           </div>
         )}
         {state.view === "list" && (
           <ul className="row list">
-            {state.list &&
-              state.list.length > 0 &&
-              state.list.map((item, i) => {
-                return (
-                  <li key={i} className="col s12 m6 l4 xl3 list-item">
-                    <Link to={`${item.id}`}>{item.name}</Link>
-                    <button className="btn-detail"></button>
-                    <p>
-                      {item.path} {item.parent}
-                    </p>
-                  </li>
-                )
-              })}
+            {list.map((item, i) => {
+              return (
+                <li key={i} className="col s12 m6 l4 xl3 list-item">
+                  <Link to={`${item.id}`}>{item.name}</Link>
+                  <button className="btn-detail"></button>
+                  <p>
+                    {item.path} {item.parent}
+                  </p>
+                </li>
+              )
+            })}
           </ul>
         )}
       </div>

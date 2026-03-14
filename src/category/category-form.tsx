@@ -110,7 +110,6 @@ export const CategoryForm = () => {
             type="text"
             id="id"
             name="id"
-            className="form-control"
             value={category.id}
             readOnly={!newMode}
             onChange={onChange}
@@ -207,31 +206,28 @@ export const CategoryForm = () => {
             className="text-right"
             id="sequence"
             name="sequence"
-            data-type="integer"
+            data-type="int"
             value={category.sequence}
-            onChange={(e) => {
-              category.sequence = parseInt(e.target.value)
-              setCategory({ ...category })
-            }}
+            onChange={onChange}
             onBlur={requiredOnBlur}
             maxLength={3}
             required={true}
             placeholder={resource.sequence}
           />
         </label>
-        <div className="col s12 m6 radio-section">
+        <label className="col s12 m6">
           {resource.status}
           <div className="radio-group">
             <label>
               <input type="radio" id="active" name="status" onChange={onChange} value={Status.Active} checked={category.status === Status.Active} />
-              {resource.yes}
+              {resource.active}
             </label>
             <label>
               <input type="radio" id="inactive" name="status" onChange={onChange} value={Status.Inactive} checked={category.status === Status.Inactive} />
-              {resource.number}
+              {resource.inactive}
             </label>
           </div>
-        </div>
+        </label>
       </div>
       <footer>
         {canWrite && (

@@ -35,7 +35,6 @@ import { Article, ArticleFilter, getArticleService } from "./service"
 
 interface ArticleSearch extends Sortable {
   statusList: Item[]
-  list: Article[]
   total?: number
   view?: string
   fields?: string[]
@@ -57,7 +56,6 @@ export const ArticlesForm = () => {
   }
   const initialState: ArticleSearch = {
     statusList: [],
-    list: [],
   }
 
   const resource = useResource()
@@ -92,7 +90,7 @@ export const ArticlesForm = () => {
     getArticleService()
       .search({ ...filter }, limit, page, fields)
       .then((res) => {
-        setState({ ...state, list: res.list, total: res.total, fields })
+        setState({ ...state, total: res.total, fields })
         setList(res.list)
         toast(buildMessage(resource, res.list, limit, page, res.total))
       })
@@ -234,51 +232,47 @@ export const ArticlesForm = () => {
                 </tr>
               </thead>
               <tbody>
-                {list &&
-                  list.length > 0 &&
-                  list.map((item, i) => {
-                    return (
-                      <tr key={i}>
-                        <td className="text-right">{offset + i + 1}</td>
-                        <td>{item.id}</td>
-                        <td>
-                          <Link to={`${item.id}`}>{item.title}</Link>
-                        </td>
-                        <td>{formatDateTime(item.publishedAt, dateFormat)}</td>
-                        <td>{item.description}</td>
-                        <td>{getFlowStatusName(item.status, resource)}</td>
-                        <td>
-                          <div className="btn-group">
-                            {canWrite && <button type="button" className="btn-copy" onClick={(e) => edit(e, item.id)}></button>}
-                            {canWrite && canUpdate(item.status) && <button type="button" className="btn-edit" onClick={(e) => edit(e, item.id)}></button>}
-                            {canApprove && userId !== item.submittedBy &&
-                              canReject(item.status) && <button type="button" className="btn-approve" onClick={(e) => approve(e, item.id)}></button>}
-                            <button type="button" className="btn-history" onClick={(e) => viewHistory(e, item.id)}></button>
-                          </div>
-                        </td>
-                      </tr>
-                    )
-                  })}
+                {list.map((item, i) => {
+                  return (
+                    <tr key={i}>
+                      <td className="text-right">{offset + i + 1}</td>
+                      <td>{item.id}</td>
+                      <td>
+                        <Link to={`${item.id}`}>{item.title}</Link>
+                      </td>
+                      <td>{formatDateTime(item.publishedAt, dateFormat)}</td>
+                      <td>{item.description}</td>
+                      <td>{getFlowStatusName(item.status, resource)}</td>
+                      <td>
+                        <div className="btn-group">
+                          {canWrite && <button type="button" className="btn-copy" onClick={(e) => edit(e, item.id)}></button>}
+                          {canWrite && canUpdate(item.status) && <button type="button" className="btn-edit" onClick={(e) => edit(e, item.id)}></button>}
+                          {canApprove && userId !== item.submittedBy &&
+                            canReject(item.status) && <button type="button" className="btn-approve" onClick={(e) => approve(e, item.id)}></button>}
+                          <button type="button" className="btn-history" onClick={(e) => viewHistory(e, item.id)}></button>
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           </div>
         )}
         {state.view === "list" && (
           <ul className="row list">
-            {state.list &&
-              state.list.length > 0 &&
-              state.list.map((item, i) => {
-                return (
-                  <li key={i} className="col s12 m6 l4 xl3 img-card" onClick={(e) => edit(e, item.id)}>
-                    <section>
-                      <div className="cover" style={{ backgroundImage: `url('${item.thumbnail}')` }}></div>
-                      <Link to={`${item.id}`}>{item.title}</Link>
-                      <p>{formatDateTime(item.publishedAt, dateFormat)}</p>
-                      <p>{item.description}</p>
-                    </section>
-                  </li>
-                )
-              })}
+            {list.map((item, i) => {
+              return (
+                <li key={i} className="col s12 m6 l4 xl3 img-card" onClick={(e) => edit(e, item.id)}>
+                  <section>
+                    <div className="cover" style={{ backgroundImage: `url('${item.thumbnail}')` }}></div>
+                    <Link to={`${item.id}`}>{item.title}</Link>
+                    <p>{formatDateTime(item.publishedAt, dateFormat)}</p>
+                    <p>{item.description}</p>
+                  </section>
+                </li>
+              )
+            })}
           </ul>
         )}
       </div>

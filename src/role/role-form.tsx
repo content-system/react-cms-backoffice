@@ -698,7 +698,7 @@ export function RoleForm() {
               type="text"
               id="remark"
               name="remark"
-              value={role.remark || ""}
+              value={role.remark}
               onChange={(e) => {
                 role.remark = e.target.value
                 setState({ ...state, role })

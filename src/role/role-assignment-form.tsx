@@ -161,11 +161,11 @@ export const RoleAssignmentForm = () => {
           <section className="row section">
             <label className="col s12 m6">
               {resource.role_id}
-              <input type="text" id="roleId" name="roleId" value={role.roleId || ""} maxLength={255} placeholder={resource.roleId} disabled={true} />
+              <input type="text" id="roleId" name="roleId" value={role.roleId} maxLength={255} placeholder={resource.roleId} disabled={true} />
             </label>
             <label className="col s12 m6">
               {resource.role_name}
-              <input type="text" id="roleName" name="roleName" value={role.roleName || ""} maxLength={255} placeholder={resource.role_name} disabled={true} />
+              <input type="text" id="roleName" name="roleName" value={role.roleName} maxLength={255} placeholder={resource.role_name} disabled={true} />
             </label>
           </section>
           <section className="row section">

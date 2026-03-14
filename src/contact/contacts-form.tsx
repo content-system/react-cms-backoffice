@@ -16,7 +16,6 @@ import {
   PageChange,
   pageSizes,
   PageSizeSelect,
-  resetSearch,
   resources,
   setSortFilter,
   Sortable,
@@ -53,7 +52,6 @@ export const ContactsForm = () => {
   const [state, setState] = useState<ContactSearch>(initialState)
   const [filter, setFilter] = useState<ContactFilter>(contactFilter)
   const onChange = (e: ChangeEvent<HTMLInputElement>) => updateState(e, filter, setFilter)
-  const statusOnChange = (e: ChangeEvent<HTMLInputElement>) => resetSearch(e, filter, setFilter, search)
 
   useEffect(() => {
     const initFilter = mergeFilter(buildFromUrl<ContactFilter>(), filter, pageSizes, ["status", "contactType"])
@@ -119,11 +117,8 @@ export const ContactsForm = () => {
                 type="text"
                 id="name"
                 name="name"
-                value={filter.name || ""}
-                onChange={(e) => {
-                  filter.name = e.target.value
-                  setFilter({ ...filter })
-                }}
+                value={filter.name}
+                onChange={onChange}
                 maxLength={255}
                 placeholder={resource.name}
               />
@@ -134,11 +129,8 @@ export const ContactsForm = () => {
                 type="text"
                 id="email"
                 name="email"
-                value={filter.email || ""}
-                onChange={(e) => {
-                  filter.email = e.target.value
-                  setFilter({ ...filter })
-                }}
+                value={filter.email}
+                onChange={onChange}
                 maxLength={255}
                 placeholder={resource.email}
               />
@@ -179,41 +171,37 @@ export const ContactsForm = () => {
                 </tr>
               </thead>
               <tbody>
-                {list &&
-                  list.length > 0 &&
-                  list.map((contact, i) => {
-                    return (
-                      <tr key={i}>
-                        <td className="text-right">{offset + i + 1}</td>
-                        <td>
-                          <Link to={`${contact.id}`}>{contact.name}</Link>
-                        </td>
-                        <td>{contact.email}</td>
-                        <td>{contact.phone}</td>
-                        <td>{contact.company}</td>
-                        <td>{contact.country}</td>
-                      </tr>
-                    )
-                  })}
+                {list.map((contact, i) => {
+                  return (
+                    <tr key={i}>
+                      <td className="text-right">{offset + i + 1}</td>
+                      <td>
+                        <Link to={`${contact.id}`}>{contact.name}</Link>
+                      </td>
+                      <td>{contact.email}</td>
+                      <td>{contact.phone}</td>
+                      <td>{contact.company}</td>
+                      <td>{contact.country}</td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           </div>
         )}
         {state.view === "list" && (
           <ul className="row list">
-            {list &&
-              list.length > 0 &&
-              list.map((contact, i) => {
-                return (
-                  <li key={i} className="col s12 m6 l4 xl3 list-item">
-                    <Link to={`${contact.id}`}>{contact.name}</Link>
-                    <button className="btn-detail" />
-                    <p>
-                      {contact.email} {contact.phone}
-                    </p>
-                  </li>
-                )
-              })}
+            {list.map((contact, i) => {
+              return (
+                <li key={i} className="col s12 m6 l4 xl3 list-item">
+                  <Link to={`${contact.id}`}>{contact.name}</Link>
+                  <button className="btn-detail" />
+                  <p>
+                    {contact.email} {contact.phone}
+                  </p>
+                </li>
+              )
+            })}
           </ul>
         )}
       </div>
