@@ -69,8 +69,7 @@ export const ContactsForm = () => {
   const search = (isFirstLoad?: boolean) => {
     showLoading()
     const fields = getFields(refForm.current, state.fields)
-    addParametersIntoUrlWithSort(filter, state, isFirstLoad)
-    setFilter(filter)
+    addParametersIntoUrlWithSort(filter, state, isFirstLoad, setFilter)
     const { limit, page } = filter
     getContactService()
       .search({ ...filter }, limit, page, fields)

@@ -102,7 +102,7 @@ form label > select::-ms-expand {
   padding-top: 0;
   padding-bottom: 0;
 }
-.form .row > label.flying select:focus([data-value=""]) {
+.form .row > label.flying select:focus[data-value=""] {
   height: 24px;
   margin-top: 10px;
   -webkit-animation: flyingFrames 0.3s, 0.3s;

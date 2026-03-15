@@ -654,7 +654,6 @@ export function RoleForm() {
         </button>
       </header>
       <div>
-        <h4 className="header">Role Information</h4>
         <section className="row section">
           <label className="col s6 m6">
             {resource.role_id}

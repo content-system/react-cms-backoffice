@@ -75,8 +75,7 @@ export const ContentsForm = () => {
   const search = (isFirstLoad?: boolean) => {
     showLoading()
     const fields = getFields(refForm.current, state.fields)
-    addParametersIntoUrlWithSort(filter, state, isFirstLoad)
-    setFilter(filter)
+    addParametersIntoUrlWithSort(filter, state, isFirstLoad, setFilter)
     const { limit, page } = filter
     getContentService()
       .search({ ...filter }, limit, page, fields)
