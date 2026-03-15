@@ -168,6 +168,11 @@ export const en = {
   error_503: "Service Unavailable",
   error_504: "Gateway Timeout",
 
+  error_404_title: "404 Not found",
+  error_404_message: "Sorry, the page you are looking for could not be found.",
+  error_500_title: "500 Internal Server Error",
+  error_500_message: "Sorry, the server is wrong. Please try again later.",
+
   error_400: "Bad request",
   error_401: "You have not logged in or the session was expired. Please log in." /* error_unauthorized */,
   error_404: "Item was not found." /* error_not_found  */,
