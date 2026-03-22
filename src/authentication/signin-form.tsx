@@ -1,13 +1,13 @@
-import { AuthResult, dayDiff, getMessage, handleCookie, initFromCookie, Status, User, validate } from "authen-client"
+import { AuthResult, dayDiff, getMessage, handleCookie, initFromCookie, Status, store, User, validate } from "authen-client"
 import { CookieService } from "cookie-core"
 import { Base64 } from "js-base64"
-import { MouseEvent, useEffect, useRef, useState } from "react"
-import { formatText, updateState, useMessage } from "react-hook-core"
+import { useEffect, useRef } from "react"
+import { formatText, OnClick, useMessage, useUpdate } from "react-hook-core"
 import { Link, useNavigate } from "react-router-dom"
 import { alertInfo } from "ui-alert"
 import { initForm, registerEvents } from "ui-plus"
 import { toast } from "ui-toast"
-import { handleError, loading, storage, useResource } from "uione"
+import { handleError, loading, setPrivileges, setUser, storage, useResource } from "uione"
 import logo from "../assets/images/logo.png"
 import { getAuthenticator } from "./service"
 
@@ -28,48 +28,68 @@ const status: Status = {
   fail: 3,
   password_expired: 5,
 }
+interface SigninState {
+  user: User
+  remember: boolean
+}
+
 const msgData = {
   message: "",
   alertClass: "",
 }
-
-const cookie = new CookieService(document)
-
-export const SigninForm = () => {
-  const initUser: User = {
+const signinData: SigninState = {
+  user: {
     username: "",
     password: "",
     passcode: "",
+  },
+  remember: false,
+}
+const cookie = new CookieService(document)
+function init(getCookie: (name: string) => string): SigninState {
+  const user = {
+    username: "",
+    passcode: "",
+    password: "",
   }
+  const remember = initFromCookie("data", user, getCookie, Base64.decode)
+  return { user, remember }
+}
 
+export const SigninForm = () => {
   const resource = useResource()
   const navigate = useNavigate()
   const form = useRef<HTMLFormElement>(null)
   const { msg, showError, hideMessage } = useMessage(msgData)
-  const [user, setUser] = useState<User>(initUser)
-  const [remember, setRemember] = useState<boolean>(false)
+  const { state, setState, updateState } = useUpdate<SigninState>(signinData, "user")
 
   useEffect(() => {
     initForm(form.current, registerEvents)
-    const initRemember = initFromCookie("data", user, cookie.get, Base64.decode)
-    setRemember(initRemember)
-    setUser(user)
+    const usr = init(cookie.get)
+    setState(usr)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const isTwoFactor = user.step ? user.step === 1 : false
+  const updateRemember = (e: any) => {
+    e.preventDefault()
+    state.remember = !state.remember
+    setState(state)
+  }
+
+  const isTwoFactor = state.user.step ? state.user.step === 1 : false
   const succeed = (result: AuthResult) => {
-    storage.setUser(result.user)
-    storage.setPrivileges(result.user?.privileges)
+    store(result.user, setUser, setPrivileges)
     navigate(storage.home)
   }
-  const signin = async (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
+  const signin = async (event: OnClick) => {
+    event.preventDefault()
+    const user = state.user
     if (!validate(user, resource, showError)) {
       return
     } else {
       hideMessage()
     }
+    const remember = state.remember
     try {
       loading().showLoading()
       const authenticator = getAuthenticator()
@@ -77,7 +97,8 @@ export const SigninForm = () => {
       const s = result.status
       if (s === status.two_factor_required) {
         user.step = 1
-        setUser(user)
+        state.user = user
+        setState(state)
       } else if (s === status.success || s === status.success_and_reactivated) {
         handleCookie("data", user, remember, cookie, 60 * 24 * 3, Base64.encode)
         if (result.user) {
@@ -93,8 +114,7 @@ export const SigninForm = () => {
           alertInfo(resource.msg_account_reactivated, () => succeed(result))
         }
       } else {
-        storage.setUser(undefined)
-        storage.setPrivileges(undefined)
+        store(undefined, setUser, setPrivileges)
         const ms = getMessage(s, resource, map)
         showError(ms)
       }
@@ -107,7 +127,7 @@ export const SigninForm = () => {
 
   return (
     <div className="central-full">
-      <form id="signinForm" name="signinForm" className="form" noValidate={true} autoComplete="off" ref={form}>
+      <form id="signinForm" name="signinForm" className="form" noValidate={true} autoComplete="off" ref={form as any}>
         <div className="view-body row">
           <img className="logo" src={logo} alt="logo" />
           <h2>{resource.signin}</h2>
@@ -121,8 +141,8 @@ export const SigninForm = () => {
               type="text"
               id="username"
               name="username"
-              value={user.username}
-              onChange={e => updateState(e, user, setUser)}
+              value={state.user.username}
+              onChange={updateState}
               maxLength={100}
               placeholder={resource.placeholder_username}
             />
@@ -133,8 +153,8 @@ export const SigninForm = () => {
               type="password"
               id="password"
               name="password"
-              value={user.password}
-              onChange={e => updateState(e, user, setUser)}
+              value={state.user.password}
+              onChange={updateState}
               maxLength={100}
               placeholder={resource.placeholder_password}
             />
@@ -145,26 +165,26 @@ export const SigninForm = () => {
               type="password"
               id="passcode"
               name="passcode"
-              value={user.passcode}
-              onChange={e => updateState(e, user, setUser)}
+              value={state.user.passcode}
+              onChange={updateState}
               maxLength={10}
               placeholder={resource.placeholder_passcode}
             />
           </label>
           <label className="col s12 checkbox-container" hidden={isTwoFactor}>
-            <input type="checkbox" id="remember" name="remember" checked={remember ? true : false} onChange={e => { setRemember(e.target.checked) }} />
+            <input type="checkbox" id="remember" name="remember" checked={state.remember ? true : false} onChange={updateRemember} />
             {resource.signin_remember_me}
           </label>
-          <button type="submit" id="btnSignin" name="btnSignin" onClick={signin}>
+          <button type="submit" id="signinBtn" name="signinBtn" onClick={signin}>
             {resource.button_signin}
           </button>
-          <Link id="btnForgotPassword" to="/forgot-password">
+          <Link id="forgotPasswordBtn" to="/forgot-password">
             {resource.button_forgot_password}
           </Link>
-          <Link id="btnSignup" to="/signup">
+          <Link id="signupBtn" to="/signup">
             {resource.button_signup}
           </Link>
-          <Link id="btnHome" to="/">
+          <Link id="homeBtn" to="/">
             {resource.button_home}
           </Link>
         </div>

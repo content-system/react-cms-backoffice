@@ -645,7 +645,7 @@ export function RoleForm() {
   return (
     <form id="roleForm" name="roleForm" className="form" ref={refForm}>
       <header>
-        <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
+        <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={back} />
         <h2>{resource.role}</h2>
         <button className="btn-group btn-right" hidden={newMode}>
           <i className="material-icons" onClick={(e) => assign(e, role.roleId)}>
@@ -762,11 +762,11 @@ export function RoleForm() {
         {!isReadOnly && (
           <>
             {!newMode && (
-              <button type="button" id="btnDelete" name="btnDelete" className="btn-delete" onClick={deleteOnClick}>
+              <button type="button" id="deleteBtn" name="deleteBtn" className="btn-delete" onClick={deleteOnClick}>
                 {resource.delete}
               </button>
             )}
-            <button type="submit" id="btnSave" name="btnSave" onClick={save}>
+            <button type="submit" id="saveBtn" name="saveBtn" onClick={save}>
               {resource.save}
             </button>
           </>

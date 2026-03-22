@@ -85,7 +85,6 @@ export const RoleAssignmentForm = () => {
   }
 
   const onModelSave = (arr: User[]) => {
-    debugger
     arr.map((value) => users.push(value))
     setState({ ...state, q: "", role, users, shownUsers: users, isOpenModel: false })
   }
@@ -154,7 +153,7 @@ export const RoleAssignmentForm = () => {
     <div className="view-container">
       <form id="roleAssignmentForm" name="roleAssignmentForm" className="form">
         <header className="view-header">
-          <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
+          <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={back} />
           <h2>{role.roleName && role.roleName.length > 0 ? role.roleName : resource.role_assignment_subject}</h2>
         </header>
         <div className="form-body">
@@ -173,24 +172,24 @@ export const RoleAssignmentForm = () => {
               {resource.user}
               {!isReadOnly && (
                 <div className="btn-group">
-                  <button type="button" name="btnAdd" onClick={() => setState({ ...state, isOpenModel: true })}>
+                  <button type="button" id="addBtn" name="addBtn" onClick={() => setState({ ...state, isOpenModel: true })}>
                     {resource.add}
                   </button>
-                  <button type="button" name="btnSelect" onClick={onShowCheckBox}>
+                  <button type="button" id="selectBtn" name="selectBtn" onClick={onShowCheckBox}>
                     {isCheckboxShown ? resource.deselect : resource.select}
                   </button>
                   {isCheckboxShown && (
-                    <button type="button" name="btnCheckAll" onClick={onCheckAll}>
+                    <button type="button" id="checkAllBtn" name="checkAllBtn" onClick={onCheckAll}>
                       {resource.check_all}
                     </button>
                   )}
                   {isCheckboxShown && (
-                    <button type="button" name="btnUncheckAll" onClick={onUnCheckAll}>
+                    <button type="button" id="uncheckAllBtn" name="uncheckAllBtn" onClick={onUnCheckAll}>
                       {resource.uncheck_all}
                     </button>
                   )}
                   {isCheckboxShown && (
-                    <button type="button" name="btnDelete" onClick={onDelete}>
+                    <button type="button" id="deleteBtn" name="deleteBtn" onClick={onDelete}>
                       {resource.delete}
                     </button>
                   )}
@@ -232,7 +231,7 @@ export const RoleAssignmentForm = () => {
           </ul>
         </div>
         <footer className="view-footer">
-          <button type="submit" id="btnSave" name="btnSave" onClick={save} disabled={isReadOnly}>
+          <button type="submit" id="saveBtn" name="saveBtn" onClick={save} disabled={isReadOnly}>
             {resource.save}
           </button>
         </footer>

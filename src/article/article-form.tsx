@@ -128,10 +128,10 @@ export const ArticleForm = () => {
     (!canWrite || !canUpdate(article.status) ?
       (<article id="articleForm">
         <header>
-          <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
+          <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={back} />
           <h2>{resource.article}</h2>
           <div className="btn-group">
-            {/*<Link id="btnApprove" className="btn-approve" to={`/articles/${article.id}/approve`}></Link>*/}
+            {/*<Link id="approveBtn" className="btn-approve" to={`/articles/${article.id}/approve`}></Link>*/}
             {canApprove && canReject(article.status) && <button type="button" className="btn-approve" onClick={(e) => approve(e, article.id)}></button>}
             <button type="button" className="btn-history" onClick={(e) => viewHistory(e, article.id)}></button>
           </div>
@@ -149,10 +149,10 @@ export const ArticleForm = () => {
       </article>) :
       <form id="articleForm" name="articleForm" className="form" ref={refForm}>
         <header>
-          <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
+          <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={back} />
           <h2>{resource.article}</h2>
           <div className="btn-group">
-            {/*<Link id="btnApprove" className="btn-approve" to={`/articles/${article.id}/approve`}></Link>*/}
+            {/*<Link id="approveBtn" className="btn-approve" to={`/articles/${article.id}/approve`}></Link>*/}
             {canApprove && canReject(article.status) && <button type="button" className="btn-approve" onClick={(e) => approve(e, article.id)}></button>}
             <button type="button" className="btn-history" onClick={(e) => viewHistory(e, article.id)}></button>
           </div>
@@ -249,10 +249,10 @@ export const ArticleForm = () => {
           </label>
         </div>
         <footer>
-          <button type="button" id="btnSave" name="btnSave" className="btn-secondary" onClick={saveOnClick} disabled={!canSubmit(article.status)}>
+          <button type="button" id="saveBtn" name="saveBtn" className="btn-secondary" onClick={saveOnClick} disabled={!canSubmit(article.status)}>
             {resource.save_draft}
           </button>
-          <button type="submit" id="btnSave" name="btnSave" onClick={submit} disabled={!canSubmit(article.status)}>
+          <button type="submit" id="saveBtn" name="saveBtn" onClick={submit} disabled={!canSubmit(article.status)}>
             {resource.submit}
           </button>
         </footer>

@@ -64,7 +64,7 @@ export const ArticleHistory = () => {
   return (
     <form id="approveArticleForm" name="approveArticleForm" className="form">
       <header>
-        <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
+        <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={back} />
         <h2>{resource.article}</h2>
       </header>
       <div className="article-body">

@@ -93,12 +93,12 @@ export const CategoriesForm = () => {
         <h2>{resource.categories}</h2>
         <div className="btn-group">
           {state.view === "list" && (
-            <button type="button" id="btnTable" name="btnTable" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />
+            <button type="button" id="tableBtn" name="tableBtn" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />
           )}
           {state.view !== "list" && (
-            <button type="button" id="btnListView" name="btnListView" className="btn-list" onClick={(e) => setState({ ...state, view: "list" })} />
+            <button type="button" id="listViewBtn" name="listViewBtn" className="btn-list" onClick={(e) => setState({ ...state, view: "list" })} />
           )}
-          {canWrite && <Link id="btnNew" className="btn-new" to="new" />}
+          {canWrite && <Link id="newBtn" className="btn-new" to="new" />}
         </div>
       </header>
       <div className="search-body">
@@ -107,9 +107,9 @@ export const CategoriesForm = () => {
             <label className="col s12 m6 search-input">
               <PageSizeSelect id="limit" name="limit" size={filter.limit} sizes={pageSizes} onChange={pageSizeChanged} />
               <input type="text" id="q" name="q" value={filter.q} maxLength={80} onChange={onChange} placeholder={resource.keyword} />
-              <button type="button" id="btnClearQ" hidden={!filter.q} className="btn-remove-text" onClick={clearQ} />
-              <button type="button" id="btnToggleSearch" className="btn-filter" onClick={toggleSearch} />
-              <button type="submit" id="btnSearch" className="btn-search" onClick={searchOnClick} />
+              <button type="button" id="clearQBtn" name="clearQBtn" hidden={!filter.q} className="btn-remove-text" onClick={clearQ} />
+              <button type="button" id="toggleSearchBtn" name="toggleSearchBtn" className="btn-filter" onClick={toggleSearch} />
+              <button type="submit" id="searchBtn" name="searchBtn" className="btn-search" onClick={searchOnClick} />
             </label>
             <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
           </section>
@@ -136,47 +136,47 @@ export const CategoriesForm = () => {
                 <tr>
                   <th>{resource.number}</th>
                   <th data-field="id">
-                    <button type="button" id="sortId" onClick={sort}>
+                    <button type="button" id="idSort" onClick={sort}>
                       {resource.id}
                     </button>
                   </th>
                   <th data-field="name">
-                    <button type="button" id="sortName" onClick={sort}>
+                    <button type="button" id="nameSort" onClick={sort}>
                       {resource.name}
                     </button>
                   </th>
                   <th data-field="path">
-                    <button type="button" id="sortPath" onClick={sort}>
+                    <button type="button" id="pathSort" onClick={sort}>
                       {resource.path}
                     </button>
                   </th>
                   <th data-field="resource">
-                    <button type="button" id="sortResource" onClick={sort}>
+                    <button type="button" id="resourceSort" onClick={sort}>
                       {resource.resource}
                     </button>
                   </th>
                   <th data-field="icon">
-                    <button type="button" id="sortIcon" onClick={sort}>
+                    <button type="button" id="iconSort" onClick={sort}>
                       {resource.icon}
                     </button>
                   </th>
                   <th data-field="type">
-                    <button type="button" id="sortType" onClick={sort}>
+                    <button type="button" id="typeSort" onClick={sort}>
                       {resource.type}
                     </button>
                   </th>
                   <th data-field="parent">
-                    <button type="button" id="sortParent" onClick={sort}>
+                    <button type="button" id="parentSort" onClick={sort}>
                       {resource.parent}
                     </button>
                   </th>
                   <th data-field="sequence">
-                    <button type="button" id="sortSequence" onClick={sort}>
+                    <button type="button" id="sequenceSort" onClick={sort}>
                       {resource.sequence}
                     </button>
                   </th>
                   <th data-field="status">
-                    <button type="button" id="sortStatus" onClick={sort}>
+                    <button type="button" id="statusSort" onClick={sort}>
                       {resource.status}
                     </button>
                   </th>

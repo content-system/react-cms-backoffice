@@ -1,6 +1,6 @@
-import { MouseEvent, useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import ReCAPTCHA from "react-google-recaptcha"
-import { updateState, useMessage } from "react-hook-core"
+import { OnClick, useMessage, useUpdate } from "react-hook-core"
 import { Link } from "react-router-dom"
 import { isEmail, isValidUsername, Status, strongPassword, validate, validateAndSignup } from "signup-client"
 import { initForm, registerEvents } from "ui-plus"
@@ -25,20 +25,16 @@ interface User {
   confirmPassword: string
 }
 
-interface SignupState {
-  reCAPTCHA: string | null
-  passwordRequired: boolean
-}
-
-const initUser: User = {
-  username: "",
-  contact: "",
-  password: "",
-  confirmPassword: "",
-}
 const userData: SignupState = {
+  user: {
+    username: "",
+    contact: "",
+    password: "",
+    confirmPassword: "",
+  },
   reCAPTCHA: "",
   passwordRequired: true,
+  message: "",
 }
 
 const msgData = {
@@ -46,31 +42,36 @@ const msgData = {
   alertClass: "",
 }
 
-
+interface SignupState {
+  user: User
+  reCAPTCHA: string | null
+  passwordRequired: boolean
+  message: string
+}
 export const SignupForm = () => {
   const resource = useResource()
   const form = useRef<HTMLFormElement>(null)
   const { msg, showError, hideMessage } = useMessage(msgData)
-  const [user, setUser] = useState<User>(initUser)
-  const [state, setState] = useState<SignupState>(userData)
-  //const { state, setState, updateState } = useUpdate<SignupState>(userData, "user")
+  const { state, setState, updateState } = useUpdate<SignupState>(userData, "user")
 
   useEffect(() => {
     initForm(form.current, registerEvents)
   }, [])
 
-  const signup = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
+  const signup = (event: OnClick) => {
+    event.preventDefault()
     const signupService = getSignupService()
-    if (!state.reCAPTCHA) {
+    const { reCAPTCHA } = state
+    if (!reCAPTCHA) {
       showError(resource.error_captcha)
       return
     }
+    const { user, passwordRequired } = state
     validateAndSignup(
       signupService.signup,
       status,
       user,
-      state.passwordRequired,
+      passwordRequired,
       user.confirmPassword,
       resource,
       message,
@@ -86,12 +87,12 @@ export const SignupForm = () => {
   }
 
   const onChange = (value: string | null) => {
-    setState({ ...state, reCAPTCHA: value })
+    setState({ reCAPTCHA: value })
   }
 
   return (
     <div className="central-full">
-      <form id="userForm" name="userForm" className="form" noValidate={true} autoComplete="off" ref={form}>
+      <form id="userForm" name="userForm" className="form" noValidate={true} autoComplete="off" ref={form as any}>
         <div className="view-body row">
           <img className="logo" src={logo} alt="logo" />
           <h2>{resource.signup}</h2>
@@ -105,11 +106,11 @@ export const SignupForm = () => {
               type="text"
               id="username"
               name="username"
-              value={user.username}
-              onChange={e => updateState(e, user, setUser)}
-              maxLength={120}
-              required={true}
+              value={state.user.username}
               placeholder={resource.placeholder_username}
+              onChange={updateState}
+              maxLength={255}
+              required={true}
             />
           </label>
           <label className="col s12">
@@ -118,11 +119,11 @@ export const SignupForm = () => {
               type="text"
               id="contact"
               name="contact"
-              value={user.contact}
-              onChange={e => updateState(e, user, setUser)}
+              value={state.user.contact}
+              placeholder={resource.placeholder_email}
+              onChange={updateState}
               maxLength={255}
               required={true}
-              placeholder={resource.placeholder_email}
             />
           </label>
           <label className="col s12" hidden={!state.passwordRequired}>
@@ -131,10 +132,10 @@ export const SignupForm = () => {
               type="password"
               id="password"
               name="password"
-              value={user.password}
-              onChange={e => updateState(e, user, setUser)}
-              maxLength={100}
+              value={state.user.password}
               placeholder={resource.placeholder_password}
+              onChange={updateState}
+              maxLength={255}
             />
           </label>
           <label className="col s12" hidden={!state.passwordRequired}>
@@ -143,18 +144,18 @@ export const SignupForm = () => {
               type="password"
               id="confirmPassword"
               name="confirmPassword"
-              onChange={e => updateState(e, user, setUser)}
-              maxLength={100}
               placeholder={resource.placeholder_confirm_password}
+              onChange={updateState}
+              maxLength={255}
             />
           </label>
           <div style={{ marginTop: "10px" }}>
             <ReCAPTCHA sitekey="6LetDbQUAAAAAEqIqVnSKgrI644y8w7O8mk89ijV" onChange={onChange} />
           </div>
-          <button type="submit" id="btnSignup" name="btnSignup" onClick={signup}>
+          <button type="submit" id="signupBtn" name="signupBtn" onClick={signup}>
             {resource.button_signup}
           </button>
-          <Link id="btnSignin" to="/signin">
+          <Link id="signinBtn" to="/signin">
             {resource.button_signin}
           </Link>
         </div>

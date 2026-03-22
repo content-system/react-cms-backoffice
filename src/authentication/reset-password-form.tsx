@@ -1,21 +1,30 @@
 import { PasswordReset, resetPassword, validateReset } from "password-client"
-import { MouseEvent, useEffect, useRef, useState } from "react"
-import { updateState, useMessage } from "react-hook-core"
+import { useEffect, useRef } from "react"
+import { OnClick, useMessage, useUpdate } from "react-hook-core"
 import { Link } from "react-router-dom"
 import { initForm, registerEvents } from "ui-plus"
 import { handleError, message, storage, useResource } from "uione"
 import logo from "../assets/images/logo.png"
 import { getPasswordService } from "./service"
 
+interface ResetState {
+  user: NewPasswordReset
+  message: string
+}
 interface NewPasswordReset extends PasswordReset {
-  confirmPassword: string
+  confirmPassword: ""
 }
-const initUser: NewPasswordReset = {
-  username: "",
-  password: "",
-  passcode: "",
-  confirmPassword: "",
+
+const signinData: ResetState = {
+  user: {
+    username: "",
+    password: "",
+    passcode: "",
+    confirmPassword: "",
+  },
+  message: "",
 }
+
 const msgData = {
   message: "",
   alertClass: "",
@@ -25,23 +34,23 @@ export const ResetPasswordForm = () => {
   const resource = useResource()
   const form = useRef<HTMLFormElement>(null)
   const { msg, showError, hideMessage } = useMessage(msgData)
-  const [user, setUser] = useState<NewPasswordReset>(initUser)
-  // const { state, updateState } = useUpdate<ResetState>(signinData, "user")
+  const { state, updateState } = useUpdate<ResetState>(signinData, "user")
 
   useEffect(() => {
     initForm(form.current, registerEvents)
   }, [])
 
-  const onResetPassword = (e: MouseEvent<HTMLButtonElement>) => {
+  const onResetPassword = (event: OnClick) => {
     const passwordService = getPasswordService()
-    e.preventDefault()
+    event.preventDefault()
+    const { user } = state
     const customPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/
     const results = validateReset(user, user.confirmPassword, resource, customPassword)
     if (Array.isArray(results) && results.length > 0) {
       showError(results)
       return
     }
-    resetPassword(passwordService.resetPassword, user, resource, message, showError, handleError, storage.loading())
+    resetPassword(passwordService.resetPassword, user, storage.resource().resource(), message, showError, handleError, storage.loading())
     /*
     validateAndResetPassword(
       this.passwordService.resetPassword, this.state.user, this.state.confirmPassword,
@@ -52,7 +61,7 @@ export const ResetPasswordForm = () => {
 
   return (
     <div className="central-full">
-      <form id="userForm" name="userForm" className="form" noValidate={true} autoComplete="off" ref={form}>
+      <form id="userForm" name="userForm" className="form" noValidate={true} autoComplete="off" ref={form as any} model-name="user">
         <div className="view-body row">
           <img className="logo" src={logo} alt="logo" />
           <h2>{resource.reset_password}</h2>
@@ -66,9 +75,9 @@ export const ResetPasswordForm = () => {
               type="text"
               id="username"
               name="username"
-              value={user.username}
+              value={state.user.username}
               placeholder={resource.placeholder_username}
-              onChange={e => updateState(e, user, setUser)}
+              onChange={updateState}
               maxLength={255}
               required={true}
             />
@@ -79,9 +88,9 @@ export const ResetPasswordForm = () => {
               type="text"
               id="passcode"
               name="passcode"
-              value={user.passcode}
+              value={state.user.passcode}
               placeholder={resource.placeholder_passcode}
-              onChange={e => updateState(e, user, setUser)}
+              onChange={updateState}
               maxLength={255}
               required={true}
             />
@@ -92,9 +101,9 @@ export const ResetPasswordForm = () => {
               type="password"
               id="password"
               name="password"
-              value={user.password}
+              value={state.user.password}
               placeholder={resource.placeholder_new_password}
-              onChange={e => updateState(e, user, setUser)}
+              onChange={updateState}
               maxLength={255}
               required={true}
             />
@@ -105,17 +114,17 @@ export const ResetPasswordForm = () => {
               type="password"
               id="confirmPassword"
               name="confirmPassword"
-              value={user.confirmPassword}
+              value={state.user.confirmPassword}
               placeholder={resource.placeholder_confirm_password}
-              onChange={e => updateState(e, user, setUser)}
+              onChange={updateState}
               maxLength={255}
               required={true}
             />
           </label>
-          <button type="submit" id="btnResetPassword" name="btnResetPassword" onClick={onResetPassword}>
+          <button type="submit" id="resetPasswordBtn" name="resetPasswordBtn" onClick={onResetPassword}>
             {resource.button_reset_password}
           </button>
-          <Link id="btnSignin" to="/signin">
+          <Link id="signinBtn" to="/signin">
             {resource.button_signin}
           </Link>
         </div>

@@ -74,7 +74,7 @@ export const ContactForm = () => {
   return (
     <form id="contactForm" name="contactForm" className="form" ref={refForm}>
       <header>
-        <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
+        <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={back} />
         <h2>{resource.contact}</h2>
       </header>
       <div className="row">
@@ -156,10 +156,7 @@ export const ContactForm = () => {
             id="phone"
             name="phone"
             value={formatPhone(contact.phone)}
-            onChange={(e) => {
-              contact.phone = removePhoneFormat(e.target.value)
-              setContact({ ...contact })
-            }}
+            onChange={onChange}
             onFocus={(e) => {
               e.target.value = removePhoneFormat(e.target.value)
             }}
@@ -223,7 +220,7 @@ export const ContactForm = () => {
       </div>
       <footer>
         {canWrite && (
-          <button type="submit" id="btnSave" name="btnSave" onClick={save}>
+          <button type="submit" id="saveBtn" name="saveBtn" onClick={save}>
             {resource.save}
           </button>
         )}

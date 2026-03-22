@@ -144,10 +144,10 @@ export const ChangePasswordForm = () => {
               placeholder={resource.placeholder_passcode}
             />
           </label>
-          <button type="submit" id="btnChangePassword" name="btnChangePassword" onClick={changePassword}>
+          <button type="submit" id="changePasswordBtn" name="changePasswordBtn" onClick={changePassword}>
             {resource.button_change_password}
           </button>
-          <Link id="btnSignin" to="change-password">
+          <Link id="signinBtn" to="change-password">
             {resource.button_signin}
           </Link>
         </div>

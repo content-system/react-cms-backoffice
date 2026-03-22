@@ -89,12 +89,12 @@ export const ContactsForm = () => {
         <h2>{resource.contacts}</h2>
         <div className="btn-group">
           {state.view === "list" && (
-            <button type="button" id="btnTable" name="btnTable" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />
+            <button type="button" id="tableBtn" name="tableBtn" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />
           )}
           {state.view !== "list" && (
-            <button type="button" id="btnListView" name="btnListView" className="btn-list" onClick={(e) => setState({ ...state, view: "list" })} />
+            <button type="button" id="listViewBtn" name="listViewBtn" className="btn-list" onClick={(e) => setState({ ...state, view: "list" })} />
           )}
-          {canWrite && <Link id="btnNew" className="btn-new" to="new" />}
+          {canWrite && <Link id="newBtn" className="btn-new" to="new" />}
         </div>
       </header>
       <div className="search-body">
@@ -103,9 +103,9 @@ export const ContactsForm = () => {
             <label className="col s12 m6 search-input">
               <PageSizeSelect id="limit" name="limit" size={filter.limit} sizes={pageSizes} onChange={pageSizeChanged} />
               <input type="text" id="q" name="q" value={filter.q} maxLength={80} onChange={onChange} placeholder={resource.keyword} />
-              <button type="button" id="btnClearQ" hidden={!filter.q} className="btn-remove-text" onClick={clearQ} />
-              <button type="button" id="btnToggleSearch" className="btn-filter" onClick={toggleSearch} />
-              <button type="submit" id="btnSearch" className="btn-search" onClick={searchOnClick} />
+              <button type="button" id="clearQBtn" name="clearQBtn" hidden={!filter.q} className="btn-remove-text" onClick={clearQ} />
+              <button type="button" id="toggleSearchBtn" name="toggleSearchBtn" className="btn-filter" onClick={toggleSearch} />
+              <button type="submit" id="searchBtn" name="searchBtn" className="btn-search" onClick={searchOnClick} />
             </label>
             <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
           </section>
@@ -143,27 +143,27 @@ export const ContactsForm = () => {
                 <tr>
                   <th>{resource.number}</th>
                   <th data-field="name">
-                    <button type="button" id="sortContactName" onClick={sort}>
+                    <button type="button" id="nameSort" onClick={sort}>
                       {resource.name}
                     </button>
                   </th>
                   <th data-field="email">
-                    <button type="button" id="sortEmail" onClick={sort}>
+                    <button type="button" id="emailSort" onClick={sort}>
                       {resource.email}
                     </button>
                   </th>
                   <th data-field="phone">
-                    <button type="button" id="sortPhone" onClick={sort}>
+                    <button type="button" id="phoneSort" onClick={sort}>
                       {resource.phone}
                     </button>
                   </th>
                   <th data-field="company">
-                    <button type="button" id="sortCompany" onClick={sort}>
+                    <button type="button" id="companySort" onClick={sort}>
                       {resource.company}
                     </button>
                   </th>
                   <th data-field="country">
-                    <button type="button" id="sortCountry" onClick={sort}>
+                    <button type="button" id="countrySort" onClick={sort}>
                       {resource.country}
                     </button>
                   </th>

@@ -93,12 +93,12 @@ export const RolesForm = () => {
         <h2>{resource.roles}</h2>
         <div className="btn-group">
           {state.view === "list" && (
-            <button type="button" id="btnTable" name="btnTable" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />
+            <button type="button" id="tableBtn" name="tableBtn" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />
           )}
           {state.view !== "list" && (
-            <button type="button" id="btnListView" name="btnListView" className="btn-list" onClick={(e) => setState({ ...state, view: "list" })} />
+            <button type="button" id="listViewBtn" name="listViewBtn" className="btn-list" onClick={(e) => setState({ ...state, view: "list" })} />
           )}
-          {canWrite && <Link id="btnNew" className="btn-new" to="new" />}
+          {canWrite && <Link id="newBtn" className="btn-new" to="new" />}
         </div>
       </header>
       <div className="search-body">
@@ -107,9 +107,9 @@ export const RolesForm = () => {
             <label className="col s12 m6 search-input">
               <PageSizeSelect id="limit" name="limit" size={filter.limit} sizes={pageSizes} onChange={pageSizeChanged} />
               <input type="text" id="q" name="q" value={filter.q} maxLength={80} onChange={onChange} placeholder={resource.keyword} />
-              <button type="button" id="btnClearQ" hidden={!filter.q} className="btn-remove-text" onClick={clearQ} />
-              <button type="button" id="btnToggleSearch" className="btn-filter" onClick={toggleSearch} />
-              <button type="submit" id="btnSearch" className="btn-search" onClick={searchOnClick} />
+              <button type="button" id="clearQBtn" name="clearQBtn" hidden={!filter.q} className="btn-remove-text" onClick={clearQ} />
+              <button type="button" id="toggleSearchBtn" name="toggleSearchBtn" className="btn-filter" onClick={toggleSearch} />
+              <button type="submit" id="searchBtn" name="searchBtn" className="btn-search" onClick={searchOnClick} />
             </label>
             <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
           </section>
@@ -136,22 +136,22 @@ export const RolesForm = () => {
                 <tr>
                   <th>{resource.number}</th>
                   <th data-field="roleId">
-                    <button type="button" id="sortRoleId" onClick={sort}>
+                    <button type="button" id="roleIdSort" onClick={sort}>
                       {resource.role_id}
                     </button>
                   </th>
                   <th data-field="roleName">
-                    <button type="button" id="sortRoleName" onClick={sort}>
+                    <button type="button" id="roleNameSort" onClick={sort}>
                       {resource.role_name}
                     </button>
                   </th>
                   <th data-field="remark">
-                    <button type="button" id="sortRemark" onClick={sort}>
+                    <button type="button" id="remarkSort" onClick={sort}>
                       {resource.remark}
                     </button>
                   </th>
                   <th data-field="status">
-                    <button type="button" id="sortStatus" onClick={sort}>
+                    <button type="button" id="statusSort" onClick={sort}>
                       {resource.status}
                     </button>
                   </th>

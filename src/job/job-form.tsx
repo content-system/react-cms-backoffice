@@ -94,7 +94,7 @@ export const JobForm = () => {
   return (
     <form id="jobForm" name="jobForm" className="form" ref={refForm}>
       <header>
-        <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
+        <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={back} />
         <h2>{resource.job}</h2>
         <div className="btn-group">
           <button className="btn-group btn-right" hidden={newMode}>
@@ -249,7 +249,7 @@ export const JobForm = () => {
       </div>
       <footer>
         {canWrite && (
-          <button type="submit" id="btnSave" name="btnSave" onClick={save}>
+          <button type="submit" id="saveBtn" name="saveBtn" onClick={save}>
             {resource.save}
           </button>
         )}

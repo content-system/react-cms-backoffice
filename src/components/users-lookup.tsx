@@ -112,13 +112,13 @@ export const UsersLookup = (props: Props) => {
           <h2>{resource.users_lookup}</h2>
           <div className="btn-group">
             {state.view === "list" && (
-              <button type="button" id="btnTable" name="btnTable" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />
+              <button type="button" id="tableBtn" name="tableBtn" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />
             )}
             {state.view !== "list" && (
-              <button type="button" id="btnListView" name="btnListView" className="btn-list" onClick={(e) => setState({ ...state, view: "list" })} />
+              <button type="button" id="listViewBtn" name="listViewBtn" className="btn-list" onClick={(e) => setState({ ...state, view: "list" })} />
             )}
           </div>
-          <button type="button" id="btnClose" name="btnClose" className="btn-close" onClick={onModelClose} />
+          <button type="button" id="closeBtn" name="closeBtn" className="btn-close" onClick={onModelClose} />
         </header>
         <div className="search-body">
           <form id="usersLookupForm" name="usersLookupForm" className="usersLookupForm" noValidate={true} ref={refForm}>
@@ -126,8 +126,8 @@ export const UsersLookup = (props: Props) => {
               <label className="col s12 m6 search-input">
                 <PageSizeSelect id="limit" name="limit" size={filter.limit} sizes={pageSizes} onChange={pageSizeChanged} />
                 <input type="text" id="q" name="q" value={filter.q} maxLength={80} onChange={onChange} placeholder={resource.keyword} />
-                <button type="button" id="btnClearQ" hidden={!filter.q} className="btn-remove-text" onClick={clearQ} />
-                <button type="submit" id="btnSearch" className="btn-search" onClick={searchOnClick} />
+                <button type="button" id="clearQBtn" name="clearQBtn" hidden={!filter.q} className="btn-remove-text" onClick={clearQ} />
+                <button type="submit" id="searchBtn" name="searchBtn" className="btn-search" onClick={searchOnClick} />
               </label>
               <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
             </section>
@@ -140,27 +140,27 @@ export const UsersLookup = (props: Props) => {
                     <tr>
                       <th>{resource.number}</th>
                       <th data-field="userId">
-                        <button type="button" id="sortUserId" onClick={sort}>
+                        <button type="button" id="userIdSort" onClick={sort}>
                           {resource.user_id}
                         </button>
                       </th>
                       <th data-field="username">
-                        <button type="button" id="sortUsername" onClick={sort}>
+                        <button type="button" id="usernameSort" onClick={sort}>
                           {resource.username}
                         </button>
                       </th>
                       <th data-field="email">
-                        <button type="button" id="sortEmail" onClick={sort}>
+                        <button type="button" id="emailSort" onClick={sort}>
                           {resource.email}
                         </button>
                       </th>
                       <th data-field="displayname">
-                        <button type="button" id="sortDisplayName" onClick={sort}>
+                        <button type="button" id="displayNameSort" onClick={sort}>
                           {resource.display_name}
                         </button>
                       </th>
                       <th data-field="status">
-                        <button type="button" id="sortStatus" onClick={sort}>
+                        <button type="button" id="statusSort" onClick={sort}>
                           {resource.status}
                         </button>
                       </th>

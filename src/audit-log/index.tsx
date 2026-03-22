@@ -101,10 +101,10 @@ export const AuditLogsForm = () => {
         <h2>{resource.audit_logs}</h2>
         <div className="btn-group float-left">
           {state.view === "list" && (
-            <button type="button" id="btnTable" name="btnTable" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />
+            <button type="button" id="tableBtn" name="tableBtn" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />
           )}
           {state.view !== "list" && (
-            <button type="button" id="btnListView" name="btnListView" className="btn-list" onClick={(e) => setState({ ...state, view: "list" })} />
+            <button type="button" id="listViewBtn" name="listViewBtn" className="btn-list" onClick={(e) => setState({ ...state, view: "list" })} />
           )}
         </div>
       </header>
@@ -163,33 +163,33 @@ export const AuditLogsForm = () => {
                   <tr>
                     <th>{resource.number}</th>
                     <th data-field="time">
-                      <button type="button" id="sortTime" onClick={sort}>
+                      <button type="button" id="timeSort" onClick={sort}>
                         {resource.audit_log_time}
                       </button>
                     </th>
                     <th data-field="resource">
-                      <button type="button" id="sortResource" onClick={sort}>
+                      <button type="button" id="resourceSort" onClick={sort}>
                         {resource.resource}
                       </button>
                     </th>
                     <th data-field="action">
-                      <button type="button" id="sortAction" onClick={sort}>
+                      <button type="button" id="actionSort" onClick={sort}>
                         {resource.action}
                       </button>
                     </th>
                     <th data-field="status">
-                      <button type="button" id="sortStatus" onClick={sort}>
+                      <button type="button" id="statusSort" onClick={sort}>
                         {resource.status}
                       </button>
                     </th>
                     <th data-field="userId">{resource.audit_log_user}</th>
                     <th data-field="ip">
-                      <button type="button" id="sortIp" onClick={sort}>
+                      <button type="button" id="ipSort" onClick={sort}>
                         {resource.ip}
                       </button>
                     </th>
                     <th data-field="remark">
-                      <button type="button" id="sortRemark" onClick={sort}>
+                      <button type="button" id="remarkSort" onClick={sort}>
                         {resource.remark}
                       </button>
                     </th>

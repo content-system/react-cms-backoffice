@@ -94,7 +94,7 @@ export const SettingsForm = () => {
           </label>
         </div>
         <footer>
-          <button type="submit" id="btnSave" name="btnSave" onClick={save}>
+          <button type="submit" id="saveBtn" name="saveBtn" onClick={save}>
             {resource.save}
           </button>
         </footer>

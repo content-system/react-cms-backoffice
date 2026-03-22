@@ -28,7 +28,7 @@ import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
-import { addSeconds, createDate, formatDateTime } from "ui-plus"
+import { addSeconds, formatDateTime } from "ui-plus"
 import { toast } from "ui-toast"
 import { canReject, canUpdate, getDateFormat, getFlowStatusName, getUserId, handleError, hasPermission, Permission, useResource } from "uione"
 import { Article, ArticleFilter, getArticleService } from "./service"
@@ -109,7 +109,6 @@ export const ArticlesForm = () => {
     e.preventDefault()
     navigate(`${id}/approve`)
   }
-  const checkboxOnChange = (e: ChangeEvent<HTMLInputElement>) => resetSearch(e, filter, setFilter, search)
 
   const offset = getOffset(filter.limit, filter.page)
   return (
@@ -118,12 +117,12 @@ export const ArticlesForm = () => {
         <h2>{resource.articles}</h2>
         <div className="btn-group">
           {state.view === "list" && (
-            <button type="button" id="btnTable" name="btnTable" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />
+            <button type="button" id="tableBtn" name="tableBtn" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />
           )}
           {state.view !== "list" && (
-            <button type="button" id="btnListView" name="btnListView" className="btn-list" onClick={(e) => setState({ ...state, view: "list" })} />
+            <button type="button" id="listViewBtn" name="listViewBtn" className="btn-list" onClick={(e) => setState({ ...state, view: "list" })} />
           )}
-          {canWrite && <Link id="btnNew" className="btn-new" to="new" />}
+          {canWrite && <Link id="newBtn" className="btn-new" to="new" />}
         </div>
       </header>
       <div className="search-body">
@@ -132,9 +131,9 @@ export const ArticlesForm = () => {
             <label className="col s12 m6 search-input">
               <PageSizeSelect id="limit" name="limit" size={filter.limit} sizes={pageSizes} onChange={pageSizeChanged} />
               <input type="text" id="q" name="q" value={filter.q} maxLength={80} onChange={onChange} placeholder={resource.keyword} />
-              <button type="button" id="btnClearQ" hidden={!filter.q} className="btn-remove-text" onClick={clearQ} />
-              <button type="button" id="btnToggleSearch" className="btn-filter" onClick={toggleSearch} />
-              <button type="submit" id="btnSearch" className="btn-search" onClick={searchOnClick} />
+              <button type="button" id="clearQBtn" name="clearQBtn" hidden={!filter.q} className="btn-remove-text" onClick={clearQ} />
+              <button type="button" id="toggleSearchBtn" name="toggleSearchBtn" className="btn-filter" onClick={toggleSearch} />
+              <button type="submit" id="searchBtn" name="searchBtn" className="btn-search" onClick={searchOnClick} />
             </label>
             <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
           </section>
@@ -148,10 +147,7 @@ export const ArticlesForm = () => {
                 name="publishedAt_min"
                 data-field="publishedAt.min"
                 value={datetimeToString(filter.publishedAt?.min)}
-                onChange={(e) => {
-                  filter.publishedAt.min = createDate(e.target.value)
-                  setFilter({ ...filter })
-                }}
+                onChange={onChange}
               />
             </label>
             <label className="col s12 m6">
@@ -163,33 +159,30 @@ export const ArticlesForm = () => {
                 name="publishedAt_max"
                 data-field="publishedAt.max"
                 value={datetimeToString(filter.publishedAt?.max)}
-                onChange={(e) => {
-                  filter.publishedAt.max = createDate(e.target.value)
-                  setFilter({ ...filter })
-                }}
+                onChange={onChange}
               />
             </label>
             <label className="col s12 checkbox-section">
               {resource.status}
               <section className="checkbox-group">
                 <label>
-                  <input type="checkbox" id="status_D" name="status" value="D" checked={checked(filter.status, "D")} onChange={e => resetSearch(e, filter, setFilter, search)} />
+                  <input type="checkbox" id="status_D" name="status" value="D" checked={checked(filter.status, "D")} onChange={statusOnChange} />
                   {resource.status_draft}
                 </label>
                 <label>
-                  <input type="checkbox" id="status_S" name="status" value="S" checked={checked(filter.status, "S")} onChange={checkboxOnChange} />
+                  <input type="checkbox" id="status_S" name="status" value="S" checked={checked(filter.status, "S")} onChange={statusOnChange} />
                   {resource.status_submitted}
                 </label>
                 <label>
-                  <input type="checkbox" id="status_R" name="status" value="R" checked={checked(filter.status, "R")} onChange={checkboxOnChange} />
+                  <input type="checkbox" id="status_R" name="status" value="R" checked={checked(filter.status, "R")} onChange={statusOnChange} />
                   {resource.status_rejected}
                 </label>
                 <label>
-                  <input type="checkbox" id="status_A" name="status" value="A" checked={checked(filter.status, "A")} onChange={checkboxOnChange} />
+                  <input type="checkbox" id="status_A" name="status" value="A" checked={checked(filter.status, "A")} onChange={statusOnChange} />
                   {resource.status_approved}
                 </label>
                 <label>
-                  <input type="checkbox" id="status_P" name="status" value="P" checked={checked(filter.status, "P")} onChange={checkboxOnChange} />
+                  <input type="checkbox" id="status_P" name="status" value="P" checked={checked(filter.status, "P")} onChange={statusOnChange} />
                   {resource.status_published}
                 </label>
               </section>
@@ -203,27 +196,27 @@ export const ArticlesForm = () => {
                 <tr>
                   <th>{resource.number}</th>
                   <th data-field="id">
-                    <button type="button" id="sortId" onClick={sort}>
+                    <button type="button" id="idSort" onClick={sort}>
                       {resource.id}
                     </button>
                   </th>
                   <th data-field="title">
-                    <button type="button" id="sortTitle" onClick={sort}>
+                    <button type="button" id="titleSort" onClick={sort}>
                       {resource.title}
                     </button>
                   </th>
                   <th data-field="publishedAt" className="datetime">
-                    <button type="button" id="sortPublishedAt" onClick={sort}>
+                    <button type="button" id="publishedAtSort" onClick={sort}>
                       {resource.published_at}
                     </button>
                   </th>
                   <th data-field="description">
-                    <button type="button" id="sortDescription" onClick={sort}>
+                    <button type="button" id="descriptionSort" onClick={sort}>
                       {resource.description}
                     </button>
                   </th>
                   <th data-field="status">
-                    <button type="button" id="sortStatus" onClick={sort}>
+                    <button type="button" id="statusSort" onClick={sort}>
                       {resource.status}
                     </button>
                   </th>

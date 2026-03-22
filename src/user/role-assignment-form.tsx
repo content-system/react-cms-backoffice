@@ -105,7 +105,7 @@ export const RoleAssignmentForm = () => {
   return (
     <form id="roleAssignmentForm" name="roleAssignmentForm" className="form">
       <header>
-        <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
+        <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={back} />
         <h2>{resource.role_assignment_subject}</h2>
       </header>
       <div>
@@ -140,7 +140,7 @@ export const RoleAssignmentForm = () => {
         </section>
       </div>
       <footer>
-        <button type="submit" id="btnSave" name="btnSave" onClick={save} disabled={disabled}>
+        <button type="submit" id="saveBtn" name="saveBtn" onClick={save} disabled={disabled}>
           {resource.save}
         </button>
       </footer>

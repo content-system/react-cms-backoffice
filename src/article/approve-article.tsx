@@ -85,7 +85,7 @@ export const ApproveArticleForm = () => {
   return (
     <form id="approveArticleForm" name="approveArticleForm" className="form" ref={refForm}>
       <header>
-        <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
+        <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={back} />
         <h2>{resource.article}</h2>
       </header>
       <div className="article-body">
@@ -100,12 +100,12 @@ export const ApproveArticleForm = () => {
       </div>
       <footer>
         {canApprove && (
-          <button type="button" id="btnReject" name="btnReject" onClick={reject} disabled={!canReject(article.status)}>
+          <button type="button" id="rejectBtn" name="rejectBtn" onClick={reject} disabled={!canReject(article.status)}>
             {resource.reject}
           </button>
         )}
         {canApprove && (
-          <button type="submit" id="btnApprove" name="btnApprove" onClick={approve} disabled={!isSubmitted(article.status)}>
+          <button type="submit" id="approveBtn" name="approveBtn" onClick={approve} disabled={!isSubmitted(article.status)}>
             {resource.approve}
           </button>
         )}
