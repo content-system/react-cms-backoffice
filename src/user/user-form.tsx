@@ -1,6 +1,6 @@
 import { Item } from "onecore"
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
-import { clone, isEmpty, isSuccessful, makeDiff, onBack, updateState } from "react-hook-core"
+import { clone, Error, isEmpty, isSuccessful, makeDiff, onBack, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -20,6 +20,7 @@ export const UserForm = () => {
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
+  const [error500, setError500] = useState(false)
   const [titleList, setTitleList] = useState<Item[]>([])
   const [positionList, setPositionList] = useState<Item[]>([])
   const [initialUser, setInitialUser] = useState<User>()
@@ -41,26 +42,19 @@ export const UserForm = () => {
           getUserService()
             .load(id)
             .then((user) => {
-              if (!user) {
-                alertError(resource.error_404, () => navigate(-1))
-              } else {
+              if (user) {
                 setInitialUser(clone(user))
                 setUser(user)
               }
             })
-            .catch(handleError)
+            .catch(err => setError500(true))
             .finally(hideLoading)
         }
       })
       .catch(handleError)
   }, [id, newMode, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const assign = (e: MouseEvent<HTMLElement>, userId: string) => {
-    e.preventDefault()
-    navigate(`/users/${userId}/assign`)
-  }
-
-  const back = (e: MouseEvent<HTMLElement>) => onBack(e, navigate, confirm, resource, initialUser, user)
+  const back = (e: MouseEvent<HTMLElement>) => onBack(e, navigate, confirm, resource, user, initialUser)
 
   const updateTitle = (ele: HTMLSelectElement, user: User) => {
     handleSelect(ele)
@@ -114,14 +108,16 @@ export const UserForm = () => {
     }
   }
 
+  const errorTitle = error500 ? resource.error_500_title : resource.error_404_title
+  const errorMessage = error500 ? resource.error_500_message : resource.error_404_message
   return (
-    !canWrite ? (
+    error500 || (!newMode && !initialUser) ? <Error title={errorTitle} message={errorMessage} back={back} /> : !canWrite ? (
       <form id="userForm" name="userForm" className="form" ref={refForm}>
         <header>
           <h2>{resource.user}</h2>
           <div className="btn-group">
             <button className="btn-group btn-right" hidden={newMode}>
-              <i className="material-icons" onClick={(e) => assign(e, user.userId)}>
+              <i className="material-icons" onClick={(e) => navigate(`/users/${user.userId}/assign`)}>
                 group
               </i>
             </button>
@@ -146,7 +142,7 @@ export const UserForm = () => {
           </dl>
         </div>
         <footer>
-          <button type="button" id="closeBtn" name="closeBtn" onClick={back}>
+          <button type="submit" id="closeBtn" name="closeBtn" onClick={back}>
             {resource.close}
           </button>
         </footer>
@@ -158,7 +154,7 @@ export const UserForm = () => {
           <h2>{resource.user}</h2>
           <div className="btn-group">
             <button className="btn-group btn-right" hidden={newMode}>
-              <i className="material-icons" onClick={(e) => assign(e, user.userId)}>
+              <i className="material-icons" onClick={(e) => navigate(`/users/${user.userId}/assign`)}>
                 group
               </i>
             </button>

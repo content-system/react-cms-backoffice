@@ -281,10 +281,10 @@
   box-shadow: 0 1px 0 0 #657181;
 }
 .grey .highlight {
-  color: #657181 !important;
+  color: #657181;
 }
 .grey .border-bottom-highlight {
-  border-bottom: 3px solid #324511 !important; /* #9e8f0e */
+  border-bottom: 3px solid #324511; /* #9e8f0e */
 }
 
 .grey .success-icon .alert-icon {
@@ -314,7 +314,7 @@
   background-image: none;
 }
 
-.grey h3.highlight,
+.grey .sub.highlight,
 .grey h3.header {
   color: #181b1f;
 }

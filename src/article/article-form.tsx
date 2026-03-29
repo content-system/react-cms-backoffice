@@ -51,7 +51,7 @@ export const ArticleForm = () => {
     if (!canWrite || !canSubmit(article.status)) {
       navigate(-1)
     } else {
-      if (!hasDiff(initialArticle, article)) {
+      if (!hasDiff(article, initialArticle)) {
         navigate(-1)
       } else {
         confirm(resource.msg_confirm_back, () => navigate(-1))

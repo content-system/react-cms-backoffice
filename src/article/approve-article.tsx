@@ -36,8 +36,6 @@ export const ApproveArticleForm = () => {
     }
   }, [id, canApprove]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const back = (e: MouseEvent<HTMLButtonElement>) => navigate(-1)
-
   const reject = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     confirm(resource.msg_confirm_reject, () => {
@@ -85,7 +83,7 @@ export const ApproveArticleForm = () => {
   return (
     <form id="approveArticleForm" name="approveArticleForm" className="form" ref={refForm}>
       <header>
-        <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={back} />
+        <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={e => navigate(-1)} />
         <h2>{resource.article}</h2>
       </header>
       <div className="article-body">

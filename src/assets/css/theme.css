@@ -289,10 +289,10 @@ select.valid {
   box-shadow: 0 1px 0 0 #4db6ac;
 }
 .highlight {
-  color: #4db6ac !important;
+  color: #4db6ac;
 }
 .border-bottom-highlight {
-  border-bottom: 3px solid #4db6ac !important;
+  border-bottom: 3px solid #4db6ac;
 }
 
 .success-icon .alert-icon {
@@ -379,7 +379,7 @@ footer > button {
   color: #4db6ac;
 }
 
-h3.highlight,
+.sub.highlight,
 h3.header {
   color: #3d7678;
 }

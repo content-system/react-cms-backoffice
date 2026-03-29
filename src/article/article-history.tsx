@@ -37,7 +37,6 @@ export const ArticleHistory = () => {
     }
   }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const back = (e: MouseEvent<HTMLButtonElement>) => navigate(-1)
   const loadMore = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     if (id) {
@@ -64,7 +63,7 @@ export const ArticleHistory = () => {
   return (
     <form id="approveArticleForm" name="approveArticleForm" className="form">
       <header>
-        <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={back} />
+        <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={e => navigate(-1)} />
         <h2>{resource.article}</h2>
       </header>
       <div className="article-body">

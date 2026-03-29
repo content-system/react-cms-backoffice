@@ -48,7 +48,7 @@ export const ContentForm = () => {
     }
   }, [id, newMode, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const back = (e: MouseEvent<HTMLElement>) => onBack(e, navigate, confirm, resource, content, initialContent)
+  const back = (e: MouseEvent<HTMLButtonElement>) => onBack(e, navigate, confirm, resource, content, initialContent)
 
   const save = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault()
@@ -90,107 +90,110 @@ export const ContentForm = () => {
     }
   }
   return (
-    <form id="contentForm" name="contentForm" className="form" ref={refForm}>
-      <header>
-        <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={back} />
-        <h2>{resource.content}</h2>
-        <div className="btn-group">
-          <button className="btn-group btn-right" hidden={newMode}>
-            <i className="material-icons">group</i>
-          </button>
-          <button className="btn-group btn-right" hidden={newMode}>
-            <i className="material-icons">group</i>
-          </button>
-        </div>
-      </header>
-      <div className="row">
-        <label className="col s12 m6">
-          {resource.id}
-          <input
-            type="text"
-            id="id"
-            name="id"
-            value={content.id}
-            readOnly={!newMode}
-            onChange={onChange}
-            maxLength={80}
-            required={true}
-            placeholder={resource.id}
-          />
-        </label>
-        <label className="col s12 m6">
-          {resource.lang}
-          <input
-            type="text"
-            id="lang"
-            name="lang"
-            value={content.lang}
-            readOnly={!newMode}
-            onChange={onChange}
-            maxLength={80}
-            required={true}
-            placeholder={resource.lang}
-          />
-        </label>
-        <label className="col s12 m6">
-          {resource.published_at}
-          <input
-            type="datetime-local"
-            step=".010"
-            id="publishedAt"
-            name="publishedAt"
-            value={datetimeToString(content.publishedAt)}
-            onChange={onChange}
-          />
-        </label>
-        <label className="col s12 m6">
-          {resource.status}
-          <div className="radio-group">
-            <label>
-              <input type="radio" id="active" name="status" onChange={onChange} value={Status.Active} checked={content.status === Status.Active} />
-              {resource.active}
-            </label>
-            <label>
-              <input type="radio" id="inactive" name="status" onChange={onChange} value={Status.Inactive} checked={content.status === Status.Inactive} />
-              {resource.inactive}
-            </label>
+    !canWrite ? (
+      <div dangerouslySetInnerHTML={{ __html: content.body }}></div>
+    ) : (
+      <form id="contentForm" name="contentForm" className="form" ref={refForm}>
+        <header>
+          <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={back} />
+          <h2>{resource.content}</h2>
+          <div className="btn-group">
+            <button className="btn-group btn-right" hidden={newMode}>
+              <i className="material-icons">group</i>
+            </button>
+            <button className="btn-group btn-right" hidden={newMode}>
+              <i className="material-icons">group</i>
+            </button>
           </div>
-        </label>
-        <label className="col s12">
-          {resource.title}
-          <input
-            type="text"
-            id="title"
-            name="title"
-            value={content.title}
-            onChange={onChange}
-            onBlur={requiredOnBlur}
-            maxLength={255}
-            required={true}
-            placeholder={resource.title}
-          />
-        </label>
-        <label className="col s12 auto-height required">
-          {resource.body}
-          <textarea
-            id="body"
-            name="body"
-            rows={80}
-            value={content.body}
-            onChange={onChange}
-            onBlur={requiredOnBlur}
-            maxLength={9000}
-            placeholder={resource.body}
-          />
-        </label>
-      </div>
-      <footer>
-        {canWrite && (
-          <button type="submit" id="saveBtn" name="saveBtn" onClick={save}>
-            {resource.save}
-          </button>
-        )}
-      </footer>
-    </form>
+        </header>
+        <div className="row">
+          <label className="col s12 m6">
+            {resource.id}
+            <input
+              type="text"
+              id="id"
+              name="id"
+              value={content.id}
+              readOnly={!newMode}
+              onChange={onChange}
+              maxLength={80}
+              required={true}
+              placeholder={resource.id}
+            />
+          </label>
+          <label className="col s12 m6">
+            {resource.lang}
+            <input
+              type="text"
+              id="lang"
+              name="lang"
+              value={content.lang}
+              readOnly={!newMode}
+              onChange={onChange}
+              maxLength={80}
+              required={true}
+              placeholder={resource.lang}
+            />
+          </label>
+          <label className="col s12 m6">
+            {resource.published_at}
+            <input
+              type="datetime-local"
+              step=".010"
+              id="publishedAt"
+              name="publishedAt"
+              value={datetimeToString(content.publishedAt)}
+              onChange={onChange}
+            />
+          </label>
+          <label className="col s12 m6">
+            {resource.status}
+            <div className="radio-group">
+              <label>
+                <input type="radio" id="active" name="status" onChange={onChange} value={Status.Active} checked={content.status === Status.Active} />
+                {resource.active}
+              </label>
+              <label>
+                <input type="radio" id="inactive" name="status" onChange={onChange} value={Status.Inactive} checked={content.status === Status.Inactive} />
+                {resource.inactive}
+              </label>
+            </div>
+          </label>
+          <label className="col s12">
+            {resource.title}
+            <input
+              type="text"
+              id="title"
+              name="title"
+              value={content.title}
+              onChange={onChange}
+              onBlur={requiredOnBlur}
+              maxLength={255}
+              required={true}
+              placeholder={resource.title}
+            />
+          </label>
+          <label className="col s12 auto-height required">
+            {resource.body}
+            <textarea
+              id="body"
+              name="body"
+              rows={80}
+              value={content.body}
+              onChange={onChange}
+              onBlur={requiredOnBlur}
+              maxLength={9000}
+              placeholder={resource.body}
+            />
+          </label>
+        </div>
+        <footer>
+          {canWrite && (
+            <button type="submit" id="saveBtn" name="saveBtn" onClick={save}>
+              {resource.save}
+            </button>
+          )}
+        </footer>
+      </form>)
   )
 }

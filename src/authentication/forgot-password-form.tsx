@@ -1,23 +1,11 @@
 import { email, validateAndForgotPassword, validateContact } from "password-client"
-import { useEffect, useRef } from "react"
-import { OnClick, useMessage, useUpdate } from "react-hook-core"
+import { MouseEvent, useEffect, useRef, useState } from "react"
+import { useMessage } from "react-hook-core"
 import { Link } from "react-router-dom"
 import { initForm, registerEvents } from "ui-plus"
 import { handleError, message, storage, useResource } from "uione"
 import logo from "../assets/images/logo.png"
 import { getPasswordService } from "./service"
-
-interface ContactInternalState {
-  contact: {
-    contact: string
-  }
-}
-
-const forgotPasswordData = {
-  contact: {
-    contact: "",
-  },
-}
 
 const msgData = {
   message: "",
@@ -28,18 +16,18 @@ export const ForgotPasswordForm = () => {
   const resource = useResource()
   const form = useRef<HTMLFormElement>(null)
   const { msg, showError, hideMessage } = useMessage(msgData)
-  const { state, updateState } = useUpdate<ContactInternalState>(forgotPasswordData, "contact")
+  const [contact, setContact] = useState<string>("")
 
   useEffect(() => {
     initForm(form.current, registerEvents)
   }, [])
 
-  const forgotPassword = (event: OnClick) => {
-    event.preventDefault()
+  const forgotPassword = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
     const passwordServicer = getPasswordService()
     validateAndForgotPassword(
       passwordServicer.forgotPassword,
-      state.contact.contact,
+      contact,
       "email",
       resource,
       message,
@@ -54,7 +42,7 @@ export const ForgotPasswordForm = () => {
 
   return (
     <div className="central-full">
-      <form id="forgotPasswordForm" name="forgotPasswordForm" className="form" noValidate={true} autoComplete="off" ref={form as any}>
+      <form id="forgotPasswordForm" name="forgotPasswordForm" className="form" noValidate={true} autoComplete="off" ref={form}>
         <div className="view-body row">
           <img className="logo" src={logo} alt="logo" />
           <h2>{resource.forgot_password}</h2>
@@ -68,9 +56,9 @@ export const ForgotPasswordForm = () => {
               type="text"
               id="contact"
               name="contact"
-              value={state.contact.contact}
+              value={contact}
               placeholder={resource.placeholder_user_email}
-              onChange={updateState}
+              onChange={e => setContact(e.target.value)}
               maxLength={255}
               required={true}
             />

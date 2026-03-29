@@ -285,10 +285,10 @@
   box-shadow: 0 1px 0 0 #657181;
 }
 .grey.dark .highlight {
-  color: #657181 !important;
+  color: #657181;
 }
 .grey.dark .border-bottom-highlight {
-  border-bottom: 3px solid #324511 !important; /* #9e8f0e */
+  border-bottom: 3px solid #324511; /* #9e8f0e */
 }
 
 .grey.dark .success-icon .alert-icon {
@@ -382,7 +382,7 @@
   color: #657181;
 }
 
-.grey.dark h3.highlight,
+.grey.dark .sub.highlight,
 .grey.dark h3.header {
   color: #7b8b9f;
 }

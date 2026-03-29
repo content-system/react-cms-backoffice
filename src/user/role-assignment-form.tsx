@@ -98,14 +98,10 @@ export const RoleAssignmentForm = () => {
     setState({ ...state, selectedRoles, checkedAll })
   }
 
-  const back = (e: MouseEvent<HTMLElement>) => {
-    e.preventDefault()
-    navigate(-1)
-  }
   return (
     <form id="roleAssignmentForm" name="roleAssignmentForm" className="form">
       <header>
-        <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={back} />
+        <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={e => navigate(-1)} />
         <h2>{resource.role_assignment_subject}</h2>
       </header>
       <div>

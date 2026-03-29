@@ -332,10 +332,10 @@
   box-shadow: 0 1px 0 0 #4db6ac;
 }
 .dark .highlight {
-  color: #4db6ac !important;
+  color: #4db6ac;
 }
 .dark .border-bottom-highlight {
-  border-bottom: 3px solid #324511 !important; /* #9e8f0e */
+  border-bottom: 3px solid #324511; /* #9e8f0e */
 }
 
 .dark .success-icon .alert-icon {
@@ -426,7 +426,7 @@
   color: #4db6ac;
 }
 
-.dark h3.highlight,
+.dark .sub.highlight,
 .dark h3.header {
   color: #d0cfcf;
 }
