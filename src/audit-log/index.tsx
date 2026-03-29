@@ -108,7 +108,7 @@ export const AuditLogsForm = () => {
           )}
         </div>
       </header>
-      <div className="search-body">
+      <div className="main-body">
         <form id="rolesForm" name="rolesForm" className="form" noValidate={true} ref={refForm}>
           <section className="row section">
             <label className="col s12 m2 l4">

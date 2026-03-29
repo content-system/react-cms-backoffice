@@ -274,10 +274,10 @@ h4 {
   font-weight: 500;
 }
 
-.search-body > h2:first-child,
-.search-body > h3:first-child,
-.search-body > h4:first-child,
-.search-body > p:first-child {
+.main-body > h2:first-child,
+.main-body > h3:first-child,
+.main-body > h4:first-child,
+.main-body > p:first-child {
   margin-top: 8px;
 }
 header > h1,

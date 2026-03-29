@@ -66,7 +66,6 @@
 article.view-container > div,
 .page-body > .form > div,
 .page-body > article > div,
-.search-body,
 .main-body,
 .form-body,
 .view-body {
@@ -103,7 +102,6 @@ article.view-container > div,
 .page-body > .form,
 .page-body > article,
 .page-body > article > div,
-.search-body,
 .main-body {
   max-height: calc(100vh - 52px); /* - page-header */
   height: calc(100vh - 52px);
@@ -129,7 +127,6 @@ article.view-container > div,
   height: calc(100vh - 52px);
   overflow-x: auto;
 }
-.modal-portal-content .search-body,
 .modal-portal-content .main-body {
   max-height: calc(100vh - 150px);
   height: calc(100vh - 150px);
@@ -163,7 +160,6 @@ article.view-container > div,
   .top-menu .page-container > .page-body > .form,
   .top-menu .page-body > article,
   .top-menu .page-container > .page-body > article > div,
-  .top-menu .page-container .search-body,
   .top-menu .page-container .main-body {
     max-height: calc(100vh - 46px - 52px);
   }
@@ -171,17 +167,16 @@ article.view-container > div,
   .classic.top-menu .page-container > .page-body > .form,
   .classic.top-menu .page-body > article,
   .classic.top-menu .page-container > .page-body > article > div,
-  .classic.top-menu .page-container .search-body,
   .classic.top-menu .page-container .main-body {
     max-height: unset;
     height: unset;
   }
-  .top-menu .modal-portal-content .search-body,
+
   .top-menu .modal-portal-content .main-body {
     max-height: calc(100vh - 150px - 19px);
     height: calc(100vh - 150px - 19px);
   }
-  .classic.top-menu .page-container .search-body {
+  .classic.top-menu .page-container .main-body {
     max-height: unset;
     height: unset;
   }

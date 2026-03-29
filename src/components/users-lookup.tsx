@@ -120,7 +120,7 @@ export const UsersLookup = (props: Props) => {
           </div>
           <button type="button" id="closeBtn" name="closeBtn" className="btn-close" onClick={onModelClose} />
         </header>
-        <div className="search-body">
+        <div className="main-body">
           <form id="usersLookupForm" name="usersLookupForm" className="usersLookupForm" noValidate={true} ref={refForm}>
             <section className="row search-group">
               <label className="col s12 m6 search-input">

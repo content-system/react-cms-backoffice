@@ -14,7 +14,7 @@
 .list {
   margin: 0;
 }
-.search-body .list:last-child {
+.main-body .list:last-child {
   margin-bottom: 16px;
 }
 .list.horizon {

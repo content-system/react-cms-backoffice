@@ -27,6 +27,7 @@ export const UserForm = () => {
   const [user, setUser] = useState<User>(createUser())
   const onChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => updateState(e, user, setUser)
 
+  const service = getUserService()
   const { id } = useParams()
   const newMode = !id
   useEffect(() => {
@@ -39,7 +40,7 @@ export const UserForm = () => {
         setPositionList(positionList)
         if (id) {
           showLoading()
-          getUserService()
+          service
             .load(id)
             .then((user) => {
               if (user) {
@@ -67,7 +68,6 @@ export const UserForm = () => {
     e.preventDefault()
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
-      const service = getUserService()
       if (newMode) {
         confirm(resource.msg_confirm_save, () => {
           showLoading()
@@ -162,7 +162,7 @@ export const UserForm = () => {
         </header>
         <div>
           <section className="row section">
-            <h3 className="header">User Information</h3>
+            <h3 className="header">{resource.user_info}</h3>
             <label className="col s12 m6">
               {resource.user_id}
               <input
@@ -250,7 +250,7 @@ export const UserForm = () => {
             </div>
           </section>
           <section className="row section">
-            <h4 className="header">Contact Information</h4>
+            <h4 className="header">{resource.contact_info}</h4>
             <label className="col s12 m6 flying ">
               {resource.position}
               <select

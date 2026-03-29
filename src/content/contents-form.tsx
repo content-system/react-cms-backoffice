@@ -103,7 +103,7 @@ export const ContentsForm = () => {
           {canWrite && <Link id="newBtn" className="btn-new" to="new" />}
         </div>
       </header>
-      <div className="search-body">
+      <div className="main-body">
         <form id="contentsForm" name="contentsForm" className="form" noValidate={true} ref={refForm}>
           <section className="row search-group">
             <label className="col s12 m6 search-input">
