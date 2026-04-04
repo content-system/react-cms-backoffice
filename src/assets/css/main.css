@@ -177,6 +177,7 @@ td > button {
 .classic.top-menu .view-footer {
   bottom: unset;
 }
+.modal footer,
 .classic.top-menu .detail-content > form > footer,
 .modal-portal-content > .form > footer,
 .modal-portal-content > div > footer {

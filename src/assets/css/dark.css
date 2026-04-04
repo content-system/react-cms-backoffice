@@ -173,6 +173,8 @@
   color: #000;
 }
 
+.dark .section.search > .btn-search:hover,
+.dark .btn-review:hover,
 .dark .btn-more:hover,
 .dark footer > button:hover {
   box-shadow: #565656;

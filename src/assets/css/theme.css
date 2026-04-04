@@ -155,6 +155,8 @@ header > .btn-back,
   color: #fff;
 }
 
+.section.search > .btn-search:hover,
+.btn-review:hover,
 .btn-more:hover,
 footer > button:hover {
   box-shadow: #a9a9a9;
@@ -371,6 +373,7 @@ footer > .btn-next::after,
 .section.search > .btn-search,
 .central-full button,
 .view-footer > button,
+.btn-review,
 footer > button {
   color: #fff;
   background-color: #4db6ac;

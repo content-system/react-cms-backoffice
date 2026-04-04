@@ -34,6 +34,7 @@ footer > .btn-cancel {
   border: 0;
   background-color: transparent;
 }
+.modal footer > button.btn-secondary,
 .form > footer > button.btn-secondary,
 .form > footer > button.btn-delete {
   background-color: inherit;
@@ -99,8 +100,10 @@ ul.list > li > button.btn-pick,
 section.footer > button,
 .detail-content > form > footer > button,
 .form > footer > button,
+.modal footer > button,
 .view-footer > button {
-  width: 200px;
+  width: auto;
+  min-width: 160px;
   height: 40px;
   margin-top: 8px;
   margin-left: 6px;

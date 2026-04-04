@@ -4,7 +4,7 @@ import { clone, datetimeToString, Error, isEmpty, isSuccessful, makeDiff, onBack
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
-import { formatDateTime, initForm, registerEvents, requiredOnBlur, showFormError, validateForm } from "ui-plus"
+import { formatDateTime, formatInteger, initForm, intOnBlur, intOnFocus, registerEvents, requiredOnBlur, showFormError, validateForm } from "ui-plus"
 import { getDateFormat, getLocale, handleError, hasPermission, Permission, Status, useResource } from "uione"
 import { getJobService, Job } from "./service"
 
@@ -173,7 +173,7 @@ export const JobForm = () => {
               value={job.quantity?.toString()}
               onChange={onChange}
               onBlur={requiredOnBlur}
-              maxLength={255}
+              maxLength={3}
               required={true}
               placeholder={resource.quantity}
             />
@@ -200,9 +200,11 @@ export const JobForm = () => {
               id="minSalary"
               name="minSalary"
               data-type="int"
-              value={job.minSalary?.toString()}
+              value={formatInteger(job.minSalary, locale.groupSeparator)}
               onChange={onChange}
-              onBlur={requiredOnBlur}
+              onFocus={intOnFocus}
+              required={true}
+              onBlur={e => intOnBlur(e, locale.groupSeparator)}
               maxLength={16}
               placeholder={resource.min_salary}
             />
@@ -215,9 +217,10 @@ export const JobForm = () => {
               id="maxSalary"
               name="maxSalary"
               data-type="int"
-              value={job.maxSalary?.toString()}
+              value={formatInteger(job.maxSalary, locale.groupSeparator)}
               onChange={onChange}
-              onBlur={requiredOnBlur}
+              onFocus={intOnFocus}
+              onBlur={e => intOnBlur(e, locale.groupSeparator)}
               maxLength={16}
               placeholder={resource.max_salary}
             />

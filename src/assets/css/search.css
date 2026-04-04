@@ -223,7 +223,7 @@ section.row.search-group nav.col {
 }
 
 .section.search > .btn-search:hover {
-  box-shadow: 0 1px 3px 1px darkgrey;
+  box-shadow: 0 1px 3px 1px #a9a9a9;
 }
 
 .btn-advance-search {
