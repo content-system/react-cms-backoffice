@@ -235,7 +235,7 @@ export const CategoryForm = () => {
               className="text-right"
               id="sequence"
               name="sequence"
-              data-type="int"
+              data-type="integer"
               value={category.sequence}
               onChange={onChange}
               onBlur={requiredOnBlur}

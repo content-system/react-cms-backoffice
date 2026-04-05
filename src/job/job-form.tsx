@@ -4,7 +4,7 @@ import { clone, datetimeToString, Error, isEmpty, isSuccessful, makeDiff, onBack
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
-import { formatDateTime, formatInteger, initForm, intOnBlur, intOnFocus, registerEvents, requiredOnBlur, showFormError, validateForm } from "ui-plus"
+import { formatDateTime, formatInteger, initForm, integerOnBlur, integerOnFocus, registerEvents, requiredOnBlur, showFormError, validateForm } from "ui-plus"
 import { getDateFormat, getLocale, handleError, hasPermission, Permission, Status, useResource } from "uione"
 import { getJobService, Job } from "./service"
 
@@ -169,7 +169,7 @@ export const JobForm = () => {
               className="text-right"
               id="quantity"
               name="quantity"
-              data-type="int"
+              data-type="integer"
               value={job.quantity?.toString()}
               onChange={onChange}
               onBlur={requiredOnBlur}
@@ -199,12 +199,12 @@ export const JobForm = () => {
               className="text-right"
               id="minSalary"
               name="minSalary"
-              data-type="int"
+              data-type="integer"
               value={formatInteger(job.minSalary, locale.groupSeparator)}
               onChange={onChange}
-              onFocus={intOnFocus}
+              onFocus={integerOnFocus}
               required={true}
-              onBlur={e => intOnBlur(e, locale.groupSeparator)}
+              onBlur={e => integerOnBlur(e, locale.groupSeparator)}
               maxLength={16}
               placeholder={resource.min_salary}
             />
@@ -216,11 +216,11 @@ export const JobForm = () => {
               className="text-right"
               id="maxSalary"
               name="maxSalary"
-              data-type="int"
+              data-type="integer"
               value={formatInteger(job.maxSalary, locale.groupSeparator)}
               onChange={onChange}
-              onFocus={intOnFocus}
-              onBlur={e => intOnBlur(e, locale.groupSeparator)}
+              onFocus={integerOnFocus}
+              onBlur={e => integerOnBlur(e, locale.groupSeparator)}
               maxLength={16}
               placeholder={resource.max_salary}
             />
