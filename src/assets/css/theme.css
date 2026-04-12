@@ -1,11 +1,44 @@
+::-webkit-scrollbar-track {
+  background: #f9f9f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #c0c0c0;;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #aaaaaa;
+}
+* {
+  scrollbar-color: #c0c0c0 #f9f9f9; /* thumb track */
+}
 @media screen and (min-width: 769px) {
   .top-menu .menu.sidebar::-webkit-scrollbar-thumb {
     background: #747979;
   }
 }
 
+.star-picker span.active,
+.review-item-stars::after,
+.star,
+.bar,
+.fill {
+  color: #ffcc00;
+}
+.fill {
+  background: #ffcc00;
+}
+.track {
+  background: #e5e5ea;
+}
+
+.partial-star::before,
+.empty-star,
+.review-item-stars::before {
+  color: #ddd;
+}
+
 body,
 .page-container,
+.alert-wrapper .alert,
 .dropdown-menu-profile {
   background-color: #fff;
 }
@@ -159,7 +192,7 @@ header > .btn-back,
 .btn-review:hover,
 .btn-more:hover,
 footer > button:hover {
-  box-shadow: #a9a9a9;
+  box-shadow: 0 1px 3px 1px #a9a9a9;
 }
 
 .btn-delete {
@@ -318,13 +351,18 @@ select.valid {
 .page-body > .form > header,
 .page-body > article > header,
 .page-body > div > header,
+.content-container > div > header,
 .view-header {
   color: #4db6ac;
   background-color: #fff;
   background-image: none;
 }
 
-.toast-message,
+.toast-message {
+  background-color: #008577;
+  color: #fff;
+  border-color: #00574b;
+}
 .sidebar {
   background-color: #008577;
   color: #fff;
@@ -391,6 +429,7 @@ h3.header {
   .page-body > .form > header,
   .page-body > article > header,
   .page-body > div > header,
+  .content-container > div > header,
   .view-header {
     color: #fff;
     background-image: linear-gradient(90deg, #008577, #00574b);
@@ -405,6 +444,7 @@ h3.header {
 
   .page-body > .form > header > h2,
   .page-body > div > header > h2,
+  .content-container > div > header > h2,
   .view-header > h2,
   header > .btn-group > button,
   header > .btn-group > button,
@@ -441,18 +481,18 @@ h3.header {
 
 .table-striped tbody tr.active:nth-child(odd) td,
 .table-striped tbody tr.active:nth-child(odd) th,
-.table > thead > tr > td.active,
-.table > tbody > tr > td.active,
-.table > tfoot > tr > td.active,
-.table > thead > tr > th.active,
-.table > tbody > tr > th.active,
-.table > tfoot > tr > th.active,
-.table > thead > tr.active > td,
-.table > tbody > tr.active > td,
-.table > tfoot > tr.active > td,
-.table > thead > tr.active > th,
-.table > tbody > tr.active > th,
-.table > tfoot > tr.active > th {
+table > thead > tr > td.active,
+table > tbody > tr > td.active,
+table > tfoot > tr > td.active,
+table > thead > tr > th.active,
+table > tbody > tr > th.active,
+table > tfoot > tr > th.active,
+table > thead > tr.active > td,
+table > tbody > tr.active > td,
+table > tfoot > tr.active > td,
+table > thead > tr.active > th,
+table > tbody > tr.active > th,
+table > tfoot > tr.active > th {
   background-color: #387ef5;
 }
 
@@ -460,18 +500,18 @@ h3.header {
 .table-hover tbody tr.active:hover th,
 .table-striped tbody tr.active:nth-child(odd) td,
 .table-striped tbody tr.active:nth-child(odd) th,
-.table > thead > tr > td.active,
-.table > tbody > tr > td.active,
-.table > tfoot > tr > td.active,
-.table > thead > tr > th.active,
-.table > tbody > tr > th.active,
-.table > tfoot > tr > th.active,
-.table > thead > tr.active > td,
-.table > tbody > tr.active > td,
-.table > tfoot > tr.active > td,
-.table > thead > tr.active > th,
-.table > tbody > tr.active > th,
-.table > tfoot > tr.active > th {
+table > thead > tr > td.active,
+table > tbody > tr > td.active,
+table > tfoot > tr > td.active,
+table > thead > tr > th.active,
+table > tbody > tr > th.active,
+table > tfoot > tr > th.active,
+table > thead > tr.active > td,
+table > tbody > tr.active > td,
+table > tfoot > tr.active > td,
+table > thead > tr.active > th,
+table > tbody > tr.active > th,
+table > tfoot > tr.active > th {
   border-color: #428bca;
   background-color: #4f5352;
 }

@@ -1,6 +1,3 @@
-.grey ::-webkit-scrollbar-thumb {
-  background: #747978;
-}
 @media screen and (min-width: 769px) {
   .grey .top-menu .menu.sidebar::-webkit-scrollbar-thumb {
     background: #747979;
@@ -9,6 +6,7 @@
 
 .grey body,
 .grey .page-container,
+.grey .alert-wrapper .alert,
 .grey .dropdown-menu-profile {
   background-color: #fff;
 }
@@ -33,7 +31,7 @@
 .grey .editor,
 .grey .chip,
 .grey .data-list dd,
-.grey .table > thead > tr,
+.grey table > thead > tr,
 .grey .btn-group,
 .grey .btn-next,
 .grey .btn-accept,
@@ -138,7 +136,6 @@
 
 .grey .card > section > p.description,
 .grey label,
-.grey .table > tbody,
 .grey .diff .row .col p > span,
 .grey .data-list dt,
 .grey .btn-detail,
@@ -267,16 +264,6 @@
   background: linear-gradient(transparent, rgb(0, 0, 0));
 }
 
-.grey .toast-message {
-  background-color: #777;
-  border-color: #5f6d6f;
-  color: #fff;
-}
-
-.grey .alert-wrapper .alert {
-  border: solid 1px #657181;
-}
-
 .grey .chips.focus {
   border-bottom: 1px solid #657181;
   -webkit-box-shadow: 0 1px 0 0 #657181;
@@ -289,6 +276,9 @@
   border-bottom: 3px solid #324511; /* #9e8f0e */
 }
 
+.grey .alert-wrapper .alert {
+  border: solid 1px #657181;
+}
 .grey .success-icon .alert-icon {
   color: #657181;
 }
@@ -310,6 +300,7 @@
 .grey .page-body > .form > header,
 .grey .page-body > article > header,
 .grey .page-body > div > header,
+.grey .content-container > div > header,
 .grey .view-header {
   color: #657181;
   background-color: #fff;
@@ -325,6 +316,7 @@
   .grey .page-body > .form > header,
   .grey .page-body > article > header,
   .grey .page-body > div > header,
+  .grey .content-container > div > header,
   .grey .view-header {
     color: #fff;
     background-image: linear-gradient(90deg, #657181, #657181);
@@ -339,6 +331,7 @@
 
   .grey .page-body > .form > header > h2,
   .grey .page-body > div > header > h2,
+  .grey .content-container > div > header > h2,
   .grey .view-header > h2,
   .grey header > .btn-group > button,
   .grey header > .btn-group > *,
@@ -351,13 +344,15 @@
   }
 }
 
-.grey .toast-message,
+.grey .toast-message {
+  background-color: #777;
+  color: #fff;
+}
 .grey .sidebar {
   background-color: #fff;
   color: #5f6d6f;
   border-color: #d1d9e3;
 }
-
 .grey .sidebar > nav > ul > li > ul,
 .grey .sidebar > nav > ul > li > ul > li > ul {
   /* background-color: #00574b; */
@@ -366,13 +361,19 @@
 .grey .sidebar ul.sub-list > li.active,
 .grey .sidebar > nav > ul > li.active,
 .grey .open.active {
-  background: #f7f7fa; /* #07843b */
+  background: #dfdfe4; /* #07843b */
 }
 .grey .sidebar .menu-item {
   color: #5f6d6f;
 }
 .grey .sidebar {
   border-right: 1px solid #d1d9e3;
+}
+@media screen and (min-width: 769px) {
+  .grey .top-menu .menu.sidebar {
+    border-right: 0;
+    border-bottom: 1px solid #d1d9e3;
+  }
 }
 
 .grey .btn-more,
@@ -436,18 +437,18 @@
 .grey .pagination > .active > span:focus,
 .grey .table-striped tbody tr.active:nth-child(odd) td,
 .grey .table-striped tbody tr.active:nth-child(odd) th,
-.grey .table > thead > tr > td.active,
-.grey .table > tbody > tr > td.active,
-.grey .table > tfoot > tr > td.active,
-.grey .table > thead > tr > th.active,
-.grey .table > tbody > tr > th.active,
-.grey .table > tfoot > tr > th.active,
-.grey .table > thead > tr.active > td,
-.grey .table > tbody > tr.active > td,
-.grey .table > tfoot > tr.active > td,
-.grey .table > thead > tr.active > th,
-.grey .table > tbody > tr.active > th,
-.grey .table > tfoot > tr.active > th {
+.grey table > thead > tr > td.active,
+.grey table > tbody > tr > td.active,
+.grey table > tfoot > tr > td.active,
+.grey table > thead > tr > th.active,
+.grey table > tbody > tr > th.active,
+.grey table > tfoot > tr > th.active,
+.grey table > thead > tr.active > td,
+.grey table > tbody > tr.active > td,
+.grey table > tfoot > tr.active > td,
+.grey table > thead > tr.active > th,
+.grey table > tbody > tr.active > th,
+.grey table > tfoot > tr.active > th {
   background-color: #387ef5;
 }
 
@@ -455,41 +456,41 @@
 .grey .table-hover tbody tr.active:hover th,
 .grey .table-striped tbody tr.active:nth-child(odd) td,
 .grey .table-striped tbody tr.active:nth-child(odd) th,
-.grey .table > thead > tr > td.active,
-.grey .table > tbody > tr > td.active,
-.grey .table > tfoot > tr > td.active,
-.grey .table > thead > tr > th.active,
-.grey .table > tbody > tr > th.active,
-.grey .table > tfoot > tr > th.active,
-.grey .table > thead > tr.active > td,
-.grey .table > tbody > tr.active > td,
-.grey .table > tfoot > tr.active > td,
-.grey .table > thead > tr.active > th,
-.grey .table > tbody > tr.active > th,
-.grey .table > tfoot > tr.active > th {
+.grey table > thead > tr > td.active,
+.grey table > tbody > tr > td.active,
+.grey table > tfoot > tr > td.active,
+.grey table > thead > tr > th.active,
+.grey table > tbody > tr > th.active,
+.grey table > tfoot > tr > th.active,
+.grey table > thead > tr.active > td,
+.grey table > tbody > tr.active > td,
+.grey table > tfoot > tr.active > td,
+.grey table > thead > tr.active > th,
+.grey table > tbody > tr.active > th,
+.grey table > tfoot > tr.active > th {
   border-color: #428bca;
   background-color: #4f5352;
 }
 
-.grey .table > tbody > tr:hover,
-.grey .table > tbody > tr:nth-of-type(odd):hover,
+.grey table > tbody > tr:hover,
+.grey table > tbody > tr:nth-of-type(odd):hover,
 .grey .table-hover > tbody > tr:hover,
 .grey .table-striped > tbody > tr:nth-of-type(odd):hover {
   background-color: #eee;
 }
 
-.grey .table > thead > tr > th,
-.grey .table > tbody > tr > td {
+.grey table > thead > tr > th,
+.grey table > tbody > tr > td {
   border-bottom-color: #222;
 }
 
-.grey .table,
-.grey .table > tbody > tr > td,
-.grey .table > tbody > tr > th,
-.grey .table > tfoot > tr > td,
-.grey .table > tfoot > tr > th,
-.grey .table > thead > tr > td,
-.grey .table > thead > tr > th,
+.grey table,
+.grey table > tbody > tr > td,
+.grey table > tbody > tr > th,
+.grey table > tfoot > tr > td,
+.grey table > tfoot > tr > th,
+.grey table > thead > tr > td,
+.grey table > thead > tr > th,
 .grey .table-bordered,
 .grey .table-bordered > tbody > tr > td,
 .grey .table-bordered > tbody > tr > th,
@@ -500,7 +501,7 @@
   border-color: #d1d9e2;
 }
 
-.grey .table > tbody > tr:nth-of-type(odd),
+.grey table > tbody > tr:nth-of-type(odd),
 .grey .table-striped > tbody > tr:nth-of-type(odd) {
   background-color: #fff;
 }

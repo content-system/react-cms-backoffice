@@ -48,6 +48,7 @@
 .page-body > article > header,
 .page-body > div > header,
 .page-body > .form > header,
+.content-container > div > header,
 .view-container > header,
 .view-header {
   position: relative;
