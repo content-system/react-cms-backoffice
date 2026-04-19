@@ -77,7 +77,7 @@
 
 .grey .rating-title,
 .grey .rating-summary,
-.grey .review-item p:last-child,
+.grey .review-item footer,
 .grey .img-card > section,
 .grey .card > section,
 .grey .video > section,
@@ -276,8 +276,16 @@
   -webkit-box-shadow: 0 1px 0 0 #657181;
   box-shadow: 0 1px 0 0 #657181;
 }
+
 .grey .highlight {
   color: #657181;
+}
+.grey .card > header {
+  box-shadow: 0 4px 6px -6px rgba(5, 5, 5, 0.34);
+}
+.grey .profile-header > .card,
+.grey .profile .card {
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.18);
 }
 .grey .border-bottom-highlight {
   border-bottom: 3px solid #324511; /* #9e8f0e */

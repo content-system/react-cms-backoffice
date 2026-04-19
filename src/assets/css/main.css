@@ -39,6 +39,11 @@ body {
   }
 }
 
+.flex-direction-row {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+}
 .round-border {
   border-radius: 50%;
   border: 1px solid;

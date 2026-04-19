@@ -81,7 +81,7 @@
 
 .grey.dark .rating-title,
 .grey.dark .rating-summary,
-.grey.dark .review-item p:last-child,
+.grey.dark .review-item footer,
 .grey.dark .img-card > section,
 .grey.dark .card > section,
 .grey.dark .video > section,
@@ -281,8 +281,18 @@
   -webkit-box-shadow: 0 1px 0 0 #657181;
   box-shadow: 0 1px 0 0 #657181;
 }
+
 .grey.dark .highlight {
   color: #657181;
+}
+.grey.dark .card > header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.24);
+  box-shadow: 0 4px 6px -6px rgba(5, 5, 5, 0.34);
+}
+.grey.dark .profile-header > .card,
+.grey.dark .profile .card {
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  box-shadow: 0px 1px 2px rgba(255, 255, 255, 0.05), 0px 4px 10px rgba(0, 0, 0, 0.6);
 }
 .grey.dark .border-bottom-highlight {
   border-bottom: 3px solid #324511; /* #9e8f0e */

@@ -271,7 +271,7 @@ i.sort-down:after {
   font-size: 12px;
   font-style: normal;
 }
-
+.rate,
 .limit,
 .sort {
   display: flex;
@@ -290,6 +290,7 @@ i.sort-down:after {
 .btn-limit::after {
   content: " > ";
 }
+.btn-rate,
 .btn-sort {
   min-width: 160px;
   height: 36px;
@@ -302,6 +303,9 @@ i.sort-down:after {
   color: inherit;
   border: 1px solid #999999;
 }
+.btn-rate {
+  min-width: 64px;
+}
 .dropdown {
   position: absolute;
   top: 36px;
@@ -310,7 +314,7 @@ i.sort-down:after {
   border-radius: 8px;
   display: none;
   flex-direction: column;
-  min-width: 160px;
+  min-width: 80px;
   z-index: 10;
   border: 1px solid #ddd;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);

@@ -125,7 +125,7 @@
 
 .dark .rating-title,
 .dark .rating-summary,
-.dark .review-item p:last-child,
+.dark .review-item footer,
 .dark .img-card > section,
 .dark .card > section,
 .dark .video > section,
@@ -372,9 +372,13 @@
   box-shadow: 0 1px 0 0 #5fd0c5;
 }
 .dark .highlight {
-  color: #5fd0c5;
+  color: #64ffda;
 }
 
+.dark .card > header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.24);
+  box-shadow: 0 4px 6px -6px rgba(5, 5, 5, 0.34);
+}
 .dark .profile-header > .card,
 .dark .profile .card {
   border: 1px solid rgba(255, 255, 255, 0.24);
