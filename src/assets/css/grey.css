@@ -14,12 +14,6 @@
   border-color: #d1d9e3;
 }
 
-.grey hr {
-  border-color: #e0e0e0;
-}
-.grey .solid hr {
-  border-color: #7f7f7f;
-}
 .grey .solid > form > footer,
 .grey .solid > footer,
 .grey .solid .view-footer {
@@ -55,11 +49,6 @@
   border-color: #d1d9e1 !important;
 }
 
-.grey .list-item > *:last-child,
-.grey .img-item > *:last-child {
-  border-bottom-color: #e0e0e0;
-}
-
 .grey .card > footer > button.btn-cancel,
 .grey .view-container.central-full > form > div > button.btn-cancel,
 .grey header > h5,
@@ -68,11 +57,28 @@
   color: #657181;
 }
 
+.grey .img-item img,
 .grey .view-body > section > article > p,
 .grey .section-body > p {
   border-color: #7f7f7f;
 }
 
+.grey hr {
+  border-color: #e0e0e0;
+}
+.grey .solid hr {
+  border-color: #7f7f7f;
+}
+
+.grey .list-item > *:last-child,
+.grey .img-item > *:last-child {
+  border-bottom-color: #e0e0e0;
+}
+
+.grey .rating-title,
+.grey .rating-summary,
+.grey .review-item p:last-child,
+.grey .img-card > section,
 .grey .card > section,
 .grey .video > section,
 .grey .horizon > .video {
@@ -136,6 +142,7 @@
 
 .grey .card > section > p.description,
 .grey label,
+.grey .muted,
 .grey .diff .row .col p > span,
 .grey .data-list dt,
 .grey .btn-detail,

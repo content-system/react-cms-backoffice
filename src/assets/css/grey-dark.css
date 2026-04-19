@@ -14,12 +14,6 @@
   border-color: #212325;
 }
 
-.grey.dark hr {
-  border-color: #1f1f1f;
-}
-.grey.dark .solid hr {
-  border-color: #808080;
-}
 .grey.dark .solid > form > footer,
 .grey.dark .solid > footer,
 .grey.dark .solid .view-footer {
@@ -55,11 +49,6 @@
   border-color: #2f3033 !important;
 }
 
-.grey.dark .list-item > *:last-child,
-.grey.dark .img-item > *:last-child {
-  border-bottom-color: #1f1f1f;
-}
-
 .grey.dark table > tbody > tr > td > a,
 .grey.dark table > tbody > tr > td,
 .grey.dark .row .form-group label,
@@ -71,11 +60,29 @@
   color: #657181;
 }
 
+.grey.dark .img-item img,
 .grey.dark .view-body > section > article > p,
 .grey.dark .section-body > p {
   border-color: #808080;
 }
 
+
+.grey.dark hr {
+  border-color: #1f1f1f;
+}
+.grey.dark .solid hr {
+  border-color: #808080;
+}
+
+.grey.dark .list-item > *:last-child,
+.grey.dark .img-item > *:last-child {
+  border-bottom-color: #1f1f1f;
+}
+
+.grey.dark .rating-title,
+.grey.dark .rating-summary,
+.grey.dark .review-item p:last-child,
+.grey.dark .img-card > section,
 .grey.dark .card > section,
 .grey.dark .video > section,
 .grey.dark .horizon > .video {
@@ -139,6 +146,7 @@
 
 .grey.dark .card > section > p.description,
 .grey.dark label,
+.grey.dark .muted,
 .grey.dark .diff .row .col p > span,
 .grey.dark .data-list dt,
 .grey.dark .btn-detail,
