@@ -142,8 +142,8 @@ article.view-container > div,
     min-height: unset;
   }
   .top-menu .page-body > .full {
-    max-height: calc(100vh - 52px - 46px);
-    height: calc(100vh - 52px - 46px);
+    max-height: calc(100vh - 52px - 52px);
+    height: calc(100vh - 52px - 52px);
   }
   .classic.top-menu .page-body > .full {
     max-height: auto;
@@ -152,7 +152,7 @@ article.view-container > div,
   }
 
   .top-menu .page-container > .page-body > .form > div {
-    max-height: calc(100vh - 46px - 52px - 64px);
+    max-height: calc(100vh - 52px - 52px - 64px);
   }
   .top-menu .page-container > .page-body .profile.form > div {
     max-height: unset;
@@ -162,7 +162,7 @@ article.view-container > div,
   .top-menu .page-body > article,
   .top-menu .page-container > .page-body > article > div,
   .top-menu .page-container .main-body {
-    max-height: calc(100vh - 46px - 52px);
+    max-height: calc(100vh - 52px - 52px);
   }
   .classic.top-menu .page-container > .page-body > .view-container > .form,
   .classic.top-menu .page-container > .page-body > .form,
