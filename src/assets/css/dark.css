@@ -34,7 +34,7 @@
   background-color: #000;
 }
 .dark .page-header {
-  border-color: #111;
+  border-color: #323232;
 }
 
 .dark .solid > form > footer,
@@ -421,7 +421,7 @@
   color: #000;
 }
 .dark .sidebar {
-  background-color: #121212;
+  background-color: #232323;
   color: #fff;
   border-color: #00574b;
 }
@@ -429,7 +429,7 @@
 .dark .sidebar > nav > ul > li > ul,
 .dark .sidebar > nav > ul > li > ul > li > ul {
   /* background-color: #00574b; */
-  background-color: #0d1111;
+  background-color: #3b3b3b;
 }
 .dark .sidebar ul.sub-list > li.active,
 .dark .sidebar > nav > ul > li.active,
@@ -438,6 +438,17 @@
 }
 .dark .sidebar .menu-item {
   color: #fff;
+}
+.dark .sub-list {
+  border-color: #000;
+}
+@media screen and (min-width: 769px) {
+  .dark .top-menu .sub-list {
+    border-color: #000;
+  }
+  .dark .top-menu .sidebar > nav > ul > li:hover .sub-list {
+    border-color: #4d4d4d;
+  }
 }
 
 .dark .btn-more,

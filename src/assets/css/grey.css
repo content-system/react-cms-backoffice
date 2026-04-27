@@ -384,10 +384,19 @@
 .grey .sidebar {
   border-right: 1px solid #d1d9e3;
 }
+.grey .sub-list {
+  border-color: #ddd;
+}
 @media screen and (min-width: 769px) {
   .grey .top-menu .menu.sidebar {
     border-right: 0;
     border-bottom: 1px solid #d1d9e3;
+  }
+  .grey .top-menu .sub-list {
+    border-color: #fff;
+  }
+  .grey .top-menu .sidebar > nav > ul > li:hover .sub-list {
+    border-color: #ddd;
   }
 }
 

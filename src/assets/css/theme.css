@@ -401,6 +401,17 @@ select.valid {
 .sidebar .menu-item {
   color: #fff;
 }
+.sub-list {
+  border-color: #00574b;
+}
+@media screen and (min-width: 769px) {
+  .top-menu .sub-list {
+    border-color: #fff;
+  }
+  .top-menu .sidebar > nav > ul > li:hover .sub-list {
+    border-color: #00574b;
+  }
+}
 
 .btn-more,
 h1,

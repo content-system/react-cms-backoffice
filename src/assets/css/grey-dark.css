@@ -356,6 +356,21 @@
 .grey.dark .sidebar {
   border-right: 1px solid #212325;
 }
+.grey.dark .sub-list {
+  border-color: #4d4d4d;
+}
+@media screen and (min-width: 769px) {
+  .grey.dark .top-menu .menu.sidebar {
+    border-right: 0;
+    border-bottom: 1px solid #4d4d4d;
+  }
+  .grey.dark .top-menu .sub-list {
+    border-color: #000;
+  }
+  .grey.dark .top-menu .sidebar > nav > ul > li:hover .sub-list {
+    border-color: #4d4d4d;
+  }
+}
 
 .grey.dark .btn-more,
 .grey.dark h1,
