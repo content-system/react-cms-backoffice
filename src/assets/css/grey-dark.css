@@ -30,6 +30,7 @@
 .grey.dark .btn-next,
 .grey.dark .btn-accept,
 .grey.dark .btn-cancel,
+.grey.dark .profile-info,
 .grey.dark label.switch-container,
 .grey.dark label.checkbox-container,
 .grey.dark label.checkbox-group,
@@ -335,40 +336,29 @@
   color: #000;
 }
 .grey.dark .sidebar {
-  background-color: #000;
-  color: #5f6d6f;
+  background-color: #121212;
+  color: #fff;
   border-color: #212325;
 }
 
 .grey.dark .sidebar > nav > ul > li > ul,
 .grey.dark .sidebar > nav > ul > li > ul > li > ul {
   /* background-color: #00574b; */
-  background-color: #000;
+  background-color: #3b3b3b;
 }
 .grey.dark .sidebar ul.sub-list > li.active,
 .grey.dark .sidebar > nav > ul > li.active,
 .grey.dark .open.active {
-  background: #101011; /* #07843b */
+  background: #4b4f4f; /* #07843b */
 }
 .grey.dark .sidebar .menu-item {
-  color: #5f6d6f;
-}
-.grey.dark .sidebar {
-  border-right: 1px solid #212325;
-}
-.grey.dark .sub-list {
-  border-color: #4d4d4d;
+  color: #fff;
 }
 @media screen and (min-width: 769px) {
   .grey.dark .top-menu .menu.sidebar {
     border-right: 0;
     border-bottom: 1px solid #4d4d4d;
-  }
-  .grey.dark .top-menu .sub-list {
-    border-color: #000;
-  }
-  .grey.dark .top-menu .sidebar > nav > ul > li:hover .sub-list {
-    border-color: #4d4d4d;
+    background-color: #121212;
   }
 }
 

@@ -30,6 +30,7 @@
 .grey .btn-next,
 .grey .btn-accept,
 .grey .btn-cancel,
+.grey .profile-info,
 .grey label.switch-container,
 .grey label.checkbox-container,
 .grey label.checkbox-group,
@@ -371,32 +372,25 @@
 .grey .sidebar > nav > ul > li > ul,
 .grey .sidebar > nav > ul > li > ul > li > ul {
   /* background-color: #00574b; */
-  background-color: #fff;
+  background-color: #dfdfdf;
 }
 .grey .sidebar ul.sub-list > li.active,
 .grey .sidebar > nav > ul > li.active,
 .grey .open.active {
-  background: #dfdfe4; /* #07843b */
+  background: #efefef; /* #07843b */
 }
 .grey .sidebar .menu-item {
-  color: #5f6d6f;
+  color: #3b4546;
 }
 .grey .sidebar {
   border-right: 1px solid #d1d9e3;
 }
-.grey .sub-list {
-  border-color: #ddd;
-}
+
 @media screen and (min-width: 769px) {
   .grey .top-menu .menu.sidebar {
     border-right: 0;
     border-bottom: 1px solid #d1d9e3;
-  }
-  .grey .top-menu .sub-list {
-    border-color: #fff;
-  }
-  .grey .top-menu .sidebar > nav > ul > li:hover .sub-list {
-    border-color: #ddd;
+    background-color: #d3d3d3;
   }
 }
 

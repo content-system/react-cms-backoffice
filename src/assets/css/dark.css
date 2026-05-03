@@ -36,6 +36,9 @@
 .dark .page-header {
   border-color: #323232;
 }
+.dark .avatar {
+  border-color: #111;
+}
 
 .dark .solid > form > footer,
 .dark .solid > footer,
@@ -75,9 +78,7 @@
 .dark .btn-cancel,
 .dark .btn-limit,
 .dark .dropdown a,
-.dark .profile-title,
-.dark .profile-title > h2,
-.dark .profile-followers,
+.dark .profile-info,
 .dark label.switch-container,
 .dark label.checkbox-container,
 .dark label.checkbox-group,
@@ -375,6 +376,14 @@
   color: #64ffda;
 }
 
+@media only screen and (min-width: 1201px) {
+  .dark .page-body > div > header.profile-header {
+    border: 1px solid #3c3c3c;
+  }
+}
+.dark .page-body > div > header.profile-header {
+  border-bottom: 1px solid #3c3c3c;
+}
 .dark .card > header {
   border-bottom: 1px solid rgba(255, 255, 255, 0.24);
   box-shadow: 0 4px 6px -6px rgba(5, 5, 5, 0.34);
@@ -438,17 +447,6 @@
 }
 .dark .sidebar .menu-item {
   color: #fff;
-}
-.dark .sub-list {
-  border-color: #000;
-}
-@media screen and (min-width: 769px) {
-  .dark .top-menu .sub-list {
-    border-color: #000;
-  }
-  .dark .top-menu .sidebar > nav > ul > li:hover .sub-list {
-    border-color: #4d4d4d;
-  }
 }
 
 .dark .btn-more,
