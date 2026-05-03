@@ -16,9 +16,9 @@ import {
   onToggleSearch,
   PageChange,
   pageSizes,
+  PageSizeSelect,
   resetSearch,
   resources,
-  Search,
   setSortFilter,
   Sortable,
   updateState
@@ -62,27 +62,26 @@ export const UsersForm = () => {
   useEffect(() => {
     const initFilter = mergeFilter(buildFromUrl<UserFilter>(), filter, pageSizes, ["status"])
     setSortFilter(initFilter, state, setFilter)
-    search(true) // eslint-disable-next-line react-hooks/exhaustive-deps
+    search(initFilter, true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const clearQ = (e: MouseEvent<HTMLButtonElement>) => onClearQ(filter, setFilter)
   const toggleSearch = (e: MouseEvent<HTMLButtonElement>) => onToggleSearch(e, showFilter, setShowFilter)
-  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, search, state)
-  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter, setFilter)
-  const pageChanged = (data: PageChange) => onPageChanged(data, search, filter, setFilter)
-  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, search, filter, state, setFilter, setState)
+  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter)
+  const pageChanged = (data: PageChange) => onPageChanged(data, search, filter)
+  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, state, search, filter)
+  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, state, search, filter)
 
-  const search = (isFirstLoad?: boolean) => {
+  const search = (obj: UserFilter, isFirstLoad?: boolean) => {
     showLoading()
     const fields = getFields(refForm.current, state.fields)
-    addParametersIntoUrlWithSort(filter, state, isFirstLoad, setFilter)
-    const { limit, page } = filter
+    addParametersIntoUrlWithSort(obj, state, isFirstLoad, setFilter)
     getUserService()
-      .search({ ...filter }, limit, page, fields)
+      .search({ ...obj }, obj.limit, obj.page, fields)
       .then((res) => {
         setState({ ...state, total: res.total, fields })
         setList(res.list)
-        toast(buildMessage(resource, res.list, limit, page, res.total))
+        toast(buildMessage(resource, res.list, obj.limit, obj.page, res.total))
       })
       .catch(handleError)
       .finally(hideLoading)
@@ -106,19 +105,13 @@ export const UsersForm = () => {
       <div className="main-body">
         <form id="usersForm" name="usersForm" className="form" noValidate={true} ref={refForm}>
           <section className="row search-group">
-            <Search className="col s12 m6 search-input"
-              id="limit"
-              name="limit"
-              size={filter.limit}
-              sizes={pageSizes}
-              maxLength={80}
-              value={filter.q}
-              placeholder={resource.keyword}
-              pageSizeChanged={pageSizeChanged}
-              search={searchOnClick}
-              toggle={toggleSearch}
-              clear={clearQ}
-              onChange={onChange} />
+            <label className="col s12 m6 search-input">
+              <PageSizeSelect id="limit" name="limit" size={filter.limit} sizes={pageSizes} onChange={pageSizeChanged} />
+              <input type="text" id="q" name="q" value={filter.q} maxLength={80} onChange={onChange} placeholder={resource.keyword} />
+              <button type="button" id="clearQBtn" name="clearQBtn" hidden={!filter.q} className="btn-remove-text" onClick={clearQ} />
+              <button type="button" id="toggleSearchBtn" name="toggleSearchBtn" className="btn-filter" onClick={toggleSearch} />
+              <button type="submit" id="searchBtn" name="searchBtn" className="btn-search" onClick={searchOnClick} />
+            </label>
             <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
           </section>
           <section className="row search-group inline" hidden={!showFilter}>

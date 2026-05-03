@@ -1,10 +1,9 @@
 import { Item } from "onecore"
-import { ChangeEvent, useEffect, useRef, useState } from "react"
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
 import {
   addParametersIntoUrlWithSort,
   buildFromUrl,
   buildMessage,
-  ButtonMouseEvent,
   datetimeToString,
   getFields,
   getOffset,
@@ -26,8 +25,7 @@ import { hideLoading, showLoading } from "ui-loading"
 import { addDays, addSeconds, formatFullDateTime } from "ui-plus"
 import { toast } from "ui-toast"
 import { getDateFormat, handleError, useLocale, useResource } from "uione"
-import { AuditLog, AuditLogFilter } from "./audit-log"
-import { getAuditLogService } from "./service"
+import { AuditLog, AuditLogFilter, getAuditLogService } from "./audit-log"
 import "./style.css"
 
 interface AuditLogSearch extends Sortable {
@@ -70,25 +68,24 @@ export const AuditLogsForm = () => {
   useEffect(() => {
     const initFilter = mergeFilter(buildFromUrl<AuditLogFilter>(), filter, pageSizes)
     setSortFilter(initFilter, state, setFilter)
-    search(true) // eslint-disable-next-line react-hooks/exhaustive-deps
+    search(initFilter, true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const sort = (e: ButtonMouseEvent) => onSort(e, search, state)
-  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter, setFilter)
-  const pageChanged = (data: PageChange) => onPageChanged(data, search, filter, setFilter)
-  const searchOnClick = (e: ButtonMouseEvent) => onSearch(e, search, filter, state, setFilter, setState)
+  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, state, search, filter)
+  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter)
+  const pageChanged = (data: PageChange) => onPageChanged(data, search, filter)
+  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, state, search, filter)
 
-  const search = (isFirstLoad?: boolean) => {
+  const search = (obj: AuditLogFilter, isFirstLoad?: boolean) => {
     showLoading()
     const fields = getFields(refForm.current, state.fields)
-    addParametersIntoUrlWithSort(filter, state, isFirstLoad, setFilter)
-    const { limit, page } = filter
+    addParametersIntoUrlWithSort(obj, state, isFirstLoad, setFilter)
     getAuditLogService()
-      .search({ ...filter }, limit, page, fields)
+      .search({ ...obj }, obj.limit, obj.page, fields)
       .then((res) => {
         setState({ ...state, total: res.total, fields })
         setList(res.list)
-        toast(buildMessage(resource, res.list, limit, page, res.total))
+        toast(buildMessage(resource, res.list, obj.limit, obj.page, res.total))
       })
       .catch(handleError)
       .finally(hideLoading)

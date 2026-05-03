@@ -40,29 +40,28 @@ export const UsersLookup = (props: Props) => {
 
   useEffect(() => {
     if (props.isOpenModel) {
-      search()
+      search(filter)
     }
   }, [props.isOpenModel])
 
   const clearQ = (e: MouseEvent<HTMLButtonElement>) => onClearQ(filter, setFilter)
-  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, search, state)
-  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter, setFilter)
-  const pageChanged = (data: PageChange) => onPageChanged(data, search, filter, setFilter)
-  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, search, filter, state, setFilter, setState)
+  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, state, search, filter)
+  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter)
+  const pageChanged = (data: PageChange) => onPageChanged(data, search, filter)
+  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, state, search, filter)
 
-  const search = () => {
+  const search = (obj: UserFilter) => {
     showLoading()
     const fields = getFields(refForm.current, state.fields)
-    buildSortFilter(filter, state)
-    filter.excluding = props.users.map(u => u.userId)
-    setFilter(filter)
-    const { limit, page } = filter
+    buildSortFilter(obj, state)
+    obj.excluding = props.users.map(u => u.userId)
+    setFilter(obj)
     getUserService()
-      .search({ ...filter }, limit, page, fields)
+      .search({ ...obj }, obj.limit, obj.page, fields)
       .then((res) => {
         setState({ ...state, total: res.total, fields })
         setList(res.list)
-        toast(buildMessage(resource, res.list, limit, page, res.total))
+        toast(buildMessage(resource, res.list, obj.limit, obj.page, res.total))
       })
       .catch(handleError)
       .finally(hideLoading)

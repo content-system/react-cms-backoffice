@@ -71,27 +71,26 @@ export const ArticlesForm = () => {
   useEffect(() => {
     const initFilter = mergeFilter(buildFromUrl<ArticleFilter>(), filter, pageSizes, ["status"])
     setSortFilter(initFilter, state, setFilter)
-    search(true) // eslint-disable-next-line react-hooks/exhaustive-deps
+    search(initFilter, true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const clearQ = (e: MouseEvent<HTMLButtonElement>) => onClearQ(filter, setFilter)
   const toggleSearch = (e: MouseEvent<HTMLButtonElement>) => onToggleSearch(e, showFilter, setShowFilter)
-  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, search, state)
-  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter, setFilter)
-  const pageChanged = (data: PageChange) => onPageChanged(data, search, filter, setFilter)
-  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, search, filter, state, setFilter, setState)
+  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter)
+  const pageChanged = (data: PageChange) => onPageChanged(data, search, filter)
+  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, state, search, filter)
+  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, state, search, filter)
 
-  const search = (isFirstLoad?: boolean) => {
+  const search = (obj: ArticleFilter, isFirstLoad?: boolean) => {
     showLoading()
     const fields = getFields(refForm.current, state.fields)
-    addParametersIntoUrlWithSort(filter, state, isFirstLoad, setFilter)
-    const { limit, page } = filter
+    addParametersIntoUrlWithSort(obj, state, isFirstLoad, setFilter)
     getArticleService()
-      .search({ ...filter }, limit, page, fields)
+      .search({ ...obj }, obj.limit, obj.page, fields)
       .then((res) => {
         setState({ ...state, total: res.total, fields })
         setList(res.list)
-        toast(buildMessage(resource, res.list, limit, page, res.total))
+        toast(buildMessage(resource, res.list, obj.limit, obj.page, res.total))
       })
       .catch(handleError)
       .finally(hideLoading)

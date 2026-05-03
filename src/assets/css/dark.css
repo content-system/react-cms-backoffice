@@ -63,7 +63,7 @@
 .dark .partial-star::before,
 .dark .empty-star,
 .dark .review-item-stars::before {
-  color: #313131;
+  color: #2b2b2b;
 }
 
 .dark body,
@@ -77,6 +77,8 @@
 .dark .btn-accept,
 .dark .btn-cancel,
 .dark .btn-limit,
+.dark .rate,
+.dark .sort,
 .dark .dropdown a,
 .dark .profile-info,
 .dark label.switch-container,
@@ -86,12 +88,12 @@
 .dark .checkbox-group > label,
 .dark .radio-group > label,
 .dark .group label div {
-  color: #c2c2c2;
+  color: #bcbcbc;
 }
 
 .dark label.search-input select,
 .dark label.search-input input {
-  color: #c2c2c2 !important;
+  color: #bcbcbc !important;
 }
 .dark .row > label.search-input > *,
 .dark .search-input > * {
@@ -109,19 +111,19 @@
 .dark .img-item img,
 .dark .view-body > section > article > p,
 .dark .section-body > p {
-  border-color: #909090;
+  border-color: #8f8f8f;
 }
 
 .dark hr {
-  border-color: #313131;
+  border-color: #2b2b2b;
 }
 .dark .solid hr {
-  border-color: #909090;
+  border-color: #8f8f8f;
 }
 
 .dark .list-item > *:last-child,
 .dark .img-item > *:last-child {
-  border-bottom-color: #313131;
+  border-bottom-color: #2b2b2b;
 }
 
 .dark .rating-title,
@@ -131,7 +133,7 @@
 .dark .card > section,
 .dark .video > section,
 .dark .horizon > .video {
-  border-color: #313131;
+  border-color: #2b2b2b;
 }
 
 
@@ -160,7 +162,7 @@
 }
 
 .dark button:disabled {
-  color: #c2c2c2 !important;
+  color: #bcbcbc !important;
   background-color: #4c4c4c !important;
 }
 
@@ -173,20 +175,20 @@
 .dark .form .row > label > input,
 .dark label > select:not([multiple]),
 .dark .form .row > label > select:not([multiple]) {
-  color: #c2c2c2;
-  border-color: #313131;
+  color: #bcbcbc;
+  border-color: #2b2b2b;
   -webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075);
 }
 
 .dark .switch-container > input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]):before,
 .dark input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]).switch:before {
-  border-color: #c2c2c2;
+  border-color: #bcbcbc;
   color: #4c4c4c;
   background: #000;
 }
 .dark input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]):before {
-  border-color: #c2c2c2;
+  border-color: #bcbcbc;
   background: #000;
 }
 
@@ -202,7 +204,7 @@
 .dark .btn-filter,
 .dark .btn-remove-text,
 .dark .btn-group {
-  color: #909090;
+  color: #8f8f8f;
 }
 
 .dark .modal-portal-content header > .btn-group > button,
@@ -263,7 +265,7 @@
 
 .dark .switch-container > input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]):after,
 .dark input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]).switch:after {
-  border-color: #909090;
+  border-color: #8f8f8f;
   color: #000;
   background: #5fd0c5;
 }
@@ -273,7 +275,7 @@
 }
 
 .dark input[type="radio"]:before {
-  border-color: #c2c2c2;
+  border-color: #bcbcbc;
   background-image: radial-gradient(circle, #5fd0c5 40%, inherit 50%);
 }
 .dark input[type="radio"]:checked:before {
@@ -319,52 +321,6 @@
 .dark .backgound-color-container {
   background-color: #04463c !important;
   background: linear-gradient(transparent, rgb(0, 0, 0));
-}
-
-.dark .btn-reply {
-  background-color: #1a1a1a !important;
-}
-.dark .progress,
-.dark .rateReview,
-.dark .addPhoto {
-  background-color: #1a1a1a;
-}
-.dark .comments-sort,
-.dark #page-select-rate,
-.dark .rating {
-  background-color: #1a1a1a;
-  color: #f0f0f0;
-}
-.dark .btn-tab-area {
-  background-color: #0f0f0f;
-}
-.dark .btn-tab-area .active {
-  background-color: #1a1a1a;
-}
-.dark .btn-tab-area div:hover {
-  background-color: #1a1a1a;
-}
-.dark .btn-tab-area div {
-  background-color: #0f0f0f;
-}
-.dark .btn-tab-area div {
-  color: #f0f0f0;
-}
-.dark .comments2,
-.dark .post-comment-container,
-.dark .comment {
-  background-color: #1a1a1a !important;
-  color: #f0f0f0;
-}
-.dark .filter div button {
-  background-color: #0f0f0f;
-  color: #f0f0f0;
-}
-.dark .btn-view-histories,
-.dark .btn-edit-comment,
-.dark .btn-delete-comment {
-  background-color: #1a1a1a !important;
-  color: #f0f0f0;
 }
 
 .dark .chips.focus {
@@ -430,7 +386,7 @@
   color: #000;
 }
 .dark .sidebar {
-  background-color: #232323;
+  background-color: #1b1b1b;
   color: #fff;
   border-color: #00574b;
 }
@@ -438,15 +394,25 @@
 .dark .sidebar > nav > ul > li > ul,
 .dark .sidebar > nav > ul > li > ul > li > ul {
   /* background-color: #00574b; */
-  background-color: #3b3b3b;
+  background-color: #292929;
 }
 .dark .sidebar ul.sub-list > li.active,
 .dark .sidebar > nav > ul > li.active,
 .dark .open.active {
-  background: #4b4f4f; /* #07843b */
+  background: #444747; /* #07843b */
 }
 .dark .sidebar .menu-item {
   color: #fff;
+}
+.dark .sidebar {
+  border-right: 1px solid #2b2b2b;
+}
+@media screen and (min-width: 769px) {
+  .dark .top-menu .menu.sidebar {
+    border-right: 0;
+    border-bottom: 1px solid #2b2b2b;
+    background-color: #2d2d2d;
+  }
 }
 
 .dark .btn-more,
@@ -525,12 +491,48 @@
   }
 }
 
+.dark .sort > label,
+.dark .btn-rate,
+.dark .btn-sort,
 .dark .pagination > li > a,
 .dark .pagination > li > span {
   border-color: #666666;
   background-color: inherit;
 }
 /* bootstrap */
+.dark table > tbody > tr:hover,
+.dark table > tbody > tr:nth-of-type(odd):hover,
+.dark .table-hover > tbody > tr:hover,
+.dark .table-striped > tbody > tr:nth-of-type(odd):hover {
+  background-color: #111;
+}
+
+.dark table > thead > tr > th,
+.dark table > tbody > tr > td {
+  border-bottom-color: #2b2b2b;
+}
+
+.dark table,
+.dark table > tbody > tr > td,
+.dark table > tbody > tr > th,
+.dark table > tfoot > tr > td,
+.dark table > tfoot > tr > th,
+.dark table > thead > tr > td,
+.dark table > thead > tr > th,
+.dark .table-bordered,
+.dark .table-bordered > tbody > tr > td,
+.dark .table-bordered > tbody > tr > th,
+.dark .table-bordered > tfoot > tr > td,
+.dark .table-bordered > tfoot > tr > th,
+.dark .table-bordered > thead > tr > td,
+.dark .table-bordered > thead > tr > th {
+  border-color: #2b2b2b;
+}
+
+.dark table > tbody > tr:nth-of-type(odd),
+.dark .table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: #000;
+}
 /*.panel-heading,*/
 .dark .result .active,
 /*
@@ -581,39 +583,5 @@
 .dark table > tfoot > tr.active > th {
   border-color: #428bca;
   background-color: #4f5352;
-}
-
-.dark table > tbody > tr:hover,
-.dark table > tbody > tr:nth-of-type(odd):hover,
-.dark .table-hover > tbody > tr:hover,
-.dark .table-striped > tbody > tr:nth-of-type(odd):hover {
-  background-color: #111;
-}
-
-.dark table > thead > tr > th,
-.dark table > tbody > tr > td {
-  border-bottom-color: #313131;
-}
-
-.dark table,
-.dark table > tbody > tr > td,
-.dark table > tbody > tr > th,
-.dark table > tfoot > tr > td,
-.dark table > tfoot > tr > th,
-.dark table > thead > tr > td,
-.dark table > thead > tr > th,
-.dark .table-bordered,
-.dark .table-bordered > tbody > tr > td,
-.dark .table-bordered > tbody > tr > th,
-.dark .table-bordered > tfoot > tr > td,
-.dark .table-bordered > tfoot > tr > th,
-.dark .table-bordered > thead > tr > td,
-.dark .table-bordered > thead > tr > th {
-  border-color: #313131;
-}
-
-.dark table > tbody > tr:nth-of-type(odd),
-.dark .table-striped > tbody > tr:nth-of-type(odd) {
-  background-color: #000;
 }
 /* end bootstrap only */

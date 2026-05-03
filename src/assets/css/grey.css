@@ -439,6 +439,39 @@
   background-color: inherit;
 }
 /* bootstrap */
+.grey table > tbody > tr:hover,
+.grey table > tbody > tr:nth-of-type(odd):hover,
+.grey .table-hover > tbody > tr:hover,
+.grey .table-striped > tbody > tr:nth-of-type(odd):hover {
+  background-color: #eee;
+}
+
+.grey table > thead > tr > th,
+.grey table > tbody > tr > td {
+  border-bottom-color: #222;
+}
+
+.grey table,
+.grey table > tbody > tr > td,
+.grey table > tbody > tr > th,
+.grey table > tfoot > tr > td,
+.grey table > tfoot > tr > th,
+.grey table > thead > tr > td,
+.grey table > thead > tr > th,
+.grey .table-bordered,
+.grey .table-bordered > tbody > tr > td,
+.grey .table-bordered > tbody > tr > th,
+.grey .table-bordered > tfoot > tr > td,
+.grey .table-bordered > tfoot > tr > th,
+.grey .table-bordered > thead > tr > td,
+.grey .table-bordered > thead > tr > th {
+  border-color: #d1d9e2;
+}
+
+.grey table > tbody > tr:nth-of-type(odd),
+.grey .table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: #fff;
+}
 /*.panel-heading,*/
 .grey .result .active,
 /*
@@ -488,39 +521,5 @@
 .grey table > tfoot > tr.active > th {
   border-color: #428bca;
   background-color: #4f5352;
-}
-
-.grey table > tbody > tr:hover,
-.grey table > tbody > tr:nth-of-type(odd):hover,
-.grey .table-hover > tbody > tr:hover,
-.grey .table-striped > tbody > tr:nth-of-type(odd):hover {
-  background-color: #eee;
-}
-
-.grey table > thead > tr > th,
-.grey table > tbody > tr > td {
-  border-bottom-color: #222;
-}
-
-.grey table,
-.grey table > tbody > tr > td,
-.grey table > tbody > tr > th,
-.grey table > tfoot > tr > td,
-.grey table > tfoot > tr > th,
-.grey table > thead > tr > td,
-.grey table > thead > tr > th,
-.grey .table-bordered,
-.grey .table-bordered > tbody > tr > td,
-.grey .table-bordered > tbody > tr > th,
-.grey .table-bordered > tfoot > tr > td,
-.grey .table-bordered > tfoot > tr > th,
-.grey .table-bordered > thead > tr > td,
-.grey .table-bordered > thead > tr > th {
-  border-color: #d1d9e2;
-}
-
-.grey table > tbody > tr:nth-of-type(odd),
-.grey .table-striped > tbody > tr:nth-of-type(odd) {
-  background-color: #fff;
 }
 /* end bootstrap only */
