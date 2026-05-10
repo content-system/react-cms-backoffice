@@ -1,7 +1,6 @@
 import { Item } from "onecore"
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
 import {
-  addParametersIntoUrlWithSort,
   buildFromUrl,
   buildMessage,
   datetimeToString,
@@ -18,7 +17,8 @@ import {
   resources,
   setSortFilter,
   Sortable,
-  updateState
+  updateState,
+  updateUrl
 } from "react-hook-core"
 import Pagination from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
@@ -67,25 +67,27 @@ export const AuditLogsForm = () => {
 
   useEffect(() => {
     const initFilter = mergeFilter(buildFromUrl<AuditLogFilter>(), filter, pageSizes)
-    setSortFilter(initFilter, state, setFilter)
-    search(initFilter, true) // eslint-disable-next-line react-hooks/exhaustive-deps
+    setSortFilter(state, initFilter, setFilter)
+    search(initFilter, state, true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, state, search, filter)
   const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter)
   const pageChanged = (data: PageChange) => onPageChanged(data, search, filter)
-  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, state, search, filter)
+  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, search, filter, state)
+  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, search, filter, state)
 
-  const search = (obj: AuditLogFilter, isFirstLoad?: boolean) => {
+  const search = (obj: AuditLogFilter, sort?: Sortable, isFirstLoad?: boolean) => {
     showLoading()
     const fields = getFields(refForm.current, state.fields)
-    addParametersIntoUrlWithSort(obj, state, isFirstLoad, setFilter)
+    updateUrl(obj, isFirstLoad, setFilter, sort)
+    setFilter(obj)
+    const { limit, page } = obj
     getAuditLogService()
-      .search({ ...obj }, obj.limit, obj.page, fields)
+      .search({ ...obj }, limit, page, fields)
       .then((res) => {
         setState({ ...state, total: res.total, fields })
         setList(res.list)
-        toast(buildMessage(resource, res.list, obj.limit, obj.page, res.total))
+        toast(buildMessage(resource, res.list, limit, page, res.total))
       })
       .catch(handleError)
       .finally(hideLoading)

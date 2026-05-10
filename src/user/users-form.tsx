@@ -1,7 +1,6 @@
 import { Item } from "onecore"
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
 import {
-  addParametersIntoUrlWithSort,
   buildFromUrl,
   buildMessage,
   checked,
@@ -21,7 +20,8 @@ import {
   resources,
   setSortFilter,
   Sortable,
-  updateState
+  updateState,
+  updateUrl
 } from "react-hook-core"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
@@ -44,7 +44,7 @@ export const UsersForm = () => {
 
   const userFilter: UserFilter = {
     limit: resources.defaultLimit,
-    status: ["A"],
+    status: [],
   }
   const initialState: UserSearch = {
     statusList: [],
@@ -61,21 +61,21 @@ export const UsersForm = () => {
 
   useEffect(() => {
     const initFilter = mergeFilter(buildFromUrl<UserFilter>(), filter, pageSizes, ["status"])
-    setSortFilter(initFilter, state, setFilter)
-    search(initFilter, true) // eslint-disable-next-line react-hooks/exhaustive-deps
+    setSortFilter(state, initFilter, setFilter)
+    search(initFilter, state, true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const clearQ = (e: MouseEvent<HTMLButtonElement>) => onClearQ(filter, setFilter)
   const toggleSearch = (e: MouseEvent<HTMLButtonElement>) => onToggleSearch(e, showFilter, setShowFilter)
   const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter)
   const pageChanged = (data: PageChange) => onPageChanged(data, search, filter)
-  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, state, search, filter)
-  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, state, search, filter)
+  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, search, filter, state)
+  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, search, filter, state)
 
-  const search = (obj: UserFilter, isFirstLoad?: boolean) => {
+  const search = (obj: UserFilter, sort?: Sortable, isFirstLoad?: boolean) => {
     showLoading()
     const fields = getFields(refForm.current, state.fields)
-    addParametersIntoUrlWithSort(obj, state, isFirstLoad, setFilter)
+    updateUrl(obj, isFirstLoad, setFilter, sort)
     getUserService()
       .search({ ...obj }, obj.limit, obj.page, fields)
       .then((res) => {

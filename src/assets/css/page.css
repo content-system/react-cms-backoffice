@@ -51,7 +51,6 @@
 .content-container > div > header,
 .view-container > header,
 .view-header {
-  position: relative;
   width: 100%;
   display: flex;
   align-items: center;
