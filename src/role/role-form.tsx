@@ -336,7 +336,7 @@ export function RoleForm() {
         setPrivileges(buildPermissions(actions, obj.privileges))
       }
       if (isReadOnly) {
-        setReadOnly(refForm.current as any, "keyword", "btnSave")
+        setReadOnly(refForm.current, "keyword", "saveBtn")
       }
       const checkedAll = isCheckedAll(obj.privileges, all)
       setState({ ...state, checkedAll, role: obj })

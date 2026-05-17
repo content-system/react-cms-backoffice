@@ -309,6 +309,28 @@ select.valid {
   color: #4db6ac;
 }
 
+@media only screen and (min-width: 1201px) {
+  .page-body > div > header.profile-header {
+    border: 1px solid #e5e5e5;
+  }
+  .tabs {
+    border: 1px solid #e5e5e5;
+    border-top: none;
+  }
+}
+.page-body > div > header.profile-header {
+  border-bottom: 1px solid #e5e5e5;
+}
+.tabs {
+  border-bottom: 1px solid #e5e5e5;
+}
+.tab.active {
+  color: #111;
+}
+.tab.active::after {
+  background: #111;
+}
+
 .card > header {
   box-shadow: 0 4px 6px -6px rgba(5, 5, 5, 0.34);
 }
@@ -393,7 +415,6 @@ header > .btn-group > button,
 .page-header > form > div > section > button,
 .round-border.active {
   color: #4db6ac;
-  text-decoration: none;
 }
 
 footer > .btn-accept::after,

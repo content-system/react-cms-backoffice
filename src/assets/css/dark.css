@@ -336,10 +336,24 @@
   .dark .page-body > div > header.profile-header {
     border: 1px solid #3c3c3c;
   }
+  .dark .tabs {
+    border: 1px solid #3c3c3c;
+    border-top: none;
+  }
 }
 .dark .page-body > div > header.profile-header {
   border-bottom: 1px solid #3c3c3c;
 }
+.dark .tabs {
+  border-bottom: 1px solid #3c3c3c;
+}
+.dark .tab.active {
+  color: #eee;
+}
+.dark .tab.active::after {
+  background: #eee;
+}
+
 .dark .card > header {
   border-bottom: 1px solid rgba(255, 255, 255, 0.24);
   box-shadow: 0 4px 6px -6px rgba(5, 5, 5, 0.34);
@@ -439,7 +453,6 @@
 .dark .page-header > form > div > section > button,
 .dark .round-border.active {
   color: #5fd0c5;
-  text-decoration: none;
 }
 
 .dark footer > .btn-accept::after,

@@ -417,7 +417,6 @@
 .grey .page-header > form > div > section > button,
 .grey .round-border.active {
   color: #657181;
-  text-decoration: none;
 }
 
 .grey footer > .btn-accept::after,

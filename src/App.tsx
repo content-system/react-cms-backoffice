@@ -1,6 +1,6 @@
 import axios from "axios"
 import * as csv from "csvtojson"
-import { currency, locale } from "locale-service"
+import { getCurrency, getLocale } from "locale-service"
 import { phonecodes } from "phonecodes"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { alertError, confirm, resources as uiplusResources } from "ui-alert"
@@ -121,8 +121,8 @@ export function init() {
   storage.setResources(locales)
   storage.setLoadingService(loading)
   storage.setUIService(new UIService())
-  storage.currency = currency
-  storage.locale = locale
+  storage.currency = getCurrency
+  storage.locale = getLocale
   storage.alert = alertError
   storage.confirm = confirm
   storage.message = toast
@@ -132,7 +132,7 @@ export function init() {
 
   const resource = storage.resource()
   vresources.phonecodes = phonecodes
-  uiresources.currency = currency
+  uiresources.currency = getCurrency
   uiresources.resource = resource
 
   const res = storage.getResource()
