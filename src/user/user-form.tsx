@@ -31,7 +31,6 @@ export const UserForm = () => {
   const { id } = useParams()
   const newMode = !id
   useEffect(() => {
-    initForm(refForm?.current, registerEvents)
     const masterDataService = getMasterDataService()
     Promise.all([masterDataService.getTitles(), masterDataService.getPositions()])
       .then((values) => {
@@ -46,10 +45,13 @@ export const UserForm = () => {
               if (user) {
                 setInitialUser(clone(user))
                 setUser(user)
+                initForm(refForm?.current, registerEvents)
               }
             })
             .catch(err => setError500(true))
             .finally(hideLoading)
+        } else {
+          initForm(refForm?.current, registerEvents)
         }
       })
       .catch(handleError)
@@ -171,7 +173,10 @@ export const UserForm = () => {
                 name="userId"
                 value={user.userId}
                 readOnly={!newMode}
-                onChange={onChange}
+                onChange={e => {
+                  user.userId = e.target.value
+                  setUser(user)
+                }}
                 maxLength={20}
                 required={true}
                 placeholder={resource.user_id}
@@ -185,7 +190,10 @@ export const UserForm = () => {
                 name="username"
                 value={user.username}
                 readOnly={!newMode}
-                onChange={onChange}
+                onChange={e => {
+                  user.username = e.target.value
+                  setUser(user)
+                }}
                 onBlur={requiredOnBlur}
                 maxLength={40}
                 required={true}
@@ -199,7 +207,10 @@ export const UserForm = () => {
                 id="displayName"
                 name="displayName"
                 value={user.displayName}
-                onChange={onChange}
+                onChange={e => {
+                  user.displayName = e.target.value
+                  setUser(user)
+                }}
                 onBlur={requiredOnBlur}
                 maxLength={40}
                 required={true}
@@ -214,7 +225,10 @@ export const UserForm = () => {
                     type="radio"
                     id="gender"
                     name="gender"
-                    onChange={onChange}
+                    onChange={e => {
+                      user.gender = e.target.value
+                      setUser(user)
+                    }}
                     disabled={user.title !== "Dr"}
                     value={Gender.Male}
                     checked={user.gender === Gender.Male}
@@ -226,7 +240,10 @@ export const UserForm = () => {
                     type="radio"
                     id="gender"
                     name="gender"
-                    onChange={onChange}
+                    onChange={e => {
+                      user.gender = e.target.value
+                      setUser(user)
+                    }}
                     disabled={user.title !== "Dr"}
                     value={Gender.Female}
                     checked={user.gender === Gender.Female}
@@ -239,11 +256,19 @@ export const UserForm = () => {
               {resource.status}
               <div className="radio-group">
                 <label>
-                  <input type="radio" id="active" name="status" onChange={onChange} value={Status.Active} checked={user.status === Status.Active} />
+                  <input type="radio" id="active" name="status" value={Status.Active} checked={user.status === Status.Active}
+                    onChange={e => {
+                      user.status = e.target.value
+                      setUser(user)
+                    }} />
                   {resource.yes}
                 </label>
                 <label>
-                  <input type="radio" id="inactive" name="status" onChange={onChange} value={Status.Inactive} checked={user.status === Status.Inactive} />
+                  <input type="radio" id="inactive" name="status" value={Status.Inactive} checked={user.status === Status.Inactive}
+                    onChange={e => {
+                      user.status = e.target.value
+                      setUser(user)
+                    }} />
                   {resource.no}
                 </label>
               </div>

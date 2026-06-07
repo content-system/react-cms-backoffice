@@ -59,6 +59,7 @@ export const SigninForm = () => {
 
   const isTwoFactor = user.step ? user.step === 1 : false
   const succeed = (result: AuthResult) => {
+    storage.setToken(result.token)
     storage.setUser(result.user)
     storage.setPrivileges(result.user?.privileges)
     navigate(storage.home)
@@ -93,6 +94,7 @@ export const SigninForm = () => {
           alertInfo(resource.msg_account_reactivated, () => succeed(result))
         }
       } else {
+        storage.setToken(undefined)
         storage.setUser(undefined)
         storage.setPrivileges(undefined)
         const ms = getMessage(s, resource, map)

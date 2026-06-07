@@ -7,7 +7,6 @@ import {
   getFields,
   getOffset,
   mergeFilter,
-  onClearQ,
   onPageChanged,
   onPageSizeChanged,
   onSearch,
@@ -16,11 +15,10 @@ import {
   PageChange,
   pageSizes,
   PageSizeSelect,
-  resetSearch,
   resources,
+  Select,
   setSortFilter,
   Sortable,
-  updateState,
   updateUrl
 } from "react-hook-core"
 import { Link } from "react-router-dom"
@@ -42,22 +40,27 @@ interface UserSearch extends Sortable {
 export const UsersForm = () => {
   const canWrite = hasPermission(Permission.write)
 
-  const userFilter: UserFilter = {
-    limit: resources.defaultLimit,
-    status: [],
-  }
-  const initialState: UserSearch = {
-    statusList: [],
-  }
+  const userFilter: UserFilter = { limit: resources.defaultLimit, status: [] }
+  const initialState: UserSearch = { statusList: [] }
 
+  const items: Item[] = [
+    { value: "userId", text: "User Id asc" },
+    { value: "-userId", text: "User Id desc" },
+    { value: "username", text: "Username asc" },
+    { value: "-username", text: "Username desc" },
+    { value: "email", text: "Email asc" },
+    { value: "-email", text: "Email desc" },
+    { value: "displayName", text: "DisplayName asc" },
+    { value: "-displayName", text: "DisplayName desc" },
+    { value: "status", text: "Status asc" },
+    { value: "-status", text: "Status desc" },
+  ]
   const resource = useResource()
   const refForm = useRef<HTMLFormElement>(null)
   const [showFilter, setShowFilter] = useState(false)
   const [list, setList] = useState<User[]>([])
   const [state, setState] = useState<UserSearch>(initialState)
   const [filter, setFilter] = useState<UserFilter>(userFilter)
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => updateState(e, filter, setFilter)
-  const statusOnChange = (e: ChangeEvent<HTMLInputElement>) => resetSearch(e, filter, setFilter, search)
 
   useEffect(() => {
     const initFilter = mergeFilter(buildFromUrl<UserFilter>(), filter, pageSizes, ["status"])
@@ -65,12 +68,22 @@ export const UsersForm = () => {
     search(initFilter, state, true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const clearQ = (e: MouseEvent<HTMLButtonElement>) => onClearQ(filter, setFilter)
   const toggleSearch = (e: MouseEvent<HTMLButtonElement>) => onToggleSearch(e, showFilter, setShowFilter)
   const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter)
   const pageChanged = (data: PageChange) => onPageChanged(data, search, filter)
   const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, search, filter, state)
   const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, search, filter, state)
+
+  const statusOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    filter.page = 1
+    setFilter(filter)
+    search(filter)
+  }
+
+  const sortOnChange = (target: HTMLSelectElement) => {
+    filter.sort = target.value
+    search(filter)
+  }
 
   const search = (obj: UserFilter, sort?: Sortable, isFirstLoad?: boolean) => {
     showLoading()
@@ -105,14 +118,28 @@ export const UsersForm = () => {
       <div className="main-body">
         <form id="usersForm" name="usersForm" className="form" noValidate={true} ref={refForm}>
           <section className="row search-group">
-            <label className="col s12 m6 search-input">
+            <label className="col s12 m6 l4 xl6 search-input">
               <PageSizeSelect id="limit" name="limit" size={filter.limit} sizes={pageSizes} onChange={pageSizeChanged} />
-              <input type="text" id="q" name="q" value={filter.q} maxLength={80} onChange={onChange} placeholder={resource.keyword} />
-              <button type="button" id="clearQBtn" name="clearQBtn" hidden={!filter.q} className="btn-remove-text" onClick={clearQ} />
+              <input type="text" id="q" name="q" value={filter.q} maxLength={80} placeholder={resource.keyword}
+                onChange={e => {
+                  filter.q = e.target.value
+                  setFilter(filter)
+                }} />
+              <button type="button" id="clearQBtn" name="clearQBtn" hidden={!filter.q} className="btn-remove-text"
+                onClick={e => {
+                  filter.q = ""
+                  setFilter(filter)
+                }} />
               <button type="button" id="toggleSearchBtn" name="toggleSearchBtn" className="btn-filter" onClick={toggleSearch} />
               <button type="submit" id="searchBtn" name="searchBtn" className="btn-search" onClick={searchOnClick} />
             </label>
-            <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
+            {state.view === "list" && <div className="col s12 m6 l4 xl3 sort">
+              <label>
+                {resource.sort_by}
+                <Select id="sort" name="sort" value={filter.sort} items={items} onChange={(e) => sortOnChange(e.target)} />
+              </label>
+            </div>}
+            <Pagination className="col s12 m6 l4 xl3" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
           </section>
           <section className="row search-group inline" hidden={!showFilter}>
             <label className="col s12 m4 l4 checkbox-section">

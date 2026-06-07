@@ -3,7 +3,7 @@ import { clone, formatText, isEmpty, isSuccessful, makeDiff, onBack } from "reac
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
-import { addError, initForm, patternOnBlur, registerEvents, setReadOnly, showFormError, validateForm } from "ui-plus"
+import { addError, initForm, patternOnBlur, registerEvents, requiredOnBlur, setReadOnly, showFormError, validateForm } from "ui-plus"
 import { getLocale, handleError, hasPermission, Status, useResource, write } from "uione"
 import { getRoleService, Privilege, Role } from "./service"
 import "./style.css"
@@ -336,7 +336,7 @@ export function RoleForm() {
         setPrivileges(buildPermissions(actions, obj.privileges))
       }
       if (isReadOnly) {
-        setReadOnly(refForm.current, "keyword", "saveBtn")
+        setReadOnly(refForm.current as any, "keyword", "saveBtn")
       }
       const checkedAll = isCheckedAll(obj.privileges, all)
       setState({ ...state, checkedAll, role: obj })
@@ -688,6 +688,7 @@ export function RoleForm() {
               }}
               maxLength={100}
               required={true}
+              onBlur={requiredOnBlur}
               placeholder={resource.role_name}
             />
           </label>

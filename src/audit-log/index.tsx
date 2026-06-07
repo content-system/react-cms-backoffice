@@ -53,9 +53,7 @@ export const AuditLogsForm = () => {
       max: addSeconds(now, 300),
     },
   }
-  const initialState: AuditLogSearch = {
-    statusList: [],
-  }
+  const initialState: AuditLogSearch = { statusList: [] }
 
   const locale = useLocale()
   const resource = useResource()

@@ -7,7 +7,6 @@ import {
   getFields,
   getOffset,
   mergeFilter,
-  onClearQ,
   onPageChanged,
   onPageSizeChanged,
   onSearch,
@@ -16,11 +15,9 @@ import {
   PageChange,
   pageSizes,
   PageSizeSelect,
-  resetSearch,
   resources,
   setSortFilter,
   Sortable,
-  updateState,
   updateUrl
 } from "react-hook-core"
 import { Link } from "react-router-dom"
@@ -40,13 +37,8 @@ interface RoleSearch extends Sortable {
 export const RolesForm = () => {
   const canWrite = hasPermission(write)
 
-  const roleFilter: RoleFilter = {
-    limit: resources.defaultLimit,
-    status: [],
-  }
-  const initialState: RoleSearch = {
-    statusList: [],
-  }
+  const roleFilter: RoleFilter = { limit: resources.defaultLimit, status: [] }
+  const initialState: RoleSearch = { statusList: [] }
 
   const resource = useResource()
   const refForm = useRef<HTMLFormElement>(null)
@@ -54,8 +46,12 @@ export const RolesForm = () => {
   const [list, setList] = useState<Role[]>([])
   const [state, setState] = useState<RoleSearch>(initialState)
   const [filter, setFilter] = useState<RoleFilter>(roleFilter)
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => updateState(e, filter, setFilter)
-  const statusOnChange = (e: ChangeEvent<HTMLInputElement>) => resetSearch(e, filter, setFilter, search)
+
+  const statusOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    filter.page = 1
+    setFilter(filter)
+    search(filter)
+  }
 
   useEffect(() => {
     const initFilter = mergeFilter(buildFromUrl<RoleFilter>(), filter, pageSizes, ["status"])
@@ -63,7 +59,6 @@ export const RolesForm = () => {
     search(initFilter, state, true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const clearQ = (e: MouseEvent<HTMLButtonElement>) => onClearQ(filter, setFilter)
   const toggleSearch = (e: MouseEvent<HTMLButtonElement>) => onToggleSearch(e, showFilter, setShowFilter)
   const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter)
   const pageChanged = (data: PageChange) => onPageChanged(data, search, filter)
@@ -105,8 +100,16 @@ export const RolesForm = () => {
           <section className="row search-group">
             <label className="col s12 m6 search-input">
               <PageSizeSelect id="limit" name="limit" size={filter.limit} sizes={pageSizes} onChange={pageSizeChanged} />
-              <input type="text" id="q" name="q" value={filter.q} maxLength={80} onChange={onChange} placeholder={resource.keyword} />
-              <button type="button" id="clearQBtn" name="clearQBtn" hidden={!filter.q} className="btn-remove-text" onClick={clearQ} />
+              <input type="text" id="q" name="q" value={filter.q} maxLength={80} placeholder={resource.keyword}
+                onChange={e => {
+                  filter.q = e.target.value
+                  setFilter(filter)
+                }} />
+              <button type="button" id="clearQBtn" name="clearQBtn" hidden={!filter.q} className="btn-remove-text"
+                onClick={e => {
+                  filter.q = ""
+                  setFilter(filter)
+                }} />
               <button type="button" id="toggleSearchBtn" name="toggleSearchBtn" className="btn-filter" onClick={toggleSearch} />
               <button type="submit" id="searchBtn" name="searchBtn" className="btn-search" onClick={searchOnClick} />
             </label>
