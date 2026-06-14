@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router"
-import { CategoryForm } from "./category-form"
 import { CategoriesForm } from "./categories-form"
+import { CategoryForm } from "./category-form"
 
 export default function CategoriesRoute() {
   return (

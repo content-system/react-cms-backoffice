@@ -5,7 +5,10 @@ export interface MasterDataService {
   getDateFormats(): Promise<Item[]>
 }
 export class MasterDataClient implements MasterDataService {
-  constructor(protected http: HttpRequest, protected url: string) {
+  constructor(
+    protected http: HttpRequest,
+    protected url: string,
+  ) {
     this.getMasterData = this.getMasterData.bind(this)
     this.getLanguages = this.getLanguages.bind(this)
     this.getDateFormats = this.getDateFormats.bind(this)

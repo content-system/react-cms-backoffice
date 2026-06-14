@@ -5,7 +5,10 @@ import { Job, JobFilter, jobModel, JobService } from "./job"
 export * from "./job"
 
 export class JobClient extends Client<Job, string, JobFilter> implements JobService {
-  constructor(http: HttpRequest, private url: string) {
+  constructor(
+    http: HttpRequest,
+    private url: string,
+  ) {
     super(http, url, jobModel)
     this.searchGet = false
     // this.getJobs = this.getJobs.bind(this);

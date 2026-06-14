@@ -192,13 +192,21 @@ section.row.search-group nav.col {
   display: inline-flex;
   top: 0;
   left: 16px;
-  width: 158px;
+  width: 128px;
   height: 36px;
   border: 1px solid;
   border-radius: 18px;
   padding-top: 9px;
   padding-left: 12px;
   padding-bottom: 4px;
+}
+.section.search > label > .limit {
+  margin-top: 0;
+  background-color: transparent;
+}
+.section.search > label > .limit .dropdown {
+  top: 26px;
+  left: -28px;
 }
 .section.search > label > select {
   margin-top: -4px;

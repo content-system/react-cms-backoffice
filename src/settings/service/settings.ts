@@ -10,7 +10,10 @@ export interface SettingsService {
 }
 
 export class SettingsClient implements SettingsService {
-  constructor(protected http: HttpRequest, protected url: string) {
+  constructor(
+    protected http: HttpRequest,
+    protected url: string,
+  ) {
     this.save = this.save.bind(this)
   }
   save(settings: Settings): Promise<number> {

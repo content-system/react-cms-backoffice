@@ -18,6 +18,6 @@ export class UserClient extends SearchClient<User, string, UserFilter> implement
     if (filter.excluding && filter.excluding.length > 0) {
       return true
     }
-    return false;
+    return false
   }
 }

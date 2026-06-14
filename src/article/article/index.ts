@@ -9,18 +9,21 @@ export class ArticleClient extends Client<Article, string, ArticleFilter> implem
   }
   loadDraft(id: string): Promise<Article | null> {
     let url = `${this.serviceUrl}/${id}/draft`
-    return this.http.get<Article>(url).then(obj => {
-      if (!this._metamodel) {
-        return obj;
-      }
-      return json(obj, this._metamodel);
-    }).catch(err => {
-      const data = (err && err.response) ? err.response : err;
-      if (data && (data.status === 404 || data.status === 410)) {
-        return Promise.resolve(null);
-      }
-      throw err;
-    });
+    return this.http
+      .get<Article>(url)
+      .then((obj) => {
+        if (!this._metamodel) {
+          return obj
+        }
+        return json(obj, this._metamodel)
+      })
+      .catch((err) => {
+        const data = err && err.response ? err.response : err
+        if (data && (data.status === 404 || data.status === 410)) {
+          return Promise.resolve(null)
+        }
+        throw err
+      })
   }
   async getHistories(id: string, limit: number, nextPageToken?: string): Promise<History<Article>[]> {
     const s = nextPageToken ? `&historyId=${nextPageToken}` : ""

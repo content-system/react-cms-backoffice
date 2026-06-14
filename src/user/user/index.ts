@@ -26,7 +26,10 @@ export interface RoleService {
   all(): Promise<Role[]>
 }
 export class RoleClient implements RoleService {
-  constructor(protected http: HttpRequest, protected url: string) {
+  constructor(
+    protected http: HttpRequest,
+    protected url: string,
+  ) {
     this.all = this.all.bind(this)
   }
   all(): Promise<Role[]> {

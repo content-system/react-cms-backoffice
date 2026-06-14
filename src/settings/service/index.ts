@@ -29,4 +29,3 @@ export function getSettingsService(): SettingsService {
   }
   return settingsService
 }
-
