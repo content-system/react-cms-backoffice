@@ -113,7 +113,7 @@ export const ContentForm = () => {
               type="text"
               id="id"
               name="id"
-              value={content.id}
+              defaultValue={content.id}
               readOnly={!newMode}
               onChange={onChange}
               maxLength={80}
@@ -127,7 +127,7 @@ export const ContentForm = () => {
               type="text"
               id="lang"
               name="lang"
-              value={content.lang}
+              defaultValue={content.lang}
               readOnly={!newMode}
               onChange={onChange}
               maxLength={80}
@@ -142,7 +142,7 @@ export const ContentForm = () => {
               step=".010"
               id="publishedAt"
               name="publishedAt"
-              value={datetimeToString(content.publishedAt)}
+              defaultValue={datetimeToString(content.publishedAt)}
               onChange={onChange}
             />
           </label>
@@ -150,11 +150,11 @@ export const ContentForm = () => {
             {resource.status}
             <div className="radio-group">
               <label>
-                <input type="radio" id="active" name="status" onChange={onChange} value={Status.Active} checked={content.status === Status.Active} />
+                <input type="radio" id="active" name="status" onChange={onChange} defaultValue={Status.Active} checked={content.status === Status.Active} />
                 {resource.active}
               </label>
               <label>
-                <input type="radio" id="inactive" name="status" onChange={onChange} value={Status.Inactive} checked={content.status === Status.Inactive} />
+                <input type="radio" id="inactive" name="status" onChange={onChange} defaultValue={Status.Inactive} checked={content.status === Status.Inactive} />
                 {resource.inactive}
               </label>
             </div>
@@ -165,7 +165,7 @@ export const ContentForm = () => {
               type="text"
               id="title"
               name="title"
-              value={content.title}
+              defaultValue={content.title}
               onChange={onChange}
               onBlur={requiredOnBlur}
               maxLength={255}
@@ -179,7 +179,7 @@ export const ContentForm = () => {
               id="body"
               name="body"
               rows={80}
-              value={content.body}
+              defaultValue={content.body}
               onChange={onChange}
               onBlur={requiredOnBlur}
               maxLength={9000}

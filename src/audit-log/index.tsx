@@ -114,7 +114,7 @@ export const AuditLogsForm = () => {
                 type="text"
                 id="action"
                 name="action"
-                value={filter.action}
+                defaultValue={filter.action}
                 maxLength={40}
                 onChange={onChange}
               />
@@ -127,7 +127,7 @@ export const AuditLogsForm = () => {
                 id="time_min"
                 name="time_min"
                 data-field="time.min"
-                value={datetimeToString(filter.time?.min)}
+                defaultValue={datetimeToString(filter.time?.min)}
                 onChange={onChange}
               />
             </label>
@@ -139,7 +139,7 @@ export const AuditLogsForm = () => {
                 id="time_max"
                 name="time_max"
                 data-field="time.max"
-                value={datetimeToString(filter.time?.max)}
+                defaultValue={datetimeToString(filter.time?.max)}
                 onChange={onChange}
               />
             </label>

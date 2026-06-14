@@ -112,7 +112,7 @@ export const JobsForm = () => {
           <section className="row search-group">
             <label className="col s12 m6 search-input">
               <PageSizeSelect id="limit" name="limit" size={filter.limit} sizes={pageSizes} onChange={pageSizeChanged} />
-              <input type="text" id="q" name="q" value={filter.q} maxLength={80} onChange={onChange} placeholder={resource.keyword} />
+              <input type="text" id="q" name="q" defaultValue={filter.q} maxLength={80} onChange={onChange} placeholder={resource.keyword} />
               <button type="button" id="clearQBtn" name="clearQBtn" hidden={!filter.q} className="btn-remove-text" onClick={clearQ} />
               <button type="button" id="toggleSearchBtn" name="toggleSearchBtn" className="btn-filter" onClick={toggleSearch} />
               <button type="submit" id="searchBtn" name="searchBtn" className="btn-search" onClick={searchOnClick} />
@@ -128,7 +128,7 @@ export const JobsForm = () => {
                 id="publishedAt_min"
                 name="publishedAt_min"
                 data-field="publishedAt.min"
-                value={datetimeToString(filter.publishedAt?.min)}
+                defaultValue={datetimeToString(filter.publishedAt?.min)}
                 onChange={onChange}
               />
             </label>
@@ -140,7 +140,7 @@ export const JobsForm = () => {
                 id="publishedAt_max"
                 name="publishedAt_max"
                 data-field="publishedAt.max"
-                value={datetimeToString(filter.publishedAt?.max)}
+                defaultValue={datetimeToString(filter.publishedAt?.max)}
                 onChange={onChange}
               />
             </label>
@@ -150,7 +150,7 @@ export const JobsForm = () => {
                 type="text"
                 id="title"
                 name="title"
-                value={filter.title}
+                defaultValue={filter.title}
                 onChange={onChange}
                 maxLength={255}
                 placeholder={resource.title}
@@ -162,7 +162,7 @@ export const JobsForm = () => {
                 type="text"
                 id="position"
                 name="position"
-                value={filter.position}
+                defaultValue={filter.position}
                 onChange={onChange}
                 maxLength={255}
                 placeholder={resource.position}
@@ -172,11 +172,11 @@ export const JobsForm = () => {
               {resource.status}
               <section className="checkbox-group">
                 <label>
-                  <input type="checkbox" id="A" name="status" value="A" checked={checked(filter.status, "A")} onChange={statusOnChange} />
+                  <input type="checkbox" id="A" name="status" defaultValue="A" checked={checked(filter.status, "A")} onChange={statusOnChange} />
                   {resource.active}
                 </label>
                 <label>
-                  <input type="checkbox" id="I" name="status" value="I" checked={checked(filter.status, "I")} onChange={statusOnChange} />
+                  <input type="checkbox" id="I" name="status" defaultValue="I" checked={checked(filter.status, "I")} onChange={statusOnChange} />
                   {resource.inactive}
                 </label>
               </section>

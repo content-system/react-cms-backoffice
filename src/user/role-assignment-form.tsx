@@ -125,7 +125,7 @@ export const RoleAssignmentForm = () => {
                       type="checkbox"
                       name="selected"
                       disabled={disabled}
-                      checked={selectedRoles.includes(item)}
+                      defaultChecked={selectedRoles.includes(item)}
                       onChange={(e) => onCheck(e, item.roleId)}
                     />
                     <p>{item.roleName}</p>

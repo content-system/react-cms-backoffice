@@ -67,7 +67,6 @@
   border-color: #808080;
 }
 
-
 .grey.dark hr {
   border-color: #1f1f1f;
 }
@@ -293,7 +292,9 @@
 .grey.dark .profile-header > .card,
 .grey.dark .profile .card {
   border: 1px solid rgba(255, 255, 255, 0.24);
-  box-shadow: 0px 1px 2px rgba(255, 255, 255, 0.05), 0px 4px 10px rgba(0, 0, 0, 0.6);
+  box-shadow:
+    0px 1px 2px rgba(255, 255, 255, 0.05),
+    0px 4px 10px rgba(0, 0, 0, 0.6);
 }
 .grey.dark .border-bottom-highlight {
   border-bottom: 3px solid #324511; /* #9e8f0e */
@@ -329,7 +330,7 @@
   background-color: #000;
   background-image: none;
 }
-  
+
 .grey.dark .toast-message {
   background-color: #777;
   border-color: #5f6d6f;
@@ -374,6 +375,7 @@
 .grey.dark .card > footer > button,
 .grey.dark .btn-select,
 .grey.dark .btn-new,
+.grey.dark .btn-right,
 .grey.dark a.btn-new,
 .grey.dark .btn-table,
 .grey.dark .btn-list,
@@ -430,6 +432,7 @@
   .grey.dark header > .btn-group > button,
   .grey.dark header > .btn-group > *,
   .grey.dark header > .btn-new,
+  .grey.dark header > .btn-right,
   .grey.dark header > .btn-back,
   .grey.dark header > .btn-close,
   .grey.dark .view-header > .btn-back,

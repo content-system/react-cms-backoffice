@@ -123,7 +123,7 @@ export const SigninForm = () => {
               type="text"
               id="username"
               name="username"
-              value={user.username}
+              defaultValue={user.username}
               onChange={e => updateState(e, user, setUser)}
               maxLength={100}
               placeholder={resource.placeholder_username}
@@ -135,7 +135,7 @@ export const SigninForm = () => {
               type="password"
               id="password"
               name="password"
-              value={user.password}
+              defaultValue={user.password}
               onChange={e => updateState(e, user, setUser)}
               maxLength={100}
               placeholder={resource.placeholder_password}
@@ -147,7 +147,7 @@ export const SigninForm = () => {
               type="password"
               id="passcode"
               name="passcode"
-              value={user.passcode}
+              defaultValue={user.passcode}
               onChange={e => updateState(e, user, setUser)}
               maxLength={10}
               placeholder={resource.placeholder_passcode}

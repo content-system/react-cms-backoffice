@@ -398,6 +398,9 @@ header > .btn-new {
   top: 3px;
   right: 37px;
 }
+header > .btn-right {
+  top: 6px;
+}
 .modal-portal-content header > .btn-group {
   right: 39px;
 }

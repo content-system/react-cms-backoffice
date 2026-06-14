@@ -1,6 +1,6 @@
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
 import { clone, formatText, isEmpty, isSuccessful, makeDiff, onBack } from "react-hook-core"
-import { useNavigate, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
 import { addError, initForm, patternOnBlur, registerEvents, requiredOnBlur, setReadOnly, showFormError, validateForm } from "ui-plus"
@@ -377,11 +377,6 @@ export function RoleForm() {
     setState({ ...state, keyword: q, shownPrivileges })
   }
 
-  const assign = (e: MouseEvent<HTMLElement>, id: string) => {
-    e.preventDefault()
-    navigate(`/roles/${id}/assign`)
-    return
-  }
   const handleCheckBox = (e: ChangeEvent<HTMLInputElement>, id: string, parentId?: string, currentPrivilege?: Privilege, force?: boolean) => {
     e.preventDefault()
     const uChecked: boolean = e.target.checked
@@ -647,11 +642,9 @@ export function RoleForm() {
       <header>
         <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={back} />
         <h2>{resource.role}</h2>
-        <button className="btn-group btn-right" hidden={newMode}>
-          <i className="material-icons" onClick={(e) => assign(e, role.roleId)}>
-            group
-          </i>
-        </button>
+        <Link to={`/roles/${id}/assign`} className="btn-right">
+          <i className="material-icons">group</i>
+        </Link>
       </header>
       <div>
         <section className="row section">
@@ -661,7 +654,7 @@ export function RoleForm() {
               type="text"
               id="roleId"
               name="roleId"
-              value={role.roleId}
+              defaultValue={role.roleId}
               onBlur={patternOnBlur}
               pattern={regexId}
               config-pattern-error-key={"invalid_pattern_id"}
@@ -681,7 +674,7 @@ export function RoleForm() {
               type="text"
               id="roleName"
               name="roleName"
-              value={role.roleName}
+              defaultValue={role.roleName}
               onChange={(e) => {
                 role.roleName = e.target.value
                 setState({ ...state, role })
@@ -698,7 +691,7 @@ export function RoleForm() {
               type="text"
               id="remark"
               name="remark"
-              value={role.remark}
+              defaultValue={role.remark}
               onChange={(e) => {
                 role.remark = e.target.value
                 setState({ ...state, role })
@@ -711,11 +704,11 @@ export function RoleForm() {
             {resource.status}
             <div className="radio-group">
               <label>
-                <input type="radio" id="active" name="status" onChange={statusOnChange} value="A" checked={role.status === "A"} />
+                <input type="radio" id="active" name="status" onChange={statusOnChange} defaultValue="A" checked={role.status === "A"} />
                 {resource.active}
               </label>
               <label>
-                <input type="radio" id="inactive" name="status" onChange={statusOnChange} value="I" checked={role.status === "I"} />
+                <input type="radio" id="inactive" name="status" onChange={statusOnChange} defaultValue="I" checked={role.status === "I"} />
                 {resource.inactive}
               </label>
             </div>

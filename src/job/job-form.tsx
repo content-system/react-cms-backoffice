@@ -129,7 +129,7 @@ export const JobForm = () => {
               type="text"
               id="id"
               name="id"
-              value={job.id}
+              defaultValue={job.id}
               readOnly={!newMode}
               onChange={onChange}
               maxLength={40}
@@ -144,7 +144,7 @@ export const JobForm = () => {
               step=".010"
               id="publishedAt"
               name="publishedAt"
-              value={datetimeToString(job.publishedAt)}
+              defaultValue={datetimeToString(job.publishedAt)}
               onChange={onChange}
             />
           </label>
@@ -154,7 +154,7 @@ export const JobForm = () => {
               type="text"
               id="position"
               name="position"
-              value={job.position}
+              defaultValue={job.position}
               onChange={onChange}
               onBlur={requiredOnBlur}
               maxLength={255}
@@ -170,7 +170,7 @@ export const JobForm = () => {
               id="quantity"
               name="quantity"
               data-type="integer"
-              value={job.quantity}
+              defaultValue={job.quantity}
               onChange={onChange}
               onBlur={requiredOnBlur}
               maxLength={3}
@@ -184,7 +184,7 @@ export const JobForm = () => {
               type="text"
               id="location"
               name="location"
-              value={job.location}
+              defaultValue={job.location}
               onChange={onChange}
               onBlur={requiredOnBlur}
               maxLength={255}
@@ -200,7 +200,7 @@ export const JobForm = () => {
               id="minSalary"
               name="minSalary"
               data-type="integer"
-              value={formatInteger(job.minSalary, locale.groupSeparator)}
+              defaultValue={formatInteger(job.minSalary, locale.groupSeparator)}
               onChange={onChange}
               onFocus={integerOnFocus}
               required={true}
@@ -217,7 +217,7 @@ export const JobForm = () => {
               id="maxSalary"
               name="maxSalary"
               data-type="integer"
-              value={formatInteger(job.maxSalary, locale.groupSeparator)}
+              defaultValue={formatInteger(job.maxSalary, locale.groupSeparator)}
               onChange={onChange}
               onFocus={integerOnFocus}
               onBlur={e => integerOnBlur(e, locale.groupSeparator)}
@@ -229,11 +229,11 @@ export const JobForm = () => {
             {resource.status}
             <div className="radio-group">
               <label>
-                <input type="radio" id="active" name="status" onChange={onChange} value={Status.Active} checked={job.status === Status.Active} />
+                <input type="radio" id="active" name="status" onChange={onChange} defaultValue={Status.Active} checked={job.status === Status.Active} />
                 {resource.active}
               </label>
               <label>
-                <input type="radio" id="inactive" name="status" onChange={onChange} value={Status.Inactive} checked={job.status === Status.Inactive} />
+                <input type="radio" id="inactive" name="status" onChange={onChange} defaultValue={Status.Inactive} checked={job.status === Status.Inactive} />
                 {resource.inactive}
               </label>
             </div>
@@ -244,7 +244,7 @@ export const JobForm = () => {
               type="text"
               id="title"
               name="title"
-              value={job.title}
+              defaultValue={job.title}
               onChange={onChange}
               onBlur={requiredOnBlur}
               maxLength={255}
@@ -258,7 +258,7 @@ export const JobForm = () => {
               id="description"
               name="description"
               rows={24}
-              value={job.description}
+              defaultValue={job.description}
               onChange={onChange}
               onBlur={requiredOnBlur}
               required={true}

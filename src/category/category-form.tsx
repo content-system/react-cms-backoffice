@@ -139,7 +139,7 @@ export const CategoryForm = () => {
               type="text"
               id="id"
               name="id"
-              value={category.id}
+              defaultValue={category.id}
               readOnly={!newMode}
               onChange={onChange}
               maxLength={80}
@@ -153,7 +153,7 @@ export const CategoryForm = () => {
               type="text"
               id="name"
               name="name"
-              value={category.name}
+              defaultValue={category.name}
               onChange={onChange}
               onBlur={requiredOnBlur}
               maxLength={255}
@@ -167,7 +167,7 @@ export const CategoryForm = () => {
               type="text"
               id="path"
               name="path"
-              value={category.path}
+              defaultValue={category.path}
               onChange={onChange}
               onBlur={requiredOnBlur}
               maxLength={255}
@@ -181,7 +181,7 @@ export const CategoryForm = () => {
               type="text"
               id="resource"
               name="resource"
-              value={category.resource}
+              defaultValue={category.resource}
               onChange={onChange}
               onBlur={requiredOnBlur}
               maxLength={255}
@@ -195,7 +195,7 @@ export const CategoryForm = () => {
               type="text"
               id="icon"
               name="icon"
-              value={category.icon}
+              defaultValue={category.icon}
               onChange={onChange}
               onBlur={requiredOnBlur}
               maxLength={255}
@@ -209,7 +209,7 @@ export const CategoryForm = () => {
               type="text"
               id="type"
               name="type"
-              value={category.type}
+              defaultValue={category.type}
               onChange={onChange}
               maxLength={10}
               placeholder={resource.type}
@@ -221,7 +221,7 @@ export const CategoryForm = () => {
               type="text"
               id="parent"
               name="parent"
-              value={category.parent}
+              defaultValue={category.parent}
               onChange={onChange}
               onBlur={requiredOnBlur}
               maxLength={40}
@@ -236,7 +236,7 @@ export const CategoryForm = () => {
               id="sequence"
               name="sequence"
               data-type="integer"
-              value={category.sequence}
+              defaultValue={category.sequence}
               onChange={onChange}
               onBlur={requiredOnBlur}
               maxLength={3}
@@ -248,11 +248,11 @@ export const CategoryForm = () => {
             {resource.status}
             <div className="radio-group">
               <label>
-                <input type="radio" id="active" name="status" onChange={onChange} value={Status.Active} checked={category.status === Status.Active} />
+                <input type="radio" id="active" name="status" onChange={onChange} defaultValue={Status.Active} checked={category.status === Status.Active} />
                 {resource.active}
               </label>
               <label>
-                <input type="radio" id="inactive" name="status" onChange={onChange} value={Status.Inactive} checked={category.status === Status.Inactive} />
+                <input type="radio" id="inactive" name="status" onChange={onChange} defaultValue={Status.Inactive} checked={category.status === Status.Inactive} />
                 {resource.inactive}
               </label>
             </div>

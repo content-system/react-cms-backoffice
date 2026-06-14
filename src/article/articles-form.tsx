@@ -129,7 +129,7 @@ export const ArticlesForm = () => {
           <section className="row search-group">
             <label className="col s12 m6 search-input">
               <PageSizeSelect id="limit" name="limit" size={filter.limit} sizes={pageSizes} onChange={pageSizeChanged} />
-              <input type="text" id="q" name="q" value={filter.q} maxLength={80} onChange={onChange} placeholder={resource.keyword} />
+              <input type="text" id="q" name="q" defaultValue={filter.q} maxLength={80} onChange={onChange} placeholder={resource.keyword} />
               <button type="button" id="clearQBtn" name="clearQBtn" hidden={!filter.q} className="btn-remove-text" onClick={clearQ} />
               <button type="button" id="toggleSearchBtn" name="toggleSearchBtn" className="btn-filter" onClick={toggleSearch} />
               <button type="submit" id="searchBtn" name="searchBtn" className="btn-search" onClick={searchOnClick} />
@@ -145,7 +145,7 @@ export const ArticlesForm = () => {
                 id="publishedAt_min"
                 name="publishedAt_min"
                 data-field="publishedAt.min"
-                value={datetimeToString(filter.publishedAt?.min)}
+                defaultValue={datetimeToString(filter.publishedAt?.min)}
                 onChange={onChange}
               />
             </label>
@@ -157,7 +157,7 @@ export const ArticlesForm = () => {
                 id="publishedAt_max"
                 name="publishedAt_max"
                 data-field="publishedAt.max"
-                value={datetimeToString(filter.publishedAt?.max)}
+                defaultValue={datetimeToString(filter.publishedAt?.max)}
                 onChange={onChange}
               />
             </label>
@@ -165,23 +165,23 @@ export const ArticlesForm = () => {
               {resource.status}
               <section className="checkbox-group">
                 <label>
-                  <input type="checkbox" id="status_D" name="status" value="D" checked={checked(filter.status, "D")} onChange={statusOnChange} />
+                  <input type="checkbox" id="status_D" name="status" defaultValue="D" checked={checked(filter.status, "D")} onChange={statusOnChange} />
                   {resource.status_draft}
                 </label>
                 <label>
-                  <input type="checkbox" id="status_S" name="status" value="S" checked={checked(filter.status, "S")} onChange={statusOnChange} />
+                  <input type="checkbox" id="status_S" name="status" defaultValue="S" checked={checked(filter.status, "S")} onChange={statusOnChange} />
                   {resource.status_submitted}
                 </label>
                 <label>
-                  <input type="checkbox" id="status_R" name="status" value="R" checked={checked(filter.status, "R")} onChange={statusOnChange} />
+                  <input type="checkbox" id="status_R" name="status" defaultValue="R" checked={checked(filter.status, "R")} onChange={statusOnChange} />
                   {resource.status_rejected}
                 </label>
                 <label>
-                  <input type="checkbox" id="status_A" name="status" value="A" checked={checked(filter.status, "A")} onChange={statusOnChange} />
+                  <input type="checkbox" id="status_A" name="status" defaultValue="A" checked={checked(filter.status, "A")} onChange={statusOnChange} />
                   {resource.status_approved}
                 </label>
                 <label>
-                  <input type="checkbox" id="status_P" name="status" value="P" checked={checked(filter.status, "P")} onChange={statusOnChange} />
+                  <input type="checkbox" id="status_P" name="status" defaultValue="P" checked={checked(filter.status, "P")} onChange={statusOnChange} />
                   {resource.status_published}
                 </label>
               </section>

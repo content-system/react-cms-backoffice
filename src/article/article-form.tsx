@@ -164,7 +164,7 @@ export const ArticleForm = () => {
               type="text"
               id="id"
               name="id"
-              value={article.id}
+              defaultValue={article.id}
               readOnly={true}
               onChange={onChange}
               maxLength={80}
@@ -177,7 +177,7 @@ export const ArticleForm = () => {
               type="url"
               id="thumbnail"
               name="thumbnail"
-              value={article.thumbnail}
+              defaultValue={article.thumbnail}
               onChange={onChange}
               onBlur={requiredOnBlur}
               maxLength={255}
@@ -191,7 +191,7 @@ export const ArticleForm = () => {
               type="text"
               id="publishedAt"
               name="publishedAt"
-              value={formatLongDateTime(article.publishedAt, dateFormat)}
+              defaultValue={formatLongDateTime(article.publishedAt, dateFormat)}
               readOnly={true}
             />
           </label>
@@ -201,7 +201,7 @@ export const ArticleForm = () => {
               type="text"
               id="status"
               name="status"
-              value={getFlowStatusName(article.status)}
+              defaultValue={getFlowStatusName(article.status)}
               readOnly={true}
               placeholder={resource.status}
             />
@@ -212,7 +212,7 @@ export const ArticleForm = () => {
               type="text"
               id="title"
               name="title"
-              value={article.title}
+              defaultValue={article.title}
               onChange={onChange}
               onBlur={requiredOnBlur}
               maxLength={255}
@@ -226,7 +226,7 @@ export const ArticleForm = () => {
               id="description"
               name="description"
               rows={4}
-              value={article.description}
+              defaultValue={article.description}
               onChange={onChange}
               onBlur={requiredOnBlur}
               required={true}
@@ -240,7 +240,7 @@ export const ArticleForm = () => {
               id="content"
               name="content"
               rows={80}
-              value={article.content}
+              defaultValue={article.content}
               onChange={onChange}
               onBlur={requiredOnBlur}
               maxLength={9000}

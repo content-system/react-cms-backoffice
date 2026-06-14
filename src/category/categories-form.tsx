@@ -105,7 +105,7 @@ export const CategoriesForm = () => {
           <section className="row search-group">
             <label className="col s12 m6 search-input">
               <PageSizeSelect id="limit" name="limit" size={filter.limit} sizes={pageSizes} onChange={pageSizeChanged} />
-              <input type="text" id="q" name="q" value={filter.q} maxLength={80} onChange={onChange} placeholder={resource.keyword} />
+              <input type="text" id="q" name="q" defaultValue={filter.q} maxLength={80} onChange={onChange} placeholder={resource.keyword} />
               <button type="button" id="clearQBtn" name="clearQBtn" hidden={!filter.q} className="btn-remove-text" onClick={clearQ} />
               <button type="button" id="toggleSearchBtn" name="toggleSearchBtn" className="btn-filter" onClick={toggleSearch} />
               <button type="submit" id="searchBtn" name="searchBtn" className="btn-search" onClick={searchOnClick} />
@@ -117,11 +117,11 @@ export const CategoriesForm = () => {
               {resource.status}
               <section className="checkbox-group">
                 <label>
-                  <input type="checkbox" id="active" name="status" value="A" checked={checked(filter.status, "A")} onChange={statusOnChange} />
+                  <input type="checkbox" id="active" name="status" defaultValue="A" checked={checked(filter.status, "A")} onChange={statusOnChange} />
                   {resource.active}
                 </label>
                 <label>
-                  <input type="checkbox" id="inactive" name="status" value="I" checked={checked(filter.status, "I")} onChange={statusOnChange} />
+                  <input type="checkbox" id="inactive" name="status" defaultValue="I" checked={checked(filter.status, "I")} onChange={statusOnChange} />
                   {resource.inactive}
                 </label>
               </section>

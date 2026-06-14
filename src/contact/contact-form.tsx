@@ -1,5 +1,5 @@
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
-import { afterSaved, clone, Error, isEmpty, makeDiff, onBack, updateState } from "react-hook-core"
+import { afterSaved, clone, Error, isEmpty, makeDiff, normalizePhone, onBack, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -11,7 +11,6 @@ import {
   initForm,
   phoneOnBlur,
   registerEvents,
-  removePhoneFormat,
   requiredOnBlur,
   showFormError,
   validateForm
@@ -124,7 +123,7 @@ export const ContactForm = () => {
               type="text"
               id="name"
               name="name"
-              value={contact.name}
+              defaultValue={contact.name}
               onChange={onChange}
               onBlur={requiredOnBlur}
               maxLength={100}
@@ -138,7 +137,7 @@ export const ContactForm = () => {
               type="text"
               id="country"
               name="country"
-              value={contact.country}
+              defaultValue={contact.country}
               onChange={onChange}
               onBlur={requiredOnBlur}
               maxLength={100}
@@ -152,7 +151,7 @@ export const ContactForm = () => {
               type="text"
               id="company"
               name="company"
-              value={contact.company}
+              defaultValue={contact.company}
               onChange={onChange}
               onBlur={requiredOnBlur}
               maxLength={100}
@@ -167,7 +166,7 @@ export const ContactForm = () => {
               id="jobTitle"
               name="jobTitle"
               data-type="jobTitle"
-              value={contact.jobTitle}
+              defaultValue={contact.jobTitle}
               onChange={onChange}
               onBlur={requiredOnBlur}
               maxLength={100}
@@ -181,7 +180,7 @@ export const ContactForm = () => {
               id="email"
               name="email"
               data-type="email"
-              value={contact.email}
+              defaultValue={contact.email}
               onChange={onChange}
               onBlur={emailOnBlur}
               required={true}
@@ -195,10 +194,10 @@ export const ContactForm = () => {
               type="tel"
               id="phone"
               name="phone"
-              value={formatPhone(contact.phone)}
+              defaultValue={formatPhone(contact.phone)}
               onChange={onChange}
               onFocus={(e) => {
-                e.target.value = removePhoneFormat(e.target.value)
+                e.target.value = normalizePhone(e.target.value)
               }}
               onBlur={phoneOnBlur}
               required={true}
@@ -212,7 +211,7 @@ export const ContactForm = () => {
               type="datetime-local"
               id="submittedAt"
               name="submittedAt"
-              value={datetimeToString(contact.submittedAt)}
+              defaultValue={datetimeToString(contact.submittedAt)}
               onChange={onChange}
               onBlur={requiredOnBlur}
               maxLength={19}
@@ -226,7 +225,7 @@ export const ContactForm = () => {
               type="text"
               id="contactedBy"
               name="contactedBy"
-              value={contact.contactedBy}
+              defaultValue={contact.contactedBy}
               onChange={onChange}
               maxLength={100}
               placeholder={resource.contacted_by}
@@ -238,7 +237,7 @@ export const ContactForm = () => {
               type="datetime-local"
               id="contactedAt"
               name="contactedAt"
-              value={datetimeToString(contact.contactedAt)}
+              defaultValue={datetimeToString(contact.contactedAt)}
               onChange={onChange}
               maxLength={19}
               placeholder={resource.contacted_at}
@@ -250,7 +249,7 @@ export const ContactForm = () => {
               id="message"
               name="message"
               rows={8}
-              value={contact.message}
+              defaultValue={contact.message}
               onChange={onChange}
               onBlur={requiredOnBlur}
               maxLength={400}

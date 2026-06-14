@@ -100,7 +100,7 @@ export const RolesForm = () => {
           <section className="row search-group">
             <label className="col s12 m6 search-input">
               <PageSizeSelect id="limit" name="limit" size={filter.limit} sizes={pageSizes} onChange={pageSizeChanged} />
-              <input type="text" id="q" name="q" value={filter.q} maxLength={80} placeholder={resource.keyword}
+              <input type="text" id="q" name="q" defaultValue={filter.q} maxLength={80} placeholder={resource.keyword}
                 onChange={e => {
                   filter.q = e.target.value
                   setFilter(filter)
@@ -120,11 +120,11 @@ export const RolesForm = () => {
               {resource.status}
               <section className="checkbox-group">
                 <label>
-                  <input type="checkbox" id="active" name="status" value="A" checked={checked(filter.status, "A")} onChange={statusOnChange} />
+                  <input type="checkbox" id="active" name="status" defaultValue="A" checked={checked(filter.status, "A")} onChange={statusOnChange} />
                   {resource.active}
                 </label>
                 <label>
-                  <input type="checkbox" id="inactive" name="status" value="I" checked={checked(filter.status, "I")} onChange={statusOnChange} />
+                  <input type="checkbox" id="inactive" name="status" defaultValue="I" checked={checked(filter.status, "I")} onChange={statusOnChange} />
                   {resource.inactive}
                 </label>
               </section>

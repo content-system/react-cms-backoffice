@@ -59,7 +59,7 @@ export const SettingsForm = () => {
             <select
               id="language"
               name="language"
-              value={settings.language}
+              defaultValue={settings.language}
               onBlur={requiredOnBlur}
               onChange={(e) => {
                 settings.language = e.target.value
@@ -78,7 +78,7 @@ export const SettingsForm = () => {
             <select
               id="dateFormat"
               name="dateFormat"
-              value={settings.dateFormat}
+              defaultValue={settings.dateFormat}
               onBlur={requiredOnBlur}
               onChange={(e) => {
                 settings.dateFormat = e.target.value

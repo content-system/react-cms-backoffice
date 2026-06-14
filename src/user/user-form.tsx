@@ -1,7 +1,7 @@
 import { Item } from "onecore"
-import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
-import { clone, Error, isEmpty, isSuccessful, makeDiff, onBack, updateState } from "react-hook-core"
-import { useNavigate, useParams } from "react-router-dom"
+import { MouseEvent, useEffect, useRef, useState } from "react"
+import { clone, Error, isEmpty, isSuccessful, makeDiff, normalizePhone, onBack } from "react-hook-core"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
 import { emailOnBlur, formatPhone, initForm, phoneOnBlur, registerEvents, requiredOnBlur, showFormError, validateForm } from "ui-plus"
@@ -25,7 +25,6 @@ export const UserForm = () => {
   const [positionList, setPositionList] = useState<Item[]>([])
   const [initialUser, setInitialUser] = useState<User>()
   const [user, setUser] = useState<User>(createUser())
-  const onChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => updateState(e, user, setUser)
 
   const service = getUserService()
   const { id } = useParams()
@@ -117,13 +116,9 @@ export const UserForm = () => {
       <form id="userForm" name="userForm" className="form" ref={refForm}>
         <header>
           <h2>{resource.user}</h2>
-          <div className="btn-group">
-            <button className="btn-group btn-right" hidden={newMode}>
-              <i className="material-icons" onClick={(e) => navigate(`/users/${user.userId}/assign`)}>
-                group
-              </i>
-            </button>
-          </div>
+          <Link to={`/users/${user.userId}/assign`} className="btn-right">
+            <i className="material-icons">group</i>
+          </Link>
         </header>
         <div>
           <dl className="data-list row">
@@ -154,13 +149,9 @@ export const UserForm = () => {
         <header>
           <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={back} />
           <h2>{resource.user}</h2>
-          <div className="btn-group">
-            <button className="btn-group btn-right" hidden={newMode}>
-              <i className="material-icons" onClick={(e) => navigate(`/users/${user.userId}/assign`)}>
-                group
-              </i>
-            </button>
-          </div>
+          <Link to={`/users/${user.userId}/assign`} className="btn-right">
+            <i className="material-icons">group</i>
+          </Link>
         </header>
         <div>
           <section className="row section">
@@ -171,7 +162,7 @@ export const UserForm = () => {
                 type="text"
                 id="userId"
                 name="userId"
-                value={user.userId}
+                defaultValue={user.userId}
                 readOnly={!newMode}
                 onChange={e => {
                   user.userId = e.target.value
@@ -188,7 +179,7 @@ export const UserForm = () => {
                 type="text"
                 id="username"
                 name="username"
-                value={user.username}
+                defaultValue={user.username}
                 readOnly={!newMode}
                 onChange={e => {
                   user.username = e.target.value
@@ -206,7 +197,7 @@ export const UserForm = () => {
                 type="text"
                 id="displayName"
                 name="displayName"
-                value={user.displayName}
+                defaultValue={user.displayName}
                 onChange={e => {
                   user.displayName = e.target.value
                   setUser(user)
@@ -230,7 +221,7 @@ export const UserForm = () => {
                       setUser(user)
                     }}
                     disabled={user.title !== "Dr"}
-                    value={Gender.Male}
+                    defaultValue={Gender.Male}
                     checked={user.gender === Gender.Male}
                   />
                   {resource.male}
@@ -245,7 +236,7 @@ export const UserForm = () => {
                       setUser(user)
                     }}
                     disabled={user.title !== "Dr"}
-                    value={Gender.Female}
+                    defaultValue={Gender.Female}
                     checked={user.gender === Gender.Female}
                   />
                   {resource.female}
@@ -256,7 +247,7 @@ export const UserForm = () => {
               {resource.status}
               <div className="radio-group">
                 <label>
-                  <input type="radio" id="active" name="status" value={Status.Active} checked={user.status === Status.Active}
+                  <input type="radio" id="active" name="status" defaultValue={Status.Active} checked={user.status === Status.Active}
                     onChange={e => {
                       user.status = e.target.value
                       setUser(user)
@@ -264,7 +255,7 @@ export const UserForm = () => {
                   {resource.yes}
                 </label>
                 <label>
-                  <input type="radio" id="inactive" name="status" value={Status.Inactive} checked={user.status === Status.Inactive}
+                  <input type="radio" id="inactive" name="status" defaultValue={Status.Inactive} checked={user.status === Status.Inactive}
                     onChange={e => {
                       user.status = e.target.value
                       setUser(user)
@@ -282,10 +273,12 @@ export const UserForm = () => {
                 style={{ width: "99%" }}
                 id="position"
                 name="position"
-                value={user.position}
+                defaultValue={user.position}
                 data-value
-                onChange={onChange}
-              >
+                onChange={e => {
+                  user.position = e.target.value
+                  setUser(user)
+                }}>
                 <option value="">{resource.please_select}</option>
                 {positionList.map((item, index) => (
                   <option key={index} value={item.value}>
@@ -296,7 +289,7 @@ export const UserForm = () => {
             </label>
             <label className="col s12 m6 flying">
               {resource.person_title}
-              <select id="title" name="title" value={user.title} data-value onChange={(e) => updateTitle(e.target, user)}>
+              <select id="title" name="title" defaultValue={user.title} data-value onChange={(e) => updateTitle(e.target, user)}>
                 <option value="">{resource.please_select}</option>
                 {titleList.map((item, index) => (
                   <option key={index} value={item.value}>
@@ -311,8 +304,12 @@ export const UserForm = () => {
                 type="tel"
                 id="phone"
                 name="phone"
-                value={formatPhone(user.phone)}
-                onChange={onChange}
+                data-type="phone"
+                defaultValue={formatPhone(user.phone)}
+                onChange={e => {
+                  user.phone = normalizePhone(e.target.value)
+                  setUser(user)
+                }}
                 onBlur={phoneOnBlur}
                 maxLength={17}
                 placeholder={resource.phone}
@@ -325,8 +322,11 @@ export const UserForm = () => {
                 id="email"
                 name="email"
                 data-type="email"
-                value={user.email}
-                onChange={onChange}
+                defaultValue={user.email}
+                onChange={e => {
+                  user.email = normalizePhone(e.target.value)
+                  setUser(user)
+                }}
                 onBlur={emailOnBlur}
                 maxLength={100}
                 placeholder={resource.email}
