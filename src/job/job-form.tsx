@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
 import { formatDateTime, formatInteger, initForm, integerOnBlur, integerOnFocus, registerEvents, requiredOnBlur, showFormError, validateForm } from "ui-plus"
-import { getDateFormat, getLocale, handleError, hasPermission, Permission, Status, useResource } from "uione"
+import { getDateFormat, handleError, hasPermission, Permission, Status, useLocale, useResource } from "uione"
 import { getJobService, Job } from "./service"
 
 const createJob = (): Job => {
@@ -18,14 +18,14 @@ export const JobForm = () => {
   const canWrite = hasPermission(Permission.write, 1)
   const dateFormat = getDateFormat()
 
-  const locale = getLocale()
+  const locale = useLocale()
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
   const [error500, setError500] = useState(false)
   const [initialJob, setInitialJob] = useState<Job>()
   const [job, setJob] = useState<Job>(createJob())
-  const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => updateState(e, job, setJob)
+  const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => updateState(e, job, setJob, locale.decimalSeparator)
 
   const { id } = useParams()
   const newMode = !id
@@ -170,7 +170,7 @@ export const JobForm = () => {
               id="quantity"
               name="quantity"
               data-type="integer"
-              value={job.quantity?.toString()}
+              value={job.quantity}
               onChange={onChange}
               onBlur={requiredOnBlur}
               maxLength={3}
