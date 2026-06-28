@@ -1,5 +1,5 @@
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router"
 import { confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
 import { handleError, hasPermission, showMessage, useResource, write } from "uione"
@@ -149,7 +149,7 @@ export const RoleAssignmentForm = () => {
     <div className="view-container">
       <form id="roleAssignmentForm" name="roleAssignmentForm" className="form">
         <header className="view-header">
-          <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={e => navigate(-1)} />
+          <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={(e) => navigate(-1)} />
           <h2>{role.roleName && role.roleName.length > 0 ? role.roleName : resource.role_assignment_subject}</h2>
         </header>
         <div className="form-body">
@@ -212,7 +212,7 @@ export const RoleAssignmentForm = () => {
               shownUsers?.map((user, i) => {
                 const result = selectedUsers.find((v) => v.userId === user.userId)
                 return (
-                  <li key={i} className="col s12 m6 l4 xl3 small img-item" onClick={isCheckboxShown === true ? () => onCheck(user.userId) : () => { }}>
+                  <li key={i} className="col s12 m6 l4 xl3 small img-item" onClick={isCheckboxShown === true ? () => onCheck(user.userId) : () => {}}>
                     <img
                       alt=""
                       src={user.imageURL && user.imageURL.length > 0 ? user.imageURL : user.gender === "F" ? femaleIcon : maleIcon}

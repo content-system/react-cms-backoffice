@@ -3,7 +3,7 @@ import { CookieService } from "cookie-core"
 import { Base64 } from "js-base64"
 import { MouseEvent, useEffect, useRef, useState } from "react"
 import { formatText, updateState, useMessage } from "react-hook-core"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router"
 import { alertInfo } from "ui-alert"
 import { initForm, registerEvents } from "ui-plus"
 import { toast } from "ui-toast"
@@ -124,7 +124,7 @@ export const SigninForm = () => {
               id="username"
               name="username"
               defaultValue={user.username}
-              onChange={e => updateState(e, user, setUser)}
+              onChange={(e) => updateState(e, user, setUser)}
               maxLength={100}
               placeholder={resource.placeholder_username}
             />
@@ -136,7 +136,7 @@ export const SigninForm = () => {
               id="password"
               name="password"
               defaultValue={user.password}
-              onChange={e => updateState(e, user, setUser)}
+              onChange={(e) => updateState(e, user, setUser)}
               maxLength={100}
               placeholder={resource.placeholder_password}
             />
@@ -148,13 +148,21 @@ export const SigninForm = () => {
               id="passcode"
               name="passcode"
               defaultValue={user.passcode}
-              onChange={e => updateState(e, user, setUser)}
+              onChange={(e) => updateState(e, user, setUser)}
               maxLength={10}
               placeholder={resource.placeholder_passcode}
             />
           </label>
           <label className="col s12 checkbox-container" hidden={isTwoFactor}>
-            <input type="checkbox" id="remember" name="remember" checked={remember ? true : false} onChange={e => { setRemember(e.target.checked) }} />
+            <input
+              type="checkbox"
+              id="remember"
+              name="remember"
+              checked={remember ? true : false}
+              onChange={(e) => {
+                setRemember(e.target.checked)
+              }}
+            />
             {resource.signin_remember_me}
           </label>
           <button type="submit" id="signinBtn" name="signinBtn" onClick={signin}>

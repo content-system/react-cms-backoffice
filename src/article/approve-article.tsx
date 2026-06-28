@@ -83,17 +83,37 @@ export const ApproveArticleForm = () => {
   return (
     <form id="approveArticleForm" name="approveArticleForm" className="form" ref={refForm}>
       <header>
-        <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={e => navigate(-1)} />
+        <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={(e) => navigate(-1)} />
         <h2>{resource.article}</h2>
       </header>
       <div className="article-body">
         <h3 className="article-description">{article.title}</h3>
         {article.description && <h4 className="article-description">{article.description}</h4>}
-        {article.publishedAt && <h4 className="article-meta center-align-items">{resource.published_at}: {formatDateTime(article.publishedAt, dateFormat)}</h4>}
-        {article.createdBy && <div className="article-meta">{resource.created_by}: <strong>{article.createdBy}</strong></div>}
-        {article.createdAt && <div className="article-meta">{resource.created_at}: <strong>{formatDateTime(article.createdAt, dateFormat)}</strong></div>}
-        {article.submittedBy && <div className="article-meta">{resource.submitted_by}: <strong>{article.submittedBy}</strong></div>}
-        {article.submittedAt && <div className="article-meta">{resource.submitted_at}: <strong>{formatDateTime(article.submittedAt, dateFormat)}</strong></div>}
+        {article.publishedAt && (
+          <h4 className="article-meta center-align-items">
+            {resource.published_at}: {formatDateTime(article.publishedAt, dateFormat)}
+          </h4>
+        )}
+        {article.createdBy && (
+          <div className="article-meta">
+            {resource.created_by}: <strong>{article.createdBy}</strong>
+          </div>
+        )}
+        {article.createdAt && (
+          <div className="article-meta">
+            {resource.created_at}: <strong>{formatDateTime(article.createdAt, dateFormat)}</strong>
+          </div>
+        )}
+        {article.submittedBy && (
+          <div className="article-meta">
+            {resource.submitted_by}: <strong>{article.submittedBy}</strong>
+          </div>
+        )}
+        {article.submittedAt && (
+          <div className="article-meta">
+            {resource.submitted_at}: <strong>{formatDateTime(article.submittedAt, dateFormat)}</strong>
+          </div>
+        )}
         <div className="article-content" dangerouslySetInnerHTML={{ __html: article.content }}></div>
       </div>
       <footer>

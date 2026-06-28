@@ -11,7 +11,7 @@ export const ArticleHistory = () => {
   const resource = useResource()
   const navigate = useNavigate()
   const [histories, setHistories] = useState<History<Article>[]>([])
-  const [nextPageToken, setNextPageToken] = useState<string>();
+  const [nextPageToken, setNextPageToken] = useState<string>()
 
   const { id } = useParams()
   const service = getArticleService()
@@ -48,7 +48,7 @@ export const ArticleHistory = () => {
           if (res.length >= limit) {
             next = res[res.length - 1].id
           }
-          const newList = [...histories].concat(res);
+          const newList = [...histories].concat(res)
           setHistories(newList)
         }
         setNextPageToken(next)
@@ -63,7 +63,7 @@ export const ArticleHistory = () => {
   return (
     <form id="approveArticleForm" name="approveArticleForm" className="form">
       <header>
-        <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={e => navigate(-1)} />
+        <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={(e) => navigate(-1)} />
         <h2>{resource.article}</h2>
       </header>
       <div className="article-body">
@@ -71,11 +71,15 @@ export const ArticleHistory = () => {
           const article = item.data
           return (
             <Fragment key={i}>
-              <h3 className="article-description">{resource.user}: {item.author}</h3>
+              <h3 className="article-description">
+                {resource.user}: {item.author}
+              </h3>
               <h4 className="article-description">{formatDateTime(item.time, dateFormat)}</h4>
-              <h4 className="article-description">{resource.action}: {getActionName(item.action)}</h4>
-              {
-                article && <Fragment>
+              <h4 className="article-description">
+                {resource.action}: {getActionName(item.action)}
+              </h4>
+              {article && (
+                <Fragment>
                   <h4 className="article-description">{article.title}</h4>
                   {article.description && <h4 className="article-description">{article.description}</h4>}
                   {article.publishedAt && (
@@ -90,12 +94,16 @@ export const ArticleHistory = () => {
                   )}
                   <div className="article-content" dangerouslySetInnerHTML={{ __html: article.content }} />
                 </Fragment>
-              }
+              )}
               <hr></hr>
             </Fragment>
           )
         })}
-        {nextPageToken && <button type='submit' id='btnMore' name='btnMore' className='btn-more' onClick={loadMore}>{resource.button_more}</button>}
+        {nextPageToken && (
+          <button type="submit" id="btnMore" name="btnMore" className="btn-more" onClick={loadMore}>
+            {resource.button_more}
+          </button>
+        )}
       </div>
     </form>
   )

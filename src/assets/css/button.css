@@ -226,6 +226,21 @@ footer > .btn-next {
   font-weight: 300;
   content: "\2039";
 }
+/*
+.btn-back::after {
+  position: absolute;
+  display: inline-block;
+  top: 17px;
+  right: 0.5px;
+  content: "";
+  border-top: 1.5px solid;
+  border-left: 1.5px solid;
+  width: 9px;
+  height: 9px;
+  transition: transform 0.2s;
+  transform: rotate(-45deg);
+}
+*/
 @media screen and (max-width: 600px) {
   .btn-back {
     left: 11px;

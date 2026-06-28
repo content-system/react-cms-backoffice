@@ -1,7 +1,7 @@
 import { strongPassword, validateAndChangePassword, validateChange } from "password-client"
 import { MouseEvent, useEffect, useRef, useState } from "react"
 import { updateState, useMessage } from "react-hook-core"
-import { Link } from "react-router-dom"
+import { Link } from "react-router"
 import { initForm, registerEvents } from "ui-plus"
 import { handleError, loading, message, useResource } from "uione"
 import logo from "../assets/images/logo.png"
@@ -87,7 +87,7 @@ export const ChangePasswordForm = () => {
               id="username"
               name="username"
               value={user.username}
-              onChange={e => updateState(e, user, setUser)}
+              onChange={(e) => updateState(e, user, setUser)}
               maxLength={120}
               placeholder={resource.placeholder_username}
             />
@@ -100,7 +100,7 @@ export const ChangePasswordForm = () => {
               id="currentPassword"
               name="currentPassword"
               value={user.currentPassword}
-              onChange={e => updateState(e, user, setUser)}
+              onChange={(e) => updateState(e, user, setUser)}
               maxLength={100}
               placeholder={resource.placeholder_current_password}
             />
@@ -113,7 +113,7 @@ export const ChangePasswordForm = () => {
               id="password"
               name="password"
               value={user.password}
-              onChange={e => updateState(e, user, setUser)}
+              onChange={(e) => updateState(e, user, setUser)}
               maxLength={100}
               placeholder={resource.placeholder_new_password}
             />
@@ -126,7 +126,7 @@ export const ChangePasswordForm = () => {
               id="confirmPassword"
               name="confirmPassword"
               value={user.confirmPassword}
-              onChange={e => updateState(e, user, setUser)}
+              onChange={(e) => updateState(e, user, setUser)}
               maxLength={100}
               placeholder={resource.placeholder_confirm_password}
             />
@@ -139,7 +139,7 @@ export const ChangePasswordForm = () => {
               id="passcode"
               name="passcode"
               value={user.passcode}
-              onChange={e => updateState(e, user, setUser)}
+              onChange={(e) => updateState(e, user, setUser)}
               maxLength={255}
               placeholder={resource.placeholder_passcode}
             />

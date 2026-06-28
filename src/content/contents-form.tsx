@@ -21,7 +21,7 @@ import {
   setSortFilter,
   Sortable,
   updateState,
-  updateUrl
+  updateUrl,
 } from "react-hook-core"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
@@ -117,15 +117,7 @@ export const ContentsForm = () => {
           <section className="row search-group inline" hidden={!showFilter}>
             <label className="col s12 m4 l4">
               {resource.title}
-              <input
-                type="text"
-                id="title"
-                name="title"
-                defaultValue={filter.title}
-                onChange={onChange}
-                maxLength={255}
-                placeholder={resource.title}
-              />
+              <input type="text" id="title" name="title" defaultValue={filter.title} onChange={onChange} maxLength={255} placeholder={resource.title} />
             </label>
             <label className="col s12 m4 l4 checkbox-section">
               {resource.status}

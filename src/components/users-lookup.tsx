@@ -1,5 +1,21 @@
 import { ChangeEvent, KeyboardEvent, MouseEvent, useEffect, useRef, useState } from "react"
-import { buildMessage, buildSortFilter, getFields, getOffset, onClearQ, onPageChanged, onPageSizeChanged, onSearch, onSort, PageChange, pageSizes, PageSizeSelect, resources, Sortable, updateState } from "react-hook-core"
+import {
+  buildMessage,
+  buildSortFilter,
+  getFields,
+  getOffset,
+  onClearQ,
+  onPageChanged,
+  onPageSizeChanged,
+  onSearch,
+  onSort,
+  PageChange,
+  pageSizes,
+  PageSizeSelect,
+  resources,
+  Sortable,
+  updateState,
+} from "react-hook-core"
 import ReactModal from "react-modal"
 import Pagination from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
@@ -26,7 +42,7 @@ export const UsersLookup = (props: Props) => {
   const userFilter: UserFilter = {
     limit: resources.defaultLimit,
     status: [],
-    excluding: []
+    excluding: [],
   }
   const initialState: UserSearch = {}
 
@@ -54,7 +70,7 @@ export const UsersLookup = (props: Props) => {
     showLoading()
     const fields = getFields(refForm.current, state.fields)
     buildSortFilter(obj, state)
-    obj.excluding = props.users.map(u => u.userId)
+    obj.excluding = props.users.map((u) => u.userId)
     setFilter(obj)
     getUserService()
       .search({ ...obj }, obj.limit, obj.page, fields)

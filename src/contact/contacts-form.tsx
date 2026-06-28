@@ -19,7 +19,7 @@ import {
   setSortFilter,
   Sortable,
   updateState,
-  updateUrl
+  updateUrl,
 } from "react-hook-core"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
@@ -111,27 +111,11 @@ export const ContactsForm = () => {
           <section className="row search-group inline" hidden={!showFilter}>
             <label className="col s12 m4 l4">
               {resource.name}
-              <input
-                type="text"
-                id="name"
-                name="name"
-                defaultValue={filter.name}
-                onChange={onChange}
-                maxLength={255}
-                placeholder={resource.name}
-              />
+              <input type="text" id="name" name="name" defaultValue={filter.name} onChange={onChange} maxLength={255} placeholder={resource.name} />
             </label>
             <label className="col s12 m4 l4">
               {resource.email}
-              <input
-                type="text"
-                id="email"
-                name="email"
-                defaultValue={filter.email}
-                onChange={onChange}
-                maxLength={255}
-                placeholder={resource.email}
-              />
+              <input type="text" id="email" name="email" defaultValue={filter.email} onChange={onChange} maxLength={255} placeholder={resource.email} />
             </label>
           </section>
         </form>

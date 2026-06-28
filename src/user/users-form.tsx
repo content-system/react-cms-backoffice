@@ -19,9 +19,9 @@ import {
   Select,
   setSortFilter,
   Sortable,
-  updateUrl
+  updateUrl,
 } from "react-hook-core"
-import { Link } from "react-router-dom"
+import { Link } from "react-router"
 import { Pagination } from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
 import { toast } from "ui-toast"
@@ -120,25 +120,40 @@ export const UsersForm = () => {
           <section className="row search-group">
             <label className="col s12 m6 l4 xl6 search-input">
               <PageSizeSelect id="limit" name="limit" size={filter.limit} sizes={pageSizes} onChange={pageSizeChanged} />
-              <input type="text" id="q" name="q" defaultValue={filter.q} maxLength={80} placeholder={resource.keyword}
-                onChange={e => {
+              <input
+                type="text"
+                id="q"
+                name="q"
+                defaultValue={filter.q}
+                maxLength={80}
+                placeholder={resource.keyword}
+                onChange={(e) => {
                   filter.q = e.target.value
                   setFilter(filter)
-                }} />
-              <button type="button" id="clearQBtn" name="clearQBtn" hidden={!filter.q} className="btn-remove-text"
-                onClick={e => {
+                }}
+              />
+              <button
+                type="button"
+                id="clearQBtn"
+                name="clearQBtn"
+                hidden={!filter.q}
+                className="btn-remove-text"
+                onClick={(e) => {
                   filter.q = ""
                   setFilter(filter)
-                }} />
+                }}
+              />
               <button type="button" id="toggleSearchBtn" name="toggleSearchBtn" className="btn-filter" onClick={toggleSearch} />
               <button type="submit" id="searchBtn" name="searchBtn" className="btn-search" onClick={searchOnClick} />
             </label>
-            {state.view === "list" && <div className="col s12 m6 l4 xl3 sort">
-              <label>
-                {resource.sort_by}
-                <Select id="sort" name="sort" value={filter.sort} items={items} onChange={(e) => sortOnChange(e.target)} />
-              </label>
-            </div>}
+            {state.view === "list" && (
+              <div className="col s12 m6 l4 xl3 sort">
+                <label>
+                  {resource.sort_by}
+                  <Select id="sort" name="sort" value={filter.sort} items={items} onChange={(e) => sortOnChange(e.target)} />
+                </label>
+              </div>
+            )}
             <Pagination className="col s12 m6 l4 xl3" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
           </section>
           <section className="row search-group inline" hidden={!showFilter}>

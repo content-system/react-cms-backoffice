@@ -1,5 +1,5 @@
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router"
 import { confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
 import { handleError, hasPermission, Permission, showMessage, useResource } from "uione"
@@ -101,7 +101,7 @@ export const RoleAssignmentForm = () => {
   return (
     <form id="roleAssignmentForm" name="roleAssignmentForm" className="form">
       <header>
-        <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={e => navigate(-1)} />
+        <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={(e) => navigate(-1)} />
         <h2>{resource.role_assignment_subject}</h2>
       </header>
       <div>

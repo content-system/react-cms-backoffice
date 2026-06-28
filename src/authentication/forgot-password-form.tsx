@@ -1,7 +1,7 @@
 import { email, validateAndForgotPassword, validateContact } from "password-client"
 import { MouseEvent, useEffect, useRef, useState } from "react"
 import { useMessage } from "react-hook-core"
-import { Link } from "react-router-dom"
+import { Link } from "react-router"
 import { initForm, registerEvents } from "ui-plus"
 import { handleError, message, storage, useResource } from "uione"
 import logo from "../assets/images/logo.png"
@@ -58,7 +58,7 @@ export const ForgotPasswordForm = () => {
               name="contact"
               value={contact}
               placeholder={resource.placeholder_user_email}
-              onChange={e => setContact(e.target.value)}
+              onChange={(e) => setContact(e.target.value)}
               maxLength={255}
               required={true}
             />

@@ -1,7 +1,7 @@
 import { PasswordReset, resetPassword, validateReset } from "password-client"
 import { MouseEvent, useEffect, useRef, useState } from "react"
 import { updateState, useMessage } from "react-hook-core"
-import { Link } from "react-router-dom"
+import { Link } from "react-router"
 import { initForm, registerEvents } from "ui-plus"
 import { handleError, message, storage, useResource } from "uione"
 import logo from "../assets/images/logo.png"
@@ -68,7 +68,7 @@ export const ResetPasswordForm = () => {
               name="username"
               value={user.username}
               placeholder={resource.placeholder_username}
-              onChange={e => updateState(e, user, setUser)}
+              onChange={(e) => updateState(e, user, setUser)}
               maxLength={255}
               required={true}
             />
@@ -81,7 +81,7 @@ export const ResetPasswordForm = () => {
               name="passcode"
               value={user.passcode}
               placeholder={resource.placeholder_passcode}
-              onChange={e => updateState(e, user, setUser)}
+              onChange={(e) => updateState(e, user, setUser)}
               maxLength={255}
               required={true}
             />
@@ -94,7 +94,7 @@ export const ResetPasswordForm = () => {
               name="password"
               value={user.password}
               placeholder={resource.placeholder_new_password}
-              onChange={e => updateState(e, user, setUser)}
+              onChange={(e) => updateState(e, user, setUser)}
               maxLength={255}
               required={true}
             />
@@ -107,7 +107,7 @@ export const ResetPasswordForm = () => {
               name="confirmPassword"
               value={user.confirmPassword}
               placeholder={resource.placeholder_confirm_password}
-              onChange={e => updateState(e, user, setUser)}
+              onChange={(e) => updateState(e, user, setUser)}
               maxLength={255}
               required={true}
             />

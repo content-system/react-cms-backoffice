@@ -1,7 +1,7 @@
 import { MouseEvent, useEffect, useRef, useState } from "react"
 import ReCAPTCHA from "react-google-recaptcha"
 import { updateState, useMessage } from "react-hook-core"
-import { Link } from "react-router-dom"
+import { Link } from "react-router"
 import { isEmail, isValidUsername, Status, strongPassword, validate, validateAndSignup } from "signup-client"
 import { initForm, registerEvents } from "ui-plus"
 import { handleError, message, storage, useResource } from "uione"
@@ -45,7 +45,6 @@ const msgData = {
   message: "",
   alertClass: "",
 }
-
 
 export const SignupForm = () => {
   const resource = useResource()
@@ -106,7 +105,7 @@ export const SignupForm = () => {
               id="username"
               name="username"
               value={user.username}
-              onChange={e => updateState(e, user, setUser)}
+              onChange={(e) => updateState(e, user, setUser)}
               maxLength={120}
               required={true}
               placeholder={resource.placeholder_username}
@@ -119,7 +118,7 @@ export const SignupForm = () => {
               id="contact"
               name="contact"
               value={user.contact}
-              onChange={e => updateState(e, user, setUser)}
+              onChange={(e) => updateState(e, user, setUser)}
               maxLength={255}
               required={true}
               placeholder={resource.placeholder_email}
@@ -132,7 +131,7 @@ export const SignupForm = () => {
               id="password"
               name="password"
               value={user.password}
-              onChange={e => updateState(e, user, setUser)}
+              onChange={(e) => updateState(e, user, setUser)}
               maxLength={100}
               placeholder={resource.placeholder_password}
             />
@@ -143,7 +142,7 @@ export const SignupForm = () => {
               type="password"
               id="confirmPassword"
               name="confirmPassword"
-              onChange={e => updateState(e, user, setUser)}
+              onChange={(e) => updateState(e, user, setUser)}
               maxLength={100}
               placeholder={resource.placeholder_confirm_password}
             />

@@ -21,7 +21,7 @@ import {
   setSortFilter,
   Sortable,
   updateState,
-  updateUrl
+  updateUrl,
 } from "react-hook-core"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"

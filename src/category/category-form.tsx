@@ -38,7 +38,7 @@ export const CategoryForm = () => {
             setCategory(category)
           }
         })
-        .catch(err => setError500(true))
+        .catch((err) => setError500(true))
         .finally(hideLoading)
     }
   }, [id, newMode, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -87,185 +87,185 @@ export const CategoryForm = () => {
 
   const errorTitle = error500 ? resource.error_500_title : resource.error_404_title
   const errorMessage = error500 ? resource.error_500_message : resource.error_404_message
-  return (
-    error500 || (!newMode && !initialCategory) ? <Error title={errorTitle} message={errorMessage} back={back} /> : !canWrite ? (
-      <form id="categoryForm" name="categoryForm" className="form" ref={refForm}>
-        <header>
-          <h2>{resource.category}</h2>
-        </header>
-        <div>
-          <dl className="data-list row">
-            <dt className="col s6 l3">{resource.id}</dt>
-            <dd className="col s6 l9">{category.id}</dd>
-            <dt className="col s6 l3">{resource.name}</dt>
-            <dd className="col s6 l9">{category.name}</dd>
-            <dt className="col s6 l3">{resource.path}</dt>
-            <dd className="col s6 l9">{category.path}</dd>
-            <dt className="col s6 l3">{resource.resource}</dt>
-            <dd className="col s6 l9">{category.resource}</dd>
-            <dt className="col s6 l3">{resource.icon}</dt>
-            <dd className="col s6 l9">{category.icon}</dd>
-            <dt className="col s6 l3">{resource.type}</dt>
-            <dd className="col s6 l9">{category.type}</dd>
-            <dt className="col s6 l3">{resource.parent}</dt>
-            <dd className="col s6 l9">{category.parent}</dd>
-            <dt className="col s6 l3">{resource.sequence}</dt>
-            <dd className="col s6 l9">{category.sequence}</dd>
-          </dl>
-        </div>
-        <footer>
-          <button type="button" id="closeBtn" name="closeBtn" onClick={back}>
-            {resource.close}
+  return error500 || (!newMode && !initialCategory) ? (
+    <Error title={errorTitle} message={errorMessage} back={back} />
+  ) : !canWrite ? (
+    <form id="categoryForm" name="categoryForm" className="form" ref={refForm}>
+      <header>
+        <h2>{resource.category}</h2>
+      </header>
+      <div>
+        <dl className="data-list row">
+          <dt className="col s6 l3">{resource.id}</dt>
+          <dd className="col s6 l9">{category.id}</dd>
+          <dt className="col s6 l3">{resource.name}</dt>
+          <dd className="col s6 l9">{category.name}</dd>
+          <dt className="col s6 l3">{resource.path}</dt>
+          <dd className="col s6 l9">{category.path}</dd>
+          <dt className="col s6 l3">{resource.resource}</dt>
+          <dd className="col s6 l9">{category.resource}</dd>
+          <dt className="col s6 l3">{resource.icon}</dt>
+          <dd className="col s6 l9">{category.icon}</dd>
+          <dt className="col s6 l3">{resource.type}</dt>
+          <dd className="col s6 l9">{category.type}</dd>
+          <dt className="col s6 l3">{resource.parent}</dt>
+          <dd className="col s6 l9">{category.parent}</dd>
+          <dt className="col s6 l3">{resource.sequence}</dt>
+          <dd className="col s6 l9">{category.sequence}</dd>
+        </dl>
+      </div>
+      <footer>
+        <button type="button" id="closeBtn" name="closeBtn" onClick={back}>
+          {resource.close}
+        </button>
+      </footer>
+    </form>
+  ) : (
+    <form id="categoryForm" name="categoryForm" className="form" ref={refForm}>
+      <header>
+        <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={back} />
+        <h2>{resource.category}</h2>
+        <div className="btn-group">
+          <button className="btn-group btn-right" hidden={newMode}>
+            <i className="material-icons">group</i>
           </button>
-        </footer>
-      </form>) : (
-      <form id="categoryForm" name="categoryForm" className="form" ref={refForm}>
-        <header>
-          <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={back} />
-          <h2>{resource.category}</h2>
-          <div className="btn-group">
-            <button className="btn-group btn-right" hidden={newMode}>
-              <i className="material-icons">group</i>
-            </button>
-            <button className="btn-group btn-right" hidden={newMode}>
-              <i className="material-icons">group</i>
-            </button>
-          </div>
-        </header>
-        <div className="row">
-          <label className="col s12 m6">
-            {resource.id}
-            <input
-              type="text"
-              id="id"
-              name="id"
-              defaultValue={category.id}
-              readOnly={!newMode}
-              onChange={onChange}
-              maxLength={80}
-              required={true}
-              placeholder={resource.id}
-            />
-          </label>
-          <label className="col s12 m6">
-            {resource.name}
-            <input
-              type="text"
-              id="name"
-              name="name"
-              defaultValue={category.name}
-              onChange={onChange}
-              onBlur={requiredOnBlur}
-              maxLength={255}
-              required={true}
-              placeholder={resource.name}
-            />
-          </label>
-          <label className="col s12 m6">
-            {resource.path}
-            <input
-              type="text"
-              id="path"
-              name="path"
-              defaultValue={category.path}
-              onChange={onChange}
-              onBlur={requiredOnBlur}
-              maxLength={255}
-              required={true}
-              placeholder={resource.path}
-            />
-          </label>
-          <label className="col s12 m6">
-            {resource.path}
-            <input
-              type="text"
-              id="resource"
-              name="resource"
-              defaultValue={category.resource}
-              onChange={onChange}
-              onBlur={requiredOnBlur}
-              maxLength={255}
-              required={true}
-              placeholder={resource.resource}
-            />
-          </label>
-          <label className="col s12 m6">
-            {resource.icon}
-            <input
-              type="text"
-              id="icon"
-              name="icon"
-              defaultValue={category.icon}
-              onChange={onChange}
-              onBlur={requiredOnBlur}
-              maxLength={255}
-              required={true}
-              placeholder={resource.icon}
-            />
-          </label>
-          <label className="col s12 m6">
-            {resource.type}
-            <input
-              type="text"
-              id="type"
-              name="type"
-              defaultValue={category.type}
-              onChange={onChange}
-              maxLength={10}
-              placeholder={resource.type}
-            />
-          </label>
-          <label className="col s12 m6">
-            {resource.parent}
-            <input
-              type="text"
-              id="parent"
-              name="parent"
-              defaultValue={category.parent}
-              onChange={onChange}
-              onBlur={requiredOnBlur}
-              maxLength={40}
-              placeholder={resource.parent}
-            />
-          </label>
-          <label className="col s12 m6">
-            {resource.sequence}
-            <input
-              type="tel"
-              className="text-right"
-              id="sequence"
-              name="sequence"
-              data-type="integer"
-              defaultValue={category.sequence}
-              onChange={onChange}
-              onBlur={requiredOnBlur}
-              maxLength={3}
-              required={true}
-              placeholder={resource.sequence}
-            />
-          </label>
-          <label className="col s12 m6">
-            {resource.status}
-            <div className="radio-group">
-              <label>
-                <input type="radio" id="active" name="status" onChange={onChange} defaultValue={Status.Active} checked={category.status === Status.Active} />
-                {resource.active}
-              </label>
-              <label>
-                <input type="radio" id="inactive" name="status" onChange={onChange} defaultValue={Status.Inactive} checked={category.status === Status.Inactive} />
-                {resource.inactive}
-              </label>
-            </div>
-          </label>
+          <button className="btn-group btn-right" hidden={newMode}>
+            <i className="material-icons">group</i>
+          </button>
         </div>
-        <footer>
-          {canWrite && (
-            <button type="submit" id="saveBtn" name="saveBtn" onClick={save}>
-              {resource.save}
-            </button>
-          )}
-        </footer>
-      </form>
-    )
+      </header>
+      <div className="row">
+        <label className="col s12 m6">
+          {resource.id}
+          <input
+            type="text"
+            id="id"
+            name="id"
+            defaultValue={category.id}
+            readOnly={!newMode}
+            onChange={onChange}
+            maxLength={80}
+            required={true}
+            placeholder={resource.id}
+          />
+        </label>
+        <label className="col s12 m6">
+          {resource.name}
+          <input
+            type="text"
+            id="name"
+            name="name"
+            defaultValue={category.name}
+            onChange={onChange}
+            onBlur={requiredOnBlur}
+            maxLength={255}
+            required={true}
+            placeholder={resource.name}
+          />
+        </label>
+        <label className="col s12 m6">
+          {resource.path}
+          <input
+            type="text"
+            id="path"
+            name="path"
+            defaultValue={category.path}
+            onChange={onChange}
+            onBlur={requiredOnBlur}
+            maxLength={255}
+            required={true}
+            placeholder={resource.path}
+          />
+        </label>
+        <label className="col s12 m6">
+          {resource.path}
+          <input
+            type="text"
+            id="resource"
+            name="resource"
+            defaultValue={category.resource}
+            onChange={onChange}
+            onBlur={requiredOnBlur}
+            maxLength={255}
+            required={true}
+            placeholder={resource.resource}
+          />
+        </label>
+        <label className="col s12 m6">
+          {resource.icon}
+          <input
+            type="text"
+            id="icon"
+            name="icon"
+            defaultValue={category.icon}
+            onChange={onChange}
+            onBlur={requiredOnBlur}
+            maxLength={255}
+            required={true}
+            placeholder={resource.icon}
+          />
+        </label>
+        <label className="col s12 m6">
+          {resource.type}
+          <input type="text" id="type" name="type" defaultValue={category.type} onChange={onChange} maxLength={10} placeholder={resource.type} />
+        </label>
+        <label className="col s12 m6">
+          {resource.parent}
+          <input
+            type="text"
+            id="parent"
+            name="parent"
+            defaultValue={category.parent}
+            onChange={onChange}
+            onBlur={requiredOnBlur}
+            maxLength={40}
+            placeholder={resource.parent}
+          />
+        </label>
+        <label className="col s12 m6">
+          {resource.sequence}
+          <input
+            type="tel"
+            className="text-right"
+            id="sequence"
+            name="sequence"
+            data-type="integer"
+            defaultValue={category.sequence}
+            onChange={onChange}
+            onBlur={requiredOnBlur}
+            maxLength={3}
+            required={true}
+            placeholder={resource.sequence}
+          />
+        </label>
+        <label className="col s12 m6">
+          {resource.status}
+          <div className="radio-group">
+            <label>
+              <input type="radio" id="active" name="status" onChange={onChange} defaultValue={Status.Active} checked={category.status === Status.Active} />
+              {resource.active}
+            </label>
+            <label>
+              <input
+                type="radio"
+                id="inactive"
+                name="status"
+                onChange={onChange}
+                defaultValue={Status.Inactive}
+                checked={category.status === Status.Inactive}
+              />
+              {resource.inactive}
+            </label>
+          </div>
+        </label>
+      </div>
+      <footer>
+        {canWrite && (
+          <button type="submit" id="saveBtn" name="saveBtn" onClick={save}>
+            {resource.save}
+          </button>
+        )}
+      </footer>
+    </form>
   )
 }
