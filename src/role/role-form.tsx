@@ -516,7 +516,7 @@ export function RoleForm() {
   const renderForm = (p: Privilege, parentId: string, disabled: boolean, isChild?: boolean) => {
     if (p.children && p.children.length > 0) {
       return (
-        <div className={"row"}>
+        <div className={"row"} key={p.id}>
           <div className="row">
             <div className="flex-gap-2 col s4">
               {seq++} .
@@ -547,7 +547,7 @@ export function RoleForm() {
             const c = checked(p.id, action, privileges)
             return (
               <input
-                key={action}
+                key={"item " + index}
                 value={action}
                 type="checkbox"
                 checked={item.shown ? c : false}
