@@ -1,6 +1,6 @@
 import { Result } from "onecore"
 import React, { MouseEvent, useEffect, useRef, useState } from "react"
-import { clone, Error, isEmpty, isSuccessful, makeDiff, onBack, updateState } from "react-hook-core"
+import { clone, digitOnKeyDown, Error, isEmpty, isSuccessful, makeDiff, onBack, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -232,6 +232,7 @@ export const CategoryForm = () => {
             data-type="integer"
             defaultValue={category.sequence}
             onChange={onChange}
+            onKeyDown={digitOnKeyDown}
             onBlur={requiredOnBlur}
             maxLength={3}
             required={true}
