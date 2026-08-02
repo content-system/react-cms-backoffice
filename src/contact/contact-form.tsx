@@ -166,7 +166,6 @@ export const ContactForm = () => {
             type="text"
             id="jobTitle"
             name="jobTitle"
-            data-type="jobTitle"
             defaultValue={contact.jobTitle}
             onChange={onChange}
             onBlur={requiredOnBlur}

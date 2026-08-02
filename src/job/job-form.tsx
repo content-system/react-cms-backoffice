@@ -1,6 +1,6 @@
 import { Result } from "onecore"
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
-import { clone, datetimeToString, Error, isEmpty, isSuccessful, makeDiff, onBack, updateState } from "react-hook-core"
+import { clone, datetimeToString, digitOnKeyDown, Error, isEmpty, isSuccessful, makeDiff, onBack, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -166,6 +166,7 @@ export const JobForm = () => {
             data-type="integer"
             defaultValue={job.quantity}
             onChange={onChange}
+            onKeyDown={digitOnKeyDown}
             onBlur={requiredOnBlur}
             maxLength={3}
             required={true}
@@ -196,6 +197,7 @@ export const JobForm = () => {
             data-type="integer"
             defaultValue={formatInteger(job.minSalary, locale.groupSeparator)}
             onChange={onChange}
+            onKeyDown={digitOnKeyDown}
             onFocus={integerOnFocus}
             required={true}
             onBlur={(e) => integerOnBlur(e, locale.groupSeparator)}
@@ -213,6 +215,7 @@ export const JobForm = () => {
             data-type="integer"
             defaultValue={formatInteger(job.maxSalary, locale.groupSeparator)}
             onChange={onChange}
+            onKeyDown={digitOnKeyDown}
             onFocus={integerOnFocus}
             onBlur={(e) => integerOnBlur(e, locale.groupSeparator)}
             maxLength={16}

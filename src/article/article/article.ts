@@ -1,4 +1,4 @@
-import { Attributes, Filter, Result, SearchResult, Service, TimeRange } from "onecore"
+import { Attributes, Filter, Result, SearchResult, Service } from "onecore"
 
 export class Status {
   static readonly Draft = "D"
@@ -36,7 +36,7 @@ export interface ArticleFilter extends Filter {
   id?: string
   title?: string
   description?: string
-  publishedAt: TimeRange
+  //publishedAt: TimeRange
   tags?: string[]
   status: string[]
 }
