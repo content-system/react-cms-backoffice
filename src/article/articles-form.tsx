@@ -4,7 +4,6 @@ import {
   buildFromUrl,
   buildMessage,
   checked,
-  datetimeToString,
   getFields,
   getOffset,
   mergeFilter,
@@ -28,7 +27,7 @@ import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
-import { addSeconds, formatDateTime } from "ui-plus"
+import { formatDateTime } from "ui-plus"
 import { toast } from "ui-toast"
 import { canReject, canUpdate, getDateFormat, getFlowStatusName, getUserId, handleError, hasPermission, Permission, useResource } from "uione"
 import { Article, ArticleFilter, getArticleService } from "./service"
@@ -50,9 +49,6 @@ export const ArticlesForm = () => {
   const articleFilter: ArticleFilter = {
     limit: resources.defaultLimit,
     status: [],
-    publishedAt: {
-      max: addSeconds(now, 300),
-    },
   }
   const initialState: ArticleSearch = {
     statusList: [],
@@ -137,30 +133,6 @@ export const ArticlesForm = () => {
             <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
           </section>
           <section className="row search-group inline" hidden={!showFilter}>
-            <label className="col s12 m6">
-              {resource.published_at_from}
-              <input
-                type="datetime-local"
-                step=".010"
-                id="publishedAt_min"
-                name="publishedAt_min"
-                data-field="publishedAt.min"
-                defaultValue={datetimeToString(filter.publishedAt?.min)}
-                onChange={onChange}
-              />
-            </label>
-            <label className="col s12 m6">
-              {resource.published_at_to}
-              <input
-                type="datetime-local"
-                step=".010"
-                id="publishedAt_max"
-                name="publishedAt_max"
-                data-field="publishedAt.max"
-                defaultValue={datetimeToString(filter.publishedAt?.max)}
-                onChange={onChange}
-              />
-            </label>
             <label className="col s12 checkbox-section">
               {resource.status}
               <section className="checkbox-group">

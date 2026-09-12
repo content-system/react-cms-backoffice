@@ -8,11 +8,8 @@ export * from "./content"
 export class ContentClient extends SearchWebClient<Content, ContentFilter> implements ContentService {
   constructor(http: HttpRequest, url: string) {
     super(http, url, contentModel)
+    this.searchGet = true
   }
-  postOnly(s: ContentFilter): boolean {
-    return true
-  }
-
   load(id: string, lang: string): Promise<Content | null> {
     const url = `${this.serviceUrl}/${id}/${lang}`
     return this.http

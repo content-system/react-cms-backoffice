@@ -9,9 +9,7 @@ export * from "./audit-log"
 export class AuditLogClient extends ViewSearchClient<AuditLog, string, AuditLogFilter> implements AuditLogService {
   constructor(http: HttpRequest, url: string) {
     super(http, url, auditLogModel)
-  }
-  postOnly(s: AuditLogFilter): boolean {
-    return true
+    this.searchGet = true
   }
 }
 

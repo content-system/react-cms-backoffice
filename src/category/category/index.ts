@@ -7,9 +7,6 @@ export * from "./category"
 export class CategoryClient extends Client<Category, string, CategoryFilter> implements CategoryService {
   constructor(http: HttpRequest, url: string) {
     super(http, url, categoryModel)
-  }
-
-  postOnly(s: CategoryFilter): boolean {
-    return true
+    this.searchGet = true
   }
 }
