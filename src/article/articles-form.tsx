@@ -1,0 +1,244 @@
+import type { Item } from "onecore"
+import { type ChangeEvent, type MouseEvent, useEffect, useRef, useState } from "react"
+import {
+  buildFromUrl,
+  buildMessage,
+  checked,
+  getFields,
+  getOffset,
+  mergeFilter,
+  onClearQ,
+  onPageChanged,
+  onPageSizeChanged,
+  onSearch,
+  onSort,
+  onToggleSearch,
+  type PageChange,
+  pageSizes,
+  PageSizeSelect,
+  resetSearch,
+  resources,
+  setSortFilter,
+  type Sortable,
+  updateState,
+  updateUrl,
+} from "react-hook-core"
+import { Link, useNavigate } from "react-router"
+import { Pagination } from "reactx-pagination"
+import { hideLoading, showLoading } from "ui-loading"
+import { formatDateTime } from "ui-plus"
+import { toast } from "ui-toast"
+import { canReject, canUpdate, getDateFormat, getFlowStatusName, getUserId, handleError, hasPermission, Permission, useResource } from "uione"
+import { type Article, type ArticleFilter, getArticleService } from "./service"
+
+interface ArticleSearch extends Sortable {
+  statusList: Item[]
+  total?: number
+  view?: string
+  fields?: string[]
+}
+
+export const ArticlesForm = () => {
+  const canWrite = hasPermission(Permission.write)
+  const canApprove = hasPermission(Permission.approve)
+  const dateFormat = getDateFormat()
+  const userId = getUserId()
+
+  const now = new Date()
+  const articleFilter: ArticleFilter = {
+    limit: resources.defaultLimit,
+    status: [],
+  }
+  const initialState: ArticleSearch = {
+    statusList: [],
+  }
+
+  const resource = useResource()
+  const navigate = useNavigate()
+  const refForm = useRef<HTMLFormElement>(null)
+  const [showFilter, setShowFilter] = useState(false)
+  const [list, setList] = useState<Article[]>([])
+  const [state, setState] = useState<ArticleSearch>(initialState)
+  const [filter, setFilter] = useState<ArticleFilter>(articleFilter)
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => updateState(e, filter, setFilter)
+  const statusOnChange = (e: ChangeEvent<HTMLInputElement>) => resetSearch(e, filter, setFilter, search)
+
+  useEffect(() => {
+    const initFilter = mergeFilter(buildFromUrl<ArticleFilter>(), filter, pageSizes, ["status"])
+    setSortFilter(state, initFilter, setFilter)
+    search(initFilter, state, true) // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const clearQ = (e: MouseEvent<HTMLButtonElement>) => onClearQ(filter, setFilter)
+  const toggleSearch = (e: MouseEvent<HTMLButtonElement>) => onToggleSearch(e, showFilter, setShowFilter)
+  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter)
+  const pageChanged = (data: PageChange) => onPageChanged(data, search, filter)
+  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, search, filter, state)
+  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, search, filter, state)
+
+  const search = (obj: ArticleFilter, sort?: Sortable, isFirstLoad?: boolean) => {
+    showLoading()
+    const fields = getFields(refForm.current, state.fields)
+    updateUrl(obj, isFirstLoad, setFilter, sort)
+    getArticleService()
+      .search({ ...obj }, obj.limit, obj.page, fields)
+      .then((res) => {
+        setState({ ...state, total: res.total, fields })
+        setList(res.list)
+        toast(buildMessage(resource, res.list, obj.limit, obj.page, res.total))
+      })
+      .catch(handleError)
+      .finally(hideLoading)
+  }
+
+  const edit = (e: MouseEvent<HTMLElement>, id: string) => {
+    e.preventDefault()
+    navigate(`${id}`)
+  }
+  const viewHistory = (e: MouseEvent<HTMLElement>, id: string) => {
+    e.preventDefault()
+    navigate(`${id}/history`)
+  }
+  const approve = (e: MouseEvent<HTMLElement>, id: string) => {
+    e.preventDefault()
+    navigate(`${id}/approve`)
+  }
+
+  const offset = getOffset(filter.limit, filter.page)
+  return (
+    <div>
+      <header>
+        <h2>{resource.articles}</h2>
+        <div className="btn-group">
+          {state.view === "list" && (
+            <button type="button" id="tableBtn" name="tableBtn" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />
+          )}
+          {state.view !== "list" && (
+            <button type="button" id="listViewBtn" name="listViewBtn" className="btn-list" onClick={(e) => setState({ ...state, view: "list" })} />
+          )}
+          {canWrite && <Link id="newBtn" className="btn-new" to="new" />}
+        </div>
+      </header>
+      <div className="main-body">
+        <form id="articlesForm" name="articlesForm" className="form" noValidate={true} ref={refForm}>
+          <section className="row search-group">
+            <label className="col s12 m6 search-input">
+              <PageSizeSelect id="limit" name="limit" size={filter.limit} sizes={pageSizes} onChange={pageSizeChanged} />
+              <input type="text" id="q" name="q" defaultValue={filter.q} maxLength={80} onChange={onChange} placeholder={resource.keyword} />
+              <button type="button" id="clearQBtn" name="clearQBtn" hidden={!filter.q} className="btn-remove-text" onClick={clearQ} />
+              <button type="button" id="toggleSearchBtn" name="toggleSearchBtn" className="btn-filter" onClick={toggleSearch} />
+              <button type="submit" id="searchBtn" name="searchBtn" className="btn-search" onClick={searchOnClick} />
+            </label>
+            <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
+          </section>
+          <section className="row search-group inline" hidden={!showFilter}>
+            <label className="col s12 checkbox-section">
+              {resource.status}
+              <section className="checkbox-group">
+                <label>
+                  <input type="checkbox" id="status_D" name="status" defaultValue="D" checked={checked(filter.status, "D")} onChange={statusOnChange} />
+                  {resource.status_draft}
+                </label>
+                <label>
+                  <input type="checkbox" id="status_S" name="status" defaultValue="S" checked={checked(filter.status, "S")} onChange={statusOnChange} />
+                  {resource.status_submitted}
+                </label>
+                <label>
+                  <input type="checkbox" id="status_R" name="status" defaultValue="R" checked={checked(filter.status, "R")} onChange={statusOnChange} />
+                  {resource.status_rejected}
+                </label>
+                <label>
+                  <input type="checkbox" id="status_A" name="status" defaultValue="A" checked={checked(filter.status, "A")} onChange={statusOnChange} />
+                  {resource.status_approved}
+                </label>
+                <label>
+                  <input type="checkbox" id="status_P" name="status" defaultValue="P" checked={checked(filter.status, "P")} onChange={statusOnChange} />
+                  {resource.status_published}
+                </label>
+              </section>
+            </label>
+          </section>
+        </form>
+        {state.view !== "list" && (
+          <div className="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>{resource.number}</th>
+                  <th data-field="id">
+                    <button type="button" id="idSort" onClick={sort}>
+                      {resource.id}
+                    </button>
+                  </th>
+                  <th data-field="title">
+                    <button type="button" id="titleSort" onClick={sort}>
+                      {resource.title}
+                    </button>
+                  </th>
+                  <th data-field="publishedAt" className="datetime">
+                    <button type="button" id="publishedAtSort" onClick={sort}>
+                      {resource.published_at}
+                    </button>
+                  </th>
+                  <th data-field="description">
+                    <button type="button" id="descriptionSort" onClick={sort}>
+                      {resource.description}
+                    </button>
+                  </th>
+                  <th data-field="status">
+                    <button type="button" id="statusSort" onClick={sort}>
+                      {resource.status}
+                    </button>
+                  </th>
+                  <th className="action">{resource.action}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {list.map((item, i) => {
+                  return (
+                    <tr key={i}>
+                      <td className="text-right">{offset + i + 1}</td>
+                      <td>{item.id}</td>
+                      <td>
+                        <Link to={`${item.id}`}>{item.title}</Link>
+                      </td>
+                      <td>{formatDateTime(item.publishedAt, dateFormat)}</td>
+                      <td>{item.description}</td>
+                      <td>{getFlowStatusName(item.status, resource)}</td>
+                      <td>
+                        <div className="btn-group">
+                          {canWrite && <button type="button" className="btn-copy" onClick={(e) => edit(e, item.id)}></button>}
+                          {canWrite && canUpdate(item.status) && <button type="button" className="btn-edit" onClick={(e) => edit(e, item.id)}></button>}
+                          {canApprove && userId !== item.submittedBy && canReject(item.status) && (
+                            <button type="button" className="btn-approve" onClick={(e) => approve(e, item.id)}></button>
+                          )}
+                          <button type="button" className="btn-history" onClick={(e) => viewHistory(e, item.id)}></button>
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+        {state.view === "list" && (
+          <ul className="row list">
+            {list.map((item, i) => {
+              return (
+                <li key={i} className="col s12 m6 l4 xl3 img-card" onClick={(e) => edit(e, item.id)}>
+                  <section>
+                    <div className="cover" style={{ backgroundImage: `url('${item.thumbnail}')` }}></div>
+                    <Link to={`${item.id}`}>{item.title}</Link>
+                    <p>{formatDateTime(item.publishedAt, dateFormat)}</p>
+                    <p>{item.description}</p>
+                  </section>
+                </li>
+              )
+            })}
+          </ul>
+        )}
+      </div>
+    </div>
+  )
+}

@@ -1,0 +1,55 @@
+.radio-group > label > input[type="radio"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]) {
+  position: absolute;
+  cursor: pointer;
+  left: 16px;
+  top: 18px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+}
+
+input[type="radio"]:after,
+input[type="radio"]:before {
+  height: 16px;
+  width: 16px;
+  content: "";
+}
+input[type="radio"] {
+  -webkit-appearance: none;
+  position: relative;
+  cursor: pointer;
+  font-size: 15px;
+  border: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  outline: 1;
+}
+input[type="radio"]:before {
+  background-color: inherit;
+  border-radius: 50%;
+  border: 1px solid #4d4d4d;
+  display: inline-block;
+  position: absolute;
+  background-image: radial-gradient(circle, #4db6ac 40%, inherit 50%);
+  background-size: 0;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  will-change: background-size;
+  z-index: 2;
+}
+input[type="radio"]:after {
+  background: inherit;
+  border-radius: 50%;
+  position: absolute;
+}
+input[type="radio"]:checked:before {
+  background-size: 14px 14px;
+  background-color: #4db6ac;
+  background-image: radial-gradient(circle, #4db6ac 40%, #4db6ac 50%);
+  border-color: #4db6ac;
+}
+input[type="radio"]:focus,
+input[type="range"]:focus {
+  outline: 1;
+}

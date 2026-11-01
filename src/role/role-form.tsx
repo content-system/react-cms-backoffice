@@ -1,0 +1,771 @@
+import { type ChangeEvent, type MouseEvent, useEffect, useRef, useState } from "react"
+import { clone, formatText, isEmpty, isSuccessful, makeDiff, onBack } from "react-hook-core"
+import { Link, useNavigate, useParams } from "react-router"
+import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
+import { hideLoading, showLoading } from "ui-loading"
+import { addError, initForm, patternOnBlur, registerEvents, requiredOnBlur, setReadOnly, showFormError, validateForm } from "ui-plus"
+import { getLocale, handleError, hasPermission, Status, useResource, write } from "uione"
+import { getRoleService, type Privilege, type Role } from "./service"
+import "./style.css"
+
+const regexId = "^(?=.*[a-z])[a-z0-9_]{1,100}$" // lowercase letters, numbers and underscores
+
+interface Permission {
+  id: string
+  actions: number
+  permissions: number
+}
+
+interface ShownItem {
+  action: number
+  shown: boolean
+}
+
+interface InternalState {
+  role: Role
+  allPrivileges: Privilege[]
+  shownPrivileges: Privilege[]
+  checkedAll?: boolean
+  keyword: string
+  all: string[]
+  actions: Map<string, number>
+  maxAction: number
+}
+
+const initialState: InternalState = {
+  role: {} as Role,
+  allPrivileges: [],
+  shownPrivileges: [],
+  keyword: "",
+  checkedAll: false,
+  all: [],
+  actions: new Map([]),
+  maxAction: 0,
+}
+
+const createRole = (): Role => {
+  const role = {} as Role
+  role.privileges = []
+  role.status = Status.Active
+  return role
+}
+
+function getPrivilege(id: string, all: Privilege[]): Privilege | undefined {
+  if (!all || !id || id === "") {
+    return undefined
+  }
+  for (const root of all) {
+    if (root.id === id) {
+      return root
+    }
+    if (root.children && root.children.length > 0) {
+      const m = getPrivilege(id, root.children)
+      if (m) {
+        return m
+      }
+    }
+  }
+  return undefined
+}
+
+function buildAll(privileges: string[], all: Privilege[]): void {
+  for (const root of all) {
+    privileges.push(root.id)
+    if (root.children && root.children.length > 0) {
+      buildAll(privileges, root.children)
+    }
+  }
+}
+
+function buildActionAll(actions: Map<string, number>, all: Privilege[]): void {
+  for (const root of all) {
+    actions.set(root.id, +root.actions)
+    if (root.children && root.children.length > 0) {
+      buildActionAll(actions, root.children)
+    }
+  }
+}
+
+function getMax(map: Map<string, number>): number {
+  let max = -Infinity
+  map.forEach((value, key) => {
+    if (value > max) {
+      max = value
+    }
+  })
+  return max
+}
+
+function mergeArray(dest: Permission[], src: Permission[], allowPermission0?: Boolean) {
+  for (let i = 0; i < src.length; i++) {
+    const item = src[i]
+    const index = dest.findIndex((k) => k.id === item.id)
+    if (index !== -1) {
+      dest.splice(index, 1)
+    }
+    if (allowPermission0) {
+      dest.push(item)
+    } else {
+      if (item.permissions > 0) {
+        dest.push(item)
+      }
+    }
+  }
+}
+
+function filterPermission(parentId: string | undefined, mapPermissions: Permission[], all: Privilege[], actions: Map<string, number>): Permission[] {
+  const parent = getPrivilege(parentId || "", all)
+  const childrenIds = parent?.children?.map((item) => item.id) || []
+  const hasChild = mapPermissions.some((i) => childrenIds.includes(i.id) && i.permissions > 0)
+  if (hasChild && parentId) {
+    mergeArray(mapPermissions, [{ id: parentId, actions: actions.get(parentId) || 0, permissions: 0 }], true)
+    return mapPermissions
+  }
+  return mapPermissions.filter((i) => i.id !== parentId)
+}
+
+function isChecked(id: string, privileges: Permission[]): boolean {
+  if (!privileges) return false
+  return privileges && privileges.find((item) => item.id === id && item.permissions > 0) ? true : false
+}
+function isCheckedAll(privileges: string[] | undefined, all: string[]): boolean | undefined {
+  const checkedAll = privileges && all && privileges.length === all.length
+  return checkedAll
+}
+
+function checked(id: string, action: number, privileges: Permission[]): boolean {
+  const privilege = privileges.find((item) => item.id === id)
+  if (!privilege) return false
+  return Boolean(privilege?.permissions & action)
+}
+
+function bitwiseAnd(numbers: number[], result: number): number {
+  for (let num of numbers) {
+    result &= num
+  }
+  return result
+}
+
+function mapPermissionOfParent(id: string, childPermissions: Permission[], actions: Map<string, number>) {
+  const groupActionAndPermission = new Map<number, number[]>()
+  // check permission of parent
+  let permission = 0
+  if (childPermissions.length === 1) {
+    permission = childPermissions[0].permissions
+  } else {
+    for (let i = 0; i < childPermissions.length; i++) {
+      const item = childPermissions[i]
+      let a = groupActionAndPermission.get(item.actions) || []
+      a.push(item.permissions)
+      groupActionAndPermission.set(item.actions, a)
+    }
+    groupActionAndPermission.forEach((value, key) => {
+      const f = bitwiseAnd(value, key)
+      permission = permission | f
+    })
+  }
+  const maxAction = actions.get(id) || 0
+  childPermissions.push({ id: id, actions: maxAction, permissions: permission & maxAction })
+  return childPermissions
+}
+
+function mapPermission(actions: Map<string, number>, item: Permission, pCheckedValue: number, uChecked: boolean): Permission {
+  const actionMax = actions.get(item.id) || 1
+  const id = item.id
+  let v = item.permissions | pCheckedValue
+  if (!uChecked) {
+    if (pCheckedValue === 1) {
+      v = item.permissions & 0 // OR
+    } else {
+      v = item.permissions ^ pCheckedValue // XOR
+    }
+  }
+  if (pCheckedValue > actionMax) {
+    return { id: item.id, actions: actionMax, permissions: actionMax }
+  }
+  return { id: id, actions: actionMax, permissions: v }
+}
+
+function getColumns(maxAction: number): number[] {
+  let i = 0
+  let total = 0
+  let rs = []
+  while (total < maxAction) {
+    const action = 1 << i
+    total = total + action
+    rs.push(action)
+    i++
+  }
+  return rs
+}
+
+function binaryStringToArray(binaryString: string): string[] {
+  // Use the split method to convert the binary string to an array of characters
+  return binaryString.split("")
+}
+
+function decimalToBinary(decimal: number): string {
+  // Convert decimal to binary using the toString method with base 2
+  return (decimal >>> 0).toString(2)
+}
+
+function padLeft(str: string, num: number) {
+  return str.padStart(num, "0")
+}
+
+const handleCheckAllModule = (
+  e: ChangeEvent<HTMLInputElement>,
+  privileges: string[] | undefined,
+  all: string[],
+  actions: Map<String, number>,
+  callback: (privileges: string[]) => void,
+) => {
+  e.preventDefault()
+  const checked = e.target.checked
+  if (!checked) {
+    callback([])
+    return
+  }
+
+  if (!privileges) {
+    privileges = []
+  }
+  if (checked) {
+    privileges = []
+    for (const m of all) {
+      privileges.push(m + " " + actions.get(m))
+    }
+  }
+
+  callback(privileges || [])
+}
+
+function buildShownModules(q: string, all: Privilege[]): Privilege[] {
+  if (!q || q === "") {
+    return all
+  }
+  const w = q.toLowerCase()
+  const shownPrivileges = all
+    .map((parent) => {
+      const parentCopy = Object.assign({}, parent)
+      if (parentCopy.children) {
+        parentCopy.children = parentCopy.children.filter((child) => child.name.toLowerCase().includes(w))
+      }
+      return parentCopy
+    })
+    .filter((item) => (item.children && item.children.length > 0) || item.name.toLowerCase().includes(w))
+  return shownPrivileges
+}
+
+function buildPermissions(actions: Map<string, number>, privileges?: string[]): Permission[] {
+  if (!privileges || privileges.length === 0) {
+    return []
+  }
+  return privileges.map((privilege) => {
+    let permissions: number = 1
+    const p = privilege.split(" ")
+    if (p.length > 1) {
+      permissions = +p[1] // convert string to number
+    } else {
+      permissions = 0
+    }
+    const id = p[0]
+    return { id: id, actions: actions.get(id) || 0, permissions: permissions || 0 }
+  })
+}
+
+export function RoleForm() {
+  const isReadOnly = !hasPermission(write, 1)
+  const resource = useResource()
+  const navigate = useNavigate()
+  const refForm = useRef<HTMLFormElement>(null)
+  const [initialRole, setInitialRole] = useState<Role>()
+  const [state, setState] = useState<InternalState>(initialState)
+  const [privileges, setPrivileges] = useState<Permission[]>([])
+  let seq = 1
+
+  const { id } = useParams()
+  const newMode = !id
+  useEffect(() => {
+    initForm(refForm?.current, registerEvents)
+    const service = getRoleService()
+    service
+      .getPrivileges()
+      .then((allPrivileges) => {
+        const all: string[] = []
+        const actions = new Map<string, number>()
+        buildAll(all, allPrivileges)
+        buildActionAll(actions, allPrivileges)
+        if (!id) {
+          const role = createRole()
+          setPrivileges(buildPermissions(actions, role.privileges))
+          setInitialRole(clone(role))
+          setState({ ...state, all, actions, allPrivileges, shownPrivileges: allPrivileges, maxAction: getMax(actions), role })
+        } else {
+          showLoading()
+          service
+            .load(id)
+            .then((role) => {
+              if (!role) {
+                alertError(resource.error_404, () => navigate(-1))
+              } else {
+                if (!role.privileges) {
+                  role.privileges = []
+                }
+                setPrivileges(buildPermissions(actions, role.privileges))
+                setInitialRole(clone(role))
+                setState({ ...state, all, actions, allPrivileges, shownPrivileges: allPrivileges, maxAction: getMax(actions), role })
+                if (isReadOnly) {
+                  setReadOnly(refForm.current as any)
+                }
+              }
+            })
+            .catch(handleError)
+            .finally(hideLoading)
+        }
+      })
+      .catch(handleError)
+  }, [id, newMode, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    const obj = state.role
+    if (obj) {
+      const { all, actions } = state
+      if (!obj.privileges) {
+        obj.privileges = []
+      } else {
+        setPrivileges(buildPermissions(actions, obj.privileges))
+      }
+      if (isReadOnly) {
+        setReadOnly(refForm.current as any, "keyword", "saveBtn")
+      }
+      const checkedAll = isCheckedAll(obj.privileges, all)
+      setState({ ...state, checkedAll, role: obj })
+    }
+  }, [state.role, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleCheckParent = (e: ChangeEvent<HTMLInputElement>, id: string) => {
+    e.preventDefault()
+    const { all, allPrivileges, actions } = state
+    const obj = state.role
+    const checked = e.target.checked
+    let mapPermissions = privileges
+    const parentPrivilege = getPrivilege(id || "", allPrivileges)
+    if (parentPrivilege !== undefined) {
+      let childrenPermission =
+        parentPrivilege?.children?.map((k) => {
+          const act = actions.get(k.id) || 0
+          return {
+            id: k.id,
+            actions: act,
+            permissions: checked ? act : 0,
+          }
+        }) || []
+      mergeArray(mapPermissions, childrenPermission)
+    }
+    mapPermissions = filterPermission(id, mapPermissions, allPrivileges, actions)
+    const mapToSavePrivileges = mapPermissions.map((p) => {
+      return p.id + " " + p.permissions
+    })
+    const checkedAll = isCheckedAll(role.privileges, all)
+    setState({ ...state, checkedAll, role: { ...obj, privileges: mapToSavePrivileges } })
+  }
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const q = e.target.value
+    const { allPrivileges } = state
+    const shownPrivileges = buildShownModules(q, allPrivileges)
+    setState({ ...state, keyword: q, shownPrivileges })
+  }
+
+  const handleCheckBox = (e: ChangeEvent<HTMLInputElement>, id: string, parentId?: string, currentPrivilege?: Privilege, force?: boolean) => {
+    e.preventDefault()
+    const uChecked: boolean = e.target.checked
+    let pChecked: number = +e.target.value
+    const { actions, allPrivileges } = state
+    let permissions = privileges
+
+    if (currentPrivilege === undefined) {
+      return
+    }
+    // is parent
+    const isParent = currentPrivilege?.children !== null && currentPrivilege?.children
+    if (isParent) {
+      // map privilegeCurrent -> permission current
+      let childrenPermission =
+        currentPrivilege?.children?.map((k) => {
+          const e = permissions.find((i) => i.id === k.id)
+          if (e !== undefined) {
+            return e
+          }
+          return {
+            id: k.id,
+            actions: actions.get(k.id) || 0,
+            permissions: uChecked ? 1 : 0,
+          }
+        }) || []
+      let pChildren = childrenPermission.map((p) => {
+        return mapPermission(actions, p, pChecked, uChecked)
+      })
+      pChildren = mapPermissionOfParent(id, pChildren, actions)
+      mergeArray(permissions, pChildren)
+    } else {
+      const existed = permissions.find((i) => i.id === currentPrivilege.id)
+      if (!existed) {
+        permissions.push({
+          id,
+          actions: actions.get(id) || 0,
+          permissions: 0,
+        })
+      }
+      if (existed !== undefined) {
+        existed.actions = actions.get(currentPrivilege.id) || 0
+      }
+      permissions = permissions.map((p) => {
+        if (p.id === currentPrivilege.id) {
+          if (force) {
+            p.permissions = uChecked ? pChecked : 0
+            return p
+          }
+          if (pChecked > 1) {
+            if (p.permissions < pChecked) {
+              //case Prevent unchecking "read" if "write" is unchecked, but "delete" is not unchecked => read checked
+              pChecked = pChecked ^ 1 // xor 1 - if it has permission is write / delete / approve -> permission read
+            }
+          }
+          return mapPermission(actions, p, pChecked, uChecked)
+        }
+        return p
+      })
+      // check permission of parent
+      if (parentId !== "") {
+        const privilegeParent = getPrivilege(parentId || "", allPrivileges)
+        if (privilegeParent !== undefined) {
+          let childrenPermission =
+            privilegeParent?.children?.map((k) => {
+              const e = permissions.find((i) => i.id === k.id)
+              if (e !== undefined) {
+                e.actions = actions.get(e.id) || 0
+                return e
+              }
+              return {
+                id: k.id,
+                actions: actions.get(id) || 0,
+                permissions: 0,
+              }
+            }) || []
+          const pChildren = mapPermissionOfParent(parentId || "", childrenPermission, actions)
+          mergeArray(permissions, pChildren)
+        }
+      } else {
+        for (let i = 0; i < permissions.length; i++) {
+          const p = permissions[i]
+          if (p.permissions === 0 && p.id === id) {
+            permissions.splice(i, 1)
+          }
+        }
+      }
+    }
+    permissions = filterPermission(parentId, permissions, allPrivileges, actions)
+    const mapToSavePrivileges = permissions.map((p) => {
+      if (p.id === parentId) {
+        return p.id + " 0"
+      }
+      return p.id + " " + p.permissions
+    })
+    setPrivileges(permissions)
+    const checkedAll = isCheckedAll(mapToSavePrivileges, state.all)
+    setState({ ...state, checkedAll, role: { ...state.role, privileges: mapToSavePrivileges } })
+  }
+
+  const isParentChecked = (id: string, child: Privilege[], privileges: Permission[]) => {
+    if (!privileges) {
+      return false
+    }
+    if (child === undefined) {
+      return false
+    }
+    const ids = child?.filter((i) => i.id !== id).map((i) => i.id) || []
+    if (privileges.length < ids.length) {
+      return false
+    }
+    const { actions } = state
+    const checked = privileges.filter((item) => ids.includes(item.id) && item.permissions === actions.get(item.id))
+    return checked.length === ids.length
+  }
+
+  const getColumnsOfRow = (action: number): ShownItem[] => {
+    const { maxAction: maxActionAll } = state
+    let binaryString = decimalToBinary(action)
+    let maxLen = decimalToBinary(maxActionAll)
+    binaryString = padLeft(binaryString, maxLen.length)
+    let binaryArray = binaryStringToArray(binaryString)
+    const cols = getColumns(action)
+    binaryArray.reverse()
+    return binaryArray.map((item, i) => {
+      return { shown: item === "1", action: cols[i] }
+    })
+  }
+
+  const renderForms = (modules: Privilege[] | undefined, parentId: string, disabled: boolean, isChild?: boolean) => {
+    if (!modules || modules.length === 0) {
+      return ""
+    }
+    return modules.map((m) => renderForm(m, parentId, disabled, isChild))
+  }
+
+  const renderForm = (p: Privilege, parentId: string, disabled: boolean, isChild?: boolean) => {
+    if (p.children && p.children.length > 0) {
+      return (
+        <div className={"row"} key={p.id}>
+          <div className="row">
+            <div className="flex-gap-2 col s4">
+              {seq++} .
+              <input type="checkbox" disabled={disabled} onChange={(e) => handleCheckParent(e, p.id)} checked={isParentChecked(p.id, p.children, privileges)} />
+              <p>{p.name}</p>
+              {resource.select_all}
+            </div>
+          </div>
+          {renderForms(p.children, p.id, disabled, true)}
+        </div>
+      )
+    } else {
+      return (
+        <div className={`row ${isChild && "sub-menu-level-2"}`} key={p.id}>
+          <div className={`col s6 m3 inline flex-gap-2`}>
+            {seq++} .
+            <input
+              type="checkbox"
+              value={p.actions}
+              disabled={disabled}
+              onChange={(e) => handleCheckBox(e, p.id, parentId, p, true)}
+              checked={isChecked(p.id, privileges)}
+            ></input>
+            <p>{p.name}</p>
+          </div>
+          {getColumnsOfRow(p.actions).map((item, index) => {
+            const action = item.action
+            const c = checked(p.id, action, privileges)
+            return (
+              <input
+                key={"item " + index}
+                value={action}
+                type="checkbox"
+                checked={item.shown ? c : false}
+                disabled={disabled}
+                className="col s1 m2 center"
+                style={{ visibility: item.shown ? "unset" : "hidden" }}
+                onChange={(e) => handleCheckBox(e, p.id, parentId, p)}
+              ></input>
+            )
+          })}
+        </div>
+      )
+    }
+  }
+
+  const role = state.role
+  const statusOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    role.status = e.target.value
+    setState({ ...state, role })
+  }
+  const back = (e: MouseEvent<HTMLButtonElement>) => onBack(e, navigate, confirm, resource, role, initialRole)
+  const deleteOnClick = (e: MouseEvent<HTMLElement>) => {
+    e.preventDefault()
+    confirm(resource.msg_confirm_delete, () => {
+      const service = getRoleService()
+      showLoading()
+      service
+        .delete(role.roleId)
+        .then((res) => {
+          if (res > 0) {
+            alertSuccess(resource.msg_delete_success, () => navigate(-1))
+          } else if (res === 0) {
+            alertWarning(resource.msg_delete_fail)
+          } else {
+            alertWarning(resource.msg_role_delete_fail)
+          }
+        })
+        .catch(handleError)
+        .finally(hideLoading)
+    })
+  }
+  const save = (e: MouseEvent<HTMLElement>) => {
+    e.preventDefault()
+    const valid = validateForm(refForm?.current, getLocale())
+    if (valid) {
+      const service = getRoleService()
+      if (newMode) {
+        confirm(resource.msg_confirm_save, () => {
+          showLoading()
+          service
+            .create(role)
+            .then((res) => {
+              if (Array.isArray(res)) {
+                showFormError(refForm?.current, res)
+              } else if (isSuccessful(res)) {
+                alertSuccess(resource.msg_save_success, () => navigate(-1))
+              } else {
+                const msg = formatText(resource.error_duplicated, resource.role_id)
+                addError(refForm?.current, "roleId", msg)
+              }
+            })
+            .catch(handleError)
+            .finally(hideLoading)
+        })
+      } else {
+        const diff = makeDiff(role, initialRole, ["roleId"])
+        if (isEmpty(diff)) {
+          return alertWarning(resource.msg_no_change)
+        }
+        confirm(resource.msg_confirm_save, () => {
+          showLoading()
+          service
+            .patch(diff)
+            .then((res) => {
+              if (Array.isArray(res)) {
+                showFormError(refForm?.current, res)
+              } else if (isSuccessful(res)) {
+                alertSuccess(resource.msg_save_success, () => navigate(-1))
+              } else {
+                alertError(resource.error_not_found)
+              }
+            })
+            .catch(handleError)
+            .finally(hideLoading)
+        })
+      }
+    }
+  }
+
+  return (
+    <form id="roleForm" name="roleForm" className="form" ref={refForm}>
+      <header>
+        <button type="button" id="backBtn" name="backBtn" className="btn-back" onClick={back} />
+        <h2>{resource.role}</h2>
+        <Link to={`/roles/${id}/assign`} className="btn-right">
+          <i className="material-icons">group</i>
+        </Link>
+      </header>
+      <div>
+        <section className="row section">
+          <label className="col s6 m6">
+            {resource.role_id}
+            <input
+              type="text"
+              id="roleId"
+              name="roleId"
+              defaultValue={role.roleId}
+              onBlur={patternOnBlur}
+              pattern={regexId}
+              config-pattern-error-key={"invalid_pattern_id"}
+              onChange={(e) => {
+                role.roleId = e.target.value
+                setState({ ...state, role })
+              }}
+              maxLength={20}
+              required={true}
+              readOnly={!newMode}
+              placeholder={resource.role_id}
+            />
+          </label>
+          <label className="col s6 m6">
+            {resource.role_name}
+            <input
+              type="text"
+              id="roleName"
+              name="roleName"
+              defaultValue={role.roleName}
+              onChange={(e) => {
+                role.roleName = e.target.value
+                setState({ ...state, role })
+              }}
+              maxLength={100}
+              required={true}
+              onBlur={requiredOnBlur}
+              placeholder={resource.role_name}
+            />
+          </label>
+          <label className="col s12 m6">
+            {resource.remark}
+            <input
+              type="text"
+              id="remark"
+              name="remark"
+              defaultValue={role.remark}
+              onChange={(e) => {
+                role.remark = e.target.value
+                setState({ ...state, role })
+              }}
+              maxLength={100}
+              placeholder={resource.remark}
+            />
+          </label>
+          <div className="col s12 m6 radio-section">
+            {resource.status}
+            <div className="radio-group">
+              <label>
+                <input type="radio" id="active" name="status" onChange={statusOnChange} defaultValue="A" checked={role.status === "A"} />
+                {resource.active}
+              </label>
+              <label>
+                <input type="radio" id="inactive" name="status" onChange={statusOnChange} defaultValue="I" checked={role.status === "I"} />
+                {resource.inactive}
+              </label>
+            </div>
+          </div>
+        </section>
+        <section className="row section">
+          <label className="col s12 m6 search-input">
+            <i className="btn-search" />
+            <input
+              type="text"
+              id="keyword"
+              name="keyword"
+              maxLength={40}
+              placeholder={resource.role_filter_modules}
+              value={state.keyword}
+              onChange={onChange}
+            />
+          </label>
+        </section>
+        <section className="tree-view section">
+          <div className="row">
+            <div className="col s6 m4 inline flex-gap-2 col-header">
+              <input
+                type="checkbox"
+                onChange={(e) =>
+                  handleCheckAllModule(e, state.role.privileges, state.all, state.actions, (privileges: string[]) => {
+                    const checkedAll = isCheckedAll(privileges, state.all)
+                    setState({ ...state, checkedAll, role: { ...state.role, privileges: privileges } })
+                  })
+                }
+                checked={state.checkedAll}
+                disabled={isReadOnly || state.keyword !== ""}
+              />
+              <p>{resource.module}</p>
+            </div>
+            <p className="col s1 m2">{resource.read}</p>
+            <p className="col s1 m2">{resource.write}</p>
+            <p className="col s1 m2">{resource.delete}</p>
+            <p className="col s1 m2">{resource.approve}</p>
+          </div>
+          {renderForms(state.shownPrivileges, "", isReadOnly || state.keyword !== "")}
+        </section>
+      </div>
+      <footer>
+        {!isReadOnly && (
+          <>
+            {!newMode && (
+              <button type="button" id="deleteBtn" name="deleteBtn" className="btn-delete" onClick={deleteOnClick}>
+                {resource.delete}
+              </button>
+            )}
+            <button type="submit" id="saveBtn" name="saveBtn" onClick={save}>
+              {resource.save}
+            </button>
+          </>
+        )}
+      </footer>
+    </form>
+  )
+}

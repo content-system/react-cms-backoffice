@@ -1,0 +1,168 @@
+pre[class*="language-"] {
+  margin: 0;
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid;
+  font-size: 14px;
+}
+.page-body > .form > div.article-body,
+.page-body > article > div.article-body {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+.article-description,
+.article-meta,
+.article-thumbnail,
+.article-content {
+  max-width: 780px;
+  padding: 0;
+  margin-bottom: 8px;
+}
+.center-align-items {
+  min-height: unset;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.center-align-items .material-icons {
+  font-size: 22px;
+  margin-left: 0;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+.article-content {
+  margin-block-start: 16px;
+}
+.article-body > h3,
+.article-body > h4 {
+  padding-left: 0;
+  padding-right: 0;
+  background-color: inherit;
+}
+.article-content > h1,
+.article-content > h2,
+.article-content > h3,
+.article-content > h4,
+.article-content > h5,
+.article-content > h6 {
+  padding: 0;
+  margin-block-end: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: inherit;
+  background-color: inherit;
+  height: unset;
+}
+.article-content > h6 {
+  font-size: 14px;
+}
+.article-content > h4 {
+  font-size: 18px;
+}
+.article-content > h3 {
+  font-size: 20px;
+}
+.article-content > h2 {
+  font-size: 22px;
+}
+.article-content > h1 {
+  font-size: 24px;
+}
+.article-description {
+  font-size: 18px;
+  font-weight: 500;
+}
+.article-content > figure,
+.article-content > p {
+  margin-block-end: 16px;
+}
+.article-content figcaption {
+  text-align: center;
+  font-style: italic;
+  margin-block-start: 8px;
+}
+.article-content,
+.article-content > p {
+  font-size: 16px;
+}
+.article-thumbnail {
+  margin-bottom: 14px;
+}
+.article-content > p > img,
+.article-content > figure > img {
+  max-width: 100%;
+  margin-bottom: 0px;
+}
+.job-description {
+  font-size: 16px;
+}
+.job-description h3,
+.job-description h4,
+.job-description h5,
+.job-description h6,
+.job-description p {
+  padding-left: 0;
+  padding-right: 0;
+  color: inherit;
+  background-color: inherit;
+}
+.job-description ul {
+  padding-left: 16px;
+  padding-right: 0;
+}
+
+.page-body > article > h1 {
+  margin-top: 16px;
+}
+.page-body > article > h2,
+.page-body > article > h3,
+.page-body > article > h4,
+.page-body > article > h5,
+.page-body > article > p {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+.page-body > article > table,
+.page-body > article > pre {
+  margin-left: 16px;
+  margin-right: 16px;
+  margin-bottom: 16px;
+}
+.page-body > article > table {
+  max-width: calc(100% - 32px);
+}
+.page-body > article > ul {
+  padding-left: 34px;
+  padding-right: 16px;
+}
+.page-body > article > ul p {
+  margin-bottom: 8px;
+}
+.page-body > article > ul ul {
+  margin-bottom: 8px;
+  padding-left: 34px;
+}
+
+article table {
+  font-size: 16px;
+}
+article ol,
+article ul {
+  margin-bottom: 16px;
+}
+article li {
+  font-size: inherit;
+  padding-left: 4px;
+  position: relative;
+  margin-top: 4px;
+}
+article li input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]) {
+  position: absolute;
+  left: -17px;
+}
+
+article li li input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]) {
+  position: absolute;
+  left: -18px;
+}

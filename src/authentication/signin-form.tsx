@@ -1,0 +1,184 @@
+import { type AuthResult, dayDiff, getMessage, handleCookie, initFromCookie, type Status, type User, validate } from "authen-client"
+import { CookieService } from "cookie-core"
+import { Base64 } from "js-base64"
+import { type MouseEvent, useEffect, useRef, useState } from "react"
+import { formatText, updateState, useMessage } from "react-hook-core"
+import { Link, useNavigate } from "react-router"
+import { alertInfo } from "ui-alert"
+import { initForm, registerEvents } from "ui-plus"
+import { toast } from "ui-toast"
+import { handleError, loading, storage, useResource } from "uione"
+import logo from "../assets/images/logo.png"
+import { getAuthenticator } from "./service"
+
+export const map = {
+  "3": "fail_authentication",
+  "4": "fail_wrong_password",
+  "5": "fail_expired_password",
+  "6": "fail_access_time_locked",
+  "7": "fail_suspended_account",
+  "8": "fail_locked_account",
+  "9": "fail_disabled_account",
+  "10": "fail_disabled_account",
+}
+
+const status: Status = {
+  success: 1,
+  two_factor_required: 2,
+  fail: 3,
+  password_expired: 5,
+}
+const msgData = {
+  message: "",
+  alertClass: "",
+}
+
+const cookie = new CookieService(document)
+
+export const SigninForm = () => {
+  const initUser: User = {
+    username: "",
+    password: "",
+    passcode: "",
+  }
+
+  const resource = useResource()
+  const navigate = useNavigate()
+  const form = useRef<HTMLFormElement>(null)
+  const { msg, showError, hideMessage } = useMessage(msgData)
+  const [user, setUser] = useState<User>(initUser)
+  const [remember, setRemember] = useState<boolean>(false)
+
+  useEffect(() => {
+    initForm(form.current, registerEvents)
+    const initRemember = initFromCookie("data", user, cookie.get, Base64.decode)
+    setRemember(initRemember)
+    setUser(user)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const isTwoFactor = user.step ? user.step === 1 : false
+  const succeed = (result: AuthResult) => {
+    storage.setToken(result.token)
+    storage.setUser(result.user)
+    storage.setPrivileges(result.user?.privileges)
+    navigate(storage.home)
+  }
+  const signin = async (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    if (!validate(user, resource, showError)) {
+      return
+    } else {
+      hideMessage()
+    }
+    try {
+      loading().showLoading()
+      const authenticator = getAuthenticator()
+      const result = await authenticator.authenticate(user)
+      const s = result.status
+      if (s === status.two_factor_required) {
+        user.step = 1
+        setUser(user)
+      } else if (s === status.success || s === status.success_and_reactivated) {
+        handleCookie("data", user, remember, cookie, 60 * 24 * 3, Base64.encode)
+        if (result.user) {
+          const expiredDays = dayDiff(result.user.passwordExpiredTime, new Date())
+          if (expiredDays && expiredDays > 0) {
+            const ms = formatText(resource.msg_password_expired_soon, expiredDays)
+            toast(ms)
+          }
+        }
+        if (s === status.success) {
+          succeed(result)
+        } else {
+          alertInfo(resource.msg_account_reactivated, () => succeed(result))
+        }
+      } else {
+        storage.setToken(undefined)
+        storage.setUser(undefined)
+        storage.setPrivileges(undefined)
+        const ms = getMessage(s, resource, map)
+        showError(ms)
+      }
+    } catch (err) {
+      handleError(err)
+    } finally {
+      loading().hideLoading()
+    }
+  }
+
+  return (
+    <div className="central-full">
+      <form id="signinForm" name="signinForm" className="form" noValidate={true} autoComplete="off" ref={form}>
+        <div className="view-body row">
+          <img className="logo" src={logo} alt="logo" />
+          <h2>{resource.signin}</h2>
+          <div className={"message " + msg.alertClass}>
+            {msg.message}
+            <span onClick={hideMessage} hidden={!msg.message || msg.message === ""} />
+          </div>
+          <label hidden={isTwoFactor} className="col s12">
+            {resource.username}
+            <input
+              type="text"
+              id="username"
+              name="username"
+              defaultValue={user.username}
+              onChange={(e) => updateState(e, user, setUser)}
+              maxLength={100}
+              placeholder={resource.placeholder_username}
+            />
+          </label>
+          <label hidden={isTwoFactor} className="col s12">
+            {resource.password}
+            <input
+              type="password"
+              id="password"
+              name="password"
+              defaultValue={user.password}
+              onChange={(e) => updateState(e, user, setUser)}
+              maxLength={100}
+              placeholder={resource.placeholder_password}
+            />
+          </label>
+          <label hidden={!isTwoFactor} className="col s12">
+            {resource.passcode}
+            <input
+              type="password"
+              id="passcode"
+              name="passcode"
+              defaultValue={user.passcode}
+              onChange={(e) => updateState(e, user, setUser)}
+              maxLength={10}
+              placeholder={resource.placeholder_passcode}
+            />
+          </label>
+          <label className="col s12 checkbox-container" hidden={isTwoFactor}>
+            <input
+              type="checkbox"
+              id="remember"
+              name="remember"
+              checked={remember ? true : false}
+              onChange={(e) => {
+                setRemember(e.target.checked)
+              }}
+            />
+            {resource.signin_remember_me}
+          </label>
+          <button type="submit" id="signinBtn" name="signinBtn" onClick={signin}>
+            {resource.button_signin}
+          </button>
+          <Link id="forgotPasswordBtn" to="/forgot-password">
+            {resource.button_forgot_password}
+          </Link>
+          <Link id="signupBtn" to="/signup">
+            {resource.button_signup}
+          </Link>
+          <Link id="homeBtn" to="/">
+            {resource.button_home}
+          </Link>
+        </div>
+      </form>
+    </div>
+  )
+}

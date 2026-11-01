@@ -1,0 +1,183 @@
+.page-body > .form > div > hr {
+  margin-left: 16px;
+  width: calc(100% - 32px);
+}
+
+.list-content,
+.page-body > div,
+.form {
+  position: relative;
+  background-color: inherit;
+  background-image: inherit;
+}
+
+/* impact on responsive design */
+.view-container {
+  padding: 0;
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+@media screen and (max-width: 600px) {
+  .page-container {
+    flex-direction: column-reverse;
+  }
+}
+
+.page-header {
+  height: 52px;
+  margin: 0;
+  padding-top: 5px;
+  position: relative;
+  border: 0;
+  border-bottom: 1px solid;
+}
+@media screen and (max-width: 600px) {
+  .page-header {
+    border-top: 1px solid;
+    border-bottom: 0;
+  }
+}
+
+.list-detail-container > .list-content > header,
+.list-detail-container > .detail-content > form > header,
+.page-body > article > header,
+.page-body > div > header,
+.page-body > .form > header,
+.content-container > div > header,
+.view-container > header,
+.view-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  z-index: 3;
+  height: 44px;
+  background-color: inherit;
+  background-image: inherit;
+}
+
+.detail-content > form > div,
+.form.view-container > div,
+article.view-container > div,
+.page-body > .form > div,
+.page-body > article > div,
+.main-body,
+.form-body,
+.view-body {
+  padding: 0;
+  padding-top: 44px;
+  padding-bottom: 0;
+  right: 0;
+  top: 0px;
+  width: 100%;
+  z-index: 1;
+  overflow-y: auto;
+  background-color: inherit;
+  background-image: inherit;
+}
+
+.page-body > .form > div.background-content,
+.view-body.background-content {
+  height: 100%;
+  background-size: 85%;
+  background-image: url("../images/watermark.png");
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.page-body {
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  height: calc(100vh - 52px);
+  min-height: calc(100vh - 52px);
+}
+
+.form.view-container,
+.page-body > .view-container > .form,
+.page-body > .form,
+.page-body > article,
+.page-body > article > div,
+.main-body {
+  max-height: calc(100vh - 52px); /* - page-header */
+  height: calc(100vh - 52px);
+}
+.page-body > article {
+  overflow-y: auto;
+}
+.form.view-container > div,
+.page-body > .form > div,
+.form-body {
+  max-height: calc(100vh - 64px - 52px); /* - view-footer - page-header */
+}
+
+.page-header > .view-body {
+  max-height: calc(100vh - 64px - 52px);
+}
+.view-body {
+  max-height: calc(100vh - 64px);
+}
+
+.page-body > .full {
+  max-height: calc(100vh - 52px);
+  height: calc(100vh - 52px);
+  overflow-x: auto;
+}
+.modal-portal-content .main-body {
+  max-height: calc(100vh - 150px);
+  height: calc(100vh - 150px);
+}
+@media screen and (min-width: 769px) {
+  .top-menu .page-body {
+    height: calc(100vh - 52px - 56px);
+    min-height: calc(100vh - 52px - 56px);
+  }
+  .classic.top-menu .page-body {
+    height: unset;
+    min-height: unset;
+  }
+  .top-menu .page-body > .full {
+    max-height: calc(100vh - 52px - 46px);
+    height: calc(100vh - 52px - 46px);
+  }
+  .classic.top-menu .page-body > .full {
+    max-height: auto;
+    height: auto;
+    overflow-x: unset;
+  }
+
+  .top-menu .page-container > .page-body > .form > div {
+    max-height: calc(100vh - 46px - 52px - 64px);
+  }
+  .top-menu .page-container > .page-body .profile.form > div {
+    max-height: unset;
+  }
+  .top-menu .page-container > .page-body > .view-container > .form,
+  .top-menu .page-container > .page-body > .form,
+  .top-menu .page-body > article,
+  .top-menu .page-container > .page-body > article > div,
+  .top-menu .page-container .main-body {
+    max-height: calc(100vh - 46px - 52px);
+  }
+  .classic.top-menu .page-container > .page-body > .view-container > .form,
+  .classic.top-menu .page-container > .page-body > .form,
+  .classic.top-menu .page-body > article,
+  .classic.top-menu .page-container > .page-body > article > div,
+  .classic.top-menu .page-container .main-body {
+    max-height: unset;
+    height: unset;
+  }
+
+  .top-menu .modal-portal-content .main-body {
+    max-height: calc(100vh - 150px - 19px);
+    height: calc(100vh - 150px - 19px);
+  }
+  .classic.top-menu .page-container .main-body {
+    max-height: unset;
+    height: unset;
+  }
+}

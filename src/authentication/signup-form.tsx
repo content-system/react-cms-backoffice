@@ -1,0 +1,163 @@
+import { type MouseEvent, useEffect, useRef, useState } from "react"
+import ReCAPTCHA from "react-google-recaptcha"
+import { updateState, useMessage } from "react-hook-core"
+import { Link } from "react-router"
+import { isEmail, isValidUsername, type Status, strongPassword, validate, validateAndSignup } from "signup-client"
+import { initForm, registerEvents } from "ui-plus"
+import { handleError, message, storage, useResource } from "uione"
+import logo from "../assets/images/logo.png"
+import { getSignupService } from "./service"
+
+const status: Status = {
+  error: 0,
+  success: 1,
+  username: 2,
+  contact: 3,
+  format_username: -2,
+  format_contact: -3,
+  format_password: -1,
+}
+
+interface User {
+  username: string
+  password: string
+  contact?: string
+  confirmPassword: string
+}
+
+interface SignupState {
+  reCAPTCHA: string | null
+  passwordRequired: boolean
+}
+
+const initUser: User = {
+  username: "",
+  contact: "",
+  password: "",
+  confirmPassword: "",
+}
+const userData: SignupState = {
+  reCAPTCHA: "",
+  passwordRequired: true,
+}
+
+const msgData = {
+  message: "",
+  alertClass: "",
+}
+
+export const SignupForm = () => {
+  const resource = useResource()
+  const form = useRef<HTMLFormElement>(null)
+  const { msg, showError, hideMessage } = useMessage(msgData)
+  const [user, setUser] = useState<User>(initUser)
+  const [state, setState] = useState<SignupState>(userData)
+  //const { state, setState, updateState } = useUpdate<SignupState>(userData, "user")
+
+  useEffect(() => {
+    initForm(form.current, registerEvents)
+  }, [])
+
+  const signup = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    const signupService = getSignupService()
+    if (!state.reCAPTCHA) {
+      showError(resource.error_captcha)
+      return
+    }
+    validateAndSignup(
+      signupService.signup,
+      status,
+      user,
+      state.passwordRequired,
+      user.confirmPassword,
+      resource,
+      message,
+      showError,
+      hideMessage,
+      isValidUsername,
+      isEmail,
+      validate,
+      handleError,
+      strongPassword,
+      storage.loading(),
+    )
+  }
+
+  const onChange = (value: string | null) => {
+    setState({ ...state, reCAPTCHA: value })
+  }
+
+  return (
+    <div className="central-full">
+      <form id="userForm" name="userForm" className="form" noValidate={true} autoComplete="off" ref={form}>
+        <div className="view-body row">
+          <img className="logo" src={logo} alt="logo" />
+          <h2>{resource.signup}</h2>
+          <div className={"message " + msg.alertClass}>
+            {msg.message}
+            <span onClick={hideMessage} hidden={!msg.message || msg.message === ""} />
+          </div>
+          <label className="col s12">
+            {resource.username}
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={user.username}
+              onChange={(e) => updateState(e, user, setUser)}
+              maxLength={120}
+              required={true}
+              placeholder={resource.placeholder_username}
+            />
+          </label>
+          <label className="col s12">
+            {resource.email}
+            <input
+              type="text"
+              id="contact"
+              name="contact"
+              value={user.contact}
+              onChange={(e) => updateState(e, user, setUser)}
+              maxLength={255}
+              required={true}
+              placeholder={resource.placeholder_email}
+            />
+          </label>
+          <label className="col s12" hidden={!state.passwordRequired}>
+            {resource.password}
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={user.password}
+              onChange={(e) => updateState(e, user, setUser)}
+              maxLength={100}
+              placeholder={resource.placeholder_password}
+            />
+          </label>
+          <label className="col s12" hidden={!state.passwordRequired}>
+            {resource.confirm_password}
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              onChange={(e) => updateState(e, user, setUser)}
+              maxLength={100}
+              placeholder={resource.placeholder_confirm_password}
+            />
+          </label>
+          <div style={{ marginTop: "10px" }}>
+            <ReCAPTCHA sitekey="6LetDbQUAAAAAEqIqVnSKgrI644y8w7O8mk89ijV" onChange={onChange} />
+          </div>
+          <button type="submit" id="signupBtn" name="signupBtn" onClick={signup}>
+            {resource.button_signup}
+          </button>
+          <Link id="signinBtn" to="/signin">
+            {resource.button_signin}
+          </Link>
+        </div>
+      </form>
+    </div>
+  )
+}

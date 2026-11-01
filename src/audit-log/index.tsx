@@ -1,0 +1,235 @@
+import type { Item } from "onecore"
+import { type ChangeEvent, type MouseEvent, useEffect, useRef, useState } from "react"
+import {
+  buildFromUrl,
+  buildMessage,
+  datetimeToString,
+  getFields,
+  getOffset,
+  mergeFilter,
+  onPageChanged,
+  onPageSizeChanged,
+  onSearch,
+  onSort,
+  type PageChange,
+  pageSizes,
+  PageSizeSelect,
+  resources,
+  setSortFilter,
+  type Sortable,
+  updateState,
+  updateUrl,
+} from "react-hook-core"
+import { Pagination } from "reactx-pagination"
+import { hideLoading, showLoading } from "ui-loading"
+import { addDays, addSeconds, formatFullDateTime } from "ui-plus"
+import { toast } from "ui-toast"
+import { getDateFormat, handleError, useLocale, useResource } from "uione"
+import { type AuditLog, type AuditLogFilter, getAuditLogService } from "./audit-log"
+import "./style.css"
+
+interface AuditLogSearch extends Sortable {
+  statusList: Item[]
+  total?: number
+  view?: string
+  fields?: string[]
+}
+
+const mapStyleStatus: Map<string, string> = new Map([
+  ["success", "badge-outline-success"],
+  ["fail", "badge-outline-danger "],
+])
+
+export const AuditLogsForm = () => {
+  const dateFormat = getDateFormat()
+
+  const now = new Date()
+  const auditLogfilter: AuditLogFilter = {
+    limit: resources.defaultLimit,
+    id: "",
+    action: "",
+    time: {
+      min: addDays(now, -3),
+      max: addSeconds(now, 300),
+    },
+  }
+  const initialState: AuditLogSearch = { statusList: [] }
+
+  const locale = useLocale()
+  const resource = useResource()
+  const refForm = useRef<HTMLFormElement>(null)
+  const [list, setList] = useState<AuditLog[]>([])
+  const [state, setState] = useState<AuditLogSearch>(initialState)
+  const [filter, setFilter] = useState<AuditLogFilter>(auditLogfilter)
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => updateState(e, filter, setFilter)
+
+  useEffect(() => {
+    const initFilter = mergeFilter(buildFromUrl<AuditLogFilter>(), filter, pageSizes)
+    setSortFilter(state, initFilter, setFilter)
+    search(initFilter, state, true) // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter)
+  const pageChanged = (data: PageChange) => onPageChanged(data, search, filter)
+  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, search, filter, state)
+  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, search, filter, state)
+
+  const search = (obj: AuditLogFilter, sort?: Sortable, isFirstLoad?: boolean) => {
+    showLoading()
+    const fields = getFields(refForm.current, state.fields)
+    updateUrl(obj, isFirstLoad, setFilter, sort)
+    setFilter(obj)
+    const { limit, page } = obj
+    getAuditLogService()
+      .search({ ...obj }, limit, page, fields)
+      .then((res) => {
+        setState({ ...state, total: res.total, fields })
+        setList(res.list)
+        toast(buildMessage(resource, res.list, limit, page, res.total))
+      })
+      .catch(handleError)
+      .finally(hideLoading)
+  }
+
+  const offset = getOffset(filter.limit, filter.page)
+  return (
+    <div>
+      <header>
+        <h2>{resource.audit_logs}</h2>
+        <div className="btn-group float-left">
+          {state.view === "list" && (
+            <button type="button" id="tableBtn" name="tableBtn" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />
+          )}
+          {state.view !== "list" && (
+            <button type="button" id="listViewBtn" name="listViewBtn" className="btn-list" onClick={(e) => setState({ ...state, view: "list" })} />
+          )}
+        </div>
+      </header>
+      <div className="main-body">
+        <form id="rolesForm" name="rolesForm" className="form" noValidate={true} ref={refForm}>
+          <section className="row section">
+            <label className="col s12 m2 l4">
+              {resource.action}
+              <input type="text" id="action" name="action" defaultValue={filter.action} maxLength={40} onChange={onChange} />
+            </label>
+            <label className="col s12 m5 l4">
+              {resource.audit_log_time_from}
+              <input
+                type="datetime-local"
+                step=".010"
+                id="time_min"
+                name="time_min"
+                data-field="time.min"
+                defaultValue={datetimeToString(filter.time?.min)}
+                onChange={onChange}
+              />
+            </label>
+            <label className="col s12 m5 l4">
+              {resource.audit_log_time_to}
+              <input
+                type="datetime-local"
+                step=".010"
+                id="time_max"
+                name="time_max"
+                data-field="time.max"
+                defaultValue={datetimeToString(filter.time?.max)}
+                onChange={onChange}
+              />
+            </label>
+          </section>
+          <section className="section search">
+            <label>
+              {resource.page_size}
+              <PageSizeSelect id="limit" name="limit" size={filter.limit} sizes={pageSizes} onChange={pageSizeChanged} />
+            </label>
+            <button type="submit" className="btn-search" onClick={searchOnClick}>
+              {resource.search}
+            </button>
+          </section>
+        </form>
+        <form className="list-result">
+          {state.view !== "list" && (
+            <div className="table-responsive">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>{resource.number}</th>
+                    <th data-field="time">
+                      <button type="button" id="timeSort" onClick={sort}>
+                        {resource.audit_log_time}
+                      </button>
+                    </th>
+                    <th data-field="resource">
+                      <button type="button" id="resourceSort" onClick={sort}>
+                        {resource.resource}
+                      </button>
+                    </th>
+                    <th data-field="action">
+                      <button type="button" id="actionSort" onClick={sort}>
+                        {resource.action}
+                      </button>
+                    </th>
+                    <th data-field="status">
+                      <button type="button" id="statusSort" onClick={sort}>
+                        {resource.status}
+                      </button>
+                    </th>
+                    <th data-field="userId">{resource.audit_log_user}</th>
+                    <th data-field="ip">
+                      <button type="button" id="ipSort" onClick={sort}>
+                        {resource.ip}
+                      </button>
+                    </th>
+                    <th data-field="remark">
+                      <button type="button" id="remarkSort" onClick={sort}>
+                        {resource.remark}
+                      </button>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {list.map((item: any, i: number) => {
+                    return (
+                      <tr key={i}>
+                        <td className="text-right">{offset + i + 1}</td>
+                        <td>{formatFullDateTime(item.time, dateFormat, locale.decimalSeparator)}</td>
+                        <td>{item.resource}</td>
+                        <td>{item.action}</td>
+                        <td>
+                          <span className={"badge badge-sm " + mapStyleStatus.get(item.status)}>{item.status}</span>
+                        </td>
+                        <td>{item.userId}</td>
+                        <td>{item.ip}</td>
+                        <td>{item.remark}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+          {state.view === "list" && (
+            <ul className="row list">
+              {list.map((item, i) => {
+                return (
+                  <li key={i} className="col s12 m6 l4 xl3 list-item">
+                    <h4>{item.email}</h4>
+                    <p className="space-between">
+                      {item.resource} <span>{item.action}</span>
+                    </p>
+                    <p>{item.remark}</p>
+                    <p>
+                      {formatFullDateTime(item.time, dateFormat, locale.decimalSeparator)}{" "}
+                      <span className={"badge badge-sm " + mapStyleStatus.get(item.status)}>{item.status}</span>
+                    </p>
+                  </li>
+                )
+              })}
+            </ul>
+          )}
+          <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
+        </form>
+      </div>
+    </div>
+  )
+}

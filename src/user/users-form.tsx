@@ -1,0 +1,248 @@
+import type { Item } from "onecore"
+import { type ChangeEvent, type MouseEvent, useEffect, useRef, useState } from "react"
+import {
+  buildFromUrl,
+  buildMessage,
+  checked,
+  getFields,
+  getOffset,
+  mergeFilter,
+  onPageChanged,
+  onPageSizeChanged,
+  onSearch,
+  onSort,
+  onToggleSearch,
+  type PageChange,
+  pageSizes,
+  PageSizeSelect,
+  resources,
+  Select,
+  setSortFilter,
+  type Sortable,
+  updateUrl,
+} from "react-hook-core"
+import { Link } from "react-router"
+import { Pagination } from "reactx-pagination"
+import { hideLoading, showLoading } from "ui-loading"
+import { toast } from "ui-toast"
+import { getStatusName, handleError, hasPermission, Permission, useResource } from "uione"
+import femaleIcon from "../assets/images/female.png"
+import maleIcon from "../assets/images/male.png"
+import { getUserService, type User, type UserFilter } from "./service"
+
+interface UserSearch extends Sortable {
+  statusList: Item[]
+  total?: number
+  view?: string
+  fields?: string[]
+}
+
+export const UsersForm = () => {
+  const canWrite = hasPermission(Permission.write)
+
+  const userFilter: UserFilter = { limit: resources.defaultLimit, status: [] }
+  const initialState: UserSearch = { statusList: [] }
+
+  const items: Item[] = [
+    { value: "userId", text: "User Id asc" },
+    { value: "-userId", text: "User Id desc" },
+    { value: "username", text: "Username asc" },
+    { value: "-username", text: "Username desc" },
+    { value: "email", text: "Email asc" },
+    { value: "-email", text: "Email desc" },
+    { value: "displayName", text: "DisplayName asc" },
+    { value: "-displayName", text: "DisplayName desc" },
+    { value: "status", text: "Status asc" },
+    { value: "-status", text: "Status desc" },
+  ]
+  const resource = useResource()
+  const refForm = useRef<HTMLFormElement>(null)
+  const [showFilter, setShowFilter] = useState(false)
+  const [list, setList] = useState<User[]>([])
+  const [state, setState] = useState<UserSearch>(initialState)
+  const [filter, setFilter] = useState<UserFilter>(userFilter)
+
+  useEffect(() => {
+    const initFilter = mergeFilter(buildFromUrl<UserFilter>(), filter, pageSizes, ["status"])
+    setSortFilter(state, initFilter, setFilter)
+    search(initFilter, state, true) // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const toggleSearch = (e: MouseEvent<HTMLButtonElement>) => onToggleSearch(e, showFilter, setShowFilter)
+  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter)
+  const pageChanged = (data: PageChange) => onPageChanged(data, search, filter)
+  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, search, filter, state)
+  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, search, filter, state)
+
+  const statusOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    filter.page = 1
+    setFilter(filter)
+    search(filter)
+  }
+
+  const sortOnChange = (target: HTMLSelectElement) => {
+    filter.sort = target.value
+    search(filter)
+  }
+
+  const search = (obj: UserFilter, sort?: Sortable, isFirstLoad?: boolean) => {
+    showLoading()
+    const fields = getFields(refForm.current, state.fields)
+    updateUrl(obj, isFirstLoad, setFilter, sort)
+    getUserService()
+      .search({ ...obj }, obj.limit, obj.page, fields)
+      .then((res) => {
+        setState({ ...state, total: res.total, fields })
+        setList(res.list)
+        toast(buildMessage(resource, res.list, obj.limit, obj.page, res.total))
+      })
+      .catch(handleError)
+      .finally(hideLoading)
+  }
+
+  const offset = getOffset(filter.limit, filter.page)
+  return (
+    <div>
+      <header>
+        <h2>{resource.users}</h2>
+        <div className="btn-group">
+          {state.view === "list" && (
+            <button type="button" id="tableBtn" name="tableBtn" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />
+          )}
+          {state.view !== "list" && (
+            <button type="button" id="listViewBtn" name="listViewBtn" className="btn-list" onClick={(e) => setState({ ...state, view: "list" })} />
+          )}
+          {canWrite && <Link id="newBtn" className="btn-new" to="new" />}
+        </div>
+      </header>
+      <div className="main-body">
+        <form id="usersForm" name="usersForm" className="form" noValidate={true} ref={refForm}>
+          <section className="row search-group">
+            <label className="col s12 m6 l4 xl6 search-input">
+              <PageSizeSelect id="limit" name="limit" size={filter.limit} sizes={pageSizes} onChange={pageSizeChanged} />
+              <input
+                type="text"
+                id="q"
+                name="q"
+                defaultValue={filter.q}
+                maxLength={80}
+                placeholder={resource.keyword}
+                onChange={(e) => {
+                  filter.q = e.target.value
+                  setFilter(filter)
+                }}
+              />
+              <button
+                type="button"
+                id="clearQBtn"
+                name="clearQBtn"
+                hidden={!filter.q}
+                className="btn-remove-text"
+                onClick={(e) => {
+                  filter.q = ""
+                  setFilter(filter)
+                }}
+              />
+              <button type="button" id="toggleSearchBtn" name="toggleSearchBtn" className="btn-filter" onClick={toggleSearch} />
+              <button type="submit" id="searchBtn" name="searchBtn" className="btn-search" onClick={searchOnClick} />
+            </label>
+            {state.view === "list" && (
+              <div className="col s12 m6 l4 xl3 sort">
+                <label>
+                  {resource.sort_by}
+                  <Select id="sort" name="sort" value={filter.sort} items={items} onChange={(e) => sortOnChange(e.target)} />
+                </label>
+              </div>
+            )}
+            <Pagination className="col s12 m6 l4 xl3" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
+          </section>
+          <section className="row search-group inline" hidden={!showFilter}>
+            <label className="col s12 m4 l4 checkbox-section">
+              {resource.status}
+              <section className="checkbox-group">
+                <label>
+                  <input type="checkbox" id="A" name="status" defaultValue="A" checked={checked(filter.status, "A")} onChange={statusOnChange} />
+                  {resource.active}
+                </label>
+                <label>
+                  <input type="checkbox" id="I" name="status" defaultValue="I" checked={checked(filter.status, "I")} onChange={statusOnChange} />
+                  {resource.inactive}
+                </label>
+              </section>
+            </label>
+          </section>
+        </form>
+        {state.view !== "list" && (
+          <div className="table-responsive">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>{resource.number}</th>
+                  <th data-field="userId">
+                    <button type="button" id="userIdSort" onClick={sort}>
+                      {resource.user_id}
+                    </button>
+                  </th>
+                  <th data-field="username">
+                    <button type="button" id="usernameSort" onClick={sort}>
+                      {resource.username}
+                    </button>
+                  </th>
+                  <th data-field="email">
+                    <button type="button" id="emailSort" onClick={sort}>
+                      {resource.email}
+                    </button>
+                  </th>
+                  <th data-field="displayName">
+                    <button type="button" id="displayNameSort" onClick={sort}>
+                      {resource.display_name}
+                    </button>
+                  </th>
+                  <th data-field="status">
+                    <button type="button" id="statusSort" onClick={sort}>
+                      {resource.status}
+                    </button>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {list.map((user, i) => {
+                  return (
+                    <tr key={i}>
+                      <td className="text-right">{offset + i + 1}</td>
+                      <td>{user.userId}</td>
+                      <td>
+                        <Link to={`${user.userId}`}>{user.username}</Link>
+                      </td>
+                      <td>{user.email}</td>
+                      <td>{user.displayName}</td>
+                      <td>{getStatusName(user.status, resource)}</td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+        {state.view === "list" && (
+          <ul className="row list">
+            {list.map((user, i) => {
+              return (
+                <li key={i} className="col s12 m6 l4 xl3 img-item">
+                  <img
+                    src={user.imageURL && user.imageURL.length > 0 ? user.imageURL : user.gender === "F" ? femaleIcon : maleIcon}
+                    alt="user"
+                    className="round-border"
+                  />
+                  <Link to={`${user.userId}`}>{user.displayName}</Link>
+                  <button className="btn-detail" />
+                  <p>{user.email}</p>
+                </li>
+              )
+            })}
+          </ul>
+        )}
+      </div>
+    </div>
+  )
+}

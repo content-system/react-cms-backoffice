@@ -1,0 +1,250 @@
+.alert-info {
+  color: white;
+  background-color: #4caf50;
+  border-color: #c3e6cb;
+}
+
+.alert-warning {
+  color: #856404;
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+}
+
+.alert-error {
+  color: #721c24;
+  background-color: #f8d7da !important;
+  border-color: #f5c6cb;
+}
+.hidden-message {
+  display: none;
+}
+.message {
+  width: 100%;
+  line-height: unset;
+  padding: 0 6px;
+  min-height: 40px;
+  margin-bottom: 0 !important;
+  text-align: left;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1;
+}
+
+.bottom {
+  margin-top: 0px !important;
+}
+
+.message > span::after {
+  content: "\2716";
+  font-size: 15px;
+}
+
+.toast-message {
+  bottom: 125px;
+  text-align: center;
+  left: 250px;
+  right: 250px;
+  padding: 8px 24px;
+  position: fixed;
+  z-index: 1000;
+  border: 0px solid;
+  border-radius: 6px;
+  height: 34px;
+  display: none;
+}
+
+@media screen and (max-width: 960px) {
+  .toast-message {
+    left: 80px;
+    right: 80px;
+  }
+}
+
+@media screen and (max-width: 548px) {
+  .toast-message {
+    left: 28px;
+    right: 26px;
+  }
+}
+
+.alert-wrapper {
+  position: fixed;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1082;
+  background-color: rgba(25, 25, 25, 0.1);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.alert-wrapper .alert {
+  background-color: #fff;
+  width: 100%;
+  max-width: 475px;
+  padding: 16px 16px 12px 16px;
+  border-radius: 5px;
+  text-align: center;
+  overflow: hidden;
+  margin-top: -113px !important;
+}
+
+.alert-only footer > button.btn-cancel {
+  display: none !important;
+}
+
+.alert-only .alert footer {
+  justify-content: center;
+}
+
+.alert-icon {
+  display: inline-block;
+  height: 32px;
+  width: 32px;
+  padding-top: 3px;
+  padding-left: 1px;
+  margin-bottom: 12px;
+  border: 1px solid;
+  border-radius: 50%;
+}
+
+.alert-icon::before {
+  font-size: 20px;
+  font-weight: 100;
+  content: "\21";
+}
+.danger-icon .alert-icon {
+  padding-top: 3px;
+  padding-left: 2px;
+}
+.danger-icon .alert-icon::before {
+  font-size: 18px;
+  font-weight: 100;
+  content: "\2715";
+}
+.success-icon .alert-icon {
+  padding-top: 3px;
+  padding-left: 1px;
+}
+.success-icon .alert-icon::before {
+  font-size: 18px;
+  font-weight: 100;
+  content: "\2713";
+  color: #4db6ac;
+}
+
+.confirm-icon .alert-icon::before {
+  font-size: 20px;
+  font-weight: 100;
+  content: "\003F";
+}
+
+.warning-icon .alert-icon {
+  color: #f9c205;
+}
+
+.confirm-icon .alert-icon {
+  color: #007bff;
+}
+
+.alert .devide {
+  height: 1px;
+  padding-left: 16px;
+  padding-right: 16px;
+  background-color: rgb(219, 219, 219);
+  margin-bottom: 12px;
+}
+
+.alert h4,
+.alert p {
+  font-size: 16px;
+  margin-top: 0;
+  margin-bottom: 12px;
+  padding: 0;
+  display: inline-block;
+  background-color: inherit;
+  text-align: left;
+  position: relative;
+  text-align: inherit;
+  float: none;
+  line-height: normal;
+  word-wrap: break-word;
+  width: 100%;
+}
+
+.alert h4 {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.alert footer {
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid #dbdbdb;
+}
+
+alert b {
+  font-weight: 500;
+}
+
+@media all and (max-width: 540px) {
+  .alert {
+    background-color: white;
+    width: 100%;
+    padding: 16px 16px 12px 16px;
+    border-radius: 5px;
+    margin: 0px 15px;
+    margin-top: -113px !important;
+    text-align: center;
+    overflow: hidden;
+  }
+}
+
+@-webkit-keyframes alert {
+  0% {
+    transform: scale(0.7);
+    -webkit-transform: scale(0.7);
+  }
+
+  45% {
+    transform: scale(1.05);
+    -webkit-transform: scale(1.05);
+  }
+
+  80% {
+    transform: scale(0.95);
+    -webkit-transform: scale(0.95);
+  }
+
+  100% {
+    transform: scale(1);
+    -webkit-transform: scale(1);
+  }
+}
+
+@keyframes alert {
+  0% {
+    transform: scale(0.7);
+    -webkit-transform: scale(0.7);
+  }
+
+  45% {
+    transform: scale(1.05);
+    -webkit-transform: scale(1.05);
+  }
+
+  80% {
+    transform: scale(0.95);
+    -webkit-transform: scale(0.95);
+  }
+
+  100% {
+    transform: scale(1);
+    -webkit-transform: scale(1);
+  }
+}

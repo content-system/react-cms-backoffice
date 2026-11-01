@@ -1,0 +1,212 @@
+.modal-portal-open {
+  overflow: hidden;
+}
+
+.modal-portal-open .modal-portal {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.modal-portal {
+  position: fixed !important;
+  top: 0 !important;
+  z-index: 1050 !important;
+  overflow: hidden;
+  outline: 0;
+}
+
+.modal-portal-dialog {
+  position: relative;
+  width: auto;
+  margin: 0.5rem;
+  pointer-events: none;
+}
+
+.modal-portal.fade .modal-portal-dialog {
+  transition: -webkit-transform 0.3s ease-out;
+  transition: transform 0.3s ease-out;
+  transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out;
+  -webkit-transform: translate(0, -25%);
+  transform: translate(0, -25%);
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+  .modal-portal.fade .modal-portal-dialog {
+    transition: none;
+  }
+}
+
+.modal-portal.show .modal-portal-dialog {
+  -webkit-transform: translate(0, 0);
+  transform: translate(0, 0);
+}
+
+.modal-portal-dialog-centered {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  min-height: calc(100% - (0.5rem * 2));
+}
+
+.modal-portal-dialog-centered::before {
+  display: block;
+  height: calc(100vh - (0.5rem * 2));
+  content: "";
+}
+
+.modal-portal-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  background-color: rgba(20, 18, 18, 0.32);
+}
+
+.modal-portal-backdrop.fade {
+  opacity: 0;
+}
+
+.modal-portal-backdrop.show {
+  opacity: 0.5;
+}
+
+.modal-portal-header {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: start;
+  align-items: flex-start;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid #e9ecef;
+  border-top-left-radius: 0.3rem;
+  border-top-right-radius: 0.3rem;
+}
+
+.modal-portal-header .close {
+  padding: 1rem;
+  margin: -1rem -1rem -1rem auto;
+}
+
+.modal-portal-title {
+  margin-bottom: 0;
+  line-height: 1.5;
+}
+
+.modal-portal-body {
+  position: relative;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  padding: 1rem;
+}
+
+.modal-portal-footer {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  padding: 1rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.modal-portal-footer > :not(:first-child) {
+  margin-left: 0.25rem;
+}
+
+.modal-portal-footer > :not(:last-child) {
+  margin-right: 0.25rem;
+}
+
+.modal-portal-scrollbar-measure {
+  position: absolute;
+  top: -9999px;
+  width: 50px;
+  height: 50px;
+  overflow: scroll;
+}
+
+.modal-portal-content {
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  pointer-events: auto;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+  top: 52%;
+  left: 50%;
+  right: auto;
+  padding: 1px;
+  bottom: auto;
+  margin-right: -50%;
+  width: 94vw;
+  transform: translate(-50%, -50%);
+  overflow: hidden;
+  height: fit-content;
+  overflow: auto;
+}
+
+.modal-portal-content.small-width {
+  width: 60%;
+}
+
+.modal-portal-content.small-width-height {
+  width: 40%;
+  height: auto;
+}
+
+.modal-portal-content.medium-width-height {
+  width: 60%;
+  height: auto;
+}
+
+.modal-portal-content.small-width-height section {
+  display: flex;
+  justify-content: center;
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.2;
+  color: inherit;
+  font-size: 18px;
+  color: black;
+}
+.modal-portal-content > div {
+  position: relative;
+}
+@media screen and (max-width: 600px) {
+  .modal-portal-dialog {
+    max-width: 500px;
+    margin: 1.75rem auto;
+  }
+
+  .modal-portal-dialog-centered {
+    min-height: calc(100% - (1.75rem * 2));
+  }
+
+  .modal-portal-dialog-centered::before {
+    height: calc(100vh - (1.75rem * 2));
+  }
+
+  .modal-portal-sm {
+    max-width: 300px;
+  }
+
+  .modal-portal-content.small-width,
+  .modal-portal-content {
+    width: 94%;
+  }
+}
+
+@media (min-width: 992px) {
+  .modal-portal-lg {
+    max-width: 800px;
+  }
+}

@@ -1,0 +1,58 @@
+.item-select {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.item-select > input,
+.item-select > select {
+  padding-left: 10px !important;
+}
+.item-select > button {
+  font-family: inherit;
+}
+
+.item-select > select {
+  min-height: 200px;
+  width: 100%;
+}
+
+.item-select > button.btn {
+  margin-top: 8px;
+  width: 150px;
+  height: 35px;
+  border: none;
+  border-radius: 16px;
+}
+
+.item-select > button.btn-select {
+  width: 150px;
+  height: 35px;
+  border: 1px solid;
+  border-radius: 16px;
+  color: #4db6ac;
+  background-color: inherit;
+}
+
+.item-select > button.btn-deselect {
+  width: 150px;
+  height: 35px;
+  border: 1px solid;
+  border-radius: 16px;
+  color: #d74738;
+  background-color: inherit;
+}
+
+.row > label > div.item-select > input.filter {
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  margin-bottom: 8px;
+  height: 30px;
+}
+
+.row > label > div.item-select > input.filter:not([type="checkbox"]):not([type="radio"]):focus {
+  border-color: #ced4da;
+  box-shadow: none;
+}

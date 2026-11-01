@@ -1,0 +1,576 @@
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+input:-moz-autofill,
+input:-moz-autofill:hover,
+input:-moz-autofill:focus,
+input:-moz-autofill:active {
+  transition: all 5000s ease-in-out 0s;
+  transition-property: background-color, color;
+}
+
+form label > select::-ms-expand {
+  background: url("../images/chevron-down.png") right no-repeat;
+  background-size: 16px;
+  content: "";
+  width: 50px;
+  height: 50px;
+}
+
+@keyframes flyingFrames {
+  from {
+    height: 0px;
+    margin-top: 0px;
+  }
+  to {
+    height: 24px;
+    margin-top: 10px;
+  }
+}
+
+@keyframes unFlyingFrames {
+  from {
+    height: 24px;
+    margin-top: 10px;
+  }
+  to {
+    height: 0px;
+    margin-top: 0px;
+  }
+}
+.grid {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+.row .col {
+  width: 100%;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.row.no-margin {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.row .col.no-padding {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/**************************Input flying************************/
+
+.form .row > label.suffix-container input[value=""]::placeholder,
+.form .row > label.suffix-container input:not([value])::placeholder {
+  visibility: visible;
+  font-weight: 400;
+}
+
+.form .row > label input[value=""]::placeholder,
+.form .row > label input:not([value])::placeholder {
+  visibility: visible;
+}
+
+.form label.flying input[value=""],
+.form label.flying input:not([value]) {
+  -webkit-animation: unFlyingFrames 0.3s, 0.3s;
+  animation: unFlyingFrames 0.3s;
+  height: 0;
+  margin-top: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+/*
+.form .row > label.flying > input:focus:not([data-value]) {
+  height: 24px;
+  margin-top: 10px;
+  -webkit-animation: flyingFrames 0.3s, 0.3s;
+  animation: flyingFrames 0.3s;
+}
+*/
+/**************************Select flying************************/
+.form .row > label select:not([data-value])::placeholder {
+  visibility: hidden;
+}
+
+.form .row > label.flying select[data-value=""] {
+  -webkit-animation: unFlyingFrames 0.3s, 0.3s;
+  animation: unFlyingFrames 0.3s;
+  height: 0;
+  margin-top: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.form .row > label.flying select:focus[data-value=""] {
+  height: 24px;
+  margin-top: 10px;
+  -webkit-animation: flyingFrames 0.3s, 0.3s;
+  animation: flyingFrames 0.3s;
+}
+/*
+form .row > label.focused > input,
+form .row > label.focused > select {
+  height: 24px; 
+  margin-top: 10px;
+  -webkit-animation: flyingFrames 0s, 0s;
+  animation: flyingFrames 0s;
+}
+*/
+label > span.span-error,
+.form-group > span.span-error {
+  position: absolute;
+  height: 30px;
+  min-width: 246px;
+  margin-top: 2px;
+  left: 6px;
+  right: 6px;
+  padding-left: 10px;
+  padding-right: 4px;
+  border-radius: 14px;
+  z-index: 1;
+  font-size: 12px;
+  display: none;
+  align-items: center;
+  background-image: inherit;
+}
+
+label.error-align-right > span.span-error {
+  left: unset;
+}
+
+label.flying > span.span-error {
+  margin-top: 32px;
+  top: 33px;
+}
+
+label.focused > span.span-error,
+.form-group.focused > span.span-error {
+  display: flex;
+}
+.form .row > label.auto-height,
+.auto-height {
+  height: unset;
+}
+.form > div > .form-group,
+.form .row > label,
+.form > label,
+.checkbox-section,
+.radio-section,
+.section .row > label,
+.section > label,
+.input-container {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 64px;
+  padding-top: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  text-align: left;
+  background-color: inherit;
+  background-image: inherit;
+  font-weight: 500;
+}
+.form .row > label:last-child.invalid,
+.form > label:last-child.invalid {
+  height: 74px;
+}
+
+.page-body > .form > .row > .col:last-child {
+  margin-bottom: 16px;
+}
+.row .form-group {
+  width: 100%;
+  font-size: 14px;
+}
+
+.row .form-group label {
+  height: 29px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.scrolling input:not([type="checkbox"]):not([type="radio"]) {
+  caret-color: transparent;
+}
+
+.chip-input-container > input,
+.form-group .form-control,
+.form .row > label > input:not([type="checkbox"]):not([type="radio"]),
+.form > label > input:not([type="checkbox"]):not([type="radio"]),
+.section > label > input:not([type="checkbox"]):not([type="radio"]),
+.form .row > label > select,
+.form > label > select,
+.section .row > label > select,
+.section > label > select {
+  /* Remove ios style for input */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  /**/
+  display: block;
+  outline: 0;
+  overflow: visible;
+  width: 100%;
+  height: 24px;
+  line-height: inherit;
+  margin-top: 10px;
+  word-spacing: normal;
+  text-transform: none;
+  text-indent: 0;
+  text-shadow: none;
+  padding: 2px 0 0;
+  border-width: 0 0 1px 0;
+  border-radius: 0;
+  background-color: inherit;
+}
+.form .row > label.focused > input:not([type="checkbox"]):not([type="radio"]),
+.form > label.focused > input:not([type="checkbox"]):not([type="radio"]),
+.section > label.focused > input:not([type="checkbox"]):not([type="radio"]),
+.form .row > label.focused > select,
+.section > label.focused > select {
+  height: 24px;
+  margin-top: 10px;
+  -webkit-animation: flyingFrames 0s, 0s;
+  animation: flyingFrames 0s, 0s;
+}
+.form .row.inline > label.focused > input:not([type="checkbox"]):not([type="radio"]) {
+  margin-top: -3px;
+  margin-left: 16px;
+}
+.form-group.suffix-container .form-control,
+.form .row > label.suffix-container > input:not([type="checkbox"]):not([type="radio"]),
+.form .row > label.suffix-container > select,
+.form > label.suffix-container > input:not([type="checkbox"]):not([type="radio"]),
+.form > label.suffix-container > select,
+.section > label.suffix-container > input:not([type="checkbox"]):not([type="radio"]),
+.section > label.suffix-container > select {
+  display: inline-block;
+}
+
+.form-control,
+.form .row > label > input,
+.form .row > label > select,
+.form > label > input,
+.form > label > select,
+.section > label > input,
+.section > label > select {
+  border: 0;
+  border-radius: 0;
+  border-bottom: 1px solid;
+}
+
+.form .row > label select[multiple],
+.form > label select[multiple],
+.section > label select[multiple] {
+  border: 1px solid;
+  border-radius: 0;
+}
+
+select:not([multiple]) {
+  background-image: url("../images/chevron-down.png") !important;
+  background-position: calc(100% - 6px) !important;
+  background-size: 10px !important;
+  background-repeat: no-repeat !important;
+}
+
+.form label select:not([data-value])::placeholder {
+  visibility: hidden;
+}
+
+.form label.flying select:not([data-value]) {
+  -webkit-animation: unFlyingFrames 0.3s, 0.3s;
+  animation: unFlyingFrames 0.3s, 0.3s;
+  height: 0;
+  margin-top: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.form .row > label.flying > select:not([multiple]):focus:not([data-value]),
+.form > label.flying > select:focus:not([data-value]) {
+  height: 24px;
+  margin-top: 10px;
+  -webkit-animation: flyingFrames 0.3s, 0.3s;
+  animation: flyingFrames 0.3s, 0.3s;
+}
+.form .row > label > input:focus,
+.form .row > label > select:focus,
+.form > label > input:focus,
+.form > label > select:focus {
+  height: 24px;
+  margin-top: 10px;
+  -webkit-animation: flyingFrames 0s, 0s;
+  animation: flyingFrames 0s;
+}
+
+.form .row > label.flying > input[value=""],
+.form .row > label.flying > select:not([data-value]),
+.form > label.flying > input[value=""],
+.form > label.flying > select:not([data-value]) {
+  height: 0;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.form .row > label.flying > input:focus[value=""],
+.form .row > label.flying.focused > select:not([data-value]),
+.form > label.flying > input:focus[value=""],
+.form > label.flying.focused > select:not([data-value]) {
+  height: 24px;
+  margin-top: 10px;
+  padding-top: 2px;
+  -webkit-animation: flyingFrames 0.3s, 0.3s;
+  animation: flyingFrames 0.3s, 0.3s;
+}
+input:not([type="checkbox"]):not([type="radio"])::placeholder,
+input:not([type="checkbox"]):not([type="radio"])::-moz-placeholder,
+input:not([type="checkbox"]):not([type="radio"]):-ms-input-placeholder,
+input:not([type="checkbox"]):not([type="radio"])::-webkit-input-placeholder,
+select::placeholder,
+select::-moz-placeholder,
+select:-ms-input-placeholder,
+select::-webkit-input-placeholder {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  text-align: left !important;
+  letter-spacing: 0.005em;
+  opacity: 0.6 !important;
+}
+
+.row.checkbox-group > .col > label input:not([type="checkbox"]):not([type="radio"]),
+.row.checkbox-group > label input:not([type="checkbox"]):not([type="radio"]) {
+  margin-top: 6px;
+}
+
+label.switch-container,
+label.checkbox-container,
+label.checkbox-group,
+label.radio-group,
+.checkbox-group > label,
+.radio-group > label,
+.row.checkbox-group > label.col,
+.row.radio-group > label.col,
+.row > .col.radio-group > label,
+.row label.col.checkbox-container,
+.row > .col > label.checkbox-container {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  padding-left: 40px;
+  padding-top: 15px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.form .row > label.switch-container,
+.switch-container {
+  font-size: 16px;
+  font-weight: 500;
+  padding-top: 13px;
+  padding-left: 56px;
+  height: unset;
+}
+
+h4.checkbox-container {
+  height: 32px;
+  padding: 6px 16px;
+  margin-bottom: 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+section > h4.checkbox-container > input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]):first-child {
+  margin-left: 0;
+  margin-right: 10px;
+}
+
+.switch-container,
+.checkbox-container,
+.checkbox-group,
+.radio-group,
+.row.checkbox-group > label.col,
+.row.radio-group > label.col,
+.row.checkbox-group > label,
+.row.radio-group > label,
+.row > .col.radio-group > label {
+  min-height: 40px;
+  display: inline-block;
+}
+
+.col.radio-section > .radio-group.row {
+  margin-left: 0;
+}
+
+label > span.suffix-value {
+  position: absolute;
+  margin-top: 12px;
+  right: 16px;
+}
+
+.row.radio-group > label.col > span.suffix-value {
+  margin-top: -22px;
+}
+
+.row > label input:not([type="checkbox"]):not([type="radio"]).currency-unit {
+  padding-right: 34px;
+}
+
+.row.radio-group > label.col,
+.row > .col.radio-group > label.s6,
+.row > .col.radio-group > label.s6:last-child,
+.row.radio-group > label.col.s6:last-child {
+  flex: 0 0 50%;
+  max-width: 50%;
+  left: auto;
+  right: auto;
+}
+/*
+.row > label.col > label:last-child {
+  margin-bottom: 1px;
+}
+*/
+section > .row.checkbox-group,
+section > .row.radio-group {
+  margin-left: 16px;
+  width: calc(100% - 16px);
+}
+
+.checkbox-group,
+.radio-group {
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+}
+
+.row {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  width: 100%;
+}
+/* 
+section.row {
+  margin-left: 0;
+  margin-right: 0;
+  height: 100%;
+}
+*/
+/*
+section > p > label {
+  font-weight: 400;
+  margin-right: 6px;
+}
+*/
+.form label.flying {
+  height: 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 6px;
+}
+
+label.required:before {
+  position: absolute;
+  left: -2px;
+  content: "*";
+}
+
+.form-group > label.required:before {
+  left: -9px;
+}
+.row.inline > label {
+  display: inline-flex;
+  justify-content: space-between;
+  padding-top: 14px;
+  padding-bottom: 4px;
+  height: unset;
+}
+
+.row.inline > label > section.checkbox-group,
+.row.inline > label input:not([type="checkbox"]):not([type="radio"]),
+.row.inline > label select {
+  margin-top: -3px;
+  margin-left: 16px;
+  flex: 1 1 auto;
+  width: 1%;
+}
+
+.row.inline > label > section.checkbox-group,
+.row.inline > label > section.radio-group {
+  margin-left: 0;
+  min-height: unset;
+}
+
+.row.inline > label > span.span-error {
+  top: 36px;
+  left: 34%;
+}
+
+.row > label.col.inline-input,
+.inline-input {
+  display: inline-flex;
+  width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.form > div > section > label.inline-input {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.inline-input > input {
+  height: 32px;
+  flex: 1 1 auto;
+  width: 1%;
+  padding: 10px 0 0;
+  border-radius: 0;
+  border-width: 0 0 1px 0;
+  background-color: inherit;
+  outline: 0;
+}
+
+.inline-input > .btn-add {
+  width: 22px;
+  height: 22px;
+  margin-top: 8px;
+  padding-left: 5px;
+  display: flex;
+  border: 1px solid;
+  border-radius: 21px;
+  box-shadow: none;
+  background: inherit;
+}
+
+.inline-input > .btn-add::before {
+  top: -4px;
+  left: 4px;
+  font-size: 23px;
+  font-weight: 100;
+  content: "\2B";
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.text-lowercase {
+  text-transform: lowercase;
+}
+
+.justify-content-center {
+  -ms-flex-pack: center !important;
+  justify-content: center !important;
+}
+
+label > .DayPickerInput {
+  display: block;
+}
+
+.form-textarea {
+  width: 100%;
+}
